@@ -1,0 +1,80 @@
+class basenode {
+	$git_host = 'github.com'
+	$git_login = 'engineering@pivit.net.au'
+	$git_password = '456def$%^'
+	$git2_host = 'bitbucket.org'
+	$git2_login = 'pivitptyltd'
+	$git2_password = '456def$%^'
+	$openstack_admin_password = '9JbnJbq#a7'
+
+	# add standard configurations here
+	include apt-sources
+	include backup
+	include tzdata
+	include monit
+	include ntp
+	include rsyslog
+	include ssh
+	include git
+}
+
+# List all nodes and their configurations here
+node "puppet.pivit.net.au" {
+	# General configuration
+	include basenode
+
+	# Server specific configuration
+	include puppet-master
+}
+
+node "privateweb.pivit.net.au" {
+	# General configuration
+	include basenode
+
+	# Server specific configuration
+	include apache2
+	include network-discovery
+}
+
+node "dhcp.pivit.net.au" {
+	# General configuration
+	include basenode
+
+	# Server specific configuration
+	include apache2
+	include dhcp-server
+	include client-dhcp-server
+}
+
+node "nagios.pivit.net.au" {
+	# General configuration
+	include basenode
+
+	# Server specific configuration
+	include nagios3
+}
+
+node "observium.pivit.net.au" {
+	# General configuration
+	include basenode
+
+	# Server specific configuration
+	$mysql_root_password = "P1v1t2013"
+	$observium_admin_password = '9JbnJbq#a7'
+
+	include apache2
+	include mysql-server
+	include observium
+}
+
+node "mail.pivit.net.au" {
+	# General configuration
+	include basenode
+
+	# Server specific configuration
+	$export_dir = "/usr/local/mail"
+	$export_network = "123.100.128.23/32"
+	$export_options = "rw,sync,no_root_squash"
+
+	include nfs-server
+}
