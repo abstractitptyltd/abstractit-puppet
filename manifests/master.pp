@@ -24,6 +24,11 @@ class puppet::master {
         mode => 600,
     }
 
+	package { "librarian-puppet":
+		ensure => installed,
+		provider => gem,
+	}
+
 	file { "/etc/puppet/environments":
 		ensure => directory,
 		owner => "puppet",
