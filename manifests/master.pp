@@ -30,21 +30,13 @@ class puppet::master {
 		group => "puppet",
 		mode => 755,
 	}
-/*
+
 	file { "/etc/puppet/environments/production":
 		ensure => directory,
 		owner => "puppet",
 		group => "puppet",
 		mode => 755,
 		require => File["/etc/puppet/environments"],
-	}
-	
-	file { "/etc/puppet/environments/production/manifests":
-		ensure => directory,
-		owner => "puppet",
-		group => "puppet",
-		mode => 755,
-		require => File["/etc/puppet/environments/production"],
 	}
 	
 	file { "/etc/puppet/environments/production/Puppetfile":
@@ -56,6 +48,32 @@ class puppet::master {
 		require => File["/etc/puppet/environments/production"],
 	}
 
+	file { "/etc/puppet/environments/production/manifests":
+		ensure => directory,
+		owner => "puppet",
+		group => "puppet",
+		mode => 755,
+		require => File["/etc/puppet/environments/production"],
+	}
+	
+	file { "/etc/puppet/environments/production/manifests/site.pp":
+		ensure => file,
+		owner => "puppet",
+		group => "puppet",
+		mode => 644,
+		content => template("puppet/production/site.pp.erb"),
+		require => File["/etc/puppet/environments/production/manifests"],
+	}
+
+	file { "/etc/puppet/environments/production/manifests/nodes.pp":
+		ensure => file,
+		owner => "puppet",
+		group => "puppet",
+		mode => 600,
+		content => template("puppet/production/nodes.pp.erb"),
+		require => File["/etc/puppet/environments/production/manifests"],
+	}
+
 	# cron for updating the production puppet module trees
 	cron {"librarian-puppet production":
 		command  => "cd /etc/puppet/environments/production && librarian-puppet update",
@@ -65,7 +83,6 @@ class puppet::master {
 		require  => File["/etc/puppet/environments/production/Puppetfile"],
 	}
 
-*/
 	file { "/etc/puppet/environments/development":
 		ensure => directory,
 		owner => "puppet",
