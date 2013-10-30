@@ -9,19 +9,36 @@ class basenode {
 
 	# add standard configurations here
 	include apt::sources
-#	include backup
-#	include tzdata
-#	include monit
-#	include ntp
-#	include rsyslog
-#	include ssh
-#	include git
+	include backup
+	include tzdata
+	include monit
+	include ntp
+	include rsyslog
+	include ssh
+	include git
+}
+
+# List all nodes and their configurations here
+node "puppet.pivit.net.au" {
+        # General configuration
+        include basenode
+
+        # Server specific configuration
+        include puppet::master
 }
 
 # List all nodes and their configurations here
 node "testvm.openstacklocal" {
-	# General configuration
-	include basenode
+        # General configuration
+#       include basenode
+        include apt::sources
+#       include backup
+        include tzdata
+#       include monit
+#       include ntp
+#       include rsyslog
+#       include ssh
+        include git
 
 	# Server specific configuration
 #	include apache2
