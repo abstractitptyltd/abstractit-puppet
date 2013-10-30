@@ -55,6 +55,16 @@ class puppet::master {
 		content => template("puppet/production/Puppetfile.erb"),
 		require => File["/etc/puppet/environments/production"],
 	}
+
+	# cron for updating the production puppet module trees
+	cron {"librarian-puppet production":
+		command  => "cd /etc/puppet/environments/production && librarian-puppet update",
+		user     => puppet,
+		hour     => '*/2',
+		minute   => 0,
+		require  => File["/etc/puppet/environments/production/Puppetfile"],
+	}
+
 */
 	file { "/etc/puppet/environments/development":
 		ensure => directory,
@@ -99,5 +109,12 @@ class puppet::master {
 		require => File["/etc/puppet/environments/development/manifests"],
 	}
 
-	# crons for updating the puppet module trees
+	# cron for updating the development puppet module trees
+	cron {"librarian-puppet development":
+		command  => "cd /etc/puppet/environments/development && librarian-puppet update",
+		user     => puppet,
+		hour     => "*",
+		minute   => 0,
+		require  => File["/etc/puppet/environments/development/Puppetfile"],
+	}
 }
