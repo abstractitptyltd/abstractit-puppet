@@ -35,7 +35,7 @@ class puppet::master {
 		group => "puppet",
 		mode => 755,
 	}
-
+/*
 	file { "/etc/puppet/environments/production":
 		ensure => directory,
 		owner => "puppet",
@@ -80,14 +80,24 @@ class puppet::master {
 	}
 
 	# cron for updating the production puppet module trees
-	cron {"librarian-puppet production":
-		command  => "cd /etc/puppet/environments/production && librarian-puppet update",
-		user     => puppet,
-		hour     => "*/2",
-		minute   => 0,
-		require  => File["/etc/puppet/environments/production/Puppetfile"],
-	}
+# 	cron {"librarian-puppet production":
+# 		command  => "cd /etc/puppet/environments/production && librarian-puppet update",
+# 		user     => puppet,
+# 		hour     => "*/2",
+# 		minute   => 0,
+# 		require  => File["/etc/puppet/environments/production/Puppetfile"],
+# 	}
 
+    cron_job { "puppet_modules_production":
+        interval        => "d",
+        script          => "# created by puppet
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+15 */2 * * * puppet cd /etc/puppet/environments/production && librarian-puppet update 2>&1
+",
+    }
+
+*/
 	file { "/etc/puppet/environments/development":
 		ensure => directory,
 		owner => "puppet",
@@ -132,11 +142,21 @@ class puppet::master {
 	}
 
 	# cron for updating the development puppet module trees
-	cron {"librarian-puppet development":
-		command  => "cd /etc/puppet/environments/development && librarian-puppet update",
-		user     => puppet,
-		hour     => "*",
-		minute   => 0,
-		require  => File["/etc/puppet/environments/development/Puppetfile"],
-	}
+# 	cron {"librarian-puppet development":
+# 		command  => "cd /etc/puppet/environments/development && librarian-puppet update",
+# 		user     => puppet,
+# 		hour     => "*",
+# 		minute   => 0,
+# 		require  => File["/etc/puppet/environments/development/Puppetfile"],
+# 	}
+
+    cron_job { "puppet_modules_development":
+        interval        => "d",
+        script          => "# created by puppet
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+
+30 * * * * puppet cd /etc/puppet/environments/development && librarian-puppet update 2>&1
+",
+    }
+
 }
