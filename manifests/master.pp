@@ -60,7 +60,7 @@ class puppet::master {
 	cron {"librarian-puppet production":
 		command  => "cd /etc/puppet/environments/production && librarian-puppet update",
 		user     => puppet,
-		hour     => '*/2',
+		hour     => "*/2",
 		minute   => 0,
 		require  => File["/etc/puppet/environments/production/Puppetfile"],
 	}
