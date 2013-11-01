@@ -53,6 +53,14 @@ class puppet::master {
 		require => File["/etc/puppet/environments/production"],
 	}
 
+	file { "/etc/puppet/environments/production/Puppetfile.lock":
+		ensure => file,
+		owner => "puppet",
+		group => "puppet",
+		mode => 644,
+		require => File["/etc/puppet/production/development"],
+	}
+
 	file { "/etc/puppet/environments/production/manifests":
 		ensure => directory,
 		owner => "puppet",
@@ -80,20 +88,13 @@ class puppet::master {
 	}
 
 	# cron for updating the production puppet module trees
-# 	cron {"librarian-puppet production":
-# 		command  => "cd /etc/puppet/environments/production && librarian-puppet update",
-# 		user     => puppet,
-# 		hour     => "*/2",
-# 		minute   => 0,
-# 		require  => File["/etc/puppet/environments/production/Puppetfile"],
-# 	}
 
     cron_job { "puppet_modules_production":
         interval        => "d",
         script          => "# created by puppet
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-15 */2 * * * puppet cd /etc/puppet/environments/production && librarian-puppet update 2>&1
+0,15,30,45 * * * * puppet cd /etc/puppet/environments/production && librarian-puppet update 2>&1
 ",
     }
 
@@ -112,6 +113,14 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 		group => "puppet",
 		mode => 644,
 		content => template("puppet/development/Puppetfile.erb"),
+		require => File["/etc/puppet/environments/development"],
+	}
+
+	file { "/etc/puppet/environments/development/Puppetfile.lock":
+		ensure => file,
+		owner => "puppet",
+		group => "puppet",
+		mode => 644,
 		require => File["/etc/puppet/environments/development"],
 	}
 
@@ -142,20 +151,12 @@ PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 	}
 
 	# cron for updating the development puppet module trees
-# 	cron {"librarian-puppet development":
-# 		command  => "cd /etc/puppet/environments/development && librarian-puppet update",
-# 		user     => puppet,
-# 		hour     => "*",
-# 		minute   => 0,
-# 		require  => File["/etc/puppet/environments/development/Puppetfile"],
-# 	}
-
     cron_job { "puppet_modules_development":
         interval        => "d",
         script          => "# created by puppet
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-30 * * * * puppet cd /etc/puppet/environments/development && librarian-puppet update 2>&1
+10,25,40,55 * * * * puppet cd /etc/puppet/environments/development && librarian-puppet update 2>&1
 ",
     }
 
