@@ -1,11 +1,10 @@
 define puppet::environment (
-# 	$name,
 	$librarian = true,
 	$cron_minutes = "0,15,30,45",
 ) {
 	## sets up the files for each environment
 
-	file { "/etc/puppet/environments/${title}":
+	file { "/etc/puppet/environments/${name}":
 		ensure => directory,
 		owner => "puppet",
 		group => "puppet",
@@ -13,57 +12,57 @@ define puppet::environment (
 		require => File["/etc/puppet/environments"],
 	}
 	
-	file { "/etc/puppet/environments/${title}/Puppetfile":
+	file { "/etc/puppet/environments/${name}/Puppetfile":
 		ensure => file,
 		owner => "puppet",
 		group => "puppet",
 		mode => 640,
-		content => template("puppet/${title}/Puppetfile.erb"),
-		require => File["/etc/puppet/environments/${title}"],
+		content => template("puppet/${name}/Puppetfile.erb"),
+		require => File["/etc/puppet/environments/${name}"],
 	}
 
-	file { "/etc/puppet/environments/${title}/Puppetfile.lock":
+	file { "/etc/puppet/environments/${name}/Puppetfile.lock":
 		ensure => file,
 		owner => "puppet",
 		group => "puppet",
 		mode => 644,
-		require => File["/etc/puppet/${title}/development"],
+		require => File["/etc/puppet/${name}/development"],
 	}
 
-	file { "/etc/puppet/environments/${title}/manifests":
+	file { "/etc/puppet/environments/${name}/manifests":
 		ensure => directory,
 		owner => "puppet",
 		group => "puppet",
 		mode => 755,
-		require => File["/etc/puppet/environments/${title}"],
+		require => File["/etc/puppet/environments/${name}"],
 	}
 	
-	file { "/etc/puppet/environments/${title}/manifests/site.pp":
+	file { "/etc/puppet/environments/${name}/manifests/site.pp":
 		ensure => file,
 		owner => "puppet",
 		group => "puppet",
 		mode => 644,
-		content => template("puppet/${title}/site.pp.erb"),
-		require => File["/etc/puppet/environments/${title}/manifests"],
+		content => template("puppet/${name}/site.pp.erb"),
+		require => File["/etc/puppet/environments/${name}/manifests"],
 	}
 
-	file { "/etc/puppet/environments/${title}/manifests/nodes.pp":
+	file { "/etc/puppet/environments/${name}/manifests/nodes.pp":
 		ensure => file,
 		owner => "puppet",
 		group => "puppet",
 		mode => 600,
-		content => template("puppet/${title}/nodes.pp.erb"),
-		require => File["/etc/puppet/environments/${title}/manifests"],
+		content => template("puppet/${name}/nodes.pp.erb"),
+		require => File["/etc/puppet/environments/${name}/manifests"],
 	}
 
-	# cron for updating the ${title} puppet module trees
-    cron_job { "puppet_modules_${title}":
+	# cron for updating the ${name} puppet module trees
+    cron_job { "puppet_modules_${name}":
     	ensure			=> $librarian,
         interval        => "d",
         script          => "# created by puppet
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
-${cron_minutes} * * * * puppet cd /etc/puppet/environments/${title} && librarian-puppet update 2>&1
+${cron_minutes} * * * * puppet cd /etc/puppet/environments/${name} && librarian-puppet update 2>&1
 ",
     }
 
