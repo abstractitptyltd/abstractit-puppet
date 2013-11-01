@@ -35,129 +35,13 @@ class puppet::master {
 		group => "puppet",
 		mode => 755,
 	}
-/*
-	file { "/etc/puppet/environments/production":
-		ensure => directory,
-		owner => "puppet",
-		group => "puppet",
-		mode => 755,
-		require => File["/etc/puppet/environments"],
-	}
-	
-	file { "/etc/puppet/environments/production/Puppetfile":
-		ensure => file,
-		owner => "puppet",
-		group => "puppet",
-		mode => 640,
-		content => template("puppet/production/Puppetfile.erb"),
-		require => File["/etc/puppet/environments/production"],
+
+	puppet::environment { "production":
 	}
 
-	file { "/etc/puppet/environments/production/Puppetfile.lock":
-		ensure => file,
-		owner => "puppet",
-		group => "puppet",
-		mode => 644,
-		require => File["/etc/puppet/production/development"],
+	puppet::environment { "development":
+		librarian => true,
+		cron_minutes => "10,25,40,55",
 	}
-
-	file { "/etc/puppet/environments/production/manifests":
-		ensure => directory,
-		owner => "puppet",
-		group => "puppet",
-		mode => 755,
-		require => File["/etc/puppet/environments/production"],
-	}
-	
-	file { "/etc/puppet/environments/production/manifests/site.pp":
-		ensure => file,
-		owner => "puppet",
-		group => "puppet",
-		mode => 644,
-		content => template("puppet/production/site.pp.erb"),
-		require => File["/etc/puppet/environments/production/manifests"],
-	}
-
-	file { "/etc/puppet/environments/production/manifests/nodes.pp":
-		ensure => file,
-		owner => "puppet",
-		group => "puppet",
-		mode => 600,
-		content => template("puppet/production/nodes.pp.erb"),
-		require => File["/etc/puppet/environments/production/manifests"],
-	}
-
-	# cron for updating the production puppet module trees
-
-    cron_job { "puppet_modules_production":
-        interval        => "d",
-        script          => "# created by puppet
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
-0,15,30,45 * * * * puppet cd /etc/puppet/environments/production && librarian-puppet update 2>&1
-",
-    }
-
-*/
-	file { "/etc/puppet/environments/development":
-		ensure => directory,
-		owner => "puppet",
-		group => "puppet",
-		mode => 755,
-		require => File["/etc/puppet/environments"],
-	}
-
-	file { "/etc/puppet/environments/development/Puppetfile":
-		ensure => file,
-		owner => "puppet",
-		group => "puppet",
-		mode => 644,
-		content => template("puppet/development/Puppetfile.erb"),
-		require => File["/etc/puppet/environments/development"],
-	}
-
-	file { "/etc/puppet/environments/development/Puppetfile.lock":
-		ensure => file,
-		owner => "puppet",
-		group => "puppet",
-		mode => 644,
-		require => File["/etc/puppet/environments/development"],
-	}
-
-	file { "/etc/puppet/environments/development/manifests":
-		ensure => directory,
-		owner => "puppet",
-		group => "puppet",
-		mode => 755,
-		require => File["/etc/puppet/environments/development"],
-	}
-
-	file { "/etc/puppet/environments/development/manifests/site.pp":
-		ensure => file,
-		owner => "puppet",
-		group => "puppet",
-		mode => 644,
-		content => template("puppet/development/site.pp.erb"),
-		require => File["/etc/puppet/environments/development/manifests"],
-	}
-
-	file { "/etc/puppet/environments/development/manifests/nodes.pp":
-		ensure => file,
-		owner => "puppet",
-		group => "puppet",
-		mode => 600,
-		content => template("puppet/development/nodes.pp.erb"),
-		require => File["/etc/puppet/environments/development/manifests"],
-	}
-
-	# cron for updating the development puppet module trees
-    cron_job { "puppet_modules_development":
-        interval        => "d",
-        script          => "# created by puppet
-PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-
-10,25,40,55 * * * * puppet cd /etc/puppet/environments/development && librarian-puppet update 2>&1
-",
-    }
 
 }
