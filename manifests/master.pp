@@ -37,6 +37,7 @@ class puppet::master {
 	}
 
 	puppet::environment { "production":
+		librarian => false,
 	}
 
 	puppet::environment { "development":
