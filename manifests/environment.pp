@@ -57,7 +57,7 @@ define puppet::environment (
 
 	# cron for updating the ${name} puppet module trees
     cron_job { "puppet_modules_${name}":
-    	ensure			=> $librarian,
+    	enable			=> $librarian,
         interval        => "d",
         script          => "# created by puppet
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
