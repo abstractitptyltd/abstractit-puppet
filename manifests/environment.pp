@@ -26,7 +26,7 @@ define puppet::environment (
 		owner => "puppet",
 		group => "puppet",
 		mode => 644,
-		require => File["/etc/puppet/environment/${name}"],
+		require => File["/etc/puppet/environments/${name}"],
 	}
 
 	file { "/etc/puppet/environments/${name}/manifests":
