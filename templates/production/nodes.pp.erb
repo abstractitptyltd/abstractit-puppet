@@ -8,7 +8,7 @@ class basenode {
 	$openstack_admin_password = '9JbnJbq#a7'
 
 	# add standard configurations here
-	include apt-sources
+	include apt
 	include backup
 	include tzdata
 	include monit
@@ -24,7 +24,7 @@ node "puppet.pivit.net.au" {
 	include basenode
 
 	# Server specific configuration
-	include puppet-master
+	include puppet::master
 }
 
 node "privateweb.pivit.net.au" {
@@ -33,7 +33,7 @@ node "privateweb.pivit.net.au" {
 
 	# Server specific configuration
 	include apache2
-	include network-discovery
+	include network_discovery
 }
 
 node "dhcp.pivit.net.au" {
@@ -42,8 +42,8 @@ node "dhcp.pivit.net.au" {
 
 	# Server specific configuration
 	include apache2
-	include dhcp-server
-	include client-dhcp-server
+	include dhcp::server
+	include dhcp::pivitcustomers
 }
 
 node "nagios.pivit.net.au" {
@@ -63,7 +63,7 @@ node "observium.pivit.net.au" {
 	$observium_admin_password = '9JbnJbq#a7'
 
 	include apache2
-	include mysql-server
+	include mysql::server
 	include observium
 }
 
@@ -76,5 +76,5 @@ node "mail.pivit.net.au" {
 	$export_network = "123.100.128.23/32"
 	$export_options = "rw,sync,no_root_squash"
 
-	include nfs-server
+	include nfs::server
 }
