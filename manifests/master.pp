@@ -37,11 +37,11 @@ class puppet::master {
 	}
 
 	puppet::environment { "production":
-		librarian => false,
+		librarian => true,
 	}
 
 	puppet::environment { "development":
-		librarian => true,
+		librarian => false,
 		cron_minutes => "10,25,40,55",
 	}
 
