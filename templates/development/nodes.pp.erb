@@ -29,16 +29,22 @@ node "puppet.pivit.net.au" {
 
 # List all nodes and their configurations here
 node "testvm.openstacklocal" {
-        # General configuration
-#       include basenode
-        include apt::sources
-#       include backup
-        include tzdata
-#       include monit
-#       include ntp
-#       include rsyslog
-#       include ssh
-        include git
+	$git_host = 'github.com'
+	$git_login = 'engineering@pivit.net.au'
+	$git_password = '456def$%^'
+	$git2_host = 'bitbucket.org'
+	$git2_login = 'pivitptyltd'
+	$git2_password = '456def$%^'
+    # General configuration
+#   include basenode
+    include apt::sources
+#   include backup
+    include tzdata
+#   include monit
+#   include ntp
+#   include rsyslog
+#   include ssh
+    include git
 
 	include dns
 
