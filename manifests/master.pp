@@ -44,6 +44,8 @@ class puppet::master {
 		librarian => false,
 		branch => "master",
 		cron_minutes => "10,25,40,55",
+		user => 'ubuntu',
+		group => 'ubuntu',
 	}
 
 }
