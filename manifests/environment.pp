@@ -18,7 +18,7 @@ define puppet::environment (
 		owner => "puppet",
 		group => "puppet",
 		mode => 640,
-		content => template("puppet/Puppetfile.erb"),
+		content => template("puppet/${name}/Puppetfile.erb"),
 		require => File["/etc/puppet/environments/${name}"],
 	}
 
