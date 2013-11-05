@@ -1,4 +1,5 @@
 define puppet::environment (
+	$branch = $name,
 	$librarian = true,
 	$cron_minutes = "0,15,30,45",
 ) {
@@ -17,7 +18,7 @@ define puppet::environment (
 		owner => "puppet",
 		group => "puppet",
 		mode => 640,
-		content => template("puppet/${name}/Puppetfile.erb"),
+		content => template("puppet/Puppetfile.erb"),
 		require => File["/etc/puppet/environments/${name}"],
 	}
 
