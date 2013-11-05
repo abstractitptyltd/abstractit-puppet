@@ -42,6 +42,7 @@ class puppet::master {
 
 	puppet::environment { "development":
 		librarian => false,
+		branch => "master",
 		cron_minutes => "10,25,40,55",
 	}
 
