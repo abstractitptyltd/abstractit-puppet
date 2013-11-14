@@ -50,13 +50,26 @@ define puppet::environment (
 		require => File["/etc/puppet/environments/${name}/manifests"],
 	}
 
+	gitclone::clone { "manifest_includes":
+		real_name  => "includes",
+		localtree => "/etc/puppet/environments/${name}/manifests",
+		source    => "https://bitbucket.org/pivitptyltd/puppet-manifest-includes.git",
+		branch    => $name,
+	}
+	gitclone::pull { "manifest_includes":
+		real_name => "includes",
+		localtree => "/etc/puppet/environments/${name}/manifests",
+		require   => Gitclone::Clone["manifest_includes"],
+	}
+
 	file { "/etc/puppet/environments/${name}/manifests/nodes.pp":
-		ensure => file,
-		owner => 'puppet',
-		group => 'puppet',
-		mode => 600,
+		ensure  => file,
+		owner   => 'puppet',
+		group   => 'puppet',
+		mode    => 600,
 		content => template("puppet/${name}/nodes.pp.erb"),
-		require => File["/etc/puppet/environments/${name}/manifests"],
+    require => Gitclone::Pull["manifest_includes"],
+    #require => File["/etc/puppet/environments/${name}/manifests"],
 	}
 
 	# cron for updating the ${name} puppet module trees
