@@ -50,16 +50,16 @@ define puppet::environment (
 		require => File["/etc/puppet/environments/${name}/manifests"],
 	}
 
-	gitclone::clone { "manifest_includes":
+	gitclone::clone { "manifest_includes_${name}":
 		real_name  => "includes",
 		localtree => "/etc/puppet/environments/${name}/manifests",
 		source    => "https://bitbucket.org/pivitptyltd/puppet-manifest-includes.git",
 		branch    => $name,
 	}
-	gitclone::pull { "manifest_includes":
+	gitclone::pull { "manifest_includes_${name}":
 		real_name => "includes",
 		localtree => "/etc/puppet/environments/${name}/manifests",
-		require   => Gitclone::Clone["manifest_includes"],
+		require   => Gitclone::Clone["manifest_includes_${name}"],
 	}
 
 	file { "/etc/puppet/environments/${name}/manifests/nodes.pp":
@@ -68,7 +68,7 @@ define puppet::environment (
 		group   => 'puppet',
 		mode    => 600,
 		content => template("puppet/${name}/nodes.pp.erb"),
-    require => Gitclone::Pull["manifest_includes"],
+    require => Gitclone::Pull["manifest_includes${name}"],
     #require => File["/etc/puppet/environments/${name}/manifests"],
 	}
 
