@@ -1,5 +1,6 @@
 forge "http://forge.puppetlabs.com"
 
+mod 'puppetlabs/apt'
 mod 'puppetlabs/stdlib'
 mod 'puppetlabs/xinetd'
 mod 'puppetlabs/haproxy'
@@ -16,9 +17,9 @@ mod 'apache2',
     :git => "https://bitbucket.org/pivitptyltd/puppet-apache2",
     :ref => "<%= branch %>"
 
-mod 'apt',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-apt",
-    :ref => "<%= branch %>"
+#mod 'apt',
+#    :git => "https://bitbucket.org/pivitptyltd/puppet-apt",
+#    :ref => "<%= branch %>"
 
 mod 'backup',
     :git => "https://bitbucket.org/pivitptyltd/puppet-backup",

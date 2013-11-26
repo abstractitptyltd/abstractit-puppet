@@ -8,7 +8,7 @@ class basenode {
 	$openstack_admin_password = '9JbnJbq#a7'
 
 	# add standard configurations here
-	include apt::sources
+	include site::apt
 	include backup
 	include tzdata
 	include monit
