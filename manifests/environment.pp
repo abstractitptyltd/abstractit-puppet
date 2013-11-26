@@ -68,7 +68,7 @@ define puppet::environment (
 		group   => 'puppet',
 		mode    => 600,
 		content => template("puppet/${name}/nodes.pp.erb"),
-    require => Gitclone::Pull["manifest_includes${name}"],
+    require => Gitclone::Pull["manifest_includes_${name}"],
     #require => File["/etc/puppet/environments/${name}/manifests"],
 	}
 
