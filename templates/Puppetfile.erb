@@ -6,6 +6,9 @@ mod 'puppetlabs/haproxy'
 mod 'puppetlabs/puppetdb'
 mod 'rendhalver/sudo'
 
+mod 'gitclone',
+	:git => "https://github.com/abstractitptyltd/puppet-gitclone"
+
 mod 'ldap',
 	:git => "https://github.com/rendhalver/puppet-ldap"
 
@@ -36,6 +39,10 @@ mod 'git',
 mod 'monit',
     :git => "https://bitbucket.org/pivitptyltd/puppet-monit",
     :ref => "<%= branch %>"
+
+mod 'mariadb',
+	:git => "https://github.com/PivitPtyLtd/puppet-mariadb"
+  :ref => "<%= branch %>"
 
 mod 'mysql',
     :git => "https://bitbucket.org/pivitptyltd/puppet-mysql",
@@ -80,10 +87,4 @@ mod 'ssh',
 mod 'tzdata',
     :git => "https://bitbucket.org/pivitptyltd/puppet-tzdata",
     :ref => "<%= branch %>"
-
-mod 'gitclone',
-	:git => "https://github.com/abstractitptyltd/puppet-gitclone"
-
-mod 'mariadb',
-	:git => "https://github.com/abstractitptyltd/puppet-mariadb.git"
 
