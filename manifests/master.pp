@@ -7,7 +7,7 @@ class puppet::master {
 
     # setup puppetdb
     class { 'puppetdb': }
-    class { 'puppetdbmaster::config':
+    class { 'puppetdb::master::config':
       puppet_service_name => "apache2",
     }
 
