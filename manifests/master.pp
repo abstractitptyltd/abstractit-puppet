@@ -5,6 +5,12 @@ class puppet::master {
         group => "root",
     }
 
+    # setup puppetdb
+    class { 'puppetdb': }
+    class { 'puppetdbmaster::config':
+      puppet_service_name => "apache2",
+    }
+
     package { "puppetmaster-passenger": 
         ensure => installed
     }
