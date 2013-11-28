@@ -36,6 +36,7 @@ class puppet::master {
     gitclone::pull { "pivit_hieradata":
       real_name => "hieradata",
       localtree => "/etc/puppet",
+      clean     => false,
       require   => Gitclone::Clone["pivit_hieradata"],
     }
 
