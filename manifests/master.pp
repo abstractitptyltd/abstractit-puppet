@@ -16,10 +16,10 @@ class puppet::master {
     ## setup hiera
 
     file { "/etc/hiera.yaml":
-        ensure   => file,
-        contents => template("puppet/hiera.yaml.erb"),
-        mode     => 644,
-        require  => Gitclone::Pull["pivit_hieradata"],
+        ensure  => file,
+        content => template("puppet/hiera.yaml.erb"),
+        mode    => 644,
+        require => Gitclone::Pull["pivit_hieradata"],
     }
     file { "/etc/puppet/hiera.yaml":
         ensure   => link,
