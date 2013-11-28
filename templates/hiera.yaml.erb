@@ -1,0 +1,18 @@
+---
+:backends:
+  - yaml
+:hierarchy:
+  - "defaults"
+  - "defaults_pass"
+  - "%{::clientcert}"
+  - "%{::clientcert}_pass"
+  - "%{::environment}"
+  - "global"
+  - "global_pass"
+
+:yaml:
+# datadir is empty here, so hiera uses its defaults:
+# - /var/lib/hiera on *nix
+# - %CommonAppData%\PuppetLabs\hiera\var on Windows
+# When specifying a datadir, make sure the directory exists.
+  :datadir: <%= hieradata_dir %>

@@ -13,6 +13,32 @@ class puppet::master {
       puppet_service_name => "apache2",
     }
 
+    ## setup hiera
+
+    file { "/etc/hiera.yaml":
+        ensure   => file,
+        contents => template("puppet/hiera.yaml.erb"),
+        mode     => 644,
+        require  => Gitclone::Pull["pivit_hieradata"],
+    }
+    file { "/etc/puppet/hiera.yaml":
+        ensure   => link,
+        target   => "/etc/hiera.yaml",
+        require  => File["/etc/hiera.yaml"],
+    }
+
+    gitclone::clone { "pivit_hieradata":
+      real_name  => "hieradata",
+      localtree => "/etc/puppet",
+      source    => "https://bitbucket.org/pivitptyltd/puppet-hieradata",
+      branch    => "production",
+    }
+    gitclone::pull { "pivit_hieradata":
+      real_name => "hieradata",
+      localtree => "/etc/puppet",
+      require   => Gitclone::Clone["pivit_hieradata"],
+    }
+
     package { "puppetmaster-passenger": 
         ensure => installed
     }
