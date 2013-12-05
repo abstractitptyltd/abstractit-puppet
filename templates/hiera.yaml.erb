@@ -4,9 +4,14 @@
 :hierarchy:
   - "defaults"
   - "defaults_pass"
+  - "node/%{::clientcert}"
+  - "node/%{::clientcert}_pass"
   - "%{::clientcert}"
   - "%{::clientcert}_pass"
+  - "env/%{::environment}"
+  - "env/%{::environment}_pass"
   - "%{::environment}"
+  - "%{::environment}_pass"
   - "global"
   - "global_pass"
 
