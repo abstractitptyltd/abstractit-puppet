@@ -61,7 +61,7 @@ define puppet::environment (
     localtree => "/etc/puppet/environments/${name}/manifests",
     require   => Gitclone::Clone["manifest_includes_${name}"],
   }
-
+/*
   file { "/etc/puppet/environments/${name}/manifests/nodes.pp":
     ensure  => file,
     owner   => 'puppet',
@@ -71,7 +71,7 @@ define puppet::environment (
     require => Gitclone::Pull["manifest_includes_${name}"],
     #require => File["/etc/puppet/environments/${name}/manifests"],
     }
-
+*/
     # cron for updating the ${name} puppet module trees
     cron_job { "puppet_modules_${name}":
       enable   => $librarian,
