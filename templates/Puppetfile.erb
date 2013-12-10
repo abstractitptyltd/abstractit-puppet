@@ -14,13 +14,17 @@ mod 'gitclone',
 mod 'ldap',
 	:git => "https://github.com/rendhalver/puppet-ldap"
 
+mod 'proftpd',
+	:git => "https://github.com/PivitPtyLtd/adamjlow-proftpd"
+  :ref => "<%= branch %>"
+
+mod 'mariadb',
+	:git => "https://github.com/PivitPtyLtd/puppet-mariadb",
+  :ref => "<%= branch %>"
+
 mod 'apache2',
     :git => "https://bitbucket.org/pivitptyltd/puppet-apache2",
     :ref => "<%= branch %>"
-
-#mod 'apt',
-#    :git => "https://bitbucket.org/pivitptyltd/puppet-apt",
-#    :ref => "<%= branch %>"
 
 mod 'backup',
     :git => "https://bitbucket.org/pivitptyltd/puppet-backup",
@@ -41,10 +45,6 @@ mod 'git',
 mod 'monit',
     :git => "https://bitbucket.org/pivitptyltd/puppet-monit",
     :ref => "<%= branch %>"
-
-mod 'mariadb',
-	:git => "https://github.com/PivitPtyLtd/puppet-mariadb",
-  :ref => "<%= branch %>"
 
 mod 'mysql',
     :git => "https://bitbucket.org/pivitptyltd/puppet-mysql",
