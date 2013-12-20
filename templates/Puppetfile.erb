@@ -14,6 +14,10 @@ mod 'gitclone',
 mod 'ldap',
 	:git => "https://github.com/rendhalver/puppet-ldap"
 
+mod 'xtradb',
+  :git => "https://github.com/abstractitptyltd/puppet-xtrabackup",
+  :ref => "<%= branch %>"
+
 mod 'proftpd',
 	:git => "https://github.com/PivitPtyLtd/adamjlow-proftpd",
   :ref => "<%= branch %>"
