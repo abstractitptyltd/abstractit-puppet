@@ -83,4 +83,11 @@ class puppet::master {
     group        => 'ubuntu',
   }
 
+  puppet::environment { 'testing':
+    librarian    => false,
+    branch       => 'master',
+    user         => 'ubuntu',
+    group        => 'ubuntu',
+  }
+
 }
