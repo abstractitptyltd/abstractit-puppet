@@ -44,12 +44,10 @@ class puppet::master {
     ensure => installed
   }
 
-  file { 'apache2.monitrc':
-    ensure => file,
-    path   => '/etc/monit/conf.d/apache2.monitrc',
-    source => 'puppet:///modules/apache2/apache2.monitrc',
-    mode   => '0644',
-    notify => Service['monit'],
+  monit::process { 'apache2':
+    host     => '127.0.0.1',
+    port     => '80',
+    protocol => 'HTTP',
   }
 
   file { 'puppet.cfg':
@@ -85,6 +83,7 @@ class puppet::master {
 
   puppet::environment { 'testing':
     librarian    => false,
+    cron_minutes => '5,35',
     branch       => 'master',
     user         => 'ubuntu',
     group        => 'ubuntu',
