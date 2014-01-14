@@ -1,5 +1,7 @@
 class puppet::master {
 
+  include site::monit::apache
+
   File {
     owner => 'root',
     group => 'root',
@@ -42,12 +44,6 @@ class puppet::master {
 
   package { 'puppetmaster-passenger':
     ensure => installed
-  }
-
-  monit::process { 'apache2':
-    host     => '127.0.0.1',
-    port     => '80',
-    protocol => 'HTTP',
   }
 
   file { 'puppet.cfg':
