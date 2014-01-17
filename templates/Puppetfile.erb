@@ -6,17 +6,14 @@ mod 'puppetlabs/stdlib'
 mod 'puppetlabs/xinetd'
 mod 'puppetlabs/haproxy'
 mod 'puppetlabs/puppetdb'
-mod 'rendhalver/sudo'
+mod 'abstractit/sudo'
+mod 'abstractit/xtrabackup'
 
 mod 'gitclone',
 	:git => "https://github.com/abstractitptyltd/puppet-gitclone"
 
 mod 'ldap',
 	:git => "https://github.com/rendhalver/puppet-ldap"
-
-mod 'xtrabackup',
-  :git => "https://github.com/abstractitptyltd/puppet-xtrabackup",
-  :ref => "<%= branch %>"
 
 mod 'proftpd',
 	:git => "https://github.com/PivitPtyLtd/adamjlow-proftpd",
