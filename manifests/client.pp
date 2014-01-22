@@ -5,7 +5,10 @@
 # setup facts and puppet agent
 #
 class puppet::client (
-  $data_centre,
+  $data_centre = '',
+  $mysql_host = '',
+  $ldap_host = '',
+  $wsrep_cluster_name = '',
   $pub_ipaddress = $::ipaddress,
   $enabled = true,
 ) {
@@ -28,7 +31,7 @@ class puppet::client (
     }
   }
 
-  file {"/etc/facter/facts.d/local.yaml":
+  file {'/etc/facter/facts.d/local.yaml':
     ensure    => file,
     owner     => 'root',
     group     => 'puppet',

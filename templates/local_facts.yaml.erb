@@ -2,5 +2,9 @@
 # FQDN <%= @fqdn %>
 # Environment <%= @environment %>
 ---
-data_centre: '<%= @data_centre %>'
 pub_ipaddress: '<%= @pub_ipaddress %>'
+<% if @data_centre != '' %> data_centre: '<%= @data_centre %>'<% end -%>
+<% if @mysql_host != '' %>mysql_host: '<%= @mysql_host %>'<% end -%>
+<% if @ldap_host != '' %>ldap_host: '<%= @ldap_host %>'<% end -%>
+<% if @wsrep_cluster_name != '' %>wsrep_cluster_name: '<%= @wsrep_cluster_name %>'<% end -%>
+

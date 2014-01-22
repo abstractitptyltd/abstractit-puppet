@@ -4,6 +4,7 @@
 #
 define puppet::fact (
   $value,
+  $ensure = present,
   $scope = 'data_centre',
 ) {
 
@@ -18,7 +19,7 @@ define puppet::fact (
   }
 
   @@file {"/etc/facter/facts.d/${name}.yaml":
-    ensure    => file,
+    ensure    => $ensure,
     owner     => 'root',
     group     => 'puppet',
     mode      => '0640',
