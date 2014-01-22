@@ -3,7 +3,7 @@
 # Setup a puppet client
 #
 # setup facts and puppet agent
-# 
+#
 class puppet::client (
   $data_centre,
   $pub_ipaddress = $::ipaddress,
