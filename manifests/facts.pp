@@ -9,6 +9,7 @@ class puppet::facts (
   $mysql_host = '',
   $ldap_host = '',
   $wsrep_cluster_name = '',
+  $ldap_cluster_name = '',
   $pub_ipaddress = $::ipaddress,
 ) {
 
