@@ -13,4 +13,9 @@ class puppet::client (
     enable => $enabled,
   }
 
+  monit::process{ 'puppet':
+    ensure  => $enabled,
+    pidfile => '/var/run/puppet/agent.pid',
+  }
+
 }
