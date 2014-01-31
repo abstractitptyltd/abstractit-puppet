@@ -44,6 +44,7 @@ class puppet::master (
     ssl_chain         => '/var/lib/puppet/ssl/certs/ca.pem',
     ssl_ca            => '/var/lib/puppet/ssl/certs/ca.pem',
     ssl_crl           => '/var/lib/puppet/ssl/ca/ca_crl.pem',
+    ssl_certs_dir     => undef,
     ssl_verify_client => 'optional',
     ssl_verify_depth  => '1',
     ssl_options       => ['+StdEnvVars','+ExportCertData'],

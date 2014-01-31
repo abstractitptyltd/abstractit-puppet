@@ -8,7 +8,7 @@ class puppet::facts (
   $data_centre = '',
   $mysql_host = '',
   $ldap_host = '',
-  $wsrep_cluster_name = '',
+  $galera_cluster_name = '',
   $ldap_cluster_name = '',
   $pub_ipaddress = $::ipaddress,
 ) {
