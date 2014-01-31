@@ -3,7 +3,7 @@ class puppet::master (
 ) {
 
   include site::monit::apache
-  include apache
+  #include apache
 
   File {
     owner => 'root',
@@ -21,7 +21,7 @@ class puppet::master (
   #}
   #class { 'puppetboard::apache::conf':
   #}
-
+/*
   class { 'apache::mod::passenger':
     passenger_high_performance   => 'On',
     passenger_max_pool_size      => '12',
@@ -63,7 +63,7 @@ class puppet::master (
       'set X-Client-Verify %{SSL_CLIENT_VERIFY}e',
     ],
   }
-
+*/
   ## setup hiera
 
   file { '/etc/hiera.yaml':
@@ -78,6 +78,7 @@ class puppet::master (
     require  => File['/etc/hiera.yaml'],
   }
 
+
   gitclone::clone { 'pivit_hieradata':
     real_name => 'hieradata',
     localtree => '/etc/puppet',
@@ -85,10 +86,15 @@ class puppet::master (
     branch    => 'production',
   }
   gitclone::pull { 'pivit_hieradata':
-    real_name => 'hieradata',
-    localtree => '/etc/puppet',
-    clean     => false,
-    require   => Gitclone::Clone['pivit_hieradata'],
+    real_name       => 'hieradata',
+    localtree       => '/etc/puppet',
+    clean           => false,
+    reset           => $environment ? {
+      default       => true,
+      'development' => false,
+      'testing'     => false,
+    },
+    require         => Gitclone::Clone['pivit_hieradata'],
   }
 
   package { 'puppetmaster-passenger':
