@@ -6,6 +6,14 @@ forge "http://forge.puppetlabs.com"
 mod '<%= value_hash['module'] %>', '<%= value_hash['version'] %>'
 <% end -%>
 
+<% if @forge_modules =~ /^development$/ -%>
+## upstream modules in development
+#mod 'darin/rt', '0.0.7'
+mod 'rt',
+  :git => "https://github.com/abstractitptyltd/puppet-rt"
+  :ref => "<%= branch %>"
+
+<% end -%>
 ## upstream modules
 mod 'cpanm',
   :git => "https://github.com/torrancew/puppet-cpanm"
@@ -14,11 +22,6 @@ mod 'gitclone',
   :git => "https://github.com/abstractitptyltd/puppet-gitclone"
 
 ## upstream forks
-#mod 'darin/rt', '0.0.7'
-mod 'rt',
-  :git => "https://github.com/abstractitptyltd/puppet-rt"
-  :ref => "<%= branch %>"
-
 mod 'ldap',
   :git => "https://github.com/rendhalver/puppet-ldap"
 
