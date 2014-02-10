@@ -3,7 +3,7 @@ forge "http://forge.puppetlabs.com"
 ## forge modules
 <% @forge_modules.each_pair do |key, value_hash| -%>
 ## <%= key %>
-mod '<%= value_hash['module'] %>', '<%= value_hash['version'] %>',
+mod '<%= value_hash['module'] %>', '<%= value_hash['version'] %>'
 <% end -%>
 
 ## upstream modules
