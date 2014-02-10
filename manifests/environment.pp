@@ -56,7 +56,7 @@ define puppet::environment (
     real_name => 'includes',
     localtree => "/etc/puppet/environments/${name}/manifests",
     source    => 'https://bitbucket.org/pivitptyltd/puppet-manifest-includes.git',
-    branch    => $name,
+    branch    => $branch,
   }
   gitclone::pull { "manifest_includes_${name}":
     real_name => 'includes',
