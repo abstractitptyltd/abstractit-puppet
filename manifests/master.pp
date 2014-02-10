@@ -125,19 +125,21 @@ class puppet::master (
   }
 
   puppet::environment { 'development':
-    librarian    => false,
-    branch       => 'master',
-    cron_minutes => '10,25,40,55',
-    user         => 'ubuntu',
-    group        => 'ubuntu',
+    librarian     => false,
+    branch        => 'master',
+    forge_modules => 'development',
+    cron_minutes  => '10,25,40,55',
+    user          => 'ubuntu',
+    group         => 'ubuntu',
   }
 
   puppet::environment { 'testing':
-    librarian    => false,
-    cron_minutes => '5,35',
-    branch       => 'master',
-    user         => 'ubuntu',
-    group        => 'ubuntu',
+    librarian     => false,
+    cron_minutes  => '5,35',
+    branch        => 'master',
+    forge_modules => 'development',
+    user          => 'ubuntu',
+    group         => 'ubuntu',
   }
 
 }
