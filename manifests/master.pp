@@ -16,12 +16,14 @@ class puppet::master (
   }
   class { 'puppetdb::master::config':
     puppet_service_name => 'apache2',
+    puppetdb_server     => $host,
   }
+/*
   #class { 'puppetboard':
   #}
   #class { 'puppetboard::apache::conf':
   #}
-/*
+
   class { 'apache::mod::passenger':
     passenger_high_performance   => 'On',
     passenger_max_pool_size      => '12',
@@ -59,7 +61,7 @@ class puppet::master (
     request_headers   => [
       'unset X-Forwarded-For',
       'set X-SSL-Subject %{SSL_CLIENT_S_DN}e',
-      'set X-Client-DN %{SSL_CLIENT_S_DN}',
+      'set X-Client-DN %{SSL_CLIENT_S_DN}e',
       'set X-Client-Verify %{SSL_CLIENT_VERIFY}e',
     ],
   }
@@ -70,7 +72,7 @@ class puppet::master (
     ensure  => file,
     content => template('puppet/hiera.yaml.erb'),
     mode    => '0644',
-    require => Gitclone::Pull['pivit_hieradata'],
+    require => Gitclone::Clone['pivit_hieradata'],
   }
   file { '/etc/puppet/hiera.yaml':
     ensure   => link,
@@ -78,13 +80,13 @@ class puppet::master (
     require  => File['/etc/hiera.yaml'],
   }
 
-
   gitclone::clone { 'pivit_hieradata':
     real_name => 'hieradata',
     localtree => '/etc/puppet',
     source    => 'https://bitbucket.org/pivitptyltd/puppet-hieradata',
     branch    => 'production',
   }
+  if $environment =~ /^production$/ {
   gitclone::pull { 'pivit_hieradata':
     real_name       => 'hieradata',
     localtree       => '/etc/puppet',
@@ -95,6 +97,7 @@ class puppet::master (
       'testing'     => false,
     },
     require         => Gitclone::Clone['pivit_hieradata'],
+  }
   }
 
   package { 'puppetmaster-passenger':
