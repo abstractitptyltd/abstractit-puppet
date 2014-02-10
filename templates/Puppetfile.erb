@@ -1,35 +1,36 @@
 forge "http://forge.puppetlabs.com"
 
-mod 'puppetlabs/apt', '1.4.0'
-mod 'puppetlabs/apache', '0.10.0'
-mod 'puppetlabs/concat', '1.0.0'
-mod 'puppetlabs/stdlib', '4.1.0'
-mod 'puppetlabs/firewall', '0.4.2'
-mod 'puppetlabs/xinetd', '1.2.0'
-mod 'puppetlabs/haproxy', '0.4.1'
-mod 'puppetlabs/puppetdb', '3.0.0'
-mod 'puppetlabs/postgresql', '3.3.0'
-mod 'puppetlabs/inifile', '1.0.0'
-mod 'abstractit/sudo', '1.1.1'
-mod 'abstractit/xtrabackup', '0.1.0'
-mod 'darin/rt', '0.0.7'
-mod 'nibalizer/puppetboard', '1.3.0'
-mod 'rafaelfc/pear', '1.0.3'
+## forge modules
+<% @forge_modules.each_pair do |key, value_hash| -%>
+## <%= key %>
+mod '<%= value_hash['module'] %>', '<%= value_hash['version'] %>',
+<% end -%>
+
+## upstream modules
+mod 'cpanm',
+  :git => "https://github.com/torrancew/puppet-cpanm"
 
 mod 'gitclone',
-	:git => "https://github.com/abstractitptyltd/puppet-gitclone"
+  :git => "https://github.com/abstractitptyltd/puppet-gitclone"
+
+## upstream forks
+#mod 'darin/rt', '0.0.7'
+mod 'rt',
+  :git => "https://github.com/abstractitptyltd/puppet-rt"
+  :ref => "<%= branch %>"
 
 mod 'ldap',
-	:git => "https://github.com/rendhalver/puppet-ldap"
+  :git => "https://github.com/rendhalver/puppet-ldap"
 
 mod 'proftpd',
-	:git => "https://github.com/PivitPtyLtd/adamjlow-proftpd",
+  :git => "https://github.com/PivitPtyLtd/adamjlow-proftpd",
   :ref => "<%= branch %>"
 
 mod 'mariadb',
-	:git => "https://github.com/PivitPtyLtd/puppet-mariadb",
+  :git => "https://github.com/PivitPtyLtd/puppet-mariadb",
   :ref => "<%= branch %>"
 
+## local modules
 mod 'apache2',
     :git => "https://bitbucket.org/pivitptyltd/puppet-apache2",
     :ref => "<%= branch %>"
