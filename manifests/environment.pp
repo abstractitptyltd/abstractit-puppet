@@ -8,7 +8,7 @@ define puppet::environment (
 ) {
   ## sets up the files for each environment
 
-  $forge_modules = hiera("puppet::environment::${forge_modules}::forge_modules")
+  $module_hash = hiera("puppet::environment::${forge_modules}::forge_modules")
   file { "/etc/puppet/environments/${name}":
     ensure  => directory,
     owner   => $user,
