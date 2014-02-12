@@ -8,11 +8,6 @@ mod '<%= value_hash['module'] %>', '<%= value_hash['version'] %>'
 
 <% if @forge_modules =~ /^development$/ -%>
 ## upstream modules in development
-#mod 'darin/rt', '0.0.7'
-mod 'rt',
-  :git => "https://github.com/abstractitptyltd/puppet-rt"
-  :ref => "<%= branch %>"
-
 <% end -%>
 ## upstream modules
 mod 'cpanm',
