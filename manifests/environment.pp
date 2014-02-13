@@ -1,6 +1,6 @@
 define puppet::environment (
   $branch = $name,
-  $forge_modules = $name,
+  $mod_env = $name,
   $librarian = true,
   $cron_minutes = '0,15,30,45',
   $user = 'puppet',
@@ -8,7 +8,10 @@ define puppet::environment (
 ) {
   ## sets up the files for each environment
 
-  $module_hash = hiera("puppet::environment::${forge_modules}::forge_modules")
+  $forge_module_hash = hiera("puppet::environment::${mod_env}::forge_modules")
+  $upstream_module_hash = hiera("puppet::environment::${mod_env}::upstream_modules", {})
+  $local_modules = hiera("puppet::environment::${mod_env}::local_modules", $puppet::master::local_modules)
+
   file { "/etc/puppet/environments/${name}":
     ensure  => directory,
     owner   => $user,

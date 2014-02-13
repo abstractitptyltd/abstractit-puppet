@@ -1,5 +1,6 @@
 class puppet::master (
   $host = $::servername,
+  $local_modules = ['apache2','backup','dhcp','dns','git','monit','mysql','nagios3','nfs','network_discovery','ntp','observium','puppet','rsyslog','site','ssh','tzdata'],
 ) {
 
   include site::monit::apache
@@ -128,21 +129,21 @@ class puppet::master (
   }
 
   puppet::environment { 'development':
-    librarian     => false,
-    branch        => 'master',
-    forge_modules => 'development',
-    cron_minutes  => '10,25,40,55',
-    user          => 'ubuntu',
-    group         => 'ubuntu',
+    librarian    => false,
+    branch       => 'master',
+    mod_env      => 'development',
+    cron_minutes => '10,25,40,55',
+    user         => 'ubuntu',
+    group        => 'ubuntu',
   }
 
   puppet::environment { 'testing':
-    librarian     => false,
-    cron_minutes  => '5,35',
-    branch        => 'master',
-    forge_modules => 'development',
-    user          => 'ubuntu',
-    group         => 'ubuntu',
+    librarian    => false,
+    cron_minutes => '5,35',
+    branch       => 'master',
+    mod_env      => 'development',
+    user         => 'ubuntu',
+    group        => 'ubuntu',
   }
 
 }

@@ -1,99 +1,24 @@
 forge "http://forge.puppetlabs.com"
 
 ## forge modules
-<% @module_hash.each_pair do |key, value_hash| -%>
+<% @forge_module_hash.each_pair do |key, value_hash| -%>
 ## <%= key %>
 mod '<%= value_hash['module'] %>', '<%= value_hash['version'] %>'
 <% end -%>
 
-<% if @forge_modules =~ /^development$/ -%>
-## upstream modules in development
-<% end -%>
 ## upstream modules
-mod 'cpanm',
-  :git => "https://github.com/torrancew/puppet-cpanm"
-
-mod 'gitclone',
-  :git => "https://github.com/abstractitptyltd/puppet-gitclone"
-
-## upstream forks
-mod 'ldap',
-  :git => "https://github.com/rendhalver/puppet-ldap"
-
-mod 'proftpd',
-  :git => "https://github.com/PivitPtyLtd/adamjlow-proftpd",
-  :ref => "<%= branch %>"
-
-mod 'mariadb',
-  :git => "https://github.com/PivitPtyLtd/puppet-mariadb",
-  :ref => "<%= branch %>"
+<% @upstream_module_hash.each_pair do |key, value_hash| -%>
+## <%= key %>
+mod '<%= key %>',
+  :git => '<%= value_hash['source'] %>/<%= value_hash['module'] %>',
+  :ref => '<% if value_hash['version'] %><%= value_hash['version'] %><% else %><%= @branch %><% end %>'
+<% end -%>
 
 ## local modules
-mod 'apache2',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-apache2",
-    :ref => "<%= branch %>"
-
-mod 'backup',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-backup",
-    :ref => "<%= branch %>"
-
-mod 'dhcp',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-dhcp",
-    :ref => "<%= branch %>"
-
-mod 'dns',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-dns",
-    :ref => "<%= branch %>"
-
-mod 'git',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-git",
-    :ref => "<%= branch %>"
-
-mod 'monit',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-monit",
-    :ref => "<%= branch %>"
-
-mod 'mysql',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-mysql",
-    :ref => "<%= branch %>"
-
-mod 'nagios3',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-nagios3",
-    :ref => "<%= branch %>"
-
-mod 'network_discovery',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-network_discovery",
-    :ref => "<%= branch %>"
-
-mod 'nfs',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-nfs",
-    :ref => "<%= branch %>"
-
-mod 'ntp',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-ntp",
-    :ref => "<%= branch %>"
-
-mod 'observium',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-observium",
-    :ref => "<%= branch %>"
-
-mod 'puppet',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-puppet",
-    :ref => "<%= branch %>"
-
-mod 'rsyslog',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-rsyslog",
-    :ref => "<%= branch %>"
-
-mod 'site',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-site",
-    :ref => "<%= branch %>"
-
-mod 'ssh',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-ssh",
-    :ref => "<%= branch %>"
-
-mod 'tzdata',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-tzdata",
-    :ref => "<%= branch %>"
+<% @local_modules.each do |local_module| -%>
+# <%= local_module %>
+mod '<%= local_module %>',
+    :git => "https://bitbucket.org/pivitptyltd/puppet-<%= local_module %>",
+    :ref => "<%= @branch %>"
+<% end %>
 
