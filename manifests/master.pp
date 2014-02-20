@@ -86,7 +86,6 @@ class puppet::master (
     ensure   => latest,
     revision => 'production',
     provider => git,
-    user     => puppet,
     owner    => puppet,
     group    => puppet,
     source   => 'https://bitbucket.org/pivitptyltd/puppet-hieradata',
