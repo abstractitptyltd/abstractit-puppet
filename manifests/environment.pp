@@ -26,7 +26,6 @@ define puppet::environment (
     group    => $group,
     mode     => '0640',
     content  => template('puppet/Puppetfile.erb'),
-    #content => template("puppet/${name}/Puppetfile.erb"),
     require  => File["/etc/puppet/environments/${name}"],
   }
 
@@ -51,10 +50,19 @@ define puppet::environment (
     owner   => 'puppet',
     group   => 'puppet',
     mode    => '0644',
-    content => template("puppet/${name}/site.pp.erb"),
+    content => template("puppet/site.pp.erb"),
     require => File["/etc/puppet/environments/${name}/manifests"],
   }
 
+  vcsrepo { "/etc/puppet/environments/${name}/manifests/includes":
+    ensure   => latest,
+    revision => $branch,
+    provider => git,
+    owner    => puppet,
+    group    => puppet,
+    source   => 'https://bitbucket.org/pivitptyltd/puppet-manifest-includes',
+  }
+/*
   gitclone::clone { "manifest_includes_${name}":
     real_name => 'includes',
     localtree => "/etc/puppet/environments/${name}/manifests",
@@ -66,16 +74,6 @@ define puppet::environment (
     localtree => "/etc/puppet/environments/${name}/manifests",
     require   => Gitclone::Clone["manifest_includes_${name}"],
   }
-/*
-  file { "/etc/puppet/environments/${name}/manifests/nodes.pp":
-    ensure  => file,
-    owner   => 'puppet',
-    group   => 'puppet',
-    mode    => '0600',
-    content => template("puppet/${name}/nodes.pp.erb"),
-    require => Gitclone::Pull["manifest_includes_${name}"],
-    #require => File["/etc/puppet/environments/${name}/manifests"],
-    }
 */
     # cron for updating the ${name} puppet module trees
     cron_job { "puppet_modules_${name}":

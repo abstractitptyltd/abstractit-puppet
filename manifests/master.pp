@@ -1,6 +1,7 @@
 class puppet::master (
   $host = $::servername,
   $local_modules = ['apache2','backup','dhcp','dns','git','monit','mysql','nagios3','nfs','network_discovery','ntp','observium','puppet','rsyslog','site','ssh','tzdata'],
+  $hieradata_path = '/etc/puppet/hieradata',
 ) {
 
   include site::monit::apache
@@ -70,10 +71,10 @@ class puppet::master (
   ## setup hiera
 
   file { '/etc/hiera.yaml':
-    ensure  => file,
-    content => template('puppet/hiera.yaml.erb'),
-    mode    => '0644',
-    require => Gitclone::Clone['pivit_hieradata'],
+    ensure       => file,
+    content      => template('puppet/hiera.yaml.erb'),
+    mode         => '0644',
+    require      => Vcsrepo['/etc/puppet/hieradata'],
   }
   file { '/etc/puppet/hiera.yaml':
     ensure   => link,
@@ -81,6 +82,16 @@ class puppet::master (
     require  => File['/etc/hiera.yaml'],
   }
 
+  vcsrepo { '/etc/puppet/hieradata':
+    ensure   => latest,
+    revision => 'production',
+    provider => git,
+    owner    => puppet,
+    group    => puppet,
+    source   => 'https://bitbucket.org/pivitptyltd/puppet-hieradata',
+  }
+
+/*
   gitclone::clone { 'pivit_hieradata':
     real_name => 'hieradata',
     localtree => '/etc/puppet',
@@ -100,6 +111,7 @@ class puppet::master (
     require         => Gitclone::Clone['pivit_hieradata'],
   }
   }
+*/
 
   package { 'puppetmaster-passenger':
     ensure => installed
