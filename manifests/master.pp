@@ -135,26 +135,5 @@ class puppet::master (
     ],
   }
 */
-/*
-  gitclone::clone { 'pivit_hieradata':
-    real_name => 'hieradata',
-    localtree => '/etc/puppet',
-    source    => 'https://bitbucket.org/pivitptyltd/puppet-hieradata',
-    branch    => 'production',
-  }
-  if $environment =~ /^production$/ {
-  gitclone::pull { 'pivit_hieradata':
-    real_name       => 'hieradata',
-    localtree       => '/etc/puppet',
-    clean           => false,
-    reset           => $environment ? {
-      default       => true,
-      'development' => false,
-      'testing'     => false,
-    },
-    require         => Gitclone::Clone['pivit_hieradata'],
-  }
-  }
-*/
 
 }
