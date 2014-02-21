@@ -5,7 +5,6 @@ class puppet::master (
 ) {
 
   include site::monit::apache
-  #include apache
 
   File {
     owner => 'root',
@@ -19,6 +18,74 @@ class puppet::master (
   class { 'puppetdb::master::config':
     puppet_service_name => 'apache2',
     puppetdb_server     => $host,
+  }
+
+  ## setup hiera
+
+  file { '/etc/hiera.yaml':
+    ensure       => file,
+    content      => template('puppet/hiera.yaml.erb'),
+    mode         => '0644',
+    require      => Vcsrepo['/etc/puppet/hieradata'],
+  }
+  file { '/etc/puppet/hiera.yaml':
+    ensure   => link,
+    target   => '/etc/hiera.yaml',
+    require  => File['/etc/hiera.yaml'],
+  }
+
+  vcsrepo { '/etc/puppet/hieradata':
+    ensure   => latest,
+    revision => 'production',
+    provider => git,
+    owner    => puppet,
+    group    => puppet,
+    source   => 'https://bitbucket.org/pivitptyltd/puppet-hieradata',
+  }
+
+  package { 'puppetmaster-passenger':
+    ensure => installed
+  }
+
+  file { 'puppet.cfg':
+    ensure => file,
+    path   => '/usr/local/backups/puppet.cfg',
+    source => 'puppet:///modules/puppet/puppet.cfg',
+    mode   => '0600',
+  }
+
+  package { 'librarian-puppet':
+    ensure   => '0.9.13',
+    provider => gem,
+  }
+
+  file { '/etc/puppet/environments':
+    ensure => directory,
+    owner  => 'puppet',
+    group  => 'puppet',
+    mode   => '0755',
+  }
+
+  puppet::environment { 'production':
+    librarian => true,
+  }
+
+  puppet::environment { 'development':
+    librarian    => false,
+    branch       => 'master',
+    mod_env      => 'development',
+    cron_minutes => '10,25,40,55',
+    user         => 'ubuntu',
+    group        => 'ubuntu',
+  }
+
+  puppet::environment { 'testing':
+    librarian    => false,
+    cron_minutes => '5,35',
+    branch       => 'master',
+    mod_env      => 'development',
+    user         => 'ubuntu',
+    group        => 'ubuntu',
   }
 /*
   #class { 'puppetboard':
@@ -68,29 +135,6 @@ class puppet::master (
     ],
   }
 */
-  ## setup hiera
-
-  file { '/etc/hiera.yaml':
-    ensure       => file,
-    content      => template('puppet/hiera.yaml.erb'),
-    mode         => '0644',
-    require      => Vcsrepo['/etc/puppet/hieradata'],
-  }
-  file { '/etc/puppet/hiera.yaml':
-    ensure   => link,
-    target   => '/etc/hiera.yaml',
-    require  => File['/etc/hiera.yaml'],
-  }
-
-  vcsrepo { '/etc/puppet/hieradata':
-    ensure   => latest,
-    revision => 'production',
-    provider => git,
-    owner    => puppet,
-    group    => puppet,
-    source   => 'https://bitbucket.org/pivitptyltd/puppet-hieradata',
-  }
-
 /*
   gitclone::clone { 'pivit_hieradata':
     real_name => 'hieradata',
@@ -112,50 +156,5 @@ class puppet::master (
   }
   }
 */
-
-  package { 'puppetmaster-passenger':
-    ensure => installed
-  }
-
-  file { 'puppet.cfg':
-    ensure => file,
-    path   => '/usr/local/backups/puppet.cfg',
-    source => 'puppet:///modules/puppet/puppet.cfg',
-    mode   => '0600',
-  }
-
-  package { 'librarian-puppet':
-    ensure   => '0.9.13',
-    provider => gem,
-  }
-
-  file { '/etc/puppet/environments':
-    ensure => directory,
-    owner  => 'puppet',
-    group  => 'puppet',
-    mode   => '0755',
-  }
-
-  puppet::environment { 'production':
-    librarian => true,
-  }
-
-  puppet::environment { 'development':
-    librarian    => false,
-    branch       => 'master',
-    mod_env      => 'development',
-    cron_minutes => '10,25,40,55',
-    user         => 'ubuntu',
-    group        => 'ubuntu',
-  }
-
-  puppet::environment { 'testing':
-    librarian    => false,
-    cron_minutes => '5,35',
-    branch       => 'master',
-    mod_env      => 'development',
-    user         => 'ubuntu',
-    group        => 'ubuntu',
-  }
 
 }

@@ -1,24 +1,24 @@
 forge "http://forge.puppetlabs.com"
 
 ## forge modules
-<% @forge_module_hash.each_pair do |key, value_hash| -%>
+<% @forge_mods.keys.sort.each do |key| -%>
 ## <%= key %>
-mod '<%= value_hash['module'] %>', '<%= value_hash['version'] %>'
+mod '<%= forge_mods[key]['module'] %>', '<%= forge_mods[key]['version'] %>'
 <% end -%>
 
 ## upstream modules
-<% @upstream_module_hash.each_pair do |key, value_hash| -%>
+<% @upstream_mods.keys.sort.each do |key| -%>
 ## <%= key %>
 mod '<%= key %>',
-  :git => '<%= value_hash['source'] %>/<%= value_hash['module'] %>',
-  :ref => '<% if value_hash['version'] %><%= value_hash['version'] %><% else %><%= @branch %><% end %>'
+  :git => '<%= upstream_mods[key]['source'] %>/<%= upstream_mods[key]['module'] %>',
+  :ref => '<% if upstream_mods[key]['version'] %><%= upstream_mods[key]['version'] %><% else %><%= @branch %><% end %>'
 <% end -%>
 
 ## local modules
-<% @local_modules.each do |local_module| -%>
-# <%= local_module %>
-mod '<%= local_module %>',
-    :git => "https://bitbucket.org/pivitptyltd/puppet-<%= local_module %>",
+<% @local_mods.each do |local_mod| -%>
+# <%= local_mod %>
+mod '<%= local_mod %>',
+    :git => "https://bitbucket.org/pivitptyltd/puppet-<%= local_mod %>",
     :ref => "<%= @branch %>"
 <% end %>
 

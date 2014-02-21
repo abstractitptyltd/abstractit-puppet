@@ -8,9 +8,9 @@ define puppet::environment (
 ) {
   ## sets up the files for each environment
 
-  $forge_module_hash = hiera("puppet::environment::${mod_env}::forge_modules")
-  $upstream_module_hash = hiera("puppet::environment::${mod_env}::upstream_modules", {})
-  $local_modules = hiera("puppet::environment::${mod_env}::local_modules", $puppet::master::local_modules)
+  $forge_mods = hiera("puppet::environment::${mod_env}::forge_modules")
+  $upstream_mods = hiera("puppet::environment::${mod_env}::upstream_modules", {})
+  $local_mods = hiera("puppet::environment::${mod_env}::local_modules", $puppet::master::local_modules)
 
   file { "/etc/puppet/environments/${name}":
     ensure  => directory,
