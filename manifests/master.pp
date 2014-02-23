@@ -1,6 +1,6 @@
 class puppet::master (
   $host = $::servername,
-  $local_modules = ['apache2','backup','dhcp','dns','git','monit','mysql','nagios3','nfs','network_discovery','ntp','observium','puppet','rsyslog','site','ssh','tzdata'],
+  $local_modules = ['apache2','backup','dhcp','dns','monit','mysql','nagios3','nfs','network_discovery','ntp','observium','puppet','rsyslog','site','ssh','tzdata','web'],
   $hieradata_path = '/etc/puppet/hieradata',
 ) {
 
