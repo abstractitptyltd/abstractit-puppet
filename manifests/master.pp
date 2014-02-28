@@ -1,32 +1,40 @@
 class puppet::master (
   $host = $::servername,
-  $local_modules = ['apache2','backup','dhcp','dns','monit','mysql','nagios3','nfs','network_discovery','ntp','observium','puppet','rsyslog','site','ssh','tzdata','web'],
   $hieradata_path = '/etc/puppet/hieradata',
+  $node_ttl = '0s',
+  $node_purge_ttl = '0s',
+  $report_ttl = '14d',
+  $reports = true,
 ) {
 
+  #$local_modules = [],
+  #$local_modules = ['apache2','backup','dhcp','dns','monit','mysql','nagios3','nfs','network_discovery','ntp','observium','puppet','rsyslog','site','ssh','tzdata','web'],
   include site::monit::apache
-
-  File {
-    owner => 'root',
-    group => 'root',
-  }
 
   # setup puppetdb
   class { 'puppetdb':
     ssl_listen_address => '0.0.0.0',
+    node_ttl           => $node_ttl,
+    node_purge_ttl     => $node_purge_ttl,
+    report_ttl         => $report_ttl,
   }
   class { 'puppetdb::master::config':
-    puppet_service_name => 'apache2',
-    puppetdb_server     => $host,
+    puppet_service_name     => 'httpd',
+    puppetdb_server         => $host,
+    enable_reports          => $reports,
+    manage_report_processor => $reports,
+    restart_puppet          => false,
   }
 
   ## setup hiera
 
   file { '/etc/hiera.yaml':
-    ensure       => file,
-    content      => template('puppet/hiera.yaml.erb'),
-    mode         => '0644',
-    require      => Vcsrepo['/etc/puppet/hieradata'],
+    ensure  => file,
+    content => template('puppet/hiera.yaml.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+    require => Vcsrepo['/etc/puppet/hieradata'],
   }
   file { '/etc/puppet/hiera.yaml':
     ensure   => link,
@@ -51,6 +59,8 @@ class puppet::master (
     ensure => file,
     path   => '/usr/local/backups/puppet.cfg',
     source => 'puppet:///modules/puppet/puppet.cfg',
+    owner  => 'root',
+    group  => 'root',
     mode   => '0600',
   }
 
@@ -87,11 +97,22 @@ class puppet::master (
     user         => 'ubuntu',
     group        => 'ubuntu',
   }
-/*
-  #class { 'puppetboard':
-  #}
-  #class { 'puppetboard::apache::conf':
-  #}
+
+  class { 'python':
+    dev        => true,
+    pip        => true,
+    virtualenv => true,
+  }
+  class { 'apache':
+  }
+  class { 'apache::mod::wsgi':
+  }
+
+  class { 'puppetboard':
+  }
+  class { 'puppetboard::apache::vhost':
+    vhost_name => 'pboard',
+  }
 
   class { 'apache::mod::passenger':
     passenger_high_performance   => 'On',
@@ -134,6 +155,5 @@ class puppet::master (
       'set X-Client-Verify %{SSL_CLIENT_VERIFY}e',
     ],
   }
-*/
 
 }

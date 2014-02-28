@@ -8,9 +8,12 @@ define puppet::environment (
 ) {
   ## sets up the files for each environment
 
-  $forge_mods = hiera("puppet::environment::${mod_env}::forge_modules")
-  $upstream_mods = hiera("puppet::environment::${mod_env}::upstream_modules", {})
-  $local_mods = hiera("puppet::environment::${mod_env}::local_modules", $puppet::master::local_modules)
+  $forge_mods = hiera("puppet::${mod_env}::forge_modules", {})
+  $upstream_mods = hiera("puppet::${mod_env}::upstream_modules", {})
+  $local_mods = hiera("puppet::${mod_env}::local_modules", [])
+  #$forge_mods = hiera("puppet::environment::${mod_env}::forge_modules")
+  #$upstream_mods = hiera("puppet::environment::${mod_env}::upstream_modules", {})
+  #$local_mods = hiera("puppet::environment::${mod_env}::local_modules", $puppet::master::local_modules)
 
   file { "/etc/puppet/environments/${name}":
     ensure  => directory,
@@ -50,7 +53,7 @@ define puppet::environment (
     owner   => 'puppet',
     group   => 'puppet',
     mode    => '0644',
-    content => template("puppet/site.pp.erb"),
+    content => template('puppet/site.pp.erb'),
     require => File["/etc/puppet/environments/${name}/manifests"],
   }
 
@@ -62,28 +65,15 @@ define puppet::environment (
     group    => puppet,
     source   => 'https://bitbucket.org/pivitptyltd/puppet-manifest-includes',
   }
-/*
-  gitclone::clone { "manifest_includes_${name}":
-    real_name => 'includes',
-    localtree => "/etc/puppet/environments/${name}/manifests",
-    source    => 'https://bitbucket.org/pivitptyltd/puppet-manifest-includes.git',
-    branch    => $branch,
-  }
-  gitclone::pull { "manifest_includes_${name}":
-    real_name => 'includes',
-    localtree => "/etc/puppet/environments/${name}/manifests",
-    require   => Gitclone::Clone["manifest_includes_${name}"],
-  }
-*/
-    # cron for updating the ${name} puppet module trees
-    cron_job { "puppet_modules_${name}":
-      enable   => $librarian,
-      interval => 'd',
-      script   => "# created by puppet
+  # cron for updating the ${name} puppet module trees
+  cron_job { "puppet_modules_${name}":
+    enable   => $librarian,
+    interval => 'd',
+    script   => "# created by puppet
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 
 ${cron_minutes} * * * * ${user} cd /etc/puppet/environments/${name} && librarian-puppet update 2>&1
 ",
-    }
+  }
 
 }
