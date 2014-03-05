@@ -5,10 +5,9 @@ class puppet::master (
   $node_purge_ttl = '0s',
   $report_ttl = '14d',
   $reports = true,
+  $unresponsive = '2',
 ) {
 
-  #$local_modules = [],
-  #$local_modules = ['apache2','backup','dhcp','dns','monit','mysql','nagios3','nfs','network_discovery','ntp','observium','puppet','rsyslog','site','ssh','tzdata','web'],
   include site::monit::apache
 
   # setup puppetdb
@@ -55,15 +54,6 @@ class puppet::master (
     ensure => installed
   }
 
-  file { 'puppet.cfg':
-    ensure => file,
-    path   => '/usr/local/backups/puppet.cfg',
-    source => 'puppet:///modules/puppet/puppet.cfg',
-    owner  => 'root',
-    group  => 'root',
-    mode   => '0600',
-  }
-
   package { 'librarian-puppet':
     ensure   => '0.9.13',
     provider => gem,
@@ -98,6 +88,7 @@ class puppet::master (
     group        => 'ubuntu',
   }
 
+  ## setup puppetboard
   class { 'python':
     dev        => true,
     pip        => true,
@@ -107,13 +98,13 @@ class puppet::master (
   }
   class { 'apache::mod::wsgi':
   }
-
   class { 'puppetboard':
   }
   class { 'puppetboard::apache::vhost':
     vhost_name => 'pboard',
   }
 
+  # passenger settings
   class { 'apache::mod::passenger':
     passenger_high_performance   => 'On',
     passenger_max_pool_size      => '12',
@@ -123,6 +114,7 @@ class puppet::master (
     rails_autodetect             => 'Off',
   }
 
+  ## puppetmaster vhost in apache
   apache::vhost{ 'puppetmaster':
     docroot           => '/usr/share/puppet/rack/puppetmasterd/public/',
     docroot_owner     => 'root',
