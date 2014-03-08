@@ -1,5 +1,5 @@
 class puppet::master (
-  $host = $::servername,
+  $host = $::hostname,
   $hieradata_path = '/etc/puppet/hieradata',
   $node_ttl = '0s',
   $node_purge_ttl = '0s',
