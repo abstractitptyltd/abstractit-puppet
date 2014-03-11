@@ -1,21 +1,18 @@
 ---
+:logger: console
 :backends:
+  - gpg
   - yaml
 :hierarchy:
   - "defaults"
-  - "defaults_pass"
   - "node/%{::clientcert}"
-  - "node/%{::clientcert}_pass"
   - "data_centre/%{::data_centre}"
-  - "data_centre/%{::data_centre}_pass"
   - "env/%{::environment}"
-  - "env/%{::environment}_pass"
   - "global"
-  - "global_pass"
+
+:gpg:
+  :key_dir: /etc/puppet/keys
+  :datadir: "<%= @hiera_gpg_path %>"
 
 :yaml:
-# datadir is empty here, so hiera uses its defaults:
-# - /var/lib/hiera on *nix
-# - %CommonAppData%\PuppetLabs\hiera\var on Windows
-# When specifying a datadir, make sure the directory exists.
-  :datadir: <%= @hieradata_path %>
+  :datadir: "<%= @hiera_yaml_path %>"

@@ -1,0 +1,14 @@
+:cachedir: /var/cache/r10k
+:sources:
+  hiera:
+    prefix: false
+    basedir: "<%= @hieradata_path %>"
+    remote: "<%= @hiera_repo %>"
+  puppet: 
+    prefix: false
+    basedir: <%= @env_basedir %>
+    remote: "<%= @puppet_env_repo %>"
+
+:purgedirs:
+  - <%= @env_basedir %>
+  - <%= @hieradata_path %>

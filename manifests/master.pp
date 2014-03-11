@@ -1,31 +1,69 @@
 class puppet::master (
+  $puppet_env_repo = 'https://bitbucket.org/pivitptyltd/puppet-environments',
+  $hiera_repo = 'https://bitbucket.org/pivitptyltd/puppet-hieradata',
   $host = $::hostname,
-  $hieradata_path = '/etc/puppet/hieradata',
   $node_ttl = '0s',
   $node_purge_ttl = '0s',
   $report_ttl = '14d',
   $reports = true,
   $unresponsive = '2',
+  $env_basedir = '/etc/puppet/environments',
+  $hieradata_path = '/etc/puppet/hiera',
+  $hiera_yaml_path = '/etc/puppet/hiera/%{environment}',
+  $hiera_gpg_path = '/etc/puppet/hiera/%{environment}',
+  $r10k_update = true,
+  $cron_minutes = ['0','15','30','45'],
+  $env_owner = 'puppet',
 ) {
 
   include site::monit::apache
 
-  # setup puppetdb
-  class { 'puppetdb':
-    ssl_listen_address => '0.0.0.0',
-    node_ttl           => $node_ttl,
-    node_purge_ttl     => $node_purge_ttl,
-    report_ttl         => $report_ttl,
+  # r10k setup
+  package { 'r10k':
+    ensure   => '1.2.0',
+    provider => gem,
   }
-  class { 'puppetdb::master::config':
-    puppet_service_name     => 'httpd',
-    puppetdb_server         => $host,
-    enable_reports          => $reports,
-    manage_report_processor => $reports,
-    restart_puppet          => false,
+  file { '/etc/r10k.yaml':
+    ensure  => file,
+    content => template('puppet/r10k.yaml.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+  }
+  ini_setting { 'R10k manifest':
+    ensure  => present,
+    path    => "${::settings::confdir}/puppet.conf",
+    section => 'master',
+    setting => 'manifest',
+    value   => "${env_basedir}/\$environment/manifests/site.pp",
+  }
+  file { $env_basedir:
+    ensure => directory,
+    owner  => 'puppet',
+    group  => 'puppet',
+    mode   => '0755',
+  }
+  # cron for updating the r10k environment
+  # will possibly link thins to a git commit hook at some point
+  cron_job { 'puppet_r10k':
+    enable   => $r10k_update,
+    interval => 'd',
+    script   => "# created by puppet
+PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment
+",
   }
 
   ## setup hiera
+  package { 'gpgme':
+    ensure   => '2.0.2',
+    provider => gem,
+  }
+
+  package { 'hiera-gpg':
+    ensure   => '1.1.0',
+    provider => gem,
+  }
 
   file { '/etc/hiera.yaml':
     ensure  => file,
@@ -50,42 +88,19 @@ class puppet::master (
     source   => 'https://bitbucket.org/pivitptyltd/puppet-hieradata',
   }
 
-  package { 'puppetmaster-passenger':
-    ensure => installed
+  # setup puppetdb
+  class { 'puppetdb':
+    ssl_listen_address => '0.0.0.0',
+    node_ttl           => $node_ttl,
+    node_purge_ttl     => $node_purge_ttl,
+    report_ttl         => $report_ttl,
   }
-
-  package { 'librarian-puppet':
-    ensure   => '0.9.13',
-    provider => gem,
-  }
-
-  file { '/etc/puppet/environments':
-    ensure => directory,
-    owner  => 'puppet',
-    group  => 'puppet',
-    mode   => '0755',
-  }
-
-  puppet::environment { 'production':
-    librarian => true,
-  }
-
-  puppet::environment { 'development':
-    librarian    => false,
-    branch       => 'master',
-    mod_env      => 'development',
-    cron_minutes => '10,25,40,55',
-    user         => 'ubuntu',
-    group        => 'ubuntu',
-  }
-
-  puppet::environment { 'testing':
-    librarian    => false,
-    cron_minutes => '5,35',
-    branch       => 'master',
-    mod_env      => 'development',
-    user         => 'ubuntu',
-    group        => 'ubuntu',
+  class { 'puppetdb::master::config':
+    puppet_service_name     => 'httpd',
+    puppetdb_server         => $host,
+    enable_reports          => $reports,
+    manage_report_processor => $reports,
+    restart_puppet          => false,
   }
 
   ## setup puppetboard
@@ -112,6 +127,10 @@ class puppet::master (
     passenger_stat_throttle_rate => '120',
     rack_autodetect              => 'Off',
     rails_autodetect             => 'Off',
+  }
+
+  package { 'puppetmaster-passenger':
+    ensure => installed
   }
 
   ## puppetmaster vhost in apache
@@ -148,4 +167,40 @@ class puppet::master (
     ],
   }
 
+/*
+  # environments
+  package { 'librarian-puppet':
+    ensure   => '0.9.13',
+    provider => gem,
+  }
+
+  file { '/etc/puppet/environments':
+    ensure => directory,
+    owner  => 'puppet',
+    group  => 'puppet',
+    mode   => '0755',
+  }
+
+  puppet::environment { 'production':
+    librarian => true,
+  }
+
+  puppet::environment { 'development':
+    librarian    => false,
+    branch       => 'master',
+    mod_env      => 'development',
+    cron_minutes => '10,25,40,55',
+    user         => 'ubuntu',
+    group        => 'ubuntu',
+  }
+
+  puppet::environment { 'testing':
+    librarian    => false,
+    cron_minutes => '5,35',
+    branch       => 'master',
+    mod_env      => 'development',
+    user         => 'ubuntu',
+    group        => 'ubuntu',
+  }
+*/
 }
