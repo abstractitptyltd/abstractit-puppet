@@ -4,10 +4,15 @@
   - gpg
   - yaml
 :hierarchy:
+  - "defaults_pass"
   - "defaults"
+  - "node/%{::clientcert}_pass"
   - "node/%{::clientcert}"
+  - "data_centre/%{::data_centre}_pass"
   - "data_centre/%{::data_centre}"
+  - "env/%{::environment}_pass"
   - "env/%{::environment}"
+  - "global_pass"
   - "global"
 
 :gpg:
