@@ -81,6 +81,12 @@ class puppet::master (
     group  => 'puppet',
     mode   => '0755',
   }
+  file { $hieradata_path:
+    ensure => directory,
+    owner  => 'puppet',
+    group  => 'puppet',
+    mode   => '0755',
+  }
   # cron for updating the r10k environment
   # will possibly link thins to a git commit hook at some point
   cron_job { 'puppet_r10k':
