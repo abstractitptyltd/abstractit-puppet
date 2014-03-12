@@ -1,7 +1,7 @@
 class puppet::master (
   $puppet_env_repo = 'https://bitbucket.org/pivitptyltd/puppet-environments',
   $hiera_repo = 'https://bitbucket.org/pivitptyltd/puppet-hieradata',
-  $host = $::hostname,
+  $host = $::servername,
   $node_ttl = '0s',
   $node_purge_ttl = '0s',
   $report_ttl = '14d',
