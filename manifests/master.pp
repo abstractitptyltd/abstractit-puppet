@@ -11,12 +11,28 @@ class puppet::master (
   $hieradata_path = '/etc/puppet/hiera',
   $hiera_yaml_path = '/etc/puppet/hiera/%{environment}',
   $hiera_gpg_path = '/etc/puppet/hiera/%{environment}',
+  $module_path = '',
+  $manifest_path = '',
   $r10k_update = true,
   $cron_minutes = ['0','15','30','45'],
   $env_owner = 'puppet',
 ) {
 
   include site::monit::apache
+
+  $real_module_path = $module_path ? {
+    ''      => "${env_basedir}/\$environment/modules:${env_basedir}/\$environment/site:${::settings::confdir}/site-modules",
+    default => $module_path,
+  }
+  $real_manifest_path = $manifest_path ? {
+    ''      => "${env_basedir}/\$environment/manifests/site.pp",
+    default => $manifest_path,
+  }
+  $real_manifests_path = $manifests_path ? {
+    ''      => "${env_basedir}/\$environment/manifests",
+    default => $manifests_path,
+  }
+
 
   # r10k setup
   package { 'r10k':
@@ -35,7 +51,21 @@ class puppet::master (
     path    => "${::settings::confdir}/puppet.conf",
     section => 'master',
     setting => 'manifest',
-    value   => "${env_basedir}/\$environment/manifests/site.pp",
+    value   => $real_manifest_path,
+  }
+  ini_setting { 'R10k manifests':
+    ensure  => present,
+    path    => "${::settings::confdir}/puppet.conf",
+    section => 'master',
+    setting => 'manifests',
+    value   => $real_manifests_path,
+  }
+  ini_setting { 'R10k modules':
+    ensure  => present,
+    path    => "${::settings::confdir}/puppet.conf",
+    section => 'main',
+    setting => 'modulepath',
+    value   => $real_module_path,
   }
   file { $env_basedir:
     ensure => directory,
