@@ -47,14 +47,14 @@ class puppet::master (
     group   => 'root',
     mode    => '0644',
   }
-  ini_setting { 'R10k manifest':
+  ini_setting { 'R10k master manifest':
     ensure  => present,
     path    => "${::settings::confdir}/puppet.conf",
     section => 'master',
     setting => 'manifest',
     value   => $real_manifest,
   }
-  ini_setting { 'R10k manifestdir':
+  ini_setting { 'R10k master manifestdir':
     ensure  => present,
     path    => "${::settings::confdir}/puppet.conf",
     section => 'master',
