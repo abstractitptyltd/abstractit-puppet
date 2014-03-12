@@ -1,7 +1,9 @@
 ---
 :logger: console
 :backends:
+<%- if @gpg -%>
   - gpg
+<%- end -%>
   - yaml
 :hierarchy:
   - "defaults_pass"
@@ -15,9 +17,11 @@
   - "global_pass"
   - "global"
 
+<%- if @gpg -%>
 :gpg:
   :key_dir: /etc/puppet/keys
   :datadir: "<%= @hiera_gpg_path %>"
+<%- end -%>
 
 :yaml:
   :datadir: "<%= @hiera_yaml_path %>"

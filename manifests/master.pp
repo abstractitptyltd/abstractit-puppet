@@ -17,6 +17,7 @@ class puppet::master (
   $r10k_update = true,
   $cron_minutes = ['0','15','30','45'],
   $env_owner = 'puppet',
+  $gpg = true,
 ) {
 
   include site::monit::apache
@@ -39,6 +40,12 @@ class puppet::master (
   package { 'r10k':
     ensure   => '1.2.0',
     provider => gem,
+  }
+  file { '/var/cache/r10k':
+    ensure => directory,
+    owner  => 'puppet',
+    group  => 'puppet',
+    mode   => '0700',
   }
   file { '/etc/r10k.yaml':
     ensure  => file,
@@ -88,7 +95,7 @@ class puppet::master (
     interval => 'd',
     script   => "# created by puppet
 PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment
+${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment production
 ",
   }
 
