@@ -21,7 +21,7 @@ class puppet::master (
   include site::monit::apache
 
   $real_module_path = $module_path ? {
-    ''      => "${env_basedir}/\$environment/modules:${env_basedir}/\$environment/site:${::settings::confdir}/site-modules",
+    ''      => "${env_basedir}/\$environment/modules:${env_basedir}/\$environment/site:${::settings::confdir}/site",
     default => $module_path,
   }
   $real_manifest_path = $manifest_path ? {
