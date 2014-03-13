@@ -11,6 +11,7 @@ class puppet::master (
   $hieradata_path = '/etc/puppet/hiera',
   $hiera_yaml_path = '/etc/puppet/hiera/%{environment}',
   $hiera_gpg_path = '/etc/puppet/hiera/%{environment}',
+  $pre_module_path = '',
   $module_path = '',
   $manifest_dir = '',
   $manifest = '',
@@ -21,9 +22,14 @@ class puppet::master (
 ) {
 
   include site::monit::apache
+  $pre_module_path_real = $pre_module_path ? {
+    ''       => '',
+    /\w+\:$/ => $pre_module_path,
+    default  => "${pre_module_path}:"
+  }
 
   $real_module_path = $module_path ? {
-    ''      => "${env_basedir}/\$environment/modules:${env_basedir}/\$environment/site:${::settings::confdir}/site",
+    ''      => "${pre_module_path_real}${env_basedir}/\$environment/modules:${env_basedir}/\$environment/site:${::settings::confdir}/site",
     default => $module_path,
   }
   $real_manifest = $manifest ? {
