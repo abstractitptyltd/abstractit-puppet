@@ -19,6 +19,11 @@ class puppet::master (
   $cron_minutes = ['0','15','30','45'],
   $env_owner = 'puppet',
   $gpg = true,
+  $future_parser = false,
+  $passenger_max_pool_size = '12',
+  $passenger_pool_idle_time = '1500',
+  $passenger_stat_throttle_rate = '120',
+  $passenger_max_requests = '0',
 ) {
 
   include site::monit::apache
@@ -41,6 +46,16 @@ class puppet::master (
     default => $manifest_dir,
   }
 
+  if $future_parser {
+    # enable future parser
+    ini_setting { 'master parser':
+      ensure  => present,
+      path    => "${::settings::confdir}/puppet.conf",
+      section => 'master',
+      setting => 'parser',
+      value   => 'future',
+    }
+  }
 
   # r10k setup
   package { 'r10k':
@@ -144,7 +159,7 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
   }
 
   vcsrepo { '/etc/puppet/hieradata':
-    ensure   => latest,
+    ensure   => present,
     revision => 'production',
     provider => git,
     owner    => puppet,
@@ -186,9 +201,10 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
   # passenger settings
   class { 'apache::mod::passenger':
     passenger_high_performance   => 'On',
-    passenger_max_pool_size      => '12',
-    passenger_pool_idle_time     => '1500',
-    passenger_stat_throttle_rate => '120',
+    passenger_max_pool_size      => $passenger_max_pool_size,
+    passenger_pool_idle_time     => $passenger_pool_idle_time,
+    passenger_stat_throttle_rate => $passenger_stat_throttle_rate,
+    passenger_max_requests       => $passenger_max_requests,
     rack_autodetect              => 'Off',
     rails_autodetect             => 'Off',
   }
@@ -231,40 +247,4 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
     ],
   }
 
-/*
-  # environments
-  package { 'librarian-puppet':
-    ensure   => '0.9.13',
-    provider => gem,
-  }
-
-  file { '/etc/puppet/environments':
-    ensure => directory,
-    owner  => 'puppet',
-    group  => 'puppet',
-    mode   => '0755',
-  }
-
-  puppet::environment { 'production':
-    librarian => true,
-  }
-
-  puppet::environment { 'development':
-    librarian    => false,
-    branch       => 'master',
-    mod_env      => 'development',
-    cron_minutes => '10,25,40,55',
-    user         => 'ubuntu',
-    group        => 'ubuntu',
-  }
-
-  puppet::environment { 'testing':
-    librarian    => false,
-    cron_minutes => '5,35',
-    branch       => 'master',
-    mod_env      => 'development',
-    user         => 'ubuntu',
-    group        => 'ubuntu',
-  }
-*/
 }
