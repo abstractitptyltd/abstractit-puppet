@@ -193,6 +193,7 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
   class { 'apache::mod::wsgi':
   }
   class { 'puppetboard':
+    unresponsive => $unresponsive,
   }
   class { 'puppetboard::apache::vhost':
     vhost_name => 'pboard',
