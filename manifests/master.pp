@@ -20,6 +20,7 @@ class puppet::master (
   $env_owner = 'puppet',
   $gpg = true,
   $future_parser = false,
+  $puppetboard_revision = undef,
   $passenger_max_pool_size = '12',
   $passenger_pool_idle_time = '1500',
   $passenger_stat_throttle_rate = '120',
@@ -194,6 +195,7 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
   }
   class { 'puppetboard':
     unresponsive => $unresponsive,
+    revision     => $puppetboard_revision,
   }
   class { 'puppetboard::apache::vhost':
     vhost_name => 'pboard',
