@@ -16,7 +16,7 @@ class puppet::master (
   $manifest_dir = '',
   $manifest = '',
   $r10k_update = true,
-  $cron_minutes = ['0','15','30','45'],
+  $cron_minutes = '0,15,30,45',
   $env_owner = 'puppet',
   $gpg = true,
   $future_parser = false,
