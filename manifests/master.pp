@@ -182,7 +182,9 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
     manage_report_processor => $reports,
     restart_puppet          => false,
   }
-
+/*
+  # disabling for now.
+  # python class seems broken in puppet 3.5
   ## setup puppetboard
   class { 'python':
     version    => 'system',
@@ -201,7 +203,7 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
   class { 'puppetboard::apache::vhost':
     vhost_name => 'pboard',
   }
-
+*/
   # passenger settings
   class { 'apache::mod::passenger':
     passenger_high_performance   => 'On',
