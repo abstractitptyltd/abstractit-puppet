@@ -185,6 +185,7 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
 
   ## setup puppetboard
   class { 'python':
+    version    => 'system',
     dev        => true,
     pip        => true,
     virtualenv => true,
@@ -248,6 +249,15 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
       'set X-Client-DN %{SSL_CLIENT_S_DN}e',
       'set X-Client-Verify %{SSL_CLIENT_VERIFY}e',
     ],
+  }
+
+  # cleanup old puppet reports
+  cron { "puppet clean reports":
+    command => 'cd /var/lib/puppet/reports && find . -type f -name \*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f',
+    user => root,
+    hour => 21,
+    minute => 22,
+    weekday => 0,
   }
 
 }
