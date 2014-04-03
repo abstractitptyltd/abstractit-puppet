@@ -76,6 +76,8 @@ class puppet::master (
     group   => 'root',
     mode    => '0644',
   }
+/*
+  # unnecessicary in puppet 3.5
   ini_setting { 'R10k master manifest':
     ensure  => present,
     path    => "${::settings::confdir}/puppet.conf",
@@ -97,6 +99,7 @@ class puppet::master (
     setting => 'modulepath',
     value   => $real_module_path,
   }
+  */
   ini_setting { 'R10k user modules':
     ensure  => present,
     path    => "${::settings::confdir}/puppet.conf",
@@ -104,6 +107,7 @@ class puppet::master (
     setting => 'modulepath',
     value   => $real_module_path,
   }
+
   file { $env_basedir:
     ensure => directory,
     owner  => 'puppet',
