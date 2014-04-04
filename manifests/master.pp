@@ -29,6 +29,7 @@ class puppet::master (
 
   include apache
   include site::monit::apache
+
   $pre_module_path_real = $pre_module_path ? {
     ''       => '',
     /\w+\:$/ => $pre_module_path,
@@ -36,7 +37,7 @@ class puppet::master (
   }
 
   $real_module_path = $module_path ? {
-    ''      => "${pre_module_path_real}${env_basedir}/\$environment/modules:${env_basedir}/\$environment/site:${::settings::confdir}/site",
+    ''      => "${pre_module_path_real}${::settings::confdir}/site",
     default => $module_path,
   }
   $real_manifest = $manifest ? {
@@ -78,6 +79,22 @@ class puppet::master (
     mode    => '0644',
   }
 
+  ini_setting { 'Puppet environmentpath':
+    ensure  => present,
+    path    => "${::settings::confdir}/puppet.conf",
+    section => 'main',
+    setting => 'environmentpath',
+    value   => $env_basedir,
+  }
+
+  ini_setting { 'Puppet basemodulepath':
+    ensure  => present,
+    path    => "${::settings::confdir}/puppet.conf",
+    section => 'main',
+    setting => 'basemodulepath',
+    value   => $real_module_path,
+  }
+
   # unnecessicary in puppet 3.5 so remove these settings
   ini_setting { 'R10k master manifest':
     ensure  => absent,
@@ -102,7 +119,7 @@ class puppet::master (
   }
 
   ini_setting { 'R10k user modules':
-    ensure  => present,
+    ensure  => absent,
     path    => "${::settings::confdir}/puppet.conf",
     section => 'user',
     setting => 'modulepath',
