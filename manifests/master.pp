@@ -162,8 +162,8 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
   }
   file { $hieradata_path:
     ensure => directory,
-    owner  => 'puppet',
-    group  => 'puppet',
+    owner  => $env_owner,
+    group  => $env_owner,
     mode   => '0755',
   }
 
@@ -181,6 +181,7 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
     require  => File['/etc/hiera.yaml'],
   }
 
+  # need to keep this till I get hiera-gpg working properly
   vcsrepo { '/etc/puppet/hieradata':
     ensure   => latest,
     revision => 'production',
