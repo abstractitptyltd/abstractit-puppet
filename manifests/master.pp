@@ -209,7 +209,6 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
   # python class seems broken in puppet 3.5
   ## setup puppetboard
   class { 'python':
-    version    => 'system',
     dev        => true,
     pip        => true,
     virtualenv => true,
