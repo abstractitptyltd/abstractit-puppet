@@ -27,6 +27,7 @@ class puppet::master (
   $passenger_max_requests = '0',
 ) {
 
+  include apache
   include site::monit::apache
   $pre_module_path_real = $pre_module_path ? {
     ''       => '',
@@ -76,30 +77,30 @@ class puppet::master (
     group   => 'root',
     mode    => '0644',
   }
-/*
-  # unnecessicary in puppet 3.5
+
+  # unnecessicary in puppet 3.5 so remove these settings
   ini_setting { 'R10k master manifest':
-    ensure  => present,
+    ensure  => absent,
     path    => "${::settings::confdir}/puppet.conf",
     section => 'master',
     setting => 'manifest',
     value   => $real_manifest,
   }
   ini_setting { 'R10k master manifestdir':
-    ensure  => present,
+    ensure  => absent,
     path    => "${::settings::confdir}/puppet.conf",
     section => 'master',
     setting => 'manifestdir',
     value   => $real_manifest_dir,
   }
   ini_setting { 'R10k master modules':
-    ensure  => present,
+    ensure  => absent,
     path    => "${::settings::confdir}/puppet.conf",
     section => 'master',
     setting => 'modulepath',
     value   => $real_module_path,
   }
-  */
+
   ini_setting { 'R10k user modules':
     ensure  => present,
     path    => "${::settings::confdir}/puppet.conf",
@@ -186,7 +187,7 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
     manage_report_processor => $reports,
     restart_puppet          => false,
   }
-/*
+
   # disabling for now.
   # python class seems broken in puppet 3.5
   ## setup puppetboard
@@ -195,8 +196,6 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
     dev        => true,
     pip        => true,
     virtualenv => true,
-  }
-  class { 'apache':
   }
   class { 'apache::mod::wsgi':
   }
@@ -207,7 +206,7 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
   class { 'puppetboard::apache::vhost':
     vhost_name => 'pboard',
   }
-*/
+
   # passenger settings
   class { 'apache::mod::passenger':
     passenger_high_performance   => 'On',
