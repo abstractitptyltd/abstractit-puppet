@@ -128,8 +128,8 @@ class puppet::master (
 
   file { $env_basedir:
     ensure => directory,
-    owner  => 'puppet',
-    group  => 'puppet',
+    owner  => $env_owner,
+    group  => $env_owner,
     mode   => '0755',
   }
   # cron for updating the r10k environment
@@ -205,8 +205,6 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
     restart_puppet          => false,
   }
 
-  # disabling for now.
-  # python class seems broken in puppet 3.5
   ## setup puppetboard
   class { 'python':
     dev        => true,

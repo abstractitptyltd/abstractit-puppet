@@ -4,6 +4,7 @@
 #
 # setup facts
 #
+
 class puppet::facts (
   $data_centre = '',
   $mysql_host = '',
