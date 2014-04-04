@@ -37,7 +37,7 @@ class puppet::master (
   }
 
   $real_module_path = $module_path ? {
-    ''      => "${pre_module_path_real}${::settings::confdir}/site:/etc/puppet/modules:/usr/share/puppet/modules",
+    ''      => "${::settings::confdir}/site:/etc/puppet/modules:/usr/share/puppet/modules",
     default => $module_path,
   }
   $real_manifest = $manifest ? {
