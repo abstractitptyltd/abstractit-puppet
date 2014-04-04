@@ -67,8 +67,8 @@ class puppet::master (
   }
   file { '/var/cache/r10k':
     ensure => directory,
-    owner  => 'puppet',
-    group  => 'puppet',
+    owner  => $env_owner,
+    group  => $env_owner,
     mode   => '0700',
   }
   file { '/etc/r10k.yaml':
