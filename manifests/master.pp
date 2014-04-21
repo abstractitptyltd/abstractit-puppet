@@ -7,7 +7,8 @@ class puppet::master (
   $report_ttl = '14d',
   $reports = true,
   $unresponsive = '2',
-  $env_basedir = '/etc/puppet/environments',
+  $environmentpath = '/etc/puppet/environments',
+  $r10k_env_basedir = '/etc/puppet/environments',
   $hieradata_path = '/etc/puppet/hiera',
   $hiera_yaml_path = '/etc/puppet/hiera/%{environment}',
   $hiera_gpg_path = '/etc/puppet/hiera/%{environment}',
@@ -20,6 +21,8 @@ class puppet::master (
   $env_owner = 'puppet',
   $gpg = true,
   $future_parser = false,
+  $puppetdb = true,
+  $puppetboard = true,
   $puppetboard_revision = undef,
   $passenger_max_pool_size = '12',
   $passenger_pool_idle_time = '1500',
@@ -27,7 +30,7 @@ class puppet::master (
   $passenger_max_requests = '0',
 ) {
 
-  include apache
+  include ::apache
   include site::monit::apache
 
   $pre_module_path_real = $pre_module_path ? {
@@ -41,11 +44,11 @@ class puppet::master (
     default => $module_path,
   }
   $real_manifest = $manifest ? {
-    ''      => "${env_basedir}/\$environment/manifests/site.pp",
+    ''      => "${r10k_env_basedir}/\$environment/manifests/site.pp",
     default => $manifest,
   }
   $real_manifest_dir = $manifest_dir ? {
-    ''      => "${env_basedir}/\$environment/manifests",
+    ''      => "${r10k_env_basedir}/\$environment/manifests",
     default => $manifest_dir,
   }
 
@@ -84,7 +87,7 @@ class puppet::master (
     path    => "${::settings::confdir}/puppet.conf",
     section => 'main',
     setting => 'environmentpath',
-    value   => $env_basedir,
+    value   => $environmentpath,
   }
 
   ini_setting { 'Puppet basemodulepath':
@@ -126,7 +129,7 @@ class puppet::master (
     value   => $real_module_path,
   }
 
-  file { $env_basedir:
+  file { $r10k_env_basedir:
     ensure => directory,
     owner  => $env_owner,
     group  => $env_owner,
@@ -186,40 +189,44 @@ ${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment prod
     ensure   => latest,
     revision => 'production',
     provider => git,
-    owner    => puppet,
-    group    => puppet,
+    owner    => $env_owner,
+    group    => $env_owner,
     source   => 'https://bitbucket.org/pivitptyltd/puppet-hieradata',
   }
 
-  # setup puppetdb
-  class { 'puppetdb':
-    ssl_listen_address => '0.0.0.0',
-    node_ttl           => $node_ttl,
-    node_purge_ttl     => $node_purge_ttl,
-    report_ttl         => $report_ttl,
-  }
-  class { 'puppetdb::master::config':
-    puppet_service_name     => 'httpd',
-    puppetdb_server         => $host,
-    enable_reports          => $reports,
-    manage_report_processor => $reports,
-    restart_puppet          => false,
+  if ($puppetdb == true) {
+    # setup puppetdb
+    class { 'puppetdb':
+      ssl_listen_address => '0.0.0.0',
+      node_ttl           => $node_ttl,
+      node_purge_ttl     => $node_purge_ttl,
+      report_ttl         => $report_ttl,
+    }
+    class { 'puppetdb::master::config':
+      puppet_service_name     => 'httpd',
+      puppetdb_server         => $host,
+      enable_reports          => $reports,
+      manage_report_processor => $reports,
+      restart_puppet          => false,
+    }
   }
 
-  ## setup puppetboard
-  class { 'python':
-    dev        => true,
-    pip        => true,
-    virtualenv => true,
-  }
-  class { 'apache::mod::wsgi':
-  }
-  class { 'puppetboard':
-    unresponsive => $unresponsive,
-    revision     => $puppetboard_revision,
-  }
-  class { 'puppetboard::apache::vhost':
-    vhost_name => 'pboard',
+  if ( $puppetboard == true ) {
+    ## setup puppetboard
+    class { 'python':
+      dev        => true,
+      pip        => true,
+      virtualenv => true,
+    }
+    class { 'apache::mod::wsgi':
+    }
+    class { 'puppetboard':
+      unresponsive => $unresponsive,
+      revision     => $puppetboard_revision,
+    }
+    class { 'puppetboard::apache::vhost':
+      vhost_name => 'pboard',
+    }
   }
 
   # passenger settings

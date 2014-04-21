@@ -4,6 +4,7 @@
 #
 # setup puppet agent
 #
+
 class puppet::client (
   $enabled = true,
   $environment = 'production',
@@ -26,4 +27,5 @@ class puppet::client (
     setting => 'environment',
     value   => $environment,
   }
+
 }

@@ -2,6 +2,7 @@
 #
 # define for setting facts using facter.d
 #
+
 define puppet::fact (
   $value,
   $ensure = present,
