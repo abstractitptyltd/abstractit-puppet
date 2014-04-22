@@ -6,9 +6,9 @@
     remote: "<%= @hiera_repo %>"
   puppet: 
     prefix: false
-    basedir: <%= @env_basedir %>
+    basedir: <%= @r10k_env_basedir %>
     remote: "<%= @puppet_env_repo %>"
 
 :purgedirs:
-  - <%= @env_basedir %>
+  - <%= @r10k_env_basedir %>
   - <%= @hieradata_path %>
