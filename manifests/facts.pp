@@ -12,7 +12,7 @@ class puppet::facts (
   $galera_cluster_name = '',
   $ldap_cluster_name = '',
   $pub_ipaddress = $::ipaddress,
-) {
+) inherits puppet::params {
 
   if ! defined(File['/etc/facter']) {
     file { '/etc/facter':

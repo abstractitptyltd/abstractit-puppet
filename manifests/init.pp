@@ -1,13 +1,10 @@
-class puppet (
-  $dumptype = 'root-tar',
-) {
+class puppet {
 
-  include puppet::params
-  $dumptype = $puppet::params::dumptype
-
-  amanda::disklist::dle { '/var/lib/puppet':
-    configs   => ['daily'],
-    dumptype  => $dumptype,
-  }
+  class{'puppet::facts':} ->
+  class{'puppet::install':} ->
+  class{'puppet::config':} ->
+  class{'puppet::agent':} ->
+  class{'puppet::backup':} ->
+  Class['puppet']
 
 }
