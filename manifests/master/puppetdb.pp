@@ -6,6 +6,7 @@ class puppet::master::puppetdb (
   $report_ttl = $puppet::params::report_ttl,
   $host = $puppet::params::host,
   $reports = $puppet::params::reports,
+  $puppetdb_version = $puppet::params::puppetdb_version,
 ) inherits puppet::params {
 
   # setup puppetdb
@@ -14,6 +15,7 @@ class puppet::master::puppetdb (
     node_ttl           => $node_ttl,
     node_purge_ttl     => $node_purge_ttl,
     report_ttl         => $report_ttl,
+    puppetdb_version   => $puppetdb_version,
   }
   class { '::puppetdb::master::config':
     puppet_service_name     => 'httpd',

@@ -12,6 +12,7 @@ class puppet::params (
   $hiera_gpg_version,
   $server = 'puppet',
   $environment = 'production',
+  $autosign = false,
   $dumptype = 'root-tar',
   $puppet_env_repo = 'https://bitbucket.org/pivitptyltd/puppet-environments',
   $hiera_repo = 'https://bitbucket.org/pivitptyltd/puppet-hieradata',

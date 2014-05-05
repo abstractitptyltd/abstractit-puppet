@@ -7,8 +7,13 @@ class puppet::master::install (
   $hiera_gpg_version = $puppet::params::hiera_gpg_version,
 ) inherits puppet::params {
 
+  package { 'puppetmaster-common':
+    ensure  => $puppet_version,
+    require => Package['puppet'],
+  }
   package { 'puppetmaster':
     ensure  => $puppet_version,
+    require => Package['puppetmaster-common']
   }
   service { 'puppetmaster':
     ensure  => stopped,
@@ -34,6 +39,10 @@ class puppet::master::install (
   }
   package { 'hiera-gpg':
     ensure   => $hiera_gpg_version,
+    provider => gem,
+  }
+  package { 'system_timer':
+    ensure   => installed,
     provider => gem,
   }
 

@@ -7,7 +7,19 @@ class puppet::master::config (
   $real_module_path = $puppet::params::real_module_path,
   $real_manifest = $puppet::params::real_manifest,
   $real_manifest_dir = $puppet::params::real_manifest_dir,
+  $autosign = $puppet::params::autosign,
 ) inherits puppet::params {
+
+  if ( $autosign == true and $::environment != 'production' ) {
+    # enable autosign
+    ini_setting { 'autosign':
+      ensure  => present,
+      path    => "${::settings::confdir}/puppet.conf",
+      section => 'master',
+      setting => 'autosign',
+      value   => true,
+    }
+  }
 
   if $future_parser {
     # enable future parser

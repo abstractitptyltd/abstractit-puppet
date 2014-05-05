@@ -9,13 +9,12 @@ class puppet::master (
   class{'puppet::master::config':} ->
   class{'puppet::master::hiera':} ->
   class{'puppet::master::passenger':} ->
+  class{'puppet::master::backup':} ->
+  class{'puppet::master::puppetdb':} ->
   Class['puppet::master']
 
-  if ($puppetdb == true) {
-    require puppet::master::puppetdb
-  }
   if ( $puppetboard == true ) {
-    require puppet::master::puppetboard
+    class{'puppet::master::puppetboard':}
   }
 
 }

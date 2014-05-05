@@ -1,5 +1,5 @@
 name 'pivit-puppet'
-version '1.3.4'
+version '1.3.6'
 summary 'puppet master setup for Pivit'
 description "puppet master setup for Pivit"
 project_page 'https://bitbucket.org/pivitptyltd/puppet-puppet'
