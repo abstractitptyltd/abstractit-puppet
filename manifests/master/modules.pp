@@ -2,6 +2,8 @@
 
 class puppet::master::modules (
   $env_owner = $puppet::params::env_owner,
+  $puppet_env_repo = $puppet::params::puppet_env_repo,
+  $puppet_upstream_env_repo = $puppet::params::puppet_upstream_env_repo,
   $r10k_env_basedir = $puppet::params::r10k_env_basedir,
   $r10k_update = $puppet::params::r10k_update,
   $r10k_minutes = $puppet::params::r10k_minutes,
