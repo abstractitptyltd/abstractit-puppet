@@ -4,10 +4,14 @@
     prefix: false
     basedir: "<%= @hieradata_path %>"
     remote: "<%= @hiera_repo %>"
-  puppet: 
+  local:
     prefix: false
-    basedir: <%= @r10k_env_basedir %>
+    basedir: <%= @r10k_env_basedir %>/local
     remote: "<%= @puppet_env_repo %>"
+  upstream: 
+    prefix: false
+    basedir: <%= @r10k_env_basedir %>/upstream
+    remote: "<%= @puppet_upstream_env_repo %>"
 
 :purgedirs:
   - <%= @r10k_env_basedir %>

@@ -10,13 +10,13 @@ class puppet::master::puppetboard (
     dev        => true,
     pip        => true,
     virtualenv => true,
-  }
+  } ->
   class { '::apache::mod::wsgi':
-  }
+  } ->
   class { '::puppetboard':
     unresponsive => $unresponsive,
     revision     => $puppetboard_revision,
-  }
+  } ->
   class { '::puppetboard::apache::vhost':
     vhost_name => 'pboard',
   }

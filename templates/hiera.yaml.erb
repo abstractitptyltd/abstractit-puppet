@@ -6,15 +6,15 @@
 <%- end -%>
   - yaml
 :hierarchy:
-  - "defaults_pass"
+  - "defaults.pass"
   - "defaults"
-  - "node/%{::clientcert}_pass"
+  - "node/%{::clientcert}.pass"
   - "node/%{::clientcert}"
-  - "data_centre/%{::data_centre}_pass"
+  - "data_centre/%{::data_centre}.pass"
   - "data_centre/%{::data_centre}"
-  - "env/%{::environment}_pass"
+  - "env/%{::environment}.pass"
   - "env/%{::environment}"
-  - "global_pass"
+  - "global.pass"
   - "global"
 
 <%- if @gpg -%>
