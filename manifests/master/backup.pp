@@ -2,22 +2,15 @@
 # backup important files for puppet::master
 
 class puppet::master::backup (
-  $dumptype = $puppet::params::dumptype,
 ) inherits puppet::params {
 
-  amanda::disklist::dle { '/etc/puppet/hieradata':
-    configs   => ['daily'],
-    dumptype  => $dumptype,
+  backup::job { '/etc/puppet/hieradata':
   }
 
-  amanda::disklist::dle { '/etc/puppet/keys':
-    configs   => ['daily'],
-    dumptype  => $dumptype,
+  backup::job { '/etc/puppet/keys':
   }
 
-  amanda::disklist::dle { '/etc/puppet/site':
-    configs   => ['daily'],
-    dumptype  => $dumptype,
+  backup::job { '/etc/puppet/site':
   }
 
 }

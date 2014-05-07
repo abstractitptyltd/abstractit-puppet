@@ -9,7 +9,12 @@ class puppet::master::passenger (
 ) inherits puppet::params {
 
   include ::apache
-  include ::site::monit::apache
+
+  monit::process { 'puppetmaster':
+    host     => '127.0.0.1',
+    port     => '8140',
+    protocol => 'HTTP',
+  }
 
   # passenger settings
   class { '::apache::mod::passenger':

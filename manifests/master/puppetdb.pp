@@ -9,6 +9,12 @@ class puppet::master::puppetdb (
   $puppetdb_version = $puppet::params::puppetdb_version,
 ) inherits puppet::params {
 
+  monit::process { 'puppetdb':
+    host     => '127.0.0.1',
+    port     => '8080',
+    protocol => 'HTTP',
+  }
+
   # setup puppetdb
   class { '::puppetdb':
     ssl_listen_address => '0.0.0.0',

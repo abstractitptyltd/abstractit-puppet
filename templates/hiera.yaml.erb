@@ -8,6 +8,8 @@
 :hierarchy:
   - "defaults.pass"
   - "defaults"
+  - "node/%{::data_centre}/%{::clientcert}.pass"
+  - "node/%{::data_centre}/%{::clientcert}"
   - "node/%{::clientcert}.pass"
   - "node/%{::clientcert}"
   - "data_centre/%{::data_centre}.pass"
