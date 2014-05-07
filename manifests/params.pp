@@ -14,6 +14,7 @@ class puppet::params (
   $environment = 'production',
   $autosign = false,
   $dumptype = 'root-tar',
+  $devel_repo = false,
   $puppet_env_repo = 'https://bitbucket.org/pivitptyltd/puppet-environments',
   $puppet_upstream_env_repo = 'https://bitbucket.org/pivitptyltd/puppet-env-upstream',
   $hiera_repo = 'https://bitbucket.org/pivitptyltd/puppet-hieradata',

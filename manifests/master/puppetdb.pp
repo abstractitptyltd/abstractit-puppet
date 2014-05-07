@@ -25,11 +25,12 @@ class puppet::master::puppetdb (
     require            => Class['puppet::master'],
   }
   class { '::puppetdb::master::config':
-    puppet_service_name     => 'httpd',
+    puppet_service_name     => 'apache2',
     puppetdb_server         => $host,
     enable_reports          => $reports,
     manage_report_processor => $reports,
     restart_puppet          => false,
+    puppetdb_version        => $puppetdb_version,
     require                 => Class['puppetdb'],
   }
 

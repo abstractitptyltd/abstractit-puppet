@@ -1,6 +1,6 @@
 class puppet::master (
-  $puppetdb = true,
-  $puppetboard = true,
+  $puppetdb = $puppet::params::puppetdb,
+  $puppetboard = $puppet::params::puppetboard,
 ) inherits puppet::params {
 
   class{'puppet':} ->

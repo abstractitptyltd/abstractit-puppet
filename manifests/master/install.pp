@@ -2,6 +2,7 @@
 
 class puppet::master::install (
   $puppet_version = $puppet::params::puppet_version,
+  $puppetdb_version = $puppet::params::puppetdb_version,
   $r10k_version = $puppet::params::r10k_version,
   $gpgme_version = $puppet::params::gpgme_version,
   $hiera_gpg_version = $puppet::params::hiera_gpg_version,
