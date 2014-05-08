@@ -24,7 +24,7 @@ class puppet::params (
   $report_ttl = '14d',
   $reports = true,
   $unresponsive = '2',
-  $environmentpath = '/etc/puppet/env/local:/etc/puppet/env/upstream',
+  $environmentpath = '/etc/puppet/env/local',
   $r10k_env_basedir = '/etc/puppet/env',
   $hieradata_path = '/etc/puppet/hiera',
   $hiera_yaml_path = '/etc/puppet/hiera/%{environment}',
@@ -53,10 +53,9 @@ class puppet::params (
     /\w+\:$/ => $pre_module_path,
     default  => "${pre_module_path}:"
   }
-
   $real_module_path = $module_path ? {
-    ''      => "${::settings::confdir}/site:/etc/puppet/modules:/usr/share/puppet/modules",
-    default => $module_path,
+    ''      => "${pre_module_path_real}${::settings::confdir}/site:/usr/share/puppet/modules",
+    default => "${pre_module_path_real}${module_path}",
   }
   $real_manifest = $manifest ? {
     ''      => "${r10k_env_basedir}/\$environment/manifests/site.pp",
