@@ -14,5 +14,6 @@
     remote: "<%= @puppet_upstream_env_repo %>"
 
 :purgedirs:
-  - <%= @r10k_env_basedir %>
+  - <%= @r10k_env_basedir %>/local
+  - <%= @r10k_env_basedir %>/upstream
   - <%= @hieradata_path %>

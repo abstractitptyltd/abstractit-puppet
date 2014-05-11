@@ -19,12 +19,30 @@ class puppet::master::config (
       setting => 'autosign',
       value   => true,
     }
+  } else {
+    # disable autosign
+    ini_setting { 'autosign':
+      ensure  => absent,
+      path    => "${::settings::confdir}/puppet.conf",
+      section => 'master',
+      setting => 'autosign',
+      value   => true,
+    }
   }
 
   if $future_parser {
     # enable future parser
     ini_setting { 'master parser':
       ensure  => present,
+      path    => "${::settings::confdir}/puppet.conf",
+      section => 'master',
+      setting => 'parser',
+      value   => 'future',
+    }
+  } else {
+    # disable future parser
+    ini_setting { 'master parser':
+      ensure  => absent,
       path    => "${::settings::confdir}/puppet.conf",
       section => 'master',
       setting => 'parser',
