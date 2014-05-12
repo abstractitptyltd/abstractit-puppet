@@ -58,11 +58,11 @@ class puppet::params (
     default => "${pre_module_path_real}${module_path}",
   }
   $real_manifest = $manifest ? {
-    ''      => "${r10k_env_basedir}/\$environment/manifests/site.pp",
+    ''      => "${r10k_env_basedir}/local/\$environment/manifests/site.pp",
     default => $manifest,
   }
   $real_manifest_dir = $manifest_dir ? {
-    ''      => "${r10k_env_basedir}/\$environment/manifests",
+    ''      => "${r10k_env_basedir}/local/\$environment/manifests",
     default => $manifest_dir,
   }
 
