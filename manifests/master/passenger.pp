@@ -1,12 +1,12 @@
 ## Class puppet::master::passenger
 
 class puppet::master::passenger (
-  $passenger_max_pool_size = $puppet::params::passenger_max_pool_size,
-  $passenger_pool_idle_time = $puppet::params::passenger_pool_idle_time,
-  $passenger_stat_throttle_rate = $puppet::params::passenger_stat_throttle_rate,
-  $passenger_max_requests = $puppet::params::passenger_max_requests,
-  $host = $puppet::params::host,
-) inherits puppet::params {
+  $passenger_max_pool_size = $puppet::master::params::passenger_max_pool_size,
+  $passenger_pool_idle_time = $puppet::master::params::passenger_pool_idle_time,
+  $passenger_stat_throttle_rate = $puppet::master::params::passenger_stat_throttle_rate,
+  $passenger_max_requests = $puppet::master::params::passenger_max_requests,
+  $host = $puppet::master::params::host,
+) inherits puppet::master::params {
 
   include ::apache
 

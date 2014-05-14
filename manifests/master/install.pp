@@ -1,12 +1,12 @@
 ## class puppet::master::install
 
 class puppet::master::install (
-  $puppet_version = $puppet::params::puppet_version,
-  $puppetdb_version = $puppet::params::puppetdb_version,
-  $r10k_version = $puppet::params::r10k_version,
-  $gpgme_version = $puppet::params::gpgme_version,
-  $hiera_gpg_version = $puppet::params::hiera_gpg_version,
-) inherits puppet::params {
+  $puppet_version = $puppet::master::params::puppet_version,
+  $puppetdb_version = $puppet::master::params::puppetdb_version,
+  $r10k_version = $puppet::master::params::r10k_version,
+  $gpgme_version = $puppet::master::params::gpgme_version,
+  $hiera_gpg_version = $puppet::master::params::hiera_gpg_version,
+) inherits puppet::master::params {
 
   package { 'puppetmaster-common':
     ensure  => $puppet_version,

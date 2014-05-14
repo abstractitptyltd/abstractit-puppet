@@ -1,14 +1,14 @@
 ## Class puppet::master::config.pp
 
 class puppet::master::config (
-  $puppet_version = $puppet::params::puppet_version,
-  $future_parser = $puppet::params::future_parser,
-  $environmentpath = $puppet::params::environmentpath,
-  $real_module_path = $puppet::params::real_module_path,
-  $real_manifest = $puppet::params::real_manifest,
-  $real_manifest_dir = $puppet::params::real_manifest_dir,
-  $autosign = $puppet::params::autosign,
-) inherits puppet::params {
+  $puppet_version = $puppet::master::params::puppet_version,
+  $future_parser = $puppet::master::params::future_parser,
+  $environmentpath = $puppet::master::params::environmentpath,
+  $real_module_path = $puppet::master::params::real_module_path,
+  $real_manifest = $puppet::master::params::real_manifest,
+  $real_manifest_dir = $puppet::master::params::real_manifest_dir,
+  $autosign = $puppet::master::params::autosign,
+) inherits puppet::master::params {
 
   if ( $autosign == true and $::environment != 'production' ) {
     # enable autosign

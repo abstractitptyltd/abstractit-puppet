@@ -1,13 +1,13 @@
 ## class puppet::master::puppetdb
 
 class puppet::master::puppetdb (
-  $node_ttl = $puppet::params::node_ttl,
-  $node_purge_ttl = $puppet::params::node_purge_ttl,
-  $report_ttl = $puppet::params::report_ttl,
-  $host = $puppet::params::host,
-  $reports = $puppet::params::reports,
-  $puppetdb_version = $puppet::params::puppetdb_version,
-) inherits puppet::params {
+  $node_ttl = $puppet::master::params::node_ttl,
+  $node_purge_ttl = $puppet::master::params::node_purge_ttl,
+  $report_ttl = $puppet::master::params::report_ttl,
+  $host = $puppet::master::params::host,
+  $reports = $puppet::master::params::reports,
+  $puppetdb_version = $puppet::master::params::puppetdb_version,
+) inherits puppet::master::params {
 
   monit::process { 'puppetdb':
     host     => '127.0.0.1',

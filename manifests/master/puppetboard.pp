@@ -1,9 +1,9 @@
 ## Class puppet::master::puppetboard
 
 class puppet::master::puppetboard (
-  $unresponsive = $puppet::params::unresponsive,
-  $puppetboard_revision = $puppet::params::puppetboard_revision,
-) inherits puppet::params {
+  $unresponsive = $puppet::master::params::unresponsive,
+  $puppetboard_revision = $puppet::master::params::puppetboard_revision,
+) inherits puppet::master::params {
 
   ## setup puppetboard
   class { '::python':

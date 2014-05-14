@@ -2,7 +2,7 @@
 # backup important files for puppet::master
 
 class puppet::master::backup (
-) inherits puppet::params {
+) inherits puppet::master::params {
 
   backup::job { '/etc/puppet/hieradata':
   }

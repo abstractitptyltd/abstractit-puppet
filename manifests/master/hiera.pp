@@ -1,9 +1,10 @@
 ## Class puppet::master::hiera
 
 class puppet::master::hiera (
-  $hieradata_path = $puppet::params::hieradata_path,
-  $env_owner = $puppet::params::env_owner,
-) inherits puppet::params {
+  $hieradata_path = $puppet::master::params::hieradata_path,
+  $env_owner = $puppet::master::params::env_owner,
+  $hiera_repo = $puppet::master::params::hiera_repo,
+) inherits puppet::master::params {
 
   ## setup hiera
   file { '/etc/puppet/keys':
@@ -39,7 +40,12 @@ class puppet::master::hiera (
     provider => git,
     owner    => $env_owner,
     group    => $env_owner,
-    source   => 'https://bitbucket.org/pivitptyltd/puppet-hieradata',
+    user     => $env_owner,
+    source   => $hiera_repo,
+    require  => [
+      Site::User::Githostkey["${env_owner}_bitbucket.org"],
+      Site::User[$env_owner],
+    ]
   }
 
 }
