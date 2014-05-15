@@ -4,7 +4,13 @@ class puppet::master::hiera (
   $hieradata_path = $puppet::master::params::hieradata_path,
   $env_owner = $puppet::master::params::env_owner,
   $hiera_repo = $puppet::master::params::hiera_repo,
+  $git_protocol = $puppet::master::params::git_protocol,
 ) inherits puppet::master::params {
+
+  $git_user = $git_protocol ? {
+    default  => $env_owner,
+    'https' => 'root',
+  }
 
   ## setup hiera
   file { '/etc/puppet/keys':
@@ -40,7 +46,7 @@ class puppet::master::hiera (
     provider => git,
     owner    => $env_owner,
     group    => $env_owner,
-    user     => $env_owner,
+    user     => $git_user,
     source   => $hiera_repo,
     require  => [
       Site::User::Githostkey["${env_owner}_bitbucket.org"],
