@@ -4,6 +4,9 @@
 <%- if @gpg -%>
   - gpg
 <%- end -%>
+<%- if @eyaml -%>
+  - eyaml
+<%- end -%>
   - yaml
 :hierarchy:
   - "defaults.pass"
@@ -23,6 +26,13 @@
 :gpg:
   :key_dir: /etc/puppet/keys
   :datadir: "<%= @hiera_gpg_path %>"
+<%- end -%>
+
+<%- if @eyaml -%>
+:eyaml:
+  :datadir: "<%= @hiera_eyaml_path %>"
+  :pkcs7_private_key: /etc/puppet/keys/eyaml/private_key.pkcs7.pem
+  :pkcs7_public_key:  /etc/puppet/keys/eyaml/public_key.pkcs7.pem
 <%- end -%>
 
 :yaml:
