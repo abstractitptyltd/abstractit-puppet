@@ -4,18 +4,11 @@ class puppet::master::hiera (
   $hieradata_path = $puppet::master::params::hieradata_path,
   $env_owner = $puppet::master::params::env_owner,
   $hiera_repo = $puppet::master::params::hiera_repo,
-  $git_protocol = $puppet::master::params::git_protocol,
-  $gpg = $puppet::master::params::gpg,
   $eyaml = $puppet::master::params::eyaml,
   $hiera_yaml_path = $puppet::master::params::hiera_eyaml_path,
   $hiera_eyaml_path = $puppet::master::params::hiera_eyaml_path,
   $hiera_gpg_path = $puppet::master::params::hiera_gpg_path,
 ) inherits puppet::master::params {
-
-  $git_user = $git_protocol ? {
-    default  => $env_owner,
-    'https' => 'root',
-  }
 
   ## setup hiera
   file { '/etc/puppet/keys':
@@ -64,22 +57,6 @@ class puppet::master::hiera (
     ensure   => link,
     target   => '/etc/hiera.yaml',
     require  => File['/etc/hiera.yaml'],
-  }
-
-  # need to keep this till I get hiera-gpg working properly
-  vcsrepo { '/etc/puppet/hieradata':
-    ensure   => latest,
-    revision => 'production',
-    provider => git,
-    owner    => $env_owner,
-    group    => $env_owner,
-    user     => 'root',
-    source   => $hiera_repo,
-    require  => [
-      Site::User::Githostkey["${env_owner}_bitbucket.org"],
-      Site::User::Githostkey["${env_owner}_altssh.bitbucket.org"],
-      Site::User[$env_owner],
-    ]
   }
 
 }

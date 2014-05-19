@@ -4,9 +4,6 @@
 class puppet::master::backup (
 ) inherits puppet::master::params {
 
-  backup::job { '/etc/puppet/hieradata':
-  }
-
   backup::job { '/etc/puppet/keys':
   }
 

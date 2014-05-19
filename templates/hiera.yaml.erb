@@ -1,9 +1,6 @@
 ---
 :logger: console
 :backends:
-<%- if @gpg -%>
-  - gpg
-<%- end -%>
 <%- if @eyaml -%>
   - eyaml
 <%- end -%>
@@ -21,12 +18,6 @@
   - "env/%{::environment}"
   - "global.pass"
   - "global"
-
-<%- if @gpg -%>
-:gpg:
-  :key_dir: /etc/puppet/keys
-  :datadir: "<%= @hiera_gpg_path %>"
-<%- end -%>
 
 <%- if @eyaml -%>
 :eyaml:
