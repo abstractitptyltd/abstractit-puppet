@@ -65,7 +65,7 @@ class puppet::master::hiera (
     target   => '/etc/hiera.yaml',
     require  => File['/etc/hiera.yaml'],
   }
-/*
+
   # need to keep this till I get hiera-gpg working properly
   vcsrepo { '/etc/puppet/hieradata':
     ensure   => latest,
@@ -73,7 +73,7 @@ class puppet::master::hiera (
     provider => git,
     owner    => $env_owner,
     group    => $env_owner,
-    user     => $git_user,
+    user     => 'root',
     source   => $hiera_repo,
     require  => [
       Site::User::Githostkey["${env_owner}_bitbucket.org"],
@@ -81,5 +81,5 @@ class puppet::master::hiera (
       Site::User[$env_owner],
     ]
   }
-*/
+
 }
