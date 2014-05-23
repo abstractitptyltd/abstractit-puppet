@@ -39,7 +39,6 @@ class puppet::master::params (
   $cron_minutes = '0,15,30,45',
   $env_owner = 'puppet',
   $eyaml = true,
-  $gpg = true,
   $future_parser = false,
   $puppetdb = true,
   $puppetboard = true,
