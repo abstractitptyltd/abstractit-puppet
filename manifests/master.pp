@@ -54,6 +54,7 @@ class puppet::master (
     future_parser    => $future_parser,
     environmentpath  => $environmentpath,
     real_module_path => $real_module_path,
+    autosign         => $autosign,
   } ->
   class { 'puppet::master::hiera':
     hiera_repo       => $hiera_repo,
