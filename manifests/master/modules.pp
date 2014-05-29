@@ -1,23 +1,23 @@
-## Class puppet::master::modules
+# # Class puppet::master::modules
 
 class puppet::master::modules (
-  $env_owner = $puppet::master::params::env_owner,
-  $puppet_env_repo = $puppet::master::params::puppet_env_repo,
-  $puppet_upstream_env_repo = $puppet::master::params::puppet_upstream_env_repo,
+  $puppet_env_repo,
+  $puppet_upstream_env_repo,
+  $hiera_repo,
+  $env_owner        = $puppet::master::params::env_owner,
   $r10k_env_basedir = $puppet::master::params::r10k_env_basedir,
-  $r10k_update = $puppet::master::params::r10k_update,
-  $r10k_minutes = $puppet::master::params::r10k_minutes,
-  $cron_minutes = $puppet::master::params::cron_minutes,
-) inherits puppet::master::params {
-
+  $r10k_update      = $puppet::master::params::r10k_update,
+  $r10k_minutes     = $puppet::master::params::r10k_minutes,
+  $cron_minutes     = $puppet::master::params::cron_minutes,) inherits puppet::master::params {
   # r10k setup
   file { '/var/cache/r10k':
-    ensure => directory,
-    owner  => $env_owner,
-    group  => $env_owner,
-    mode   => '0700',
+    ensure  => directory,
+    owner   => $env_owner,
+    group   => $env_owner,
+    mode    => '0700',
     require => Package['r10k'],
   }
+
   file { '/etc/r10k.yaml':
     ensure  => file,
     content => template('puppet/r10k.yaml.erb'),
@@ -37,7 +37,7 @@ class puppet::master::modules (
   # cron for updating the r10k environment
   # will possibly link thins to a git commit hook at some point
   cron { 'puppet_r10k':
-    ensure    => $r10k_update ? {
+    ensure  => $r10k_update ? {
       default => present,
       false   => absent,
     },
@@ -45,14 +45,4 @@ class puppet::master::modules (
     user    => $env_owner,
     minute  => $r10k_minutes,
   }
-  # remove old cron_job file
-#  site::cron_job { 'puppet_r10k':
-#    enable   => false,
-#    interval => 'd',
-#    script   => "# created by puppet
-#PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-#${cron_minutes} * * * * ${env_owner} /usr/local/bin/r10k deploy environment production
-#",
-#  }
-
 }

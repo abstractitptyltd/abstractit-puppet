@@ -1,5 +1,5 @@
 class puppet (
-  $enabled             = $puppet::params::enabled,
+  $enabled             = true,
   $puppet_version,
   $hiera_version,
   $facter_version,
