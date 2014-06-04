@@ -1,8 +1,8 @@
 # # puppet agent service
 
 class puppet::agent (
-  $enable = $puppet::params::enable,
-  $ensure = $puppet::params::ensure,) inherits puppet::params {
+  $enable = 'running',
+  $ensure = true) inherits puppet::params {
   service { 'puppet':
     ensure  => $ensure,
     enable  => $enable,
@@ -10,7 +10,7 @@ class puppet::agent (
   }
 
   monit::process { 'puppet':
-    ensure  => $enabled,
+    ensure  => $enable,
     pidfile => '/var/run/puppet/agent.pid',
     require => Service['puppet']
   }
