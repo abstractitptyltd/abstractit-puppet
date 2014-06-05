@@ -6,13 +6,10 @@ class puppet::master::passenger (
   $passenger_stat_throttle_rate = $puppet::master::params::passenger_stat_throttle_rate,
   $passenger_max_requests       = $puppet::master::params::passenger_max_requests,
   $host = $puppet::master::params::host,) inherits puppet::master::params {
-  class { '::apache':
-    default_vhost => false,
-    serveradmin   => 'webmaster@pivit.net.au',
-    default_mods  => false,
-  }
+  class { 'web': apache_default_mods => false, }
 
   monit::process { 'puppetmaster':
+    ensure   => absent,
     host     => '127.0.0.1',
     port     => '8140',
     protocol => 'HTTP',
