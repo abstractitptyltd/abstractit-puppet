@@ -8,13 +8,6 @@ class puppet::master::passenger (
   $host = $puppet::master::params::host,) inherits puppet::master::params {
   class { 'web': apache_default_mods => false, }
 
-  monit::process { 'puppetmaster':
-    ensure   => absent,
-    host     => '127.0.0.1',
-    port     => '8140',
-    protocol => 'HTTP',
-  }
-
   # passenger settings
   class { '::apache::mod::passenger':
     passenger_high_performance   => 'On',
