@@ -50,7 +50,4 @@ class puppet (
     enable => $enable,
   }
 
-  class { 'puppet::backup':
-  }
-
 }

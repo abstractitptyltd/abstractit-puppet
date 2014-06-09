@@ -4,7 +4,6 @@ class puppet::master::install (
   $puppet_version,
   $puppetdb_version,
   $r10k_version,
-  $gpgme_version,
   $hiera_eyaml_version,) inherits puppet::master::params {
   package { 'puppetmaster-common':
     ensure  => $puppet_version,
@@ -33,11 +32,6 @@ class puppet::master::install (
   # install some needed gems
   package { 'r10k':
     ensure   => $r10k_version,
-    provider => gem,
-  }
-
-  package { 'gpgme':
-    ensure   => $gpgme_version,
     provider => gem,
   }
 

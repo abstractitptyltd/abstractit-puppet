@@ -2,13 +2,12 @@ class puppet::master (
   $puppet_env_repo,
   $puppet_upstream_env_repo,
   $hiera_repo,
-  $puppet_version,
-  $puppetdb_version,
-  $r10k_version,
-  $gpgme_version,
-  $hiera_eyaml_version,
   $pre_module_path  = '',
   $module_path      = '',
+  $puppet_version   = 'installed',
+  $puppetdb_version = 'installed',
+  $r10k_version     = 'installed',
+  $hiera_eyaml_version          = 'installed',
   $hieradata_path   = $puppet::master::params::hieradata_path,
   $env_owner        = $puppet::master::params::env_owner,
   $eyaml            = $puppet::master::params::eyaml,
@@ -18,7 +17,6 @@ class puppet::master (
   $environmentpath  = $puppet::master::params::environmentpath,
   $autosign         = $puppet::master::params::autosign,
   $puppetdb         = $puppet::master::params::puppetdb,
-  $puppetboard      = $puppet::master::params::puppetboard,
   $passenger_max_pool_size      = $puppet::master::params::passenger_max_pool_size,
   $passenger_pool_idle_time     = $puppet::master::params::passenger_pool_idle_time,
   $passenger_stat_throttle_rate = $puppet::master::params::passenger_stat_throttle_rate,
@@ -41,7 +39,6 @@ class puppet::master (
     puppet_version      => $puppet_version,
     puppetdb_version    => $puppetdb_version,
     r10k_version        => $r10k_version,
-    gpgme_version       => $gpgme_version,
     hiera_eyaml_version => $hiera_eyaml_version,
   } ->
   class { 'puppet::master::modules':
@@ -72,9 +69,6 @@ class puppet::master (
     host => $host,
   }
 
-  class { 'puppet::master::backup':
-  }
-
   if ($puppetdb == true) {
     class { 'puppet::master::puppetdb':
       puppetdb_version => $puppetdb_version,
@@ -86,10 +80,4 @@ class puppet::master (
     }
   }
 
-  if ($puppetboard == true) {
-    class { 'puppet::master::puppetboard':
-      unresponsive         => $unresponsive,
-      puppetboard_revision => $puppetboard_revision,
-    }
-  }
 }

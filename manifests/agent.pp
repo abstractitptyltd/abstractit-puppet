@@ -9,10 +9,4 @@ class puppet::agent (
     require => Class['puppet::config']
   }
 
-  monit::process { 'puppet':
-    ensure  => $enable,
-    pidfile => '/var/run/puppet/agent.pid',
-    require => Service['puppet']
-  }
-
 }

@@ -6,7 +6,11 @@ class puppet::master::passenger (
   $passenger_stat_throttle_rate = $puppet::master::params::passenger_stat_throttle_rate,
   $passenger_max_requests       = $puppet::master::params::passenger_max_requests,
   $host = $puppet::master::params::host,) inherits puppet::master::params {
-  class { 'web': apache_default_mods => false, }
+  class { '::apache':
+    default_vhost => false,
+    serveradmin   => "webmaster@${::domain}",
+    default_mods  => false
+  }
 
   # passenger settings
   class { '::apache::mod::passenger':
