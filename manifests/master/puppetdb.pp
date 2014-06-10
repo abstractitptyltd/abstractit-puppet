@@ -7,12 +7,6 @@ class puppet::master::puppetdb (
   $report_ttl     = $puppet::master::params::report_ttl,
   $host           = $puppet::master::params::host,
   $reports        = $puppet::master::params::reports,) inherits puppet::master::params {
-  monit::process { 'puppetdb':
-    host     => '127.0.0.1',
-    port     => '8080',
-    protocol => 'HTTP',
-  }
-
   # setup puppetdb
   class { '::puppetdb':
     ssl_listen_address => '0.0.0.0',
