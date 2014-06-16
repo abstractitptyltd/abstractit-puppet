@@ -1,9 +1,8 @@
 # # Class puppet::master::modules
 
 class puppet::master::modules (
-  $puppet_env_repo,
-  $puppet_upstream_env_repo,
-  $hiera_repo,
+  $hiera_repo       = undef,
+  $r10k_sources     = undef,
   $env_owner        = $puppet::master::params::env_owner,
   $r10k_env_basedir = $puppet::master::params::r10k_env_basedir,
   $r10k_update      = $puppet::master::params::r10k_update,
@@ -15,7 +14,7 @@ class puppet::master::modules (
     owner   => $env_owner,
     group   => $env_owner,
     mode    => '0700',
-    require => Package['r10k'],
+    require => Package['r10k']
   }
 
   file { '/etc/r10k.yaml':
@@ -24,14 +23,14 @@ class puppet::master::modules (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    require => File['/var/cache/r10k'],
+    require => File['/var/cache/r10k']
   }
 
   file { $r10k_env_basedir:
     ensure => directory,
     owner  => $env_owner,
     group  => $env_owner,
-    mode   => '0755',
+    mode   => '0755'
   }
 
   # cron for updating the r10k environment
@@ -43,6 +42,6 @@ class puppet::master::modules (
     },
     command => '/usr/local/bin/r10k deploy environment production',
     user    => $env_owner,
-    minute  => $r10k_minutes,
+    minute  => $r10k_minutes
   }
 }

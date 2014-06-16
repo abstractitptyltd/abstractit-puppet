@@ -2,14 +2,15 @@
 
 class puppet::master::puppetdb (
   $puppetdb_version,
+  $host           = $puppet::master::params::host,
   $node_ttl       = $puppet::master::params::node_ttl,
   $node_purge_ttl = $puppet::master::params::node_purge_ttl,
   $report_ttl     = $puppet::master::params::report_ttl,
-  $host           = $puppet::master::params::host,
-  $reports        = $puppet::master::params::reports,) inherits puppet::master::params {
+  $reports        = $puppet::master::params::reports,
+  $puppetdb_ssl_listen_address = $puppet::master::params::puppetdb_ssl_listen_address) inherits puppet::master::params {
   # setup puppetdb
   class { '::puppetdb':
-    ssl_listen_address => '0.0.0.0',
+    ssl_listen_address => $puppetdb_ssl_listen_address,
     node_ttl           => $node_ttl,
     node_purge_ttl     => $node_purge_ttl,
     report_ttl         => $report_ttl,

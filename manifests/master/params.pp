@@ -4,17 +4,16 @@
 class puppet::master::params (
   $hieradata_path   = '/etc/puppet/hiera',
   $env_owner        = 'puppet',
-  $eyaml            = true,
+  $eyaml            = false,
   $hiera_eyaml_path = '/etc/puppet/hiera/%{environment}',
   $hiera_yaml_path  = '/etc/puppet/hiera/%{environment}',
   $future_parser    = false,
   $environmentpath  = '/etc/puppet/r10kenv/local',
-  $git_protocol     = 'ssh',
+  $host             = $puppet::params::host,
   $server           = $puppet::params::server,
   $environment      = $puppet::params::environment,
   $dumptype         = $puppet::params::dumptype,
   $devel_repo       = $puppet::params::devel_repo,
-  $host             = $puppet::params::host,
   $autosign         = false,
   $reports          = true,
   $node_ttl         = '0s',
@@ -30,10 +29,11 @@ class puppet::master::params (
     45],
   $cron_minutes     = '0,15,30,45',
   $puppetdb         = true,
-  $puppetboard      = true,
+  $puppetdb_ssl_listen_address  = '127.0.0.1',
+  $puppetboard      = false,
   $puppetboard_revision         = undef,
   $passenger_max_pool_size      = '12',
   $passenger_pool_idle_time     = '1500',
   $passenger_stat_throttle_rate = '120',
-  $passenger_max_requests       = '0',) inherits puppet::params {
+  $passenger_max_requests       = '0') inherits puppet::params {
 }
