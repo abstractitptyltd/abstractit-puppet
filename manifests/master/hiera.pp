@@ -1,13 +1,34 @@
 # # Class puppet::master::hiera
 
 class puppet::master::hiera (
-  $hiera_repo,
+  $hierarchy        = $puppet::master::params::hiera_hierarchy,
   $hieradata_path   = $puppet::master::params::hieradata_path,
   $env_owner        = $puppet::master::params::env_owner,
   $eyaml            = $puppet::master::params::eyaml,
   $hiera_yaml_path  = $puppet::master::params::hiera_eyaml_path,
   $hiera_eyaml_path = $puppet::master::params::hiera_eyaml_path,) inherits puppet::master::params {
-  # # setup hiera
+  file { $hieradata_path:
+    ensure => directory,
+    owner  => $env_owner,
+    group  => $env_owner,
+    mode   => '0755',
+  }
+
+  file { '/etc/hiera.yaml':
+    ensure  => file,
+    content => template('puppet/hiera.yaml.erb'),
+    owner   => 'root',
+    group   => 'root',
+    mode    => '0644',
+  }
+
+  file { '/etc/puppet/hiera.yaml':
+    ensure  => link,
+    target  => '/etc/hiera.yaml',
+    require => File['/etc/hiera.yaml']
+  }
+
+  # eyaml for hiera
   if $eyaml {
     file { '/etc/puppet/keys':
       ensure => directory,
@@ -41,24 +62,4 @@ class puppet::master::hiera (
     }
   }
 
-  file { $hieradata_path:
-    ensure => directory,
-    owner  => $env_owner,
-    group  => $env_owner,
-    mode   => '0755',
-  }
-
-  file { '/etc/hiera.yaml':
-    ensure  => file,
-    content => template('puppet/hiera.yaml.erb'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-  }
-
-  file { '/etc/puppet/hiera.yaml':
-    ensure  => link,
-    target  => '/etc/hiera.yaml',
-    require => File['/etc/hiera.yaml']
-  }
 }

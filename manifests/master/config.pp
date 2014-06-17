@@ -1,10 +1,26 @@
 # # Class puppet::master::config.pp
 
 class puppet::master::config (
-  $real_module_path = $puppet::master::real_module_path,
-  $future_parser    = $puppet::master::params::future_parser,
-  $environmentpath  = $puppet::master::params::environmentpath,
-  $autosign         = $puppet::master::params::autosign,) inherits puppet::master::params {
+  $environmentpath   = $puppet::master::params::environmentpath,
+  $extra_module_path = $puppet::master::extra_module_path,
+  $future_parser     = $puppet::master::params::future_parser,
+  $autosign          = $puppet::master::params::autosign,) inherits puppet::master::params {
+  ini_setting { 'Puppet environmentpath':
+    ensure  => present,
+    path    => "${::settings::confdir}/puppet.conf",
+    section => 'main',
+    setting => 'environmentpath',
+    value   => $environmentpath
+  }
+
+  ini_setting { 'Puppet basemodulepath':
+    ensure  => present,
+    path    => "${::settings::confdir}/puppet.conf",
+    section => 'main',
+    setting => 'basemodulepath',
+    value   => $extra_module_path
+  }
+
   if ($autosign == true and $::environment != 'production') {
     # enable autosign
     ini_setting { 'autosign':
@@ -12,7 +28,7 @@ class puppet::master::config (
       path    => "${::settings::confdir}/puppet.conf",
       section => 'master',
       setting => 'autosign',
-      value   => true,
+      value   => true
     }
   } else {
     # disable autosign
@@ -21,7 +37,7 @@ class puppet::master::config (
       path    => "${::settings::confdir}/puppet.conf",
       section => 'master',
       setting => 'autosign',
-      value   => true,
+      value   => true
     }
   }
 
@@ -32,7 +48,7 @@ class puppet::master::config (
       path    => "${::settings::confdir}/puppet.conf",
       section => 'master',
       setting => 'parser',
-      value   => 'future',
+      value   => 'future'
     }
   } else {
     # disable future parser
@@ -41,24 +57,8 @@ class puppet::master::config (
       path    => "${::settings::confdir}/puppet.conf",
       section => 'master',
       setting => 'parser',
-      value   => 'future',
+      value   => 'future'
     }
-  }
-
-  ini_setting { 'Puppet environmentpath':
-    ensure  => present,
-    path    => "${::settings::confdir}/puppet.conf",
-    section => 'main',
-    setting => 'environmentpath',
-    value   => $environmentpath,
-  }
-
-  ini_setting { 'Puppet basemodulepath':
-    ensure  => present,
-    path    => "${::settings::confdir}/puppet.conf",
-    section => 'main',
-    setting => 'basemodulepath',
-    value   => $real_module_path,
   }
 
 }

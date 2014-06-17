@@ -4,13 +4,18 @@
     prefix: false
     basedir: "<%= @hieradata_path %>"
     remote: "<%= @hiera_repo %>"
-<%- @r10k_sources.keys.sort.each do |key| -%>
+  puppet:
+    prefix false
+    basedir: /etc/puppet/environments
+    remote: "<%= @puppet_env_repo %>"
+<%- @extra_env_repos.keys.sort.each do |key| -%>
   <%= key %>:
     prefix: false
     basedir: <%= @r10k_env_basedir %>/<%= key %>
-    remote: "<%= @r10k_sources[key]['repo'] %>"
+    remote: "<%= @extra_env_repos[key]['repo'] %>"
 <%- end -%>
 
 :purgedirs:
+  - /etc/puppet/environments
   - <%= @r10k_env_basedir %>
   - <%= @hieradata_path %>

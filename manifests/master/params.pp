@@ -3,12 +3,16 @@
 
 class puppet::master::params (
   $hieradata_path   = '/etc/puppet/hiera',
+  $hiera_hierarchy  = [
+    'node/%{::clientcert}',
+    'env/%{::environment}',
+    'global'],
   $env_owner        = 'puppet',
   $eyaml            = false,
   $hiera_eyaml_path = '/etc/puppet/hiera/%{environment}',
   $hiera_yaml_path  = '/etc/puppet/hiera/%{environment}',
   $future_parser    = false,
-  $environmentpath  = '/etc/puppet/r10kenv/local',
+  $environmentpath  = '/etc/puppet/environments',
   $host             = $puppet::params::host,
   $server           = $puppet::params::server,
   $environment      = $puppet::params::environment,
@@ -27,7 +31,6 @@ class puppet::master::params (
     15,
     30,
     45],
-  $cron_minutes     = '0,15,30,45',
   $puppetdb         = true,
   $puppetdb_ssl_listen_address  = '127.0.0.1',
   $puppetboard      = false,

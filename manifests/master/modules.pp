@@ -2,12 +2,12 @@
 
 class puppet::master::modules (
   $hiera_repo       = undef,
-  $r10k_sources     = undef,
+  $puppet_env_repo  = undef,
+  $extra_env_repos  = undef,
   $env_owner        = $puppet::master::params::env_owner,
   $r10k_env_basedir = $puppet::master::params::r10k_env_basedir,
   $r10k_update      = $puppet::master::params::r10k_update,
-  $r10k_minutes     = $puppet::master::params::r10k_minutes,
-  $cron_minutes     = $puppet::master::params::cron_minutes,) inherits puppet::master::params {
+  $r10k_minutes     = $puppet::master::params::r10k_minutes) inherits puppet::master::params {
   # r10k setup
   file { '/var/cache/r10k':
     ensure  => directory,
@@ -34,7 +34,6 @@ class puppet::master::modules (
   }
 
   # cron for updating the r10k environment
-  # will possibly link thins to a git commit hook at some point
   cron { 'puppet_r10k':
     ensure  => $r10k_update ? {
       default => present,
