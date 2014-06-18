@@ -4,7 +4,6 @@ class puppet::master (
   $hiera_eyaml_version = 'installed',
   $pre_module_path     = '',
   $module_path         = '',
-  $hiera_backends      = $puppet::master::params::hiera_backends,
   $hiera_hierarchy     = $puppet::master::params::hiera_hierarchy,
   $host                = $puppet::master::params::host,
   $hieradata_path      = $puppet::master::params::hieradata_path,
