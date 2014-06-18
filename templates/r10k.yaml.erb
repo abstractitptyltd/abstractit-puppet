@@ -6,7 +6,7 @@
     remote: "<%= @hiera_repo %>"
 <%- if @puppet_env_repo -%>
   puppet:
-    prefix false
+    prefix: false
     basedir: /etc/puppet/environments
     remote: "<%= @puppet_env_repo %>"
 <%- end -%>
