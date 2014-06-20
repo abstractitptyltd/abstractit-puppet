@@ -1,8 +1,8 @@
 class puppet::profile::master (
   $hiera_repo,
-  $puppet_env_repo,
-  $extra_env_repos,
   $hiera_hierarchy,
+  $puppet_env_repo  = undef,
+  $extra_env_repos  = undef,
   $modules          = true,
   $host             = "puppet.${::domain}",
   $puppetdb_ssl_listen_address  = '127.0.0.1',

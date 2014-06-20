@@ -19,7 +19,6 @@ class puppet::profile::agent (
     devel_repo     => $puppet_devel_repo,
     host           => $puppet_host,
     reports        => $puppet_reports,
-    subscribe      => Class['profile::base::openssl']
   }
 
   class { 'puppet::facts':

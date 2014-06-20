@@ -10,11 +10,13 @@
     basedir: /etc/puppet/environments
     remote: "<%= @puppet_env_repo %>"
 <%- end -%>
+<%- if @extra_env_repos -%>
 <%- @extra_env_repos.keys.sort.each do |key| -%>
   <%= key %>:
     prefix: false
     basedir: <%= @r10k_env_basedir %>/<%= key %>
     remote: "<%= @extra_env_repos[key]['repo'] %>"
+<%- end -%>
 <%- end -%>
 
 :purgedirs:
