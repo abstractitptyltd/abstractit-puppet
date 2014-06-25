@@ -6,9 +6,8 @@ class puppet (
   $host           = $puppet::params::host,
   $server         = $puppet::params::server,
   $environment    = $puppet::params::environment,
-  $dumptype       = $puppet::params::dumptype,
   $devel_repo     = $puppet::params::devel_repo,
-  $reports        = $puppet::params::reports,) inherits puppet::params {
+  $reports        = $puppet::params::reports) inherits puppet::params {
   $ensure = $enabled ? {
     default => 'running',
     false   => 'stopped',

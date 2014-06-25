@@ -3,20 +3,22 @@
 
 class puppet::master::params (
   $hieradata_path   = '/etc/puppet/hiera',
+  $hiera_backends   = {
+    'yaml' => {
+      'datadir' => '/etc/puppet/hiera/%{environment}',
+    }
+  }
+  ,
   $hiera_hierarchy  = [
     'node/%{::clientcert}',
     'env/%{::environment}',
     'global'],
   $env_owner        = 'puppet',
-  $eyaml            = false,
-  $hiera_eyaml_path = '/etc/puppet/hiera/%{environment}',
-  $hiera_yaml_path  = '/etc/puppet/hiera/%{environment}',
   $future_parser    = false,
   $environmentpath  = '/etc/puppet/environments',
   $host             = $puppet::params::host,
   $server           = $puppet::params::server,
   $environment      = $puppet::params::environment,
-  $dumptype         = $puppet::params::dumptype,
   $devel_repo       = $puppet::params::devel_repo,
   $autosign         = false,
   $reports          = true,

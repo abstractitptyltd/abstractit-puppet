@@ -1,22 +1,18 @@
 ---
 :logger: console
 :backends:
-<%- if @eyaml -%>
-  - eyaml
+<%- @hiera_backeds.keys.sort.each do |backend| -%>
+  - <%= backend %>
 <%- end -%>
-  - yaml
 
 :hierarchy:
 <%- @hierarchy.each do |file| -%>
   - "<%= file %>"
 <%- end -%>
 
-<%- if @eyaml -%>
-:eyaml:
-  :datadir: "<%= @hiera_eyaml_path %>"
-  :pkcs7_private_key: /etc/puppet/keys/eyaml/private_key.pkcs7.pem
-  :pkcs7_public_key:  /etc/puppet/keys/eyaml/public_key.pkcs7.pem
+<%- @hiera_backeds.keys.sort.each do |backend| -%>
+:<%= backend %>:
+  <%- @hiera_backeds[backend].keys.sort.each do |key| -%>
+  :<%= key %>: "<%= @hiera_backeds[backend][key] %>"
+  <%- end -%>
 <%- end -%>
-
-:yaml:
-  :datadir: "<%= @hiera_yaml_path %>"

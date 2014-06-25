@@ -1,12 +1,11 @@
-# # Class puppet::master::hiera
+# Class puppet::master::hiera
 
 class puppet::master::hiera (
-  $hierarchy        = $puppet::master::params::hiera_hierarchy,
-  $hieradata_path   = $puppet::master::params::hieradata_path,
-  $env_owner        = $puppet::master::params::env_owner,
-  $eyaml            = $puppet::master::params::eyaml,
-  $hiera_yaml_path  = $puppet::master::params::hiera_eyaml_path,
-  $hiera_eyaml_path = $puppet::master::params::hiera_eyaml_path,) inherits puppet::master::params {
+  $hiera_backeds  = undef,
+  $hierarchy      = $puppet::master::params::hiera_hierarchy,
+  $hieradata_path = $puppet::master::params::hieradata_path,
+  $env_owner      = $puppet::master::params::env_owner,
+  $eyaml_keys     = false) inherits puppet::master::params {
   file { $hieradata_path:
     ensure => directory,
     owner  => $env_owner,
@@ -29,7 +28,7 @@ class puppet::master::hiera (
   }
 
   # eyaml for hiera
-  if $eyaml {
+  if $eyaml_keys {
     file { '/etc/puppet/keys':
       ensure => directory,
       owner  => 'puppet',
