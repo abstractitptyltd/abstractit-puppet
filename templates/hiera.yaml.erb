@@ -15,4 +15,5 @@
   <%- @hiera_backends[backend].keys.sort.each do |key| -%>
   :<%= key %>: "<%= @hiera_backends[backend][key] %>"
   <%- end -%>
+
 <%- end -%>
