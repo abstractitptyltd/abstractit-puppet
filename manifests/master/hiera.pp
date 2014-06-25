@@ -1,7 +1,7 @@
 # Class puppet::master::hiera
 
 class puppet::master::hiera (
-  $hiera_backeds  = undef,
+  $hiera_backends = undef,
   $hierarchy      = $puppet::master::params::hiera_hierarchy,
   $hieradata_path = $puppet::master::params::hieradata_path,
   $env_owner      = $puppet::master::params::env_owner,

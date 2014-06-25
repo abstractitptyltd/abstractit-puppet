@@ -1,7 +1,7 @@
 ---
 :logger: console
 :backends:
-<%- @hiera_backeds.keys.sort.each do |backend| -%>
+<%- @hiera_backends.keys.sort.each do |backend| -%>
   - <%= backend %>
 <%- end -%>
 
@@ -10,9 +10,9 @@
   - "<%= file %>"
 <%- end -%>
 
-<%- @hiera_backeds.keys.sort.each do |backend| -%>
+<%- @hiera_backends.keys.sort.each do |backend| -%>
 :<%= backend %>:
-  <%- @hiera_backeds[backend].keys.sort.each do |key| -%>
-  :<%= key %>: "<%= @hiera_backeds[backend][key] %>"
+  <%- @hiera_backends[backend].keys.sort.each do |key| -%>
+  :<%= key %>: "<%= @hiera_backends[backend][key] %>"
   <%- end -%>
 <%- end -%>

@@ -6,7 +6,7 @@ class puppet::master (
   $module_path     = '',
   $eyaml_keys      = false,
   $hiera_hierarchy = $puppet::master::params::hiera_hierarchy,
-  $hiera_backeds   = $puppet::master::params::hiera_backends,
+  $hiera_backends  = $puppet::master::params::hiera_backends,
   $host            = $puppet::master::params::host,
   $hieradata_path  = $puppet::master::params::hieradata_path,
   $env_owner       = $puppet::master::params::env_owner,
@@ -40,7 +40,7 @@ class puppet::master (
     autosign          => $autosign
   } ->
   class { 'puppet::master::hiera':
-    hiera_backeds  => $hiera_backeds,
+    hiera_backends => $hiera_backends,
     hierarchy      => $hiera_hierarchy,
     hieradata_path => $hieradata_path,
     env_owner      => $env_owner,
