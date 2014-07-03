@@ -2,13 +2,12 @@
 
 class puppet::master::puppetdb (
   $puppetdb_version,
-  $use_ssl         = true,
-  $host            = $puppet::master::params::host,
-  $puppetdb_server = $puppet::master::params::puppetdb_server,
-  $node_ttl        = $puppet::master::params::node_ttl,
-  $node_purge_ttl  = $puppet::master::params::node_purge_ttl,
-  $report_ttl      = $puppet::master::params::report_ttl,
-  $reports         = $puppet::master::params::reports,
+  $use_ssl                     = true,
+  $puppetdb_server             = $puppet::master::params::puppetdb_server,
+  $node_ttl                    = $puppet::master::params::node_ttl,
+  $node_purge_ttl              = $puppet::master::params::node_purge_ttl,
+  $report_ttl                  = $puppet::master::params::report_ttl,
+  $reports                     = $puppet::master::params::reports,
   $puppetdb_listen_address     = $puppet::master::params::puppetdb_ssl_listen_address,
   $puppetdb_ssl_listen_address = $puppet::master::params::puppetdb_ssl_listen_address) inherits puppet::master::params {
   case $use_ssl {
@@ -34,10 +33,11 @@ class puppet::master::puppetdb (
 
   class { '::puppetdb::master::config':
     puppetdb_port           => $puppetdb_port,
+    puppetdb_server         => $puppetdb_server,
     puppet_service_name     => 'httpd',
     enable_reports          => $reports,
     manage_report_processor => $reports,
-    restart_puppet          => false,
+    restart_puppet          => true,
     puppetdb_version        => $puppetdb_version,
     require                 => Class['puppetdb'],
   }
