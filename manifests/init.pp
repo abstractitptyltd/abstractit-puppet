@@ -1,13 +1,13 @@
 class puppet (
-  $enabled        = true,
-  $puppet_version = 'installed',
-  $hiera_version  = 'installed',
-  $facter_version = 'installed',
-  $host           = $puppet::params::host,
-  $server         = $puppet::params::server,
-  $environment    = $puppet::params::environment,
-  $devel_repo     = $puppet::params::devel_repo,
-  $reports        = $puppet::params::reports) inherits puppet::params {
+  $enabled          = true,
+  $puppet_version   = 'installed',
+  $hiera_version    = 'installed',
+  $facter_version   = 'installed',
+  $structured_facts = false,
+  $puppet_server    = $puppet::params::puppet_server,
+  $environment      = $puppet::params::environment,
+  $devel_repo       = $puppet::params::devel_repo,
+  $reports          = $puppet::params::reports) inherits puppet::params {
   $ensure = $enabled ? {
     default => 'running',
     false   => 'stopped',
@@ -26,8 +26,9 @@ class puppet (
     facter_version => $facter_version,
   } ->
   class { 'puppet::config':
-    server      => $server,
-    environment => $environment,
+    puppet_server    => $puppet_server,
+    environment      => $environment,
+    structured_facts => $structured_facts,
   } ~>
   class { 'puppet::agent':
     ensure => $ensure,

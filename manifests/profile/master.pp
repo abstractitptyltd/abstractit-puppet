@@ -5,6 +5,9 @@ class puppet::profile::master (
   $extra_env_repos  = undef,
   $modules          = true,
   $host             = "puppet.${::domain}",
+  $puppet_server    = 'puppet',
+  $puppet_fqdn      = $::fqdn,
+  $puppetdb_use_ssl = true,
   $puppetdb_ssl_listen_address  = '127.0.0.1',
   $puppet_version   = 'installed',
   $puppetdb_version = 'installed',
@@ -14,7 +17,7 @@ class puppet::profile::master (
   $module_path      = '',
   $eyaml_keys       = false,
   $hieradata_path   = '/etc/puppet/hiera',
-  $hiera_backeds    = {
+  $hiera_backends   = {
     'yaml' => {
       'datadir' => '/etc/puppet/hiera/%{environment}',
     }
@@ -53,7 +56,7 @@ class puppet::profile::master (
     hiera_eyaml_version          => $hiera_eyaml_version,
     host            => $host,
     hiera_hierarchy => $hiera_hierarchy,
-    hiera_backeds   => $hiera_backeds,
+    hiera_backends  => $hiera_backends,
     puppetdb_ssl_listen_address  => $puppetdb_ssl_listen_address,
     pre_module_path => $pre_module_path,
     module_path     => $module_path,
@@ -83,11 +86,13 @@ class puppet::profile::master (
   if ($puppetdb == true) {
     class { 'puppet::master::puppetdb':
       puppetdb_version => $puppetdb_version,
+      use_ssl          => $puppetdb_use_ssl,
       node_ttl         => $node_ttl,
       node_purge_ttl   => $node_purge_ttl,
       report_ttl       => $report_ttl,
       host             => $host,
       reports          => $reports,
+      puppetdb_listen_address     => $puppetdb_ssl_listen_address,
       puppetdb_ssl_listen_address => $puppetdb_ssl_listen_address
     }
   }

@@ -1,7 +1,7 @@
 # Class puppet::master::passenger
 
 class puppet::master::passenger (
-  $host = $puppet::master::params::host,
+  $puppet_fqdn                  = $puppet::master::params::puppet_fqdn,
   $passenger_max_pool_size      = $puppet::master::params::passenger_max_pool_size,
   $passenger_pool_idle_time     = $puppet::master::params::passenger_pool_idle_time,
   $passenger_stat_throttle_rate = $puppet::master::params::passenger_stat_throttle_rate,
@@ -38,8 +38,8 @@ class puppet::master::passenger (
     ssl_protocol         => 'ALL -SSLv2',
     ssl_cipher           => 'ALL:!aNULL:!eNULL:!DES:!3DES:!IDEA:!SEED:!DSS:!PSK:!RC4:!MD5:+HIGH:+MEDIUM:!LOW:!SSLv2:!EXP',
     ssl_honorcipherorder => 'on',
-    ssl_cert             => "/var/lib/puppet/ssl/certs/${host}.pem",
-    ssl_key              => "/var/lib/puppet/ssl/private_keys/${host}.pem",
+    ssl_cert             => "/var/lib/puppet/ssl/certs/${puppet_fqdn}.pem",
+    ssl_key              => "/var/lib/puppet/ssl/private_keys/${puppet_fqdn}.pem",
     ssl_chain            => '/var/lib/puppet/ssl/certs/ca.pem',
     ssl_ca               => '/var/lib/puppet/ssl/certs/ca.pem',
     ssl_crl              => '/var/lib/puppet/ssl/ca/ca_crl.pem',

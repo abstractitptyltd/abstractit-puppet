@@ -19,6 +19,7 @@ class puppet::master::hiera (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
+    notify  => Class['apache::service']
   }
 
   file { '/etc/puppet/hiera.yaml':

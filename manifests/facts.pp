@@ -1,6 +1,6 @@
 # Class: puppet::facts
 #
-# Setup a puppet facts
+# Setup puppet facts
 #
 # setup facts
 #

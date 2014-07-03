@@ -7,6 +7,9 @@ class puppet::master (
   $eyaml_keys      = false,
   $hiera_hierarchy = $puppet::master::params::hiera_hierarchy,
   $hiera_backends  = $puppet::master::params::hiera_backends,
+  $puppetdb_server = $puppet::master::params::puppetdb_server,
+  $puppet_fqdn     = $puppet::master::params::puppet_fqdn,
+  $puppet_server   = $puppet::master::params::puppet_server,
   $host            = $puppet::master::params::host,
   $hieradata_path  = $puppet::master::params::hieradata_path,
   $env_owner       = $puppet::master::params::env_owner,
@@ -47,7 +50,7 @@ class puppet::master (
     eyaml_keys     => $eyaml_keys,
   } ~>
   class { 'puppet::master::passenger':
-    host => $host,
+    puppet_fqdn                  => $puppet_fqdn,
     passenger_max_pool_size      => $passenger_max_pool_size,
     passenger_pool_idle_time     => $passenger_pool_idle_time,
     passenger_stat_throttle_rate => $passenger_stat_throttle_rate,

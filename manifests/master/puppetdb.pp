@@ -2,14 +2,28 @@
 
 class puppet::master::puppetdb (
   $puppetdb_version,
-  $host           = $puppet::master::params::host,
-  $node_ttl       = $puppet::master::params::node_ttl,
-  $node_purge_ttl = $puppet::master::params::node_purge_ttl,
-  $report_ttl     = $puppet::master::params::report_ttl,
-  $reports        = $puppet::master::params::reports,
+  $use_ssl         = true,
+  $host            = $puppet::master::params::host,
+  $puppetdb_server = $puppet::master::params::puppetdb_server,
+  $node_ttl        = $puppet::master::params::node_ttl,
+  $node_purge_ttl  = $puppet::master::params::node_purge_ttl,
+  $report_ttl      = $puppet::master::params::report_ttl,
+  $reports         = $puppet::master::params::reports,
+  $puppetdb_listen_address     = $puppet::master::params::puppetdb_ssl_listen_address,
   $puppetdb_ssl_listen_address = $puppet::master::params::puppetdb_ssl_listen_address) inherits puppet::master::params {
+  case $use_ssl {
+    default : { $puppetdb_port = '8081' }
+    false   : { $puppetdb_port = '8080' }
+  }
+
   # setup puppetdb
   class { '::puppetdb':
+    disable_ssl        => $use_ssl ? {
+      default => false,
+      true    => false,
+      false   => true,
+    },
+    listen_address     => $puppetdb_ssl_listen_address,
     ssl_listen_address => $puppetdb_ssl_listen_address,
     node_ttl           => $node_ttl,
     node_purge_ttl     => $node_purge_ttl,
@@ -19,8 +33,8 @@ class puppet::master::puppetdb (
   }
 
   class { '::puppetdb::master::config':
+    puppetdb_port           => $puppetdb_port,
     puppet_service_name     => 'httpd',
-    puppetdb_server         => $host,
     enable_reports          => $reports,
     manage_report_processor => $reports,
     restart_puppet          => false,
