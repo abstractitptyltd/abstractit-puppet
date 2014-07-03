@@ -4,7 +4,6 @@ class puppet::profile::master (
   $puppet_env_repo  = undef,
   $extra_env_repos  = undef,
   $modules          = true,
-  $host             = "puppet.${::domain}",
   $puppet_server    = 'puppet',
   $puppet_fqdn      = $::fqdn,
   $puppetdb_server  = $::fqdn,

@@ -37,8 +37,6 @@ class puppet::master::params (
   $puppetdb         = true,
   $puppetdb_listen_address      = '127.0.0.1',
   $puppetdb_ssl_listen_address  = '127.0.0.1',
-  $puppetboard      = false,
-  $puppetboard_revision         = undef,
   $passenger_max_pool_size      = '12',
   $passenger_pool_idle_time     = '1500',
   $passenger_stat_throttle_rate = '120',

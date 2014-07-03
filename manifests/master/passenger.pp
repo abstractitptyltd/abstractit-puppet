@@ -29,7 +29,7 @@ class puppet::master::passenger (
     passenger_max_requests       => $passenger_max_requests
   }
 
-  apache::vhost { $host:
+  apache::vhost { $puppet_fqdn:
     docroot              => '/usr/share/puppet/rack/puppetmasterd/public/',
     docroot_owner        => 'root',
     docroot_group        => 'root',
