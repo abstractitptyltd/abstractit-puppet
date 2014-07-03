@@ -9,6 +9,7 @@ class puppet::profile::master (
   $puppet_fqdn      = $::fqdn,
   $puppetdb_server  = $::fqdn,
   $puppetdb_use_ssl = true,
+  $puppetdb_listen_address      = '127.0.0.1',
   $puppetdb_ssl_listen_address  = '127.0.0.1',
   $puppet_version   = 'installed',
   $puppetdb_version = 'installed',
@@ -57,7 +58,6 @@ class puppet::profile::master (
     hiera_eyaml_version          => $hiera_eyaml_version,
     hiera_hierarchy              => $hiera_hierarchy,
     hiera_backends               => $hiera_backends,
-    puppetdb_ssl_listen_address  => $puppetdb_ssl_listen_address,
     pre_module_path              => $pre_module_path,
     module_path                  => $module_path,
     hieradata_path               => $hieradata_path,
@@ -92,7 +92,7 @@ class puppet::profile::master (
       node_purge_ttl              => $node_purge_ttl,
       report_ttl                  => $report_ttl,
       reports                     => $reports,
-      puppetdb_listen_address     => $puppetdb_ssl_listen_address,
+      puppetdb_listen_address     => $puppetdb_listen_address,
       puppetdb_ssl_listen_address => $puppetdb_ssl_listen_address
     }
   }

@@ -14,7 +14,6 @@ class puppet::master (
   $environmentpath              = $puppet::master::params::environmentpath,
   $future_parser                = $puppet::master::params::future_parser,
   $autosign                     = $puppet::master::params::autosign,
-  $puppetdb_ssl_listen_address  = $puppet::master::params::puppetdb_ssl_listen_address,
   $passenger_max_pool_size      = $puppet::master::params::passenger_max_pool_size,
   $passenger_pool_idle_time     = $puppet::master::params::passenger_pool_idle_time,
   $passenger_stat_throttle_rate = $puppet::master::params::passenger_stat_throttle_rate,
