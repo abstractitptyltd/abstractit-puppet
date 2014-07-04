@@ -8,7 +8,7 @@ class puppet::master::puppetdb (
   $node_purge_ttl              = $puppet::master::params::node_purge_ttl,
   $report_ttl                  = $puppet::master::params::report_ttl,
   $reports                     = $puppet::master::params::reports,
-  $puppetdb_listen_address     = $puppet::master::params::puppetdb_ssl_listen_address,
+  $puppetdb_listen_address     = $puppet::master::params::puppetdb_listen_address,
   $puppetdb_ssl_listen_address = $puppet::master::params::puppetdb_ssl_listen_address) inherits puppet::master::params {
   case $use_ssl {
     default : { $puppetdb_port = '8081' }
@@ -22,7 +22,7 @@ class puppet::master::puppetdb (
       true    => false,
       false   => true,
     },
-    listen_address     => $puppetdb_ssl_listen_address,
+    listen_address     => $puppetdb_listen_address,
     ssl_listen_address => $puppetdb_ssl_listen_address,
     node_ttl           => $node_ttl,
     node_purge_ttl     => $node_purge_ttl,
