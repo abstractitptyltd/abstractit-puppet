@@ -3,7 +3,7 @@
 Adding support for enabling Structured Facts support from facter 2.1.0
 Support for adding structured facts via facter.d forthcomming.
 Bugfixes.
-Renamed a few variables to make their purpose more obvious
+Renamed a few variables to make their purpose more obvious.
 
 ####Bugfixes
 - notify apache::service when hiera.yaml changes
