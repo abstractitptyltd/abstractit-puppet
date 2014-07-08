@@ -4,6 +4,7 @@
 class puppet::config (
   $puppet_server    = $puppet::params::puppet_server,
   $environment      = $puppet::params::environment,
+  $runinterval      = $puppet::params::runinterval,
   $structured_facts = false) inherits puppet::params {
   $stringify_facts = $structured_facts ? {
     default => true,
@@ -25,6 +26,15 @@ class puppet::config (
     section => 'agent',
     setting => 'environment',
     value   => $environment,
+    require => Class['puppet::install'],
+  }
+
+  ini_setting { 'puppet client runinterval':
+    ensure  => present,
+    path    => "${::settings::confdir}/puppet.conf",
+    section => 'agent',
+    setting => 'runinterval',
+    value   => $runinterval,
     require => Class['puppet::install'],
   }
 

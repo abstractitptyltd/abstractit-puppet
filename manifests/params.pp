@@ -6,4 +6,5 @@ class puppet::params {
   $environment   = 'production'
   $devel_repo    = false
   $reports       = true
+  $runinterval   = '30m'
 }

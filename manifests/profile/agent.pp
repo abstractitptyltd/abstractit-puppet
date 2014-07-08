@@ -1,5 +1,6 @@
 class puppet::profile::agent (
   $enabled          = true,
+  $runinterval      = '30m',
   $puppet_version   = 'installed',
   $hiera_version    = 'installed',
   $facter_version   = 'installed',

@@ -4,6 +4,7 @@ class puppet (
   $hiera_version    = 'installed',
   $facter_version   = 'installed',
   $structured_facts = false,
+  $runinterval      = $puppet::params::runinterval,
   $puppet_server    = $puppet::params::puppet_server,
   $environment      = $puppet::params::environment,
   $devel_repo       = $puppet::params::devel_repo,
@@ -28,6 +29,7 @@ class puppet (
   class { 'puppet::config':
     puppet_server    => $puppet_server,
     environment      => $environment,
+    runinterval      => $runinterval,
     structured_facts => $structured_facts,
   } ~>
   class { 'puppet::agent':
