@@ -19,6 +19,7 @@
 <%- end -%>
 <%- end -%>
 
+<%- if @r10k_purgedirs -%>
 :purgedirs:
 <%- if @puppet_env_repo -%>
   - /etc/puppet/environments
@@ -27,3 +28,4 @@
   - <%= @r10k_env_basedir %>
 <%- end -%>
   - <%= @hieradata_path %>
+<%- end -%>

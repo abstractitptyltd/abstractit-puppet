@@ -225,6 +225,10 @@ TTL to purge nodes in PuppetDB. Default `0s` (unlimited).
 
 TTL for reports in PuppetDB. Default `14d`.
 
+#####`r10k_purgedirs`
+
+Whether r10k should purge old modules. Default `true`.
+
 #####`r10k_env_basedir`
 
 Base directory to use for R10K environments. Default `/etc/puppet/r10kenv`.

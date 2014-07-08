@@ -32,6 +32,7 @@ class puppet::profile::master (
   $node_ttl            = '0s',
   $node_purge_ttl      = '0s',
   $report_ttl          = '14d',
+  $r10k_purgedirs      = true,
   $r10k_env_basedir    = '/etc/puppet/r10kenv',
   $r10k_update         = true,
   $r10k_minutes        = [
@@ -70,6 +71,7 @@ class puppet::profile::master (
     class { 'puppet::master::modules':
       hiera_repo       => $hiera_repo,
       puppet_env_repo  => $puppet_env_repo,
+      r10k_purgedirs   => $r10k_purgedirs,
       env_owner        => $env_owner,
       extra_env_repos  => $extra_env_repos,
       r10k_env_basedir => $r10k_env_basedir,

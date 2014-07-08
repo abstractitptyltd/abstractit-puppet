@@ -4,6 +4,7 @@ class puppet::master::modules (
   $hiera_repo       = undef,
   $puppet_env_repo  = undef,
   $extra_env_repos  = undef,
+  $r10k_purgedirs   = true,
   $env_owner        = $puppet::master::params::env_owner,
   $r10k_env_basedir = $puppet::master::params::r10k_env_basedir,
   $r10k_update      = $puppet::master::params::r10k_update,
@@ -35,12 +36,13 @@ class puppet::master::modules (
 
   # cron for updating the r10k environment
   cron { 'puppet_r10k':
-    ensure  => $r10k_update ? {
+    ensure      => $r10k_update ? {
       default => present,
       false   => absent,
     },
-    command => '/usr/local/bin/r10k deploy environment production',
-    user    => $env_owner,
-    minute  => $r10k_minutes
+    command     => '/usr/local/bin/r10k deploy environment production',
+    environment => 'PATH=/usr/local/bin:/bin:/usr/bin:/usr/sbin',
+    user        => $env_owner,
+    minute      => $r10k_minutes
   }
 }
