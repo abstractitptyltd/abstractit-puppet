@@ -40,7 +40,7 @@ class puppet::master::modules (
       default => present,
       false   => absent,
     },
-    command     => '/usr/local/bin/r10k deploy environment production',
+    command     => '/usr/local/bin/r10k deploy environment production -p',
     environment => 'PATH=/usr/local/bin:/bin:/usr/bin:/usr/sbin',
     user        => $env_owner,
     minute      => $r10k_minutes

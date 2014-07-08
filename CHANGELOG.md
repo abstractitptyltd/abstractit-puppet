@@ -1,15 +1,19 @@
-##2014-07-08 - Pete Brown <pete@abstractit.com.au> 1.7.1
-###Summary
-Added option to disable purging r10k directories
+## 2014-07-08 - Pete Brown <pete@abstractit.com.au> 1.7.2
+### Summary
+Added option for setting runinterval on agent (default 30m)
 
 ####Bugfixes
-- add environment to r10k cron
-- fix dependencies
+- add missing -p flag to r10k cron
 
 ####Known bugs
 * No known bugs. Please let us know if you find any.
 
 ---
+##### 2014-07-08 - Pete Brown <pete@abstractit.com.au> 1.7.1
+ * [fix] environment to r10k cron
+ * [fix] fixed dependencies
+ * Added option to disable purging r10k directories
+
 ##### 2014-07-07 - Pete Brown <pete@abstractit.com.au> 1.7.0
  * [fix] notify apache::service when hiera.yaml changes
  * [fix] fix name of hiera_backends in master profile
