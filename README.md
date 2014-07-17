@@ -46,10 +46,14 @@ If it works for you thats awesome, if it doesn't let me know or send me a pull r
 
 ###Setup Requirements
 
+#### Module dependencies
+
+  * [apt](git@github.com:puppetlabs/puppetlabs-apt.git)
+  * [inifile](git@github.com:puppetlabs/puppetlabs-inifile.git)
 It currently only works on Ubuntu Precise at this stage. I will be adding support for other operating systems when I get a chance.
 It also only configures puppet 3.6.x. If you need support for previous versions let me know.
 
-###Beginning with puppet  
+###Beginning with puppet
 
 The best way to begin is using the example profiles puppet::profile::agent and puppet::profile::master
 These profiles wiill setup agent and master nodes.
