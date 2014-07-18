@@ -42,16 +42,31 @@ If it works for you thats awesome, if it doesn't let me know or send me a pull r
 
 ###What puppet affects
 
+* **Directories:**
+  * /var/lib/puppet
+* **Files:**  `dynamically updated files are displayed like this`
+  *
+  * `/etc/puppet/puppet.conf`
+* **Cron Jobs**
+* **Logs being rotated**
+* **Packages: **
+  * **RedHat:**
+  UNSUPPORTED
+  * **Debian:**
+
 * puppet and it's config files, hiera config, apache vhost for puppetmaster.
 
 ###Setup Requirements
+
+This module currently only works on Ubuntu Precise at this stage. I will be adding support for other operating systems when I get a chance.
+It also only configures puppet 3.6.x. If you need support for previous versions let me know.
+
 
 #### Module dependencies
 
   * [apt](git@github.com:puppetlabs/puppetlabs-apt.git)
   * [inifile](git@github.com:puppetlabs/puppetlabs-inifile.git)
-It currently only works on Ubuntu Precise at this stage. I will be adding support for other operating systems when I get a chance.
-It also only configures puppet 3.6.x. If you need support for previous versions let me know.
+
 
 ###Beginning with puppet
 
@@ -64,6 +79,79 @@ These profiles wiill setup agent and master nodes.
 
 This module modifies Puppet configuration files and directories.
 The Class docs are a work in progress. I will detaile my two profile classes initially and add the rest of the classes and defined types as I go.
+
+----
+
+####*Class:* `puppet` [puppetclass]
+The main `init.pp` manifest is responsible for validating some of our parameters, and instantiating the [puppet::repo][puppetrepoclass], [pupppet::install][puppetinstallclass], [puppet::config][puppetconfigclass], and [puppet::agent][puppetagentclass] manifests.
+#####*Parameters*
+  * **devel_repo**: (*bool* Default: `false`)
+
+    Whether or not to enable the puppetlabs_devel apt source.
+
+  * **enabled**: (*bool* Default: `true`)
+
+    Used to determine if services should be running
+
+  * **environment**: (*string* Default: `production`)
+
+    Sets the puppet environment
+
+  * **facter_version**: (*string* Default: `installed`)
+
+    Declares the version of facter to install.
+
+  * **hiera_version**: (*string* Default: `installed`)
+
+    Declares the version of hiera to install.
+
+  * **puppet_server**: (*string* Default: `puppet`)
+
+    The hostname or fqdn of the puppet server that the agent should communicate with.
+
+  * **puppet_version**: (*string* Default: `installed`)
+
+    The version of puppet to install
+
+  * **reports**: (*bool*)
+
+    Whether or not to send reports
+
+  * **runinterval** (*string* Default: `30m`)
+
+    Sets the runinterval in `puppet.conf`
+
+  * **structured_facts**: (*bool* Default: `false`)
+
+    Sets whether or not to enable [structured_facts](http://docs.puppetlabs.com/facter/2.0/fact_overview.html) by setting the [stringify_facts](http://docs.puppetlabs.com/references/3.6.latest/configuration.html#stringifyfacts) variable in puppet.conf.
+
+    **It is important to note that this boolean operates in reverse.** Setting stringify_facts to **false** is required to **permit** structured facts. This is why this parameter does not directly correlate with the configuration key.
+
+----
+
+####Class: **puppet::agent** [puppetagentclass]
+
+----
+
+####Class: **puppet::config** [puppetconfigclass]
+
+----
+
+####Class: **puppet::facts** [puppetfactsclass]
+
+----
+
+####Class: **puppet::install** [puppetinstallclass]
+
+----
+
+####Class: **puppet::master** [puppetmasterclass]
+
+----
+
+####Class: **puppet::repo** [puppetrepoclass]
+
+----
 
 ####Class: `puppet::profile::agent`
 
