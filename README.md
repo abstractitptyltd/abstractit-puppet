@@ -169,7 +169,13 @@ The `agent.pp` manifest is responsible for the enablement of the agent service.
 
 ####Class: **puppet::facts** [puppetfactsclass]
 #####*Description*
+
+  The `facts.pp` manifest is responsible for ensuring that `/etc/facter` and `/etc/facter/facts.d` are present on the local system. It is additionally responsible for populating `/etc/facter/facts.d/local.yaml` with the Key/Value pairs declared in `puppet::facts::custom_facts`
+
 #####*Parameters*
+  * **custom_facts** (*hash* Default: `undef`)
+
+  This is a hash of custom facts. For each element in the hash, the key will be the fact name, and the value will, unsurprisingly, be the fact's value.
 
 ----
 

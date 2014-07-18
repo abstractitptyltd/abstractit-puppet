@@ -7,6 +7,9 @@
 
 class puppet::facts (
   $custom_facts = undef) inherits puppet::params {
+  if $custom_facts {
+    validate_hash($custom_facts)
+  }
   if !defined(File['/etc/facter']) {
     file { '/etc/facter':
       ensure => directory,
