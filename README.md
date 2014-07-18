@@ -83,6 +83,7 @@ The Class docs are a work in progress. I will detaile my two profile classes ini
 ----
 
 ####*Class:* `puppet` [puppetclass]
+#####*Description*
 The main `init.pp` manifest is responsible for validating some of our parameters, and instantiating the [puppet::repo][puppetrepoclass], [pupppet::install][puppetinstallclass], [puppet::config][puppetconfigclass], and [puppet::agent][puppetagentclass] manifests.
 #####*Parameters*
   * **devel_repo**: (*bool* Default: `false`)
@@ -130,26 +131,46 @@ The main `init.pp` manifest is responsible for validating some of our parameters
 ----
 
 ####Class: **puppet::agent** [puppetagentclass]
+#####*Description*
+The `agent.pp` manifest is responsible for the enablement of the agent service.
+#####*Parameters*
+  * **enable**: (*string?* Default: `running`)
+
+  Sets the enable parameter value of the puppet service
+
+  * **ensure** (*bool?* Default: `true`)
+
+  Sets the ensure parameter of the puppet service
 
 ----
 
 ####Class: **puppet::config** [puppetconfigclass]
+#####*Description*
+#####*Parameters*
 
 ----
 
 ####Class: **puppet::facts** [puppetfactsclass]
+#####*Description*
+#####*Parameters*
 
 ----
 
 ####Class: **puppet::install** [puppetinstallclass]
+#####*Description*
+#####*Parameters*
 
 ----
 
 ####Class: **puppet::master** [puppetmasterclass]
+#####*Description*
+#####*Parameters*
 
 ----
 
 ####Class: **puppet::repo** [puppetrepoclass]
+#####*Description*
+#####*Parameters*
 
 ----
 
