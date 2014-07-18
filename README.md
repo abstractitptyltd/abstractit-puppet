@@ -150,6 +150,23 @@ The `agent.pp` manifest is responsible for the enablement of the agent service.
 
 ----
 
+####Defined Type: **puppet::fact** [puppetfactdefine]
+#####*Description*
+
+  This defined type provides a mechanism to lay down fact files in `/etc/facter/facts.d/`
+  The title of the declared resource will dictate the name of the `factname.yaml` file laid down, as well as the keyname, and thus, the fact name.
+
+#####*Parameters*
+  * **ensure** (*string* Default: `present`)
+
+  Sets the ensure parameter's value on the file resource laid down.
+
+  * **value** (*string* **No Default**)
+
+  Sets the value of the specified custom fact.
+
+----
+
 ####Class: **puppet::facts** [puppetfactsclass]
 #####*Description*
 #####*Parameters*
