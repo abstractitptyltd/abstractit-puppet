@@ -1,9 +1,16 @@
 # install client packages
 
 class puppet::install (
-  $puppet_version = 'installed',
+  $facter_version = 'installed',
   $hiera_version  = 'installed',
-  $facter_version = 'installed') inherits puppet::params {
+  $puppet_version = 'installed',
+  ) inherits puppet::params {
+  # Input validation
+  validate_string(
+    $facter_version,
+    $hiera_version,
+    $puppet_version,
+  )
   package { 'puppetlabs-release': ensure => latest, }
 
   package { 'puppet-common':

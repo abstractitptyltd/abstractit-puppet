@@ -49,11 +49,14 @@ If it works for you thats awesome, if it doesn't let me know or send me a pull r
   * `/etc/puppet/puppet.conf`
 * **Cron Jobs**
 * **Logs being rotated**
-* **Packages: **
-  * **RedHat:**
-  UNSUPPORTED
-  * **Debian:**
-
+* **Packages:**
+    * **Debian:**
+        * puppet
+        * puppet-common
+        * hiera
+        * facter
+    * **RedHat:**
+    CURRENTLY UNSUPPORTED
 * puppet and it's config files, hiera config, apache vhost for puppetmaster.
 
 ###Setup Requirements
@@ -181,7 +184,21 @@ The `agent.pp` manifest is responsible for the enablement of the agent service.
 
 ####Class: **puppet::install** [puppetinstallclass]
 #####*Description*
+
+  the `install.pp` manifest is responsible for the puppet agent, hiera, and facter packages.
+
 #####*Parameters*
+  * **facter_version** (*string* Default: `installed`)
+
+  The version of facter to install
+
+  * **hiera_version** (*string* Defaults: `installed`)
+
+  The version of hiera to install
+
+  * **puppet_version** (*string* Default: `installed`)
+
+  The version of puppet to install
 
 ----
 
