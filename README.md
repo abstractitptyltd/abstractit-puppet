@@ -43,7 +43,8 @@ If it works for you thats awesome, if it doesn't let me know or send me a pull r
 ###What puppet affects
 
 * **Directories:**
-  * /var/lib/puppet
+  * /etc/facter
+  * /etc/facter/facts.d
 * **Files:**  `dynamically updated files are displayed like this`
   *
   * `/etc/puppet/puppet.conf`
@@ -149,8 +150,26 @@ The `agent.pp` manifest is responsible for the enablement of the agent service.
 
 ####Class: **puppet::config** [puppetconfigclass]
 #####*Description*
-#####*Parameters*
+The `config.pp` manifest is responsible for altering the configuration of `/etc/puppet/puppet.conf`. This is done via params which call [ini_file]() resources to alter the related settings.
 
+#####*Parameters*
+  * **puppet_server**: (*string* Default: `puppet`)
+
+    The hostname or fqdn of the puppet server we should connect to.
+
+  * **environment** (*string* Default: `production`)
+
+    The puppet environment the node in question should be set to use.
+
+  * **runinterval** (*string* Default: `30m`)
+
+    Dictates the value of the runinterval setting in puppet.conf.
+
+  * **structured_facts** ( *bool* Default: `false`)
+
+    Sets whether or not to enable [structured_facts](http://docs.puppetlabs.com/facter/2.0/fact_overview.html) by setting the [stringify_facts](http://docs.puppetlabs.com/references/3.6.latest/configuration.html#stringifyfacts) variable in puppet.conf.
+
+    **It is important to note that this boolean operates in reverse.** Setting stringify_facts to **false** is required to **permit** structured facts. This is why this parameter does not directly correlate with the configuration key.
 ----
 
 ####Defined Type: **puppet::fact** [puppetfactdefine]

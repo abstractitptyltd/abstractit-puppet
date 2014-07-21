@@ -6,6 +6,12 @@ class puppet::config (
   $environment      = $puppet::params::environment,
   $runinterval      = $puppet::params::runinterval,
   $structured_facts = false) inherits puppet::params {
+  validate_string(
+    $environment,
+    $puppet_server,
+    $runinterval,
+    )
+  validate_bool($structured_facts)
   $stringify_facts = $structured_facts ? {
     default => true,
     true    => false,
