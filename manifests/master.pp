@@ -1,23 +1,64 @@
 class puppet::master (
-  $puppet_version               = 'installed',
-  $r10k_version                 = 'installed',
-  $hiera_eyaml_version          = 'installed',
-  $pre_module_path              = '',
-  $module_path                  = '',
-  $eyaml_keys                   = false,
-  $hiera_hierarchy              = $puppet::master::params::hiera_hierarchy,
-  $hiera_backends               = $puppet::master::params::hiera_backends,
-  $puppet_fqdn                  = $puppet::master::params::puppet_fqdn,
-  $puppet_server                = $puppet::master::params::puppet_server,
-  $hieradata_path               = $puppet::master::params::hieradata_path,
+  $autosign                     = $puppet::master::params::autosign,
   $env_owner                    = $puppet::master::params::env_owner,
   $environmentpath              = $puppet::master::params::environmentpath,
+  $eyaml_keys                   = false,
   $future_parser                = $puppet::master::params::future_parser,
-  $autosign                     = $puppet::master::params::autosign,
+  $hiera_backends               = $puppet::master::params::hiera_backends,
+  $hiera_eyaml_version          = 'installed',
+  $hiera_hierarchy              = $puppet::master::params::hiera_hierarchy,
+  $hieradata_path               = $puppet::master::params::hieradata_path,
+  $module_path                  = '',
   $passenger_max_pool_size      = $puppet::master::params::passenger_max_pool_size,
+  $passenger_max_requests       = $puppet::master::params::passenger_max_requests,
   $passenger_pool_idle_time     = $puppet::master::params::passenger_pool_idle_time,
   $passenger_stat_throttle_rate = $puppet::master::params::passenger_stat_throttle_rate,
-  $passenger_max_requests       = $puppet::master::params::passenger_max_requests,) inherits puppet::master::params {
+  $pre_module_path              = '',
+  $puppet_fqdn                  = $puppet::master::params::puppet_fqdn,
+  $puppet_server                = $puppet::master::params::puppet_server,
+  $puppet_version               = 'installed',
+  $r10k_version                 = 'installed',
+) inherits puppet::master::params {
+
+  #input validation
+  validate_absolute_path(
+    $environmentpath,
+    $hieradata_path,
+  )
+  validate_array(
+    $hiera_hierarchy,
+  )
+
+  validate_bool(
+    $autosign,
+    $eyaml_keys,
+    $future_parser,
+  )
+
+  validate_hash(
+    $hiera_backends
+  )
+
+  validate_string(
+    $env_owner,
+    $hiera_eyaml_version,
+    $passenger_max_pool_size,
+    $passenger_max_requests,
+    $passenger_pool_idle_time,
+    $passenger_stat_throttle_rate,
+    $puppet_fqdn,
+    $puppet_server,
+    $puppet_version,
+    $r10k_version,
+  )
+
+  if $pre_module_path{
+    validate_string($pre_module_path)
+  }
+  if $module_path{
+    validate_string($module_path)
+  }
+
   $pre_module_path_real = $pre_module_path ? {
     ''       => '',
     /\w+\:$/ => $pre_module_path,
