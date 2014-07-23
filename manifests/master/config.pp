@@ -4,7 +4,16 @@ class puppet::master::config (
   $environmentpath   = $puppet::master::params::environmentpath,
   $extra_module_path = $puppet::master::extra_module_path,
   $future_parser     = $puppet::master::params::future_parser,
-  $autosign          = $puppet::master::params::autosign,) inherits puppet::master::params {
+  $autosign          = $puppet::master::params::autosign,
+) inherits puppet::master::params {
+validate_absolute_path($environmentpath)
+
+validate_bool(
+  $autosign,
+  $future_parser,
+  )
+validate_string($extra_module_path)
+
   ini_setting { 'Puppet environmentpath':
     ensure  => present,
     path    => "${::settings::confdir}/puppet.conf",

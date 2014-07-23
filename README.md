@@ -306,7 +306,23 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ####[Private] Class: **puppet::master::config** [puppetmasterconfigclass]
 #####*Description*
+  The `master/config.pp` manifest is responsible for managing the master-specific configuration settings of `puppet.conf`
 #####*Parameters*
+
+  * **environmentpath** (*absolute path* Default: `/etc/puppet/environments`)
+
+  The base directory path to have environments checked out into.
+
+  * **extra_module_path** (*string* Default: `${::settings::confdir}/site:/usr/share/puppet/modules`)
+
+  The derived value for the `basemodulepath` setting.
+
+  * **future_parser** (*bool* Default: `false`)
+  Toggle to dictate whether or not to enable the [future parser](http://docs.puppetlabs.com/puppet/latest/reference/experiments_future.html)
+
+  * **autosign** (*bool* Default: `false`)
+
+  Whether or not to enable autosign. *It is important to note that this autosign is currently hard coded to disabled in the production environment*
 
 ----
 
