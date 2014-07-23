@@ -45,9 +45,14 @@ If it works for you thats awesome, if it doesn't let me know or send me a pull r
 * **Directories:**
   * /etc/facter
   * /etc/facter/facts.d
+  * /etc/puppet/keys
+  * /etc/puppet/keys/eyaml
 * **Files:**  `dynamically updated files are displayed like this`
-  *
+  * `/etc/hiera.yaml`
   * `/etc/puppet/puppet.conf`
+  * `/etc/puppet/hiera.yaml`
+  * /etc/puppet/keys/eyaml/private_key.pkcs7.pem
+  * /etc/puppet/keys/eyaml/public_key.pkcs7.pem
 * **Cron Jobs**
 * **Logs being rotated**
 * **Packages:**
@@ -318,6 +323,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
   The derived value for the `basemodulepath` setting.
 
   * **future_parser** (*bool* Default: `false`)
+
   Toggle to dictate whether or not to enable the [future parser](http://docs.puppetlabs.com/puppet/latest/reference/experiments_future.html)
 
   * **autosign** (*bool* Default: `false`)
@@ -328,7 +334,26 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ####[Private] Class: **puppet::master::hiera** [puppetmasterhieraclass]
 #####*Description*
+
+  The `master/hiera.pp` manifest is responsible for configuring hiera, optionally deploying eyaml encryption keys, and setting the ownership of the hieradata path.
+
 #####*Parameters*
+
+  * **env_owner** (*string* Default: `puppet`)
+
+  The user which should own hieradata and r10k repos
+
+  * **eyaml_keys** (*bool* Default: `false`)
+
+  Toggle whether or not to deploy [eyaml](https://github.com/TomPoulton/hiera-eyaml) keys
+
+  * **hiera_backends** (*hash* Default: `{'yaml' => { 'datadir' => '/etc/puppet/hiera/%{environment}',} }`)
+
+  The backends to configure hiera to query.
+
+  * **hieradata_path** (*absolute path* Default: `/etc/puppet/hiera`)
+
+  * **hierarchy** (*array* Default: `['node/%{::clientcert}', 'env/%{::environment}', 'global']`)
 
 ----
 
@@ -338,7 +363,19 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
+###[Private] Class: **puppet::master::modules** [puppetmastermodulesclass]
+#####*Description*
+#####*Parameters*
+
+----
+
 ####[Private] Class: **puppet::master::passenger** [puppetmasterpassengerclass]
+#####*Description*
+#####*Parameters*
+
+----
+
+####[Private] Class: **puppet::master::puppetdb** [puppetmasterpuppetdbclass]
 #####*Description*
 #####*Parameters*
 
