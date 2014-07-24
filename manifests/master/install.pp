@@ -1,9 +1,16 @@
 # # class puppet::master::install
 
 class puppet::master::install (
+  $hiera_eyaml_version,
   $puppet_version = 'installed',
   $r10k_version   = 'installed',
-  $hiera_eyaml_version,) inherits puppet::master::params {
+) inherits puppet::master::params {
+  validate_string(
+    $hiera_eyaml_version,
+    $puppet_version,
+    $r10k_version
+  )
+
   package { 'puppetmaster-common':
     ensure  => $puppet_version,
     require => Package['puppet']

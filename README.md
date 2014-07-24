@@ -92,7 +92,7 @@ The Class docs are a work in progress. I will detaile my two profile classes ini
 
 ----
 
-####*Class:* `puppet` [puppetclass]
+####[Public] *Class:* `puppet` [puppetclass]
 #####*Description*
 The main `init.pp` manifest is responsible for validating some of our parameters, and instantiating the [puppet::repo][puppetrepoclass], [pupppet::install][puppetinstallclass], [puppet::config][puppetconfigclass], and [puppet::agent][puppetagentclass] manifests.
 #####*Parameters*
@@ -358,8 +358,24 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 ----
 
 ####[Private] Class: **puppet::master::install** [puppetmasterinstallclass]
+
 #####*Description*
+
+  The `master::install.pp` manifest is responsible for installing the packages required to configure a puppetmaster.
+
 #####*Parameters*
+
+  * **puppet_version** (*string* Default: `installed`)
+
+  Specifies the version of the **puppetmaster**, **puppetmaster-common**, and **puppetmaster-passenger** packages to install.
+
+  * **r10k_version** (*string* Default: `installed`)
+
+  Specifies the version of **r10k** to install.
+
+  * **hiera_eyaml_version** (*string* Default: `installed`)
+
+  Specifies the version of **hiera-eyaml** to install
 
 ----
 
