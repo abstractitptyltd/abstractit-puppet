@@ -427,8 +427,36 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 ----
 
 ####[Private] Class: **puppet::master::passenger** [puppetmasterpassengerclass]
+
 #####*Description*
+
+  The `master/passenger.pp` manifest is responsible for instantiating the apache class, creating the apache vhost, and configuring passenger.
+
+  On Trusty, We need to be able to set SSLCARevocationCheck in apache 2.4+ to enable revocation checks for client certs. According to the [Official puppetlabs docs on passenger](http://docs.puppetlabs.com/guides/passenger.html):
+    Apache 2.4 introduces the SSLCARevocationCheck directive and sets it to none
+    which effectively disables CRL checking. If you are using Apache 2.4+ you must specify 'SSLCARevocationCheck chain' to actually use the CRL.
+
 #####*Parameters*
+
+  * **passenger_max_pool_size** (*string* Default: `12`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [max pool size](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerMaxPoolSize).
+
+  * **passenger_max_requests** (*string* Default: `0`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [max requests](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerMaxRequests).
+
+  * **passenger_pool_idle_time** (*string* Default: `1500`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [pool idle time](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerPoolIdleTime)
+
+  * **passenger_stat_throttle_rate** (*string* Default: `120`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [stat throttle rate](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#_passengerstatthrottlerate_lt_integer_gt)
+
+ * **puppet_fqdn** (*string* Default: `$::fqdn`)
+
+  Sets the namevar of the [apache::vhost](https://github.com/puppetlabs/puppetlabs-apache#defined-type-apachevhost) resource declared. It is also used to derive the `ssl_cert` and `ssl_key` parameters to the apache::vhost resource.
 
 ----
 
