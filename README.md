@@ -51,6 +51,7 @@ If it works for you thats awesome, if it doesn't let me know or send me a pull r
   * `/etc/hiera.yaml`
   * `/etc/puppet/puppet.conf`
   * `/etc/puppet/hiera.yaml`
+  * `/etc/r10k.yaml`
   * /etc/puppet/keys/eyaml/private_key.pkcs7.pem
   * /etc/puppet/keys/eyaml/public_key.pkcs7.pem
 * **Cron Jobs**
@@ -208,6 +209,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 ----
 
 ####[Private] Class: **puppet::install** [puppetinstallclass]
+
 #####*Description*
 
   the `install.pp` manifest is responsible for the puppet agent, hiera, and facter packages.
@@ -227,7 +229,9 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
+
 ####[Public] Class: **puppet::master** [puppetmasterclass]
+
 #####*Description*
 
   The `master.pp` manifest is responsible for performing some input validation, and subsequently configuring a puppetmaster. This is done via the  [puppet::master::config][puppetmasterconfigclass], [pupppet::master::install][puppetmasterinstallclass], [puppet::master::hiera][puppetmasterhieraclass], and [puppet::master::passenger][puppetmasterpassengerclass] manifests.
@@ -266,7 +270,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
   * **hieradata_path** (*absolute path* Default: `/etc/puppet/hiera`)
 
-  The location to configure hiera to look for the hierarchy.
+  The location to configure hiera to look for the hierarchy. This also impacts the [puppet::master::modules][puppetmastermodulesclass] module's deployment of your r10k hiera repo.
 
   * **module_path** (*string* Default: '')
 
@@ -307,6 +311,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
   * **r10k_version** (*string* Default: `installed`)
 
   Specifies the version of r10k to install. *It is important to note that the r10k package will be installed via gem*
+
 ----
 
 ####[Private] Class: **puppet::master::config** [puppetmasterconfigclass]
@@ -379,9 +384,45 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
-###[Private] Class: **puppet::master::modules** [puppetmastermodulesclass]
+####[Public] Class: **puppet::master::modules** [puppetmastermodulesclass]
+
 #####*Description*
+
+  The `master::minutes.pp` manifest configures [r10k](https://github.com/adrienthebo/r10k) and adds a cronjob to run r10k on a frequency of your choosing.
+
 #####*Parameters*
+
+  * **env_owner** (*string* Default: `puppet`)
+
+  The user which should own the directories on the master.
+
+  * **extra_env_repos** (*hash* Default: `undef`)
+
+  a hash of extra environment repos to pull down. These should be written with the modulename as the key, and the repo URI as the value to a `repo` subkey. The repos will be laid down inside the directory dictated by the `r10k_env_basedirs` param.
+
+  * **hiera_repo** (*string* Default: `undef`)
+
+  the URI of the hiera repo r10k should clone. This also uses the `hieradata_path` parameter set in [puppet::master][puppetmasterclass] to set the hiera source.
+
+  * **puppet_env_repo** (*string* Default: `undef`)
+
+  The URI of your r10k puppet environments repo. **It is important to note that the basedir for this repo is hardcoded to `/etc/puppet/environments`**
+
+  * **r10k_env_basedir** (*absolute path* Default: `/etc/puppet/r10kenv`)
+
+  The base directory to check out extra r10k repos into.
+
+  * **r10k_minutes** (*string or array* Default: `[0, 15, 30, 45]`)
+
+  This param is fed to the [cron](http://docs.puppetlabs.com/references/latest/type.html#cron) resource as the minute parameter. It can be a string, or an array.
+
+  * **r10k_purgedirs** (*bool* Default: `true`)
+
+  Whether or not to tell r10k to purge the directories it checks files out into
+
+  * **r10k_update** (*bool* Default: `true`)
+
+  Whether or not the r10k cronjob should be present.
 
 ----
 
@@ -581,7 +622,7 @@ Whether to enable the cron to run R10K to deploy the production environment. Def
 
 #####`r10k_minutes`
 
-Minutes to run the R10K cron. Default `0,`5,30,45`
+Minutes to run the R10K cron. Default `0,5,30,45`
 
 #####`puppetdb`
 
