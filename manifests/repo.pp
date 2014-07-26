@@ -1,7 +1,11 @@
 # # setup the puppetlabs repo
 
 class puppet::repo (
-  $devel_repo = $puppet::params::devel_repo,) inherits puppet::params {
+  $devel_repo = $puppet::params::devel_repo,
+) inherits puppet::params {
+  #input validation
+  validate_bool($devel_repo)
+
   include ::apt
 
   $os_name_lc = downcase($::operatingsystem)

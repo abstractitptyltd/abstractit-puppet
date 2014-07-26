@@ -511,8 +511,15 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 ----
 
 ####[Private] Class: **puppet::repo** [puppetrepoclass]
+
 #####*Description*
+
+This module is responsible for optionally managing the presence of the puppetlabs package repositories.
+
 #####*Parameters*
+
+ * **devel_repo** (*bool* `false`)
+  A toggle to manage the ensure parameter value of the puppetlabs_devel repository
 
 ----
 
