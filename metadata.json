@@ -1,35 +1,51 @@
 {
+  "name": "abstractit-puppet",
+  "version": "1.7.3",
   "author": "Abstract IT",
+  "license": "Apache v2 Licence",
+  "summary": "Manage Puppet agent, master, modules and hiera with Puppet",
+  "source": "https://github.com/abstractitptyltd/abstractit-puppet",
+  "project_page": "(https://github.com/abstractitptyltd/abstractit-puppet)",
+  "issues_url": "https://github.com/abstractitptyltd/abstractit-puppet",
+  "tags": ["puppet","puppetdb","r10k","hiera"],
+  "operatingsystem_support": [
+    {
+      "operatingsystem": "Ubuntu",
+      "operatingsystemrelease": [
+        "12.04"
+      ]
+    }
+  ],
+  "requirements": [
+    {
+      "name": "puppet",
+      "version_requirement": "3.6.x"
+    }
+  ],
   "dependencies": [
     {
       "name": "puppetlabs/apache",
-      "version_requirement": "\u003e\u003d1.0.1"
+      "version_requirement": ">=1.0.1"
     },
     {
       "name": "puppetlabs/stdlib",
-      "version_requirement": "\u003e\u003d4.1.0"
+      "version_requirement": ">=4.1.0"
     },
     {
       "name": "puppetlabs/apt",
-      "version_requirement": "\u003e\u003d0.1.0"
+      "version_requirement": ">=0.1.0"
     },
     {
       "name": "puppetlabs/postgresql",
-      "version_requirement": "\u003e\u003d3.0.0"
+      "version_requirement": ">=3.0.0"
     },
     {
       "name": "puppetlabs/puppetdb",
-      "version_requirement": "\u003e\u003d3.0.0"
+      "version_requirement": ">=3.0.0"
     },
     {
       "name": "puppetlabs/inifile",
-      "version_requirement": "\u003e\u003d1.1.0"
+      "version_requirement": ">=1.1.0"
     }
-  ],
-  "license": "Apache v2 Licence",
-  "name": "abstractit-puppet",
-  "project_page": "https://github.com/abstractitptyltd/abstractit-puppet",
-  "source": "https://github.com/abstractitptyltd/abstractit-puppet",
-  "summary": "Manage Puppet agent, master, modules and hiera with Puppet",
-  "version": "1.7.3"
+  ]
 }
