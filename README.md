@@ -42,14 +42,46 @@ If it works for you thats awesome, if it doesn't let me know or send me a pull r
 
 ###What puppet affects
 
+* **Directories:**
+  * /etc/facter
+  * /etc/facter/facts.d
+  * /etc/puppet/keys
+  * /etc/puppet/keys/eyaml
+* **Files:**  `dynamically updated files are displayed like this`
+  * `/etc/hiera.yaml`
+  * `/etc/puppet/puppet.conf`
+  * `/etc/puppet/hiera.yaml`
+  * `/etc/r10k.yaml`
+  * /etc/puppet/keys/eyaml/private_key.pkcs7.pem
+  * /etc/puppet/keys/eyaml/public_key.pkcs7.pem
+* **Cron Jobs**
+* **Logs being rotated**
+* **Packages:**
+    * **Debian:**
+        * puppet
+        * puppet-common
+        * hiera
+        * facter
+    * **RedHat:**
+    CURRENTLY UNSUPPORTED
 * puppet and it's config files, hiera config, apache vhost for puppetmaster.
 
 ###Setup Requirements
 
-It currently only works on Ubuntu Precise at this stage. I will be adding support for other operating systems when I get a chance.
+This module currently only works on Ubuntu Precise at this stage. I will be adding support for other operating systems when I get a chance.
 It also only configures puppet 3.6.x. If you need support for previous versions let me know.
 
-###Beginning with puppet  
+
+#### Module dependencies
+
+  * [apt](https://github.com/puppetlabs/puppetlabs-apt)
+  * [concat](https://github.com/puppetlabs/puppetlabs-concat) (master only)
+  * [inifile](https://github.com/puppetlabs/puppetlabs-inifile)
+  * [apache](https://github.com/puppetlabs/puppetlabs-apache) (master only)
+  * [postgres](https://github.com/puppetlabs/puppetlabs-postgresql) (when using the puppetdb subclass)
+  * [puppetdb](https://github.com/puppetlabs/puppetlabs-puppetdb) (when using the puppetdb subclass)
+
+###Beginning with puppet
 
 The best way to begin is using the example profiles puppet::profile::agent and puppet::profile::master
 These profiles wiill setup agent and master nodes.
@@ -60,6 +92,436 @@ These profiles wiill setup agent and master nodes.
 
 This module modifies Puppet configuration files and directories.
 The Class docs are a work in progress. I will detaile my two profile classes initially and add the rest of the classes and defined types as I go.
+
+----
+
+####[Public] *Class:* `puppet` [puppetclass]
+#####*Description*
+The main `init.pp` manifest is responsible for validating some of our parameters, and instantiating the [puppet::repo][puppetrepoclass], [pupppet::install][puppetinstallclass], [puppet::config][puppetconfigclass], and [puppet::agent][puppetagentclass] manifests.
+#####*Parameters*
+  * **devel_repo**: (*bool* Default: `false`)
+
+    Whether or not to enable the puppetlabs_devel apt source.
+
+  * **enabled**: (*bool* Default: `true`)
+
+    Used to determine if services should be running
+
+  * **environment**: (*string* Default: `production`)
+
+    Sets the puppet environment
+
+  * **facter_version**: (*string* Default: `installed`)
+
+    Declares the version of facter to install.
+
+  * **hiera_version**: (*string* Default: `installed`)
+
+    Declares the version of hiera to install.
+
+  * **puppet_server**: (*string* Default: `puppet`)
+
+    The hostname or fqdn of the puppet server that the agent should communicate with.
+
+  * **puppet_version**: (*string* Default: `installed`)
+
+    The version of puppet to install
+
+  * **reports**: (*bool*)
+
+    Whether or not to send reports
+
+  * **runinterval** (*string* Default: `30m`)
+
+    Sets the runinterval in `puppet.conf`
+
+  * **structured_facts**: (*bool* Default: `false`)
+
+    Sets whether or not to enable [structured_facts](http://docs.puppetlabs.com/facter/2.0/fact_overview.html) by setting the [stringify_facts](http://docs.puppetlabs.com/references/3.6.latest/configuration.html#stringifyfacts) variable in puppet.conf.
+
+    **It is important to note that this boolean operates in reverse.** Setting stringify_facts to **false** is required to **permit** structured facts. This is why this parameter does not directly correlate with the configuration key.
+
+----
+
+####[Public] Class: **puppet::agent** [puppetagentclass]
+#####*Description*
+The `agent.pp` manifest is responsible for the enablement of the agent service.
+#####*Parameters*
+  * **enable**: (*string?* Default: `running`)
+
+  Sets the enable parameter value of the puppet service
+
+  * **ensure** (*bool?* Default: `true`)
+
+  Sets the ensure parameter of the puppet service
+
+----
+
+####[Private] Class: **puppet::config** [puppetconfigclass]
+#####*Description*
+The `config.pp` manifest is responsible for altering the configuration of `/etc/puppet/puppet.conf`. This is done via params which call [ini_file](https://github.com/puppetlabs/puppetlabs-inifile) resources to alter the related settings.
+
+#####*Parameters*
+  * **puppet_server**: (*string* Default: `puppet`)
+
+    The hostname or fqdn of the puppet server we should connect to.
+
+  * **environment** (*string* Default: `production`)
+
+    The puppet environment the node in question should be set to use.
+
+  * **runinterval** (*string* Default: `30m`)
+
+    Dictates the value of the runinterval setting in puppet.conf.
+
+  * **structured_facts** ( *bool* Default: `false`)
+
+    Sets whether or not to enable [structured_facts](http://docs.puppetlabs.com/facter/2.0/fact_overview.html) by setting the [stringify_facts](http://docs.puppetlabs.com/references/3.6.latest/configuration.html#stringifyfacts) variable in puppet.conf.
+
+    **It is important to note that this boolean operates in reverse.** Setting stringify_facts to **false** is required to **permit** structured facts. This is why this parameter does not directly correlate with the configuration key.
+----
+
+####[Public] Defined Type: **puppet::fact** [puppetfactdefine]
+#####*Description*
+
+  This defined type provides a mechanism to lay down fact files in `/etc/facter/facts.d/`
+  The title of the declared resource will dictate the name of the `factname.yaml` file laid down, as well as the keyname, and thus, the fact name.
+
+#####*Parameters*
+  * **ensure** (*string* Default: `present`)
+
+  Sets the ensure parameter's value on the file resource laid down.
+
+  * **value** (*string* **No Default**)
+
+  Sets the value of the specified custom fact.
+
+----
+
+####[Private] Class: **puppet::facts** [puppetfactsclass]
+#####*Description*
+
+  The `facts.pp` manifest is responsible for ensuring that `/etc/facter` and `/etc/facter/facts.d` are present on the local system. It is additionally responsible for populating `/etc/facter/facts.d/local.yaml` with the Key/Value pairs declared in `puppet::facts::custom_facts`
+
+#####*Parameters*
+  * **custom_facts** (*hash* Default: `undef`)
+
+  This is a hash of custom facts. For each element in the hash, the key will be the fact name, and the value will, unsurprisingly, be the fact's value.
+
+----
+
+####[Private] Class: **puppet::install** [puppetinstallclass]
+
+#####*Description*
+
+  the `install.pp` manifest is responsible for the puppet agent, hiera, and facter packages.
+
+#####*Parameters*
+  * **facter_version** (*string* Default: `installed`)
+
+  The version of facter to install
+
+  * **hiera_version** (*string* Defaults: `installed`)
+
+  The version of hiera to install
+
+  * **puppet_version** (*string* Default: `installed`)
+
+  The version of puppet to install
+
+----
+
+
+####[Public] Class: **puppet::master** [puppetmasterclass]
+
+#####*Description*
+
+  The `master.pp` manifest is responsible for performing some input validation, and subsequently configuring a puppetmaster. This is done via the  [puppet::master::config][puppetmasterconfigclass], [pupppet::master::install][puppetmasterinstallclass], [puppet::master::hiera][puppetmasterhieraclass], and [puppet::master::passenger][puppetmasterpassengerclass] manifests.
+#####*Parameters*
+  * **autosign** (*bool* Default: `false`)
+
+  Whether or not to enable autosign.
+
+  * **env_owner** (*string* Default: `puppet`)
+
+  The user which should own hieradata and r10k repos
+
+  * **environmentpath** (*absolute path* Default: `/etc/puppet/environments`)
+
+  The base directory path to have environments checked out into.
+
+  * **eyaml_keys** (*bool* Default: `false`)
+
+  Toggle whether or not to deploy [eyaml](https://github.com/TomPoulton/hiera-eyaml) keys
+
+
+  * **future_parser** (*bool* Default: `false`)
+  Toggle to dictate whether or not to enable the [future parser](http://docs.puppetlabs.com/puppet/latest/reference/experiments_future.html)
+
+  * **hiera_backends** (*hash* Default: `{'yaml' => { 'datadir' => '/etc/puppet/hiera/%{environment}',} }`)
+
+  The backends to configure hiera to query.
+
+  * **hiera_eyaml_version** (*string* Default: `installed`)
+
+  The version of the hiera-eyaml package to install. *It is important to note that the hiera-eyaml package will be installed via gem*
+
+  * **hiera_hierarchy** (*array* Default: `['node/%{::clientcert}', 'env/%{::environment}', 'global']`)
+
+  The hierarchy to configure hiera to use
+
+  * **hieradata_path** (*absolute path* Default: `/etc/puppet/hiera`)
+
+  The location to configure hiera to look for the hierarchy. This also impacts the [puppet::master::modules][puppetmastermodulesclass] module's deployment of your r10k hiera repo.
+
+  * **module_path** (*string* Default: '')
+
+  If this is set, it will be used to populate the basemodulepath parameter in `/etc/puppet/puppet.conf`. This does not impact [environment.conf](http://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html), which should live in your [r10k](https://github.com/adrienthebo/r10k) environment repo.
+
+  * **passenger_max_pool_size** (*string* Default: `12`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [max pool size](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerMaxPoolSize).
+
+  * **passenger_max_requests** (*string* Default: `0`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [max requests](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerMaxRequests).
+
+  * **passenger_pool_idle_time** (*string* Default: `1500`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [pool idle time](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerPoolIdleTime)
+
+  * **passenger_stat_throttle_rate** (*string* Default: `120`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [stat throttle rate](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#_passengerstatthrottlerate_lt_integer_gt)
+
+  * **pre_module_path** (*string* Default: '')
+
+  If set, this is prepended to the modulepath parameter *if it is set* and to a static modulepath list if modulepath is unspecified. *A colon separator will be appended to the end of this if needed*
+
+  * **puppet_fqdn** (*string* Default: `$::fqdn`)
+
+  Sets the namevar of the [apache::vhost](https://github.com/puppetlabs/puppetlabs-apache#defined-type-apachevhost) resource declared. It is also used to derive the `ssl_cert` and `ssl_key` parameters to the apache::vhost resource.
+
+  * **puppet_server** (*string* Default: `$puppet::params::puppet_server`)
+
+  Changing this does not appear to do anything.
+
+  * **puppet_version** (*string* Default: `installed`)
+
+  Specifies the version of the puppetmaster package to install
+
+  * **r10k_version** (*string* Default: `installed`)
+
+  Specifies the version of r10k to install. *It is important to note that the r10k package will be installed via gem*
+
+----
+
+####[Private] Class: **puppet::master::config** [puppetmasterconfigclass]
+#####*Description*
+  The `master/config.pp` manifest is responsible for managing the master-specific configuration settings of `puppet.conf`
+#####*Parameters*
+
+  * **environmentpath** (*absolute path* Default: `/etc/puppet/environments`)
+
+  The base directory path to have environments checked out into.
+
+  * **extra_module_path** (*string* Default: `${::settings::confdir}/site:/usr/share/puppet/modules`)
+
+  The derived value for the `basemodulepath` setting.
+
+  * **future_parser** (*bool* Default: `false`)
+
+  Toggle to dictate whether or not to enable the [future parser](http://docs.puppetlabs.com/puppet/latest/reference/experiments_future.html)
+
+  * **autosign** (*bool* Default: `false`)
+
+  Whether or not to enable autosign. *It is important to note that this autosign is currently hard coded to disabled in the production environment*
+
+----
+
+####[Private] Class: **puppet::master::hiera** [puppetmasterhieraclass]
+#####*Description*
+
+  The `master/hiera.pp` manifest is responsible for configuring hiera, optionally deploying eyaml encryption keys, and setting the ownership of the hieradata path.
+
+#####*Parameters*
+
+  * **env_owner** (*string* Default: `puppet`)
+
+  The user which should own hieradata and r10k repos
+
+  * **eyaml_keys** (*bool* Default: `false`)
+
+  Toggle whether or not to deploy [eyaml](https://github.com/TomPoulton/hiera-eyaml) keys
+
+  * **hiera_backends** (*hash* Default: `{'yaml' => { 'datadir' => '/etc/puppet/hiera/%{environment}',} }`)
+
+  The backends to configure hiera to query.
+
+  * **hieradata_path** (*absolute path* Default: `/etc/puppet/hiera`)
+
+  * **hierarchy** (*array* Default: `['node/%{::clientcert}', 'env/%{::environment}', 'global']`)
+
+----
+
+####[Private] Class: **puppet::master::install** [puppetmasterinstallclass]
+
+#####*Description*
+
+  The `master::install.pp` manifest is responsible for installing the packages required to configure a puppetmaster.
+
+#####*Parameters*
+
+  * **puppet_version** (*string* Default: `installed`)
+
+  Specifies the version of the **puppetmaster**, **puppetmaster-common**, and **puppetmaster-passenger** packages to install.
+
+  * **r10k_version** (*string* Default: `installed`)
+
+  Specifies the version of **r10k** to install.
+
+  * **hiera_eyaml_version** (*string* Default: `installed`)
+
+  Specifies the version of **hiera-eyaml** to install
+
+----
+
+####[Public] Class: **puppet::master::modules** [puppetmastermodulesclass]
+
+#####*Description*
+
+  The `master::minutes.pp` manifest configures [r10k](https://github.com/adrienthebo/r10k) and adds a cronjob to run r10k on a frequency of your choosing.
+
+#####*Parameters*
+
+  * **env_owner** (*string* Default: `puppet`)
+
+  The user which should own the directories on the master.
+
+  * **extra_env_repos** (*hash* Default: `undef`)
+
+  a hash of extra environment repos to pull down. These should be written with the modulename as the key, and the repo URI as the value to a `repo` subkey. The repos will be laid down inside the directory dictated by the `r10k_env_basedirs` param.
+
+  * **hiera_repo** (*string* Default: `undef`)
+
+  the URI of the hiera repo r10k should clone. This also uses the `hieradata_path` parameter set in [puppet::master][puppetmasterclass] to set the hiera source.
+
+  * **puppet_env_repo** (*string* Default: `undef`)
+
+  The URI of your r10k puppet environments repo. **It is important to note that the basedir for this repo is hardcoded to `/etc/puppet/environments`**
+
+  * **r10k_env_basedir** (*absolute path* Default: `/etc/puppet/r10kenv`)
+
+  The base directory to check out extra r10k repos into.
+
+  * **r10k_minutes** (*string or array* Default: `[0, 15, 30, 45]`)
+
+  This param is fed to the [cron](http://docs.puppetlabs.com/references/latest/type.html#cron) resource as the minute parameter. It can be a string, or an array.
+
+  * **r10k_purgedirs** (*bool* Default: `true`)
+
+  Whether or not to tell r10k to purge the directories it checks files out into
+
+  * **r10k_update** (*bool* Default: `true`)
+
+  Whether or not the r10k cronjob should be present.
+
+----
+
+####[Private] Class: **puppet::master::passenger** [puppetmasterpassengerclass]
+
+#####*Description*
+
+  The `master/passenger.pp` manifest is responsible for instantiating the apache class, creating the apache vhost, and configuring passenger.
+
+  On Trusty, We need to be able to set SSLCARevocationCheck in apache 2.4+ to enable revocation checks for client certs. According to the [Official puppetlabs docs on passenger](http://docs.puppetlabs.com/guides/passenger.html):
+    Apache 2.4 introduces the SSLCARevocationCheck directive and sets it to none
+    which effectively disables CRL checking. If you are using Apache 2.4+ you must specify 'SSLCARevocationCheck chain' to actually use the CRL.
+
+#####*Parameters*
+
+  * **passenger_max_pool_size** (*string* Default: `12`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [max pool size](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerMaxPoolSize).
+
+  * **passenger_max_requests** (*string* Default: `0`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [max requests](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerMaxRequests).
+
+  * **passenger_pool_idle_time** (*string* Default: `1500`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [pool idle time](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerPoolIdleTime)
+
+  * **passenger_stat_throttle_rate** (*string* Default: `120`)
+
+  Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [stat throttle rate](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#_passengerstatthrottlerate_lt_integer_gt)
+
+ * **puppet_fqdn** (*string* Default: `$::fqdn`)
+
+  Sets the namevar of the [apache::vhost](https://github.com/puppetlabs/puppetlabs-apache#defined-type-apachevhost) resource declared. It is also used to derive the `ssl_cert` and `ssl_key` parameters to the apache::vhost resource.
+
+----
+
+####[Public] Class: **puppet::master::puppetdb** [puppetmasterpuppetdbclass]
+
+#####*Description*
+
+  The `master/puppetdb.pp` manifest properly instantiates the puppetdb module, so that puppetdb gets set up.
+
+#####*Parameters*
+
+  * **puppetdb_version** (** Default: ``)
+
+  The version of puppetdb to install.
+
+  * **node_purge_ttl (*string* Default: `0s`)
+
+  The length of time a node can be deactivated before it's deleted from the database. (a value of '0' disables purging).
+
+  * **node_ttl** (*string* Default: `0s`)
+
+  The length of time a node can go without receiving any new data before it's automatically deactivated. (defaults to '0', which disables auto-deactivation).
+
+  * **puppetdb_listen_address** (*string* Default: `127.0.0.1`)
+
+  The address that the web server should bind to for HTTP requests. Set to '0.0.0.0' to listen on all addresses.
+
+  * **puppetdb_server** (*string* Default: `puppet.${::domain}`)
+
+  The dns name or ip of the puppetdb server.
+
+  * **puppetdb_ssl_listen_address** (*string* Default: `127.0.0.1`)
+
+  The address that the web server should bind to for HTTPS requests. Set to '0.0.0.0' to listen on all addresses.
+
+  * **report_ttl** (*string* Default: `14d`)
+
+  The length of time reports should be stored before being deleted. (defaults to 14 days).
+
+  * **reports**  (*bool* Default: `true`)
+
+  A toggle to alter the behavior of reports and puppetdb.
+  If true, the module will properly set the 'reports' field in the puppet.conf file to enable the puppetdb report processor.
+
+  * **use_ssl** (*bool* Defaults: `true`)
+
+  A toggle to enable or disable ssl on puppetdb connections.
+
+
+----
+
+####[Private] Class: **puppet::repo** [puppetrepoclass]
+
+#####*Description*
+
+This module is responsible for optionally managing the presence of the puppetlabs package repositories.
+
+#####*Parameters*
+
+ * **devel_repo** (*bool* `false`)
+  A toggle to manage the ensure parameter value of the puppetlabs_devel repository
+
+----
 
 ####Class: `puppet::profile::agent`
 
@@ -239,7 +701,7 @@ Whether to enable the cron to run R10K to deploy the production environment. Def
 
 #####`r10k_minutes`
 
-Minutes to run the R10K cron. Default `0,`5,30,45`
+Minutes to run the R10K cron. Default `0,5,30,45`
 
 #####`puppetdb`
 

@@ -1,14 +1,38 @@
 # # Class puppet::master::modules
 
 class puppet::master::modules (
+  $env_owner        = $puppet::master::params::env_owner,
+  $extra_env_repos  = undef,
   $hiera_repo       = undef,
   $puppet_env_repo  = undef,
-  $extra_env_repos  = undef,
-  $r10k_purgedirs   = true,
-  $env_owner        = $puppet::master::params::env_owner,
   $r10k_env_basedir = $puppet::master::params::r10k_env_basedir,
+  $r10k_minutes     = $puppet::master::params::r10k_minutes,
+  $r10k_purgedirs   = true,
   $r10k_update      = $puppet::master::params::r10k_update,
-  $r10k_minutes     = $puppet::master::params::r10k_minutes) inherits puppet::master::params {
+) inherits puppet::master::params {
+  #input validation
+  validate_absolute_path($r10k_env_basedir)
+
+
+  validate_bool(
+    $r10k_purgedirs,
+    $r10k_update
+  )
+
+  validate_string($env_owner)
+
+  if $hiera_repo {
+    validate_string($hiera_repo)
+  }
+
+  if $puppet_env_repo {
+    validate_string($puppet_env_repo)
+  }
+
+  if $extra_env_repos {
+    validate_hash($extra_env_repos)
+  }
+
   # r10k setup
   file { '/var/cache/r10k':
     ensure  => directory,

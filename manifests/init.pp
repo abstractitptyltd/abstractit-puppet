@@ -1,14 +1,31 @@
 class puppet (
-  $enabled          = true,
-  $puppet_version   = 'installed',
-  $hiera_version    = 'installed',
-  $facter_version   = 'installed',
-  $structured_facts = false,
-  $runinterval      = $puppet::params::runinterval,
-  $puppet_server    = $puppet::params::puppet_server,
-  $environment      = $puppet::params::environment,
   $devel_repo       = $puppet::params::devel_repo,
-  $reports          = $puppet::params::reports) inherits puppet::params {
+  $enabled          = true,
+  $environment      = $puppet::params::environment,
+  $facter_version   = 'installed',
+  $hiera_version    = 'installed',
+  $puppet_server    = $puppet::params::puppet_server,
+  $puppet_version   = 'installed',
+  $reports          = $puppet::params::reports,
+  $runinterval      = $puppet::params::runinterval,
+  $structured_facts = false,) inherits puppet::params {
+  #input validation
+  validate_bool(
+    $devel_repo,
+    $enabled,
+    $reports,
+    $structured_facts,
+    )
+
+  validate_string(
+    $environment,
+    $facter_version,
+    $hiera_version,
+    $puppet_server,
+    $puppet_version,
+    $runinterval,
+  )
+
   $ensure = $enabled ? {
     default => 'running',
     false   => 'stopped',
