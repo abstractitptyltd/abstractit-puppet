@@ -2,14 +2,31 @@
 
 class puppet::master::puppetdb (
   $puppetdb_version,
-  $use_ssl                     = true,
-  $puppetdb_server             = $puppet::master::params::puppetdb_server,
-  $node_ttl                    = $puppet::master::params::node_ttl,
   $node_purge_ttl              = $puppet::master::params::node_purge_ttl,
+  $node_ttl                    = $puppet::master::params::node_ttl,
+  $puppetdb_listen_address     = $puppet::master::params::puppetdb_listen_address,
+  $puppetdb_server             = $puppet::master::params::puppetdb_server,
+  $puppetdb_ssl_listen_address = $puppet::master::params::puppetdb_ssl_listen_address,
   $report_ttl                  = $puppet::master::params::report_ttl,
   $reports                     = $puppet::master::params::reports,
-  $puppetdb_listen_address     = $puppet::master::params::puppetdb_listen_address,
-  $puppetdb_ssl_listen_address = $puppet::master::params::puppetdb_ssl_listen_address) inherits puppet::master::params {
+  $use_ssl                     = true,
+) inherits puppet::master::params {
+  #input validation
+  validate_bool(
+    $reports,
+    $use_ssl,
+  )
+
+  validate_string(
+    $node_purge_ttl,
+    $node_ttl,
+    $puppetdb_listen_address,
+    $puppetdb_server,
+    $puppetdb_ssl_listen_address,
+    $puppetdb_version,
+    $report_ttl,
+  )
+
   case $use_ssl {
     default : { $puppetdb_port = '8081' }
     false   : { $puppetdb_port = '8080' }

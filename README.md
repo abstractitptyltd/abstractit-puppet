@@ -74,10 +74,12 @@ It also only configures puppet 3.6.x. If you need support for previous versions 
 
 #### Module dependencies
 
-  * [apt](git@github.com:puppetlabs/puppetlabs-apt.git)
-  * [concat](git@github.com:puppetlabs/puppetlabs-concat.git) (master only)
-  * [inifile](git@github.com:puppetlabs/puppetlabs-inifile.git)
+  * [apt](https://github.com/puppetlabs/puppetlabs-apt)
+  * [concat](https://github.com/puppetlabs/puppetlabs-concat) (master only)
+  * [inifile](https://github.com/puppetlabs/puppetlabs-inifile)
   * [apache](https://github.com/puppetlabs/puppetlabs-apache) (master only)
+  * [postgres](https://github.com/puppetlabs/puppetlabs-postgresql) (when using the puppetdb subclass)
+  * [puppetdb](https://github.com/puppetlabs/puppetlabs-puppetdb) (when using the puppetdb subclass)
 
 ###Beginning with puppet
 
@@ -460,9 +462,51 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
-####[Private] Class: **puppet::master::puppetdb** [puppetmasterpuppetdbclass]
+####[Public] Class: **puppet::master::puppetdb** [puppetmasterpuppetdbclass]
+
 #####*Description*
+
+  The `master/puppetdb.pp` manifest properly instantiates the puppetdb module, so that puppetdb gets set up.
+
 #####*Parameters*
+
+  * **puppetdb_version** (** Default: ``)
+
+  The version of puppetdb to install.
+
+  * **node_purge_ttl (*string* Default: `0s`)
+
+  The length of time a node can be deactivated before it's deleted from the database. (a value of '0' disables purging).
+
+  * **node_ttl** (*string* Default: `0s`)
+
+  The length of time a node can go without receiving any new data before it's automatically deactivated. (defaults to '0', which disables auto-deactivation).
+
+  * **puppetdb_listen_address** (*string* Default: `127.0.0.1`)
+
+  The address that the web server should bind to for HTTP requests. Set to '0.0.0.0' to listen on all addresses.
+
+  * **puppetdb_server** (*string* Default: `puppet.${::domain}`)
+
+  The dns name or ip of the puppetdb server.
+
+  * **puppetdb_ssl_listen_address** (*string* Default: `127.0.0.1`)
+
+  The address that the web server should bind to for HTTPS requests. Set to '0.0.0.0' to listen on all addresses.
+
+  * **report_ttl** (*string* Default: `14d`)
+
+  The length of time reports should be stored before being deleted. (defaults to 14 days).
+
+  * **reports**  (*bool* Default: `true`)
+
+  A toggle to alter the behavior of reports and puppetdb.
+  If true, the module will properly set the 'reports' field in the puppet.conf file to enable the puppetdb report processor.
+
+  * **use_ssl** (*bool* Defaults: `true`)
+
+  A toggle to enable or disable ssl on puppetdb connections.
+
 
 ----
 
