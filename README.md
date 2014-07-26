@@ -95,9 +95,9 @@ The Class docs are a work in progress. I will detaile my two profile classes ini
 
 ----
 
-####[Public] *Class:* `puppet` [puppetclass]
+####[Public] *Class:* `puppet`
 #####*Description*
-The main `init.pp` manifest is responsible for validating some of our parameters, and instantiating the [puppet::repo][puppetrepoclass], [pupppet::install][puppetinstallclass], [puppet::config][puppetconfigclass], and [puppet::agent][puppetagentclass] manifests.
+The main `init.pp` manifest is responsible for validating some of our parameters, and instantiating the [puppet::facts](#private-class-puppetfacts), [puppet::repo](#private-class-puppetrepo), [pupppet::install](#private-class-puppetinstall), [puppet::config](#private-class-puppetconfig), and [puppet::agent](#public-class-puppetagent) manifests.
 #####*Parameters*
   * **devel_repo**: (*bool* Default: `false`)
 
@@ -118,6 +118,14 @@ The main `init.pp` manifest is responsible for validating some of our parameters
   * **hiera_version**: (*string* Default: `installed`)
 
     Declares the version of hiera to install.
+
+  * **manage_etc_facter** (*bool* Default: `true`)
+
+    Whether or not this module should manage the `/etc/facter` directory
+
+  * **manage_etc_facter_facts_d** (*bool* Default: `true`)
+
+    Whether or not this module should manage the `/etc/facter/facts.d` directory
 
   * **puppet_server**: (*string* Default: `puppet`)
 
@@ -143,7 +151,7 @@ The main `init.pp` manifest is responsible for validating some of our parameters
 
 ----
 
-####[Public] Class: **puppet::agent** [puppetagentclass]
+####[Public] Class: **puppet::agent**
 #####*Description*
 The `agent.pp` manifest is responsible for the enablement of the agent service.
 #####*Parameters*
@@ -157,7 +165,7 @@ The `agent.pp` manifest is responsible for the enablement of the agent service.
 
 ----
 
-####[Private] Class: **puppet::config** [puppetconfigclass]
+####[Private] Class: **puppet::config**
 #####*Description*
 The `config.pp` manifest is responsible for altering the configuration of `/etc/puppet/puppet.conf`. This is done via params which call [ini_file](https://github.com/puppetlabs/puppetlabs-inifile) resources to alter the related settings.
 
@@ -179,9 +187,10 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
     Sets whether or not to enable [structured_facts](http://docs.puppetlabs.com/facter/2.0/fact_overview.html) by setting the [stringify_facts](http://docs.puppetlabs.com/references/3.6.latest/configuration.html#stringifyfacts) variable in puppet.conf.
 
     **It is important to note that this boolean operates in reverse.** Setting stringify_facts to **false** is required to **permit** structured facts. This is why this parameter does not directly correlate with the configuration key.
+
 ----
 
-####[Public] Defined Type: **puppet::fact** [puppetfactdefine]
+####[Public] Defined Type: **puppet::fact**
 #####*Description*
 
   This defined type provides a mechanism to lay down fact files in `/etc/facter/facts.d/`
@@ -198,7 +207,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
-####[Private] Class: **puppet::facts** [puppetfactsclass]
+####[Private] Class: **puppet::facts**
 #####*Description*
 
   The `facts.pp` manifest is responsible for ensuring that `/etc/facter` and `/etc/facter/facts.d` are present on the local system. It is additionally responsible for populating `/etc/facter/facts.d/local.yaml` with the Key/Value pairs declared in `puppet::facts::custom_facts`
@@ -210,7 +219,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
-####[Private] Class: **puppet::install** [puppetinstallclass]
+####[Private] Class: **puppet::install**
 
 #####*Description*
 
@@ -232,11 +241,16 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 ----
 
 
-####[Public] Class: **puppet::master** [puppetmasterclass]
+####[Public] Class: **puppet::master**
 
 #####*Description*
 
-  The `master.pp` manifest is responsible for performing some input validation, and subsequently configuring a puppetmaster. This is done via the  [puppet::master::config][puppetmasterconfigclass], [pupppet::master::install][puppetmasterinstallclass], [puppet::master::hiera][puppetmasterhieraclass], and [puppet::master::passenger][puppetmasterpassengerclass] manifests.
+  The `master.pp` manifest is responsible for performing some input validation, and subsequently configuring a puppetmaster. This is done internally via the  [puppet::master::config](#private-class-puppetmasterconfig), [puppet::master::hiera](#private-class-puppetmasterhiera), [pupppet::master::install](#private-class-puppetmasterinstall), and [puppet::master::passenger](#private-class-puppetmasterpassenger) manifests.
+
+  * Puppetdb may be configured via the [puppet::master::puppetdb](#public-class-puppetmasterpuppetdb) class
+
+  * r10k may be configured via the [puppet::master::modules](#public-class-puppetmastermodules) class
+
 #####*Parameters*
   * **autosign** (*bool* Default: `false`)
 
@@ -272,7 +286,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
   * **hieradata_path** (*absolute path* Default: `/etc/puppet/hiera`)
 
-  The location to configure hiera to look for the hierarchy. This also impacts the [puppet::master::modules][puppetmastermodulesclass] module's deployment of your r10k hiera repo.
+  The location to configure hiera to look for the hierarchy. This also impacts the [puppet::master::modules](#public-class-puppetmastermodules) module's deployment of your r10k hiera repo.
 
   * **module_path** (*string* Default: '')
 
@@ -316,7 +330,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
-####[Private] Class: **puppet::master::config** [puppetmasterconfigclass]
+####[Private] Class: **puppet::master::config**
 #####*Description*
   The `master/config.pp` manifest is responsible for managing the master-specific configuration settings of `puppet.conf`
 #####*Parameters*
@@ -339,7 +353,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
-####[Private] Class: **puppet::master::hiera** [puppetmasterhieraclass]
+####[Private] Class: **puppet::master::hiera**
 #####*Description*
 
   The `master/hiera.pp` manifest is responsible for configuring hiera, optionally deploying eyaml encryption keys, and setting the ownership of the hieradata path.
@@ -364,7 +378,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
-####[Private] Class: **puppet::master::install** [puppetmasterinstallclass]
+####[Private] Class: **puppet::master::install**
 
 #####*Description*
 
@@ -386,11 +400,11 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
-####[Public] Class: **puppet::master::modules** [puppetmastermodulesclass]
+####[Public] Class: **puppet::master::modules**
 
 #####*Description*
 
-  The `master::minutes.pp` manifest configures [r10k](https://github.com/adrienthebo/r10k) and adds a cronjob to run r10k on a frequency of your choosing.
+  The `master::modules.pp` manifest configures [r10k](https://github.com/adrienthebo/r10k) and adds a cronjob to run r10k on a frequency of your choosing.
 
 #####*Parameters*
 
@@ -404,7 +418,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
   * **hiera_repo** (*string* Default: `undef`)
 
-  the URI of the hiera repo r10k should clone. This also uses the `hieradata_path` parameter set in [puppet::master][puppetmasterclass] to set the hiera source.
+  the URI of the hiera repo r10k should clone. This also uses the `hieradata_path` parameter set in [puppet::master](#public-class-puppetmaster) to set the hiera source.
 
   * **puppet_env_repo** (*string* Default: `undef`)
 
@@ -428,7 +442,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
-####[Private] Class: **puppet::master::passenger** [puppetmasterpassengerclass]
+####[Private] Class: **puppet::master::passenger**
 
 #####*Description*
 
@@ -462,7 +476,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
-####[Public] Class: **puppet::master::puppetdb** [puppetmasterpuppetdbclass]
+####[Public] Class: **puppet::master::puppetdb**
 
 #####*Description*
 
@@ -510,7 +524,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 ----
 
-####[Private] Class: **puppet::repo** [puppetrepoclass]
+####[Private] Class: **puppet::repo**
 
 #####*Description*
 
@@ -522,6 +536,9 @@ This module is responsible for optionally managing the presence of the puppetlab
   A toggle to manage the ensure parameter value of the puppetlabs_devel repository
 
 ----
+
+
+
 
 ####Class: `puppet::profile::agent`
 
