@@ -7,10 +7,12 @@
 
 class puppet::facts (
   $custom_facts = undef) inherits puppet::params {
+  include ::puppet
+
   if $custom_facts {
     validate_hash($custom_facts)
   }
-  if !defined(File['/etc/facter']) {
+  if $::puppet::manage_etc_facter {
     file { '/etc/facter':
       ensure => directory,
       owner  => 'root',
@@ -19,7 +21,7 @@ class puppet::facts (
     }
   }
 
-  if !defined(File['/etc/facter/facts.d']) {
+  if $::puppet::manage_etc_facter_facts_d {
     file { '/etc/facter/facts.d':
       ensure => directory,
       owner  => 'root',

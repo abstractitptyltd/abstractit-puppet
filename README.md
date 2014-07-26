@@ -121,6 +121,14 @@ The main `init.pp` manifest is responsible for validating some of our parameters
 
     Declares the version of hiera to install.
 
+  * **manage_etc_facter** (*bool* Default: `true`)
+
+    Whether or not this module should manage the `/etc/facter` directory
+
+  * **manage_etc_facter_facts_d** (*bool* Default: `true`)
+
+    Whether or not this module should manage the `/etc/facter/facts.d` directory
+
   * **puppet_server**: (*string* Default: `puppet`)
 
     The hostname or fqdn of the puppet server that the agent should communicate with.

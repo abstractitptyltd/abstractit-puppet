@@ -1,18 +1,22 @@
 class puppet (
-  $devel_repo       = $puppet::params::devel_repo,
-  $enabled          = true,
-  $environment      = $puppet::params::environment,
-  $facter_version   = 'installed',
-  $hiera_version    = 'installed',
-  $puppet_server    = $puppet::params::puppet_server,
-  $puppet_version   = 'installed',
-  $reports          = $puppet::params::reports,
-  $runinterval      = $puppet::params::runinterval,
-  $structured_facts = false,) inherits puppet::params {
+  $devel_repo                = $puppet::params::devel_repo,
+  $enabled                   = true,
+  $environment               = $puppet::params::environment,
+  $facter_version            = 'installed',
+  $hiera_version             = 'installed',
+  $manage_etc_facter         = true,
+  $manage_etc_facter_facts_d = true,
+  $puppet_server             = $puppet::params::puppet_server,
+  $puppet_version            = 'installed',
+  $reports                   = $puppet::params::reports,
+  $runinterval               = $puppet::params::runinterval,
+  $structured_facts          = false,) inherits puppet::params {
   #input validation
   validate_bool(
     $devel_repo,
     $enabled,
+    $manage_etc_facter,
+    $manage_etc_facter_facts_d,
     $reports,
     $structured_facts,
     )
@@ -53,5 +57,5 @@ class puppet (
     ensure => $ensure,
     enable => $enable,
   }
-
+  include puppet::facts
 }
