@@ -25,7 +25,7 @@ describe 'puppet', :type => :class do
 #      end
 #    end#arrays
 
-    ['devel_repo','enabled','reports','structured_facts'].each do |bools|
+    ['devel_repo','enabled','manage_etc_facter','manage_etc_facter_facts_d', 'reports','structured_facts'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
         let (:params) {{bools => "BOGON"}}
         it 'should fail' do
@@ -76,6 +76,9 @@ describe 'puppet', :type => :class do
       end
       it 'should instantiate the puppet::agent class with the default params' do
         should contain_class('puppet::agent').with({'ensure' => 'running', 'enable' => true})
+      end
+      it 'should instantiate the puppet::facts class' do
+        should contain_class('puppet::facts')
       end
     end#no params
     context 'when the devel_repo param is true' do

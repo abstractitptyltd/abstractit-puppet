@@ -3,6 +3,13 @@ require 'spec_helper'
 require 'pry'
 
 describe 'puppet::facts', :type => :class do
+      let (:facts) {{
+        'clientcert'  => 'my.client.cert',
+        'fqdn'        => 'my.fq.hostname',
+        'osfamily'    => 'Debian',
+        'lsbdistid'   => 'Ubuntu',
+        'lsbdistcodename' => 'trusty',
+        }}
   context 'input validation' do
 
 #    ['path'].each do |paths|
@@ -57,6 +64,8 @@ describe 'puppet::facts', :type => :class do
         'clientcert'  => 'my.client.cert',
         'fqdn'        => 'my.fq.hostname',
         'osfamily'    => osfam,
+        'lsbdistid'   => 'Ubuntu',
+        'lsbdistcodename' => 'trusty',
         }}
       context 'when fed no parameters' do
         it 'should manage the facts directories' do
@@ -84,6 +93,18 @@ describe 'puppet::facts', :type => :class do
           )
         end
       end#no params
+      context 'when ::puppet::manage_etc_facter is false' do
+        let (:pre_condition){"class{'puppet': manage_etc_facter => false}"}
+        it 'should not try to lay down the directory' do
+          should_not contain_file('/etc/facter')
+        end
+      end
+      context 'when ::puppet::manage_etc_facter_facts_d is false' do
+        let (:pre_condition){"class{'puppet': manage_etc_facter_facts_d => false}"}
+        it 'should not try to lay down the directory' do
+          should_not contain_file('/etc/facter/facts.d')
+        end
+      end
       context 'when the custom_facts parameter is properly set' do
         let (:params) {{'custom_facts' => {'key1' => 'val1', 'key2' => 'val2'}}}
         it 'should iterate through the hash and properly populate the local_facts.yaml file' do
