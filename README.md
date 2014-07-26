@@ -1,5 +1,7 @@
 #abstractit-puppet
 
+[![Build Status](https://travis-ci.org/abstractitptyltd/abstractit-puppet.svg?branch=production)](https://travis-ci.org/abstractitptyltd/abstractit-puppet)
+
 ####Table of Contents
 
 1. [Overview](#overview)
@@ -731,7 +733,8 @@ Other operating systems and puppet versions will be added when I get the time to
 
 ##Development
 
-All development and testing is done by me (rendhalver) for Abstract IT and it's clients.
+Development and testing team consists of @rendhalver and @wolfspyre.
+The module gets extensive testing in Abstract IT and it's clients environments.
 Pull requests are welcome.
 
 ##Release Notes/Contributors/Etc

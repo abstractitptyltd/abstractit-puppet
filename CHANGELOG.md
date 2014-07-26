@@ -1,16 +1,21 @@
-## 2014-07-21 - Pete Brown <pete@abstractit.com.au> 1.7.3
+## 2014-07-26 - Pete Brown <pete@abstractit.com.au> 1.7.4
 ### Summary
-  puppetlabs/inifile version was set to 1.2.2 which doesn't even exist
-  fixed this.
+  Added spec tests courtesy of @wolfspyre
+  Variable validitation and type checking courtesy of @wolfspyre
+  Documentation improvements @wolfspyre
+  Added operatingsystem_support and requirements to metadata.json @rendhalver
 
 ####Bugfixes
-- fixed dependency for inifile to use the right version
+- none this time
 
 ####Known bugs
 * No known bugs. Please let us know if you find any.
 
 ---
-## 2014-07-08 - Pete Brown <pete@abstractit.com.au> 1.7.2
+##### 2014-07-21 - Pete Brown <pete@abstractit.com.au> 1.7.3
+ * [fix] fixed dependency for inifile to use the right version
+
+##### 2014-07-08 - Pete Brown <pete@abstractit.com.au> 1.7.2
  * Added option for setting runinterval on agent (default 30m)
  * [fix] add missing -p flag to r10k cron
  
