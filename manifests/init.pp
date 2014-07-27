@@ -1,6 +1,9 @@
 class puppet (
+  $agent_cron_hour           = '*',
+  $agent_cron_min            = 'two_times_an_hour',
   $devel_repo                = $puppet::params::devel_repo,
   $enabled                   = true,
+  $enable_mechanism          = 'service',
   $environment               = $puppet::params::environment,
   $facter_version            = 'installed',
   $hiera_version             = 'installed',
@@ -19,7 +22,7 @@ class puppet (
     $manage_etc_facter_facts_d,
     $reports,
     $structured_facts,
-    )
+  )
 
   validate_string(
     $environment,
@@ -29,16 +32,37 @@ class puppet (
     $puppet_version,
     $runinterval,
   )
+  $supported_mechanisms = ['service', 'cron']
+  validate_re($enable_mechanism, $supported_mechanisms)
 
-  $ensure = $enabled ? {
-    default => 'running',
-    false   => 'stopped',
-  }
-  $enable = $enabled ? {
-    default => true,
-    false   => false,
+  if $enable_mechanism == 'cron' {
+    #no point in generating this unless we're using it
+    case $agent_cron_min {
+      #provide a co
+      'two_times_an_hour': {
+        $min=fqdn_rand(29)
+        $min_2=$min + 30
+        $agent_cron_min_interpolated = [ $min, $min_2 ]
+      }
+    'four_times_an_hour': {
+        $min=fqdn_rand(14)
+        $min_2=$min + 15
+        $min_3=$min + 30
+        $min_4=$min + 45
+        $agent_cron_min_interpolated = [$min, $min_2, $min_3, $min_4 ]
+      }
+      default: {
+        #the variable is populated. feed that to the cronjob
+        $agent_cron_min_interpolated = $agent_cron_min
+      }
+    }
+    #tooling in case we want to provide similar human_readable behaviors to
+    #cron_hour
+    $agent_cron_hour_interpolated = $agent_cron_hour
   }
 
+  include ::puppet::agent
+  include ::puppet::facts
   class { 'puppet::repo':
     devel_repo => $devel_repo,
   } ->
@@ -53,9 +77,5 @@ class puppet (
     runinterval      => $runinterval,
     structured_facts => $structured_facts,
   } ~>
-  class { 'puppet::agent':
-    ensure => $ensure,
-    enable => $enable,
-  }
-  include puppet::facts
+  Class['puppet::agent']
 }
