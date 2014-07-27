@@ -5,7 +5,7 @@ require 'pry'
 describe 'puppet', :type => :class do
 
   context 'input validation' do
-    let (:facts){{'lsbdistid' => 'Debian', 'lsbdistid' => 'Debian', 'lsbdistcodename' => 'trusty'}}
+    let (:facts){{'lsbdistid' => 'Debian', 'lsbdistcodename' => 'trusty'}}
 
 #    ['path'].each do |paths|
 #      context "when the #{paths} parameter is not an absolute path" do
@@ -43,6 +43,16 @@ describe 'puppet', :type => :class do
 #      end
 #    end#hashes
 
+    ['enable_mechanism'].each do |regex|
+      context "when #{regex} has an unsupported value" do
+        let (:params) {{regex => 'BOGON'}}
+        it 'should fail' do
+          expect { subject }.to raise_error(Puppet::Error, /"BOGON" does not match/)
+        end
+      end
+    end#regexes
+
+
     ['environment','facter_version','hiera_version','puppet_server','puppet_version','runinterval',].each do |strings|
       context "when the #{strings} parameter is not a string" do
         let (:params) {{strings => false }}
@@ -74,8 +84,8 @@ describe 'puppet', :type => :class do
          'structured_facts'=>false,
         }).that_notifies('class[Puppet::Agent]')
       end
-      it 'should instantiate the puppet::agent class with the default params' do
-        should contain_class('puppet::agent').with({'ensure' => 'running', 'enable' => true})
+      it 'should instantiate the puppet::agent class' do
+        should contain_class('puppet::agent')
       end
       it 'should instantiate the puppet::facts class' do
         should contain_class('puppet::facts')
@@ -89,8 +99,8 @@ describe 'puppet', :type => :class do
     end#devel_repo
     context 'when the enabled param is false' do
       let (:params){{'enabled' => false}}
-      it 'should instantiate the puppet::agent class apropriately' do
-        should contain_class('puppet::agent').with({'ensure' => 'stopped', 'enable' => false})
+      it 'should instantiate the puppet::agent class' do
+        should contain_class('puppet::agent')
       end
     end#enabled
     context 'when the environment param is set' do
