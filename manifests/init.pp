@@ -1,4 +1,6 @@
 class puppet (
+  $agent_cron_hour           = '*',
+  $agent_cron_min            = 'two_times_an_hour',
   $devel_repo                = $puppet::params::devel_repo,
   $enabled                   = true,
   $enable_devel_repo         = false,
