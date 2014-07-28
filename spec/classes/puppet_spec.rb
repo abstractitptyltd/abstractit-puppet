@@ -25,7 +25,7 @@ describe 'puppet', :type => :class do
 #      end
 #    end#arrays
 
-    ['devel_repo','enabled','manage_etc_facter','manage_etc_facter_facts_d', 'reports','structured_facts'].each do |bools|
+    ['devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','structured_facts'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
         let (:params) {{bools => "BOGON"}}
         it 'should fail' do
@@ -67,7 +67,7 @@ describe 'puppet', :type => :class do
     let (:facts) {{'osfamily' => 'Debian', 'lsbdistid' => 'Debian', 'lsbdistcodename' => 'trusty'}}
     context 'when fed no parameters' do
       it 'should instantiate the puppet::repo class with the default params' do
-        should contain_class('puppet::repo').with({ 'devel_repo' => false})
+        should contain_class('puppet::repo')
       end
       it 'should instantiate the puppet::install class with the default params' do
         should contain_class('puppet::install').with({
@@ -94,7 +94,7 @@ describe 'puppet', :type => :class do
     context 'when the devel_repo param is true' do
       let (:params){{'devel_repo' => true}}
       it 'should instantiate the puppet::repo class apropriately' do
-        should contain_class('puppet::repo').with({ 'devel_repo' => true})
+        should contain_class('puppet::repo')
       end
     end#devel_repo
     context 'when the enabled param is false' do

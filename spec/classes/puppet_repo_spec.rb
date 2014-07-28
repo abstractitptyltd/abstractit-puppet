@@ -23,14 +23,14 @@ describe 'puppet::repo', :type => :class do
 #      end
 #    end#arrays
 
-    ['devel_repo'].each do |bools|
-      context "when the #{bools} parameter is not an boolean" do
-        let (:params) {{bools => "BOGON"}}
-        it 'should fail' do
-          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
-        end
-      end
-    end#bools
+#    ['bools'].each do |bools|
+#      context "when the #{bools} parameter is not an boolean" do
+#        let (:params) {{bools => "BOGON"}}
+#        it 'should fail' do
+#          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
+#        end
+#      end
+#    end#bools
 
 #    ['hash'].each do |hashes|
 #      context "when the #{hashes} parameter is not an hash" do
@@ -70,61 +70,10 @@ describe 'puppet::repo', :type => :class do
 #    end#opt_strings
 
   end#input validation
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
-      let (:facts) {{'osfamily' => osfam, 'operatingsystem' => 'Ubuntu', 'lsbdistid' => 'Ubuntu', 'lsbdistcodename' => 'trusty'}}
-      context 'when fed no parameters' do
-        it 'should add the puppetlabs apt source' do
-          should contain_apt__source('puppetlabs').with({
-           :name=>"puppetlabs",
-           :location=>"http://apt.puppetlabs.com",
-           :repos=>"main dependencies",
-           :key=>"4BD6EC30",
-           :key_server=>"pgp.mit.edu",
-           :comment=>"puppetlabs",
-           :ensure=>"present",
-           :release=>"UNDEF",
-           :include_src=>true,
-           :required_packages=>false,
-           :pin=>false
-          })
-        end
-        it 'should remove the puppetlabs_devel apt source' do
-          should contain_apt__source('puppetlabs_devel').with({
-            :name=>"puppetlabs_devel",
-            :ensure=>"absent",
-            :location=>"http://apt.puppetlabs.com",
-            :repos=>"devel",
-            :key=>"4BD6EC30",
-            :key_server=>"pgp.mit.edu",
-            :comment=>"puppetlabs_devel",
-            :release=>"UNDEF",
-            :include_src=>true,
-            :required_packages=>false,
-            :pin=>false
-          })
-        end
-      end#no params
-
-      context 'when devel_repo is true' do
-        let (:params){{'devel_repo' => true}}
-        it 'should add the puppetlabs_devel apt source' do
-          should contain_apt__source('puppetlabs_devel').with({
-            :name=>"puppetlabs_devel",
-            :ensure=>"present",
-            :location=>"http://apt.puppetlabs.com",
-            :repos=>"devel",
-            :key=>"4BD6EC30",
-            :key_server=>"pgp.mit.edu",
-            :comment=>"puppetlabs_devel",
-            :release=>"UNDEF",
-            :include_src=>true,
-            :required_packages=>false,
-            :pin=>false
-          })
-        end
-      end#end devel_repo
-
+  context "When on a Debian system" do
+    let (:facts) {{'osfamily' => 'Debian', 'operatingsystem' => 'Ubuntu', 'lsbdistid' => 'Ubuntu', 'lsbdistcodename' => 'trusty'}}
+    it 'should contain the apt subclass' do
+      should contain_class('puppet::repo::apt')
     end
   end
 end
