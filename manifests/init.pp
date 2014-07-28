@@ -3,12 +3,15 @@ class puppet (
   $agent_cron_min            = 'two_times_an_hour',
   $devel_repo                = $puppet::params::devel_repo,
   $enabled                   = true,
+  $enable_devel_repo         = false,
   $enable_mechanism          = 'service',
+  $enable_repo               = true,
   $environment               = $puppet::params::environment,
   $facter_version            = 'installed',
   $hiera_version             = 'installed',
   $manage_etc_facter         = true,
   $manage_etc_facter_facts_d = true,
+  $manage_repos              = true,
   $puppet_server             = $puppet::params::puppet_server,
   $puppet_version            = 'installed',
   $reports                   = $puppet::params::reports,
@@ -18,8 +21,10 @@ class puppet (
   validate_bool(
     $devel_repo,
     $enabled,
+    $enable_repo,
     $manage_etc_facter,
     $manage_etc_facter_facts_d,
+    $manage_repos,
     $reports,
     $structured_facts,
   )
@@ -60,12 +65,27 @@ class puppet (
     #cron_hour
     $agent_cron_hour_interpolated = $agent_cron_hour
   }
+  $enable = $enabled ? {
+    default => true,
+    false   => false,
+  }
 
+  if $manage_repos {
+    #only manage this if we're managing repos
+    if $devel_repo {
+      $enable_devel_repo_interpolated = true
+    } else {
+      if $enable_devel_repo {
+        $enable_devel_repo_interpolated = true
+      } else {
+        $enable_devel_repo_interpolated = false
+      }
+    }
+    include ::puppet::repo
+    Class['::puppet::repo'] -> Class['::puppet::install']
+  }
   include ::puppet::agent
   include ::puppet::facts
-  class { 'puppet::repo':
-    devel_repo => $devel_repo,
-  } ->
   class { 'puppet::install':
     puppet_version => $puppet_version,
     hiera_version  => $hiera_version,

@@ -126,6 +126,16 @@ The main `init.pp` manifest is responsible for validating some of our parameters
 
     Used to determine if the puppet agent should be running
 
+  * **enable_devel_repo**: (*bool* Default: `false`)
+
+    This param will replace `devel_repo` in 2.x. It conveys to [puppet::repo::apt](#private-class-puppetrepoapt) whether or not to add the devel apt repo source.
+    When `devel_repo` is false, `enable_devel_repo` is consulted for enablement. This gives `devel_repo` backwards compatability at the cost of some confusion if you set `devel_repo` to true, and `enable_devel_repo` to false.
+
+
+  * **enable_repo**: (*bool* Default `true`)
+
+    if `manage_repos` is true, this determines whether or not the puppetlabs' repository should be present. *This is not consulted in any way if `manage_repos` is false*
+
   * **enable_mechanism**: (*string* Default: `service`)
 
     A toggle which permits the option of running puppet as a service, or as a cron job.
@@ -149,6 +159,10 @@ The main `init.pp` manifest is responsible for validating some of our parameters
   * **manage_etc_facter_facts_d** (*bool* Default: `true`)
 
     Whether or not this module should manage the `/etc/facter/facts.d` directory
+
+  * **manage_repos**: (*bool* Default `true`)
+
+    Whether or not we pay any attention to managing repositories. This is managed by only including [puppet::repo](#private-class-puppetrepo) subclass when true. The individual repo subclasses also will perform no action if included with this param set to false.
 
   * **puppet_server**: (*string* Default: `puppet`)
 
@@ -545,12 +559,21 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
 #####*Description*
 
-This module is responsible for optionally managing the presence of the puppetlabs package repositories.
+This module is responsible for including the proper package repository subclass. This is done based on the osfamily fact.
+
+  * None
+
+----
+
+####[Private] Class: **puppet::repo::apt**
+
+#####*Description*
+
+This module is responsible for optionally managing the presence of the puppetlabs apt repositories. It consults the [$::puppet::manage_repos](#public-class-puppet) param to decide if it should perform any action. If it should, it references [$::puppet::enable_repo](#public-class-puppet)
 
 #####*Parameters*
 
- * **devel_repo**: (*bool* `false`)
-  A toggle to manage the ensure parameter value of the puppetlabs_devel repository
+ * None
 
 ----
 
