@@ -2,10 +2,13 @@
 # config for puppet agent
 
 class puppet::config (
-  $puppet_server    = $puppet::params::puppet_server,
-  $environment      = $puppet::params::environment,
-  $runinterval      = $puppet::params::runinterval,
-  $structured_facts = false) inherits puppet::params {
+) {
+  include ::puppet
+  $puppet_server    = $::puppet::puppet_server
+  $environment      = $::puppet::environment
+  $runinterval      = $::puppet::runinterval
+  $structured_facts = $::puppet::structured_facts
+
   validate_string(
     $environment,
     $puppet_server,
