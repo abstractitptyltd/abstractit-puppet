@@ -25,7 +25,8 @@ class puppet::master::passenger (
 
   if ($::lsbdistcodename == 'trusty') {
     ::apache::mod { 'access_compat': package_ensure => undef, }
-    $custom_fragment = "  SSLCARevocationCheck chain\n  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd"
+    #FIXME: remove PassengerRoot setting when this fix gets released into upstream module
+    $custom_fragment = "  SSLCARevocationCheck chain\n  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd\n PassengerRoot /usr/lib/ruby/vendor_ruby/phusion_passenger/locations.ini"
   } else {
     $custom_fragment = '  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd'
   }
