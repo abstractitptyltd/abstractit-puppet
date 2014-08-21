@@ -25,9 +25,9 @@ class puppet::master::passenger (
 
   if ($::lsbdistcodename == 'trusty') {
     ::apache::mod { 'access_compat': package_ensure => undef, }
-    $custom_fragment = "  SSLCARevocationCheck chain\n  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd\n  PassengerRoot /usr/lib/passenger"
+    $custom_fragment = "  SSLCARevocationCheck chain\n  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd"
   } else {
-    $custom_fragment = "  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd\n  PassengerRoot /usr/lib/passenger"
+    $custom_fragment = '  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd'
   }
 
   # passenger settings
