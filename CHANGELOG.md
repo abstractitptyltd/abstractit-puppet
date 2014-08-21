@@ -1,10 +1,10 @@
 ## 2014-08-21 - Pete Brown <pete@abstractit.com.au> 1.7.5
 ### Summary
   Bugfix release for issue 25
-  This should add support for Ubuntu Trusty
+  This adds support for Ubuntu Trusty
 
 ####Bugfixes
-- remove PassengerRoot and let apache module set it.
+- set PassengerRoot properly on Ubuntu trusty. @rendhalver
 
 ####Known bugs
 * No known bugs. Please let us know if you find any.
