@@ -88,15 +88,8 @@ class puppet (
   include ::puppet::agent
   include ::puppet::facts
   class { 'puppet::install':
-    puppet_version => $puppet_version,
-    hiera_version  => $hiera_version,
-    facter_version => $facter_version,
   } ->
   class { 'puppet::config':
-    puppet_server    => $puppet_server,
-    environment      => $environment,
-    runinterval      => $runinterval,
-    structured_facts => $structured_facts,
   } ~>
   Class['puppet::agent']
 }
