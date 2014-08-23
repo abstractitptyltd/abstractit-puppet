@@ -1,15 +1,19 @@
 # # Class puppet::master::modules
 
 class puppet::master::modules (
-  $env_owner        = $puppet::master::params::env_owner,
+  $env_owner        = 'puppet',
   $extra_env_repos  = undef,
   $hiera_repo       = undef,
   $puppet_env_repo  = undef,
-  $r10k_env_basedir = $puppet::master::params::r10k_env_basedir,
-  $r10k_minutes     = $puppet::master::params::r10k_minutes,
+  $r10k_env_basedir = '/etc/puppet/r10kenv',
+  $r10k_minutes     = [
+    0,
+    15,
+    30,
+    45],
   $r10k_purgedirs   = true,
-  $r10k_update      = $puppet::master::params::r10k_update,
-) inherits puppet::master::params {
+  $r10k_update      = true,
+) {
   #input validation
   validate_absolute_path($r10k_env_basedir)
 

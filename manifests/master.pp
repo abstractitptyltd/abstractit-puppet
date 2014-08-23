@@ -1,24 +1,31 @@
 class puppet::master (
-  $autosign                     = $puppet::master::params::autosign,
-  $env_owner                    = $puppet::master::params::env_owner,
-  $environmentpath              = $puppet::master::params::environmentpath,
-  $eyaml_keys                   = false,
-  $future_parser                = $puppet::master::params::future_parser,
-  $hiera_backends               = $puppet::master::params::hiera_backends,
   $hiera_eyaml_version          = 'installed',
-  $hiera_hierarchy              = $puppet::master::params::hiera_hierarchy,
-  $hieradata_path               = $puppet::master::params::hieradata_path,
-  $module_path                  = '',
-  $passenger_max_pool_size      = $puppet::master::params::passenger_max_pool_size,
-  $passenger_max_requests       = $puppet::master::params::passenger_max_requests,
-  $passenger_pool_idle_time     = $puppet::master::params::passenger_pool_idle_time,
-  $passenger_stat_throttle_rate = $puppet::master::params::passenger_stat_throttle_rate,
-  $pre_module_path              = '',
-  $puppet_fqdn                  = $puppet::master::params::puppet_fqdn,
-  $puppet_server                = $puppet::master::params::puppet_server,
   $puppet_version               = 'installed',
   $r10k_version                 = 'installed',
-) inherits puppet::master::params {
+  $environmentpath              = '/etc/puppet/environments',
+  $module_path                  = '',
+  $pre_module_path              = '',
+  $future_parser                = false,
+  $autosign                     = false,
+  $env_owner                    = 'puppet',
+  $eyaml_keys                   = false,
+  $hiera_backends               = {
+    'yaml' => {
+      'datadir' => '/etc/puppet/hiera/%{environment}',
+    }
+  },
+  $hieradata_path               = '/etc/puppet/hiera',
+  $hiera_hierarchy              = [
+    'node/%{::clientcert}',
+    'env/%{::environment}',
+    'global'],
+  $passenger_max_pool_size      = '12',
+  $passenger_max_requests       = '0',
+  $passenger_pool_idle_time     = '1500',
+  $passenger_stat_throttle_rate = '120',
+  $puppet_fqdn                  = $::fqdn,
+  $puppet_server                = $puppet::puppet_server,
+) {
 
   #input validation
   validate_absolute_path(
@@ -70,29 +77,12 @@ class puppet::master (
   }
 
   class { 'puppet::master::install':
-    puppet_version      => $puppet_version,
-    r10k_version        => $r10k_version,
-    hiera_eyaml_version => $hiera_eyaml_version
   } ->
   class { 'puppet::master::config':
-    future_parser     => $future_parser,
-    environmentpath   => $environmentpath,
-    extra_module_path => $extra_module_path,
-    autosign          => $autosign
   } ->
   class { 'puppet::master::hiera':
-    hiera_backends => $hiera_backends,
-    hierarchy      => $hiera_hierarchy,
-    hieradata_path => $hieradata_path,
-    env_owner      => $env_owner,
-    eyaml_keys     => $eyaml_keys,
   } ~>
   class { 'puppet::master::passenger':
-    puppet_fqdn                  => $puppet_fqdn,
-    passenger_max_pool_size      => $passenger_max_pool_size,
-    passenger_pool_idle_time     => $passenger_pool_idle_time,
-    passenger_stat_throttle_rate => $passenger_stat_throttle_rate,
-    passenger_max_requests       => $passenger_max_requests
   }
 
 }
