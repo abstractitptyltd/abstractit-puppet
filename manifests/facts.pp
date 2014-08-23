@@ -6,7 +6,8 @@
 #
 
 class puppet::facts (
-  $custom_facts = undef) {
+  $custom_facts = undef
+) {
   include ::puppet
 
   if $custom_facts {

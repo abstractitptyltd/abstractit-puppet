@@ -4,7 +4,7 @@ class puppet::install (
   ) {
   include ::puppet
   $facter_version = $::puppet::facter_version
-  $hiera_version  = $::puppet::hiera::version
+  $hiera_version  = $::puppet::hiera_version
   $puppet_version = $::puppet::puppet_version
   # Input validation
   validate_string(

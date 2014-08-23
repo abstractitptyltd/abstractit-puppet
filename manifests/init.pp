@@ -86,7 +86,6 @@ class puppet (
     Class['::puppet::repo'] -> Class['::puppet::install']
   }
   include ::puppet::agent
-  include ::puppet::facts
   class { 'puppet::install':
   } ->
   class { 'puppet::config':
