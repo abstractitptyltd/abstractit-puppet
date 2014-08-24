@@ -24,7 +24,7 @@ class puppet::master (
   $passenger_pool_idle_time     = '1500',
   $passenger_stat_throttle_rate = '120',
   $puppet_fqdn                  = $::fqdn,
-  $puppet_server                = $puppet::puppet_server,
+  $puppet_server                = $::fqdn,
 ) {
 
   #input validation
