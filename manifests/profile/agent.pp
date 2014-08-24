@@ -38,10 +38,7 @@ class puppet::profile::agent (
     runinterval               => $runinterval,
     structured_facts          => $structured_facts,
     reports                   => $puppet_reports,
-  }
-
-  class { 'puppet::facts':
-    custom_facts => $custom_facts,
+    custom_facts              => $custom_facts,
   }
 
 }
