@@ -1,18 +1,20 @@
 # # Class puppet::master::config.pp
 
 class puppet::master::config (
-  $environmentpath   = $puppet::master::params::environmentpath,
-  $extra_module_path = $puppet::master::extra_module_path,
-  $future_parser     = $puppet::master::params::future_parser,
-  $autosign          = $puppet::master::params::autosign,
-) inherits puppet::master::params {
-validate_absolute_path($environmentpath)
+) {
+  include ::puppet::master
+  $environmentpath   = $puppet::master::environmentpath
+  $extra_module_path = $puppet::master::extra_module_path
+  $future_parser     = $puppet::master::future_parser
+  $autosign          = $puppet::master::autosign
 
-validate_bool(
-  $autosign,
-  $future_parser,
-  )
-validate_string($extra_module_path)
+  validate_absolute_path($environmentpath)
+
+  validate_bool(
+    $autosign,
+    $future_parser,
+    )
+  validate_string($extra_module_path)
 
   ini_setting { 'Puppet environmentpath':
     ensure  => present,

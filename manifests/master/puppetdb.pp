@@ -1,16 +1,16 @@
 # # class puppet::master::puppetdb
 
 class puppet::master::puppetdb (
-  $puppetdb_version,
-  $node_purge_ttl              = $puppet::master::params::node_purge_ttl,
-  $node_ttl                    = $puppet::master::params::node_ttl,
-  $puppetdb_listen_address     = $puppet::master::params::puppetdb_listen_address,
-  $puppetdb_server             = $puppet::master::params::puppetdb_server,
-  $puppetdb_ssl_listen_address = $puppet::master::params::puppetdb_ssl_listen_address,
-  $report_ttl                  = $puppet::master::params::report_ttl,
-  $reports                     = $puppet::master::params::reports,
+  $puppetdb_version            = 'installed',
+  $node_purge_ttl              = '0s',
+  $node_ttl                    = '0s',
+  $puppetdb_listen_address     = '127.0.0.1',
+  $puppetdb_server             = "puppet.${::domain}",
+  $puppetdb_ssl_listen_address = '127.0.0.1',
+  $report_ttl                  = '14d',
+  $reports                     = true,
   $use_ssl                     = true,
-) inherits puppet::master::params {
+) {
   #input validation
   validate_bool(
     $reports,

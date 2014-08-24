@@ -1,10 +1,11 @@
 # install client packages
 
 class puppet::install (
-  $facter_version = 'installed',
-  $hiera_version  = 'installed',
-  $puppet_version = 'installed',
-  ) inherits puppet::params {
+  ) {
+  include ::puppet
+  $facter_version = $::puppet::facter_version
+  $hiera_version  = $::puppet::hiera_version
+  $puppet_version = $::puppet::puppet_version
   # Input validation
   validate_string(
     $facter_version,

@@ -1,22 +1,24 @@
 class puppet (
   $agent_cron_hour           = '*',
   $agent_cron_min            = 'two_times_an_hour',
-  $devel_repo                = $puppet::params::devel_repo,
+  $devel_repo                = false,
   $enabled                   = true,
   $enable_devel_repo         = false,
   $enable_mechanism          = 'service',
   $enable_repo               = true,
-  $environment               = $puppet::params::environment,
+  $environment               = 'production',
   $facter_version            = 'installed',
   $hiera_version             = 'installed',
   $manage_etc_facter         = true,
   $manage_etc_facter_facts_d = true,
   $manage_repos              = true,
-  $puppet_server             = $puppet::params::puppet_server,
+  $puppet_server             = 'puppet',
   $puppet_version            = 'installed',
-  $reports                   = $puppet::params::reports,
-  $runinterval               = $puppet::params::runinterval,
-  $structured_facts          = false,) inherits puppet::params {
+  $reports                   = true,
+  $runinterval               = '30m',
+  $structured_facts          = false,
+  $custom_facts              = undef,
+) {
   #input validation
   validate_bool(
     $devel_repo,
@@ -84,18 +86,15 @@ class puppet (
     include ::puppet::repo
     Class['::puppet::repo'] -> Class['::puppet::install']
   }
+  if $custom_facts {
+    class { 'puppet::facts':
+      custom_facts => $custom_facts,
+    }
+  }
   include ::puppet::agent
-  include ::puppet::facts
   class { 'puppet::install':
-    puppet_version => $puppet_version,
-    hiera_version  => $hiera_version,
-    facter_version => $facter_version,
   } ->
   class { 'puppet::config':
-    puppet_server    => $puppet_server,
-    environment      => $environment,
-    runinterval      => $runinterval,
-    structured_facts => $structured_facts,
   } ~>
   Class['puppet::agent']
 }

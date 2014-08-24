@@ -1,12 +1,14 @@
 # Class puppet::master::hiera
 
 class puppet::master::hiera (
-  $env_owner      = $puppet::master::params::env_owner,
-  $eyaml_keys     = false,
-  $hiera_backends = undef,
-  $hieradata_path = $puppet::master::params::hieradata_path,
-  $hierarchy      = $puppet::master::params::hiera_hierarchy,
-) inherits puppet::master::params {
+) {
+  include ::puppet::master
+
+  $env_owner      = $puppet::master::env_owner
+  $eyaml_keys     = $puppet::master::eyaml_keys
+  $hiera_backends = $puppet::master::hiera_backends
+  $hieradata_path = $puppet::master::hieradata_path
+  $hierarchy      = $puppet::master::hiera_hierarchy
 
   #input validation
   validate_absolute_path($hieradata_path)

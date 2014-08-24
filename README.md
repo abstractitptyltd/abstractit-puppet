@@ -347,7 +347,7 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
   Sets the namevar of the [apache::vhost](https://github.com/puppetlabs/puppetlabs-apache#defined-type-apachevhost) resource declared. It is also used to derive the `ssl_cert` and `ssl_key` parameters to the apache::vhost resource.
 
-  * **puppet_server**: (*string* Default: `$puppet::params::puppet_server`)
+  * **puppet_server**: (*string* Default: `$::fqdn`)
 
   Changing this does not appear to do anything.
 

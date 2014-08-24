@@ -6,7 +6,8 @@
 #
 
 class puppet::facts (
-  $custom_facts = undef) inherits puppet::params {
+  $custom_facts = undef
+) {
   include ::puppet
 
   if $custom_facts {

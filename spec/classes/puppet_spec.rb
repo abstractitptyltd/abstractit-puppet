@@ -34,14 +34,14 @@ describe 'puppet', :type => :class do
       end
     end#bools
 
-#    ['hash'].each do |hashes|
-#      context "when the #{hashes} parameter is not an hash" do
-#        let (:params) {{ hashes => 'this is a string'}}
-#        it 'should fail' do
-#           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
-#        end
-#      end
-#    end#hashes
+    ['custom_facts'].each do |hashes|
+      context "when the #{hashes} parameter is not an hash" do
+        let (:params) {{ hashes => 'this is a string'}}
+        it 'should fail' do
+           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
+        end
+      end
+    end#hashes
 
     ['enable_mechanism'].each do |regex|
       context "when #{regex} has an unsupported value" do
@@ -87,10 +87,13 @@ describe 'puppet', :type => :class do
       it 'should instantiate the puppet::agent class' do
         should contain_class('puppet::agent')
       end
-      it 'should instantiate the puppet::facts class' do
-        should contain_class('puppet::facts')
-      end
     end#no params
+    context 'when the custom_facts param is set' do
+      let (:params){{'custom_facts' => {'fact1' => 'value1','fact2' => 'value2'} }}
+      it 'should instantiate the puppet::facts class apropriately' do
+        should contain_class('puppet::facts').with({'custom_facts' => {'fact1' => 'value1','fact2' => 'value2'} })
+      end
+    end#custom_facts
     context 'when the devel_repo param is true' do
       let (:params){{'devel_repo' => true}}
       it 'should instantiate the puppet::repo class apropriately' do
