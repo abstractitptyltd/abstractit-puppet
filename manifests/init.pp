@@ -17,6 +17,7 @@ class puppet (
   $reports                   = true,
   $runinterval               = '30m',
   $structured_facts          = false,
+  $custom_facts              = undef,
 ) {
   #input validation
   validate_bool(
@@ -84,6 +85,11 @@ class puppet (
     }
     include ::puppet::repo
     Class['::puppet::repo'] -> Class['::puppet::install']
+  }
+  if $custom_facts {
+    class { 'puppet::facts':
+      custom_facts => $custom_facts,
+    }
   }
   include ::puppet::agent
   class { 'puppet::install':
