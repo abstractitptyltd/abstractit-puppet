@@ -1,15 +1,17 @@
-## 2014-08-21 - Pete Brown <pete@abstractit.com.au> 1.7.5
+## 2014-09-18 - Pete Brown <pete@abstractit.com.au> 1.7.6
 ### Summary
-  Bugfix release for issue 25
-  This adds support for Ubuntu Trusty
+  Bugfix release
 
 ####Bugfixes
-- set PassengerRoot properly on Ubuntu trusty. @rendhalver
+- remove symlink in fixtures. @rendhalver
 
 ####Known bugs
 * No known bugs. Please let us know if you find any.
 
 ---
+#### 2014-08-21 - Release 1.7.5
+ * set PassengerRoot properly on Ubuntu trusty. @rendhalver
+
 #### 2014-07-26 - Release 1.7.4
  * Added spec tests courtesy of @wolfspyre
  * Variable validitation and type checking courtesy of @wolfspyre
