@@ -1,6 +1,7 @@
 class puppet::profile::master (
   $hiera_eyaml_version          = 'installed',
   $puppet_version               = 'installed',
+  $puppet_provider              = undef,
   $r10k_version                 = 'installed',
   $environmentpath              = '/etc/puppet/environments',
   $module_path                  = '',
@@ -48,6 +49,7 @@ class puppet::profile::master (
   class { 'puppet::master':
     hiera_eyaml_version          => $hiera_eyaml_version,
     puppet_version               => $puppet_version,
+    puppet_provider              => $puppet_provider,
     r10k_version                 => $r10k_version,
     environmentpath              => $environmentpath,
     module_path                  => $module_path,

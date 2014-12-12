@@ -7,12 +7,14 @@ class puppet::agent (){
     case $::puppet::enable_mechanism {
       'service': {
         #we want puppet enabled as a service
-        $cron_enablement    = 'absent'
-        $service_enablement = true
+        $cron_enablement     = 'absent'
+        $service_enablement  = true
+        $default_start_value = 'yes'
       }
       'cron': {
-        $cron_enablement    = 'present'
-        $service_enablement = false
+        $cron_enablement     = 'present'
+        $service_enablement  = false
+        $default_start_value = 'no'
       }
       default: {
         #noop. should never happen.
@@ -23,6 +25,15 @@ class puppet::agent (){
     #$::puppet::enabled is false
     $cron_enablement    = 'absent'
     $service_enablement = false
+    $default_start_value = 'no'
+  }
+
+  ini_setting { 'puppet_defaults':
+    ensure  => present,
+    path    => '/etc/default/puppet',
+    section => '',
+    setting => 'START',
+    value   => $default_start_value,
   }
 
   cron {"run_puppet_agent":

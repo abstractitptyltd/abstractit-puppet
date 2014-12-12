@@ -3,8 +3,9 @@ require 'spec_helper'
 require 'pry'
 
 describe 'puppet::master::config', :type => :class do
-  context 'input validation' do
+  let(:facts) { DEFAULT_FACTS_BY_SYMBOL }
 
+  context 'input validation' do
     ['environmentpath'].each do |paths|
       context "when the #{paths} parameter is not an absolute path" do
         let (:params) {{ paths => 'foo' }}
@@ -12,158 +13,126 @@ describe 'puppet::master::config', :type => :class do
           expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
         end
       end
-    end#absolute path
-
-#    ['array'].each do |arrays|
-#      context "when the #{arrays} parameter is not an array" do
-#        let (:params) {{ arrays => 'this is a string'}}
-#        it 'should fail' do
-#           expect { subject }.to raise_error(Puppet::Error, /is not an Array./)
-#        end
-#      end
-#    end#arrays
-
-    ['autosign','future_parser'].each do |bools|
+    end
+    ['future_parser'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
         let (:params) {{bools => "BOGON"}}
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
         end
       end
-    end#bools
-
-#    ['hash'].each do |hashes|
-#      context "when the #{hashes} parameter is not an hash" do
-#        let (:params) {{ hashes => 'this is a string'}}
-#        it 'should fail' do
-#           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
-#        end
-#      end
-#    end#hashes
-
-    ['extra_module_path'].each do |strings|
-      context "when the #{strings} parameter is not a string" do
-        let (:params) {{strings => false }}
-        it 'should fail' do
-          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
-        end
-      end
-    end#strings
-
-  end#input validation
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
-      let (:facts) {{'osfamily' => osfam}}
-      context 'when fed no parameters' do
-        it 'should behave differently' do
-          #binding.pry;
-        end
-        it 'should properly set the environmentpath' do
-          should contain_ini_setting('Puppet environmentpath').with({
-            :ensure=>"present",
-            :path=>"/etc/puppet/puppet.conf",
-            :section=>"main",
-            :setting=>"environmentpath",
-            :value=>"/etc/puppet/environments"
-          })
-        end
-        it 'should properly set the basemodulepath' do
-          should contain_ini_setting('Puppet basemodulepath').with({
-            :ensure=>"present",
-            :path=>"/etc/puppet/puppet.conf",
-            :section=>"main",
-            :setting=>"basemodulepath"
-          })
-        end
-        it 'should disable autosign' do
-          should contain_ini_setting('autosign').with({
-            :ensure=>"absent",
-            :path=>"/etc/puppet/puppet.conf",
-            :section=>"master",
-            :setting=>"autosign",
-            :value=>true
-          })
-        end
-        it 'should disable the future parser' do
-          should contain_ini_setting('master parser').with({
-            :ensure=>"absent",
-            :path=>"/etc/puppet/puppet.conf",
-            :section=>"master",
-            :setting=>"parser",
-            :value=>"future"
-          })
-        end
-      end#no params
-
-      context 'when the environmentpath param has a custom value' do
-        let (:params){{'environmentpath' => '/BOGON'}}
-        it 'should update the environmentpath via an ini_setting' do
-          should contain_ini_setting('Puppet environmentpath').with({
-            :ensure=>"present",
-            :path=>"/etc/puppet/puppet.conf",
-            :section=>"main",
-            :setting=>"environmentpath",
-            :value=>"/BOGON"
-          })
-        end
-      end
-
-      context 'when the extra_module_path param has a custom value' do
-        let (:params){{'extra_module_path' => '/BOGON:/BOGON2'}}
-        it 'should update the basemodulepath via an ini_setting' do
-          should contain_ini_setting('Puppet basemodulepath').with({
-            :ensure=>"present",
-            :path=>"/etc/puppet/puppet.conf",
-            :section=>"main",
-            :setting=>"basemodulepath",
-            :value=>"/BOGON:/BOGON2"
-          })
-        end
-      end
-
-      context 'when the future_parser param is true' do
-        let (:params) {{'future_parser' => true}}
-        it 'should update the autosign param via an ini_setting' do
-          should contain_ini_setting('master parser').with({
-            :ensure=>"present",
-            :path=>"/etc/puppet/puppet.conf",
-            :section=>"master",
-            :setting=>"parser",
-            :value=>"future"
-          })
-        end
-      end
-
-      context 'when the autosign param is true' do
-       # let (:facts)
-        let (:params) {{'autosign' => true}}
-        let (:facts)  {{ 'environment' => 'production'}}
-        context 'and the environment is production' do
-          it 'should not enable autosign' do
-#            Puppet.settings[:environment] = 'production'
-            should contain_ini_setting('autosign').with({
-              :ensure=>"absent",
-              :path=>"/etc/puppet/puppet.conf",
-              :section=>"master",
-              :setting=>"autosign",
-              :value=>true
-            })
-          end
-        end#autosign true in production
-        context 'and the environment is not production' do
-          let (:params) {{'autosign' => true}}
-          let (:facts) {{'environment' => 'testenv'}}
-          it 'should enable autosign' do
-            should contain_ini_setting('autosign').with({
-              :ensure=>"present",
-              :path=>"/etc/puppet/puppet.conf",
-              :section=>"master",
-              :setting=>"autosign",
-              :value=>true
-            })
-          end
-        end#autosign true in other environemtns
-      end
     end
   end
+
+  context 'default params' do
+    it do
+      should compile.with_all_deps
+      should contain_ini_setting('Puppet environmentpath').with(
+        :path=>'/etc/puppet/puppet.conf',
+        :value=>'/etc/puppet/environments')
+      should contain_ini_setting('Puppet basemodulepath').with(
+        :path=>'/etc/puppet/puppet.conf',
+        :value=>nil)
+      should contain_ini_setting('certname').with(
+        :path=>'/etc/puppet/puppet.conf',
+        :value=>'unittest.cloud.unittest.com')
+      should contain_ini_setting('autosign').with(
+        :path=>'/etc/puppet/puppet.conf',
+        :value=>false)
+      should contain_ini_setting('master parser').with(
+        :path=>'/etc/puppet/puppet.conf',
+        :value=>'future')
+      should_not contain_ini_setting('dns_alt_names')
+    end
+  end
+
+  context 'environmentpath => /BOGON' do
+    let (:params){{'environmentpath' => '/BOGON'}}
+    it do
+      should compile.with_all_deps
+      should contain_ini_setting('Puppet environmentpath').with(
+        :path=>'/etc/puppet/puppet.conf',
+        :setting=>'environmentpath',
+        :value=>'/BOGON')
+    end
+  end
+
+  context 'extra_module_path => /BOGON:/BOGON2' do
+    let (:params){{'extra_module_path' => '/BOGON:/BOGON2'}}
+    it do
+      should compile.with_all_deps
+      should contain_ini_setting('Puppet basemodulepath').with(
+        :path=>'/etc/puppet/puppet.conf',
+        :value=>'/BOGON:/BOGON2')
+    end
+  end
+
+  context 'future_parser => true' do
+    let (:params) {{'future_parser' => true}}
+    it do
+      should compile.with_all_deps
+      should contain_ini_setting('master parser').with(
+        :path  =>'/etc/puppet/puppet.conf',
+        :value =>'future')
+    end
+  end
+
+  context 'puppet_fqdn => puppet.unittest.com' do
+    let (:params) {{'puppet_fqdn' => 'puppet.unittest.com'}}
+    it do
+      should compile.with_all_deps
+      should contain_ini_setting('certname').with(
+        :path  =>'/etc/puppet/puppet.conf',
+        :value =>'puppet.unittest.com')
+    end
+  end
+
+  context 'autosign => []' do
+    let(:params) {{ 'autosign' => [] }}
+    it do
+      expect { subject }.to raise_error(Puppet::Error, /to be either/)
+    end
+  end
+
+  context 'autosign => {}' do
+    let(:params) {{ 'autosign' => {} }}
+    it do
+      expect { subject }.to raise_error(Puppet::Error, /to be either/)
+    end
+  end
+
+
+  context 'autosign => true' do
+    let (:params) {{'autosign' => true}}
+    it 'should not enable autosign' do
+      should compile.with_all_deps
+      should contain_ini_setting('autosign').with(
+        :path=>'/etc/puppet/puppet.conf',
+        :setting=>'autosign',
+        :value=>true)
+    end
+  end
+
+  context 'autosign => /foo/bar.sh' do
+    let (:params) {{'autosign' => '/foo/bar.sh'}}
+    it 'should enable autosign' do
+      should compile.with_all_deps
+      should contain_ini_setting('autosign').with(
+        :path=>'/etc/puppet/puppet.conf',
+        :setting=>'autosign',
+        :value=>'/foo/bar.sh')
+    end
+  end
+
+  context 'dns_alt_names => foo:bar' do
+    let (:params) {{'dns_alt_names' => 'foo:bar'}}
+    it do
+      should compile.with_all_deps
+      should contain_ini_setting('dns_alt_names').with(
+        :path=>'/etc/puppet/puppet.conf',
+        :setting=>'dns_alt_names',
+        :value=>'foo:bar')
+    end
+  end
+
 end

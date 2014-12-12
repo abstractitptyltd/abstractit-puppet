@@ -3,7 +3,6 @@
 class puppet::repo::apt (){
   include ::puppet
   if $::puppet::manage_repos {
-    #we only do anything if we're managing repos.
     include ::apt
     if $::puppet::enable_repo {
       $source_ensure = 'present'

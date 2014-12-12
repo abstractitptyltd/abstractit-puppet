@@ -92,9 +92,13 @@ class puppet (
     }
   }
   include ::puppet::agent
-  class { 'puppet::install':
-  } ->
-  class { 'puppet::config':
-  } ~>
+  class { '::puppet::install':
+    facter_version => $facter_version,
+    hiera_version  => $hiera_version,
+    puppet_version => $puppet_version,
+  }
+  include ::puppet::config
+  Class['puppet::install'] ->
+  Class['puppet::config'] ~>
   Class['puppet::agent']
 }
