@@ -3,23 +3,20 @@ fixtures:
     apache:
       repo: "puppetlabs/apache"
       ref:  "1.0.1"
+    stdlib:
+      repo: "puppetlabs/stdlib"
+      ref:  "4.1.0"
     apt:
       repo: "puppetlabs/apt"
       ref:  "0.1.0"
-    concat:
-      repo: "puppetlabs/concat"
-      ref:  "0.1.0"
-    inifile:
-      repo: "puppetlabs/inifile"
-      ref:  "1.1.0"
     postgresql:
       repo: "puppetlabs/postgresql"
       ref:  "1.1.0"
     puppetdb:
       repo: "puppetlabs/puppetdb"
       ref:  "1.1.0"
-    stdlib:
-      repo: "puppetlabs/stdlib"
-      ref:  "4.1.0"
+    inifile:
+      repo: "puppetlabs/inifile"
+      ref:  "1.1.0"
   symlinks:
     puppet: "#{source_dir}"
