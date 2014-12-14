@@ -8,7 +8,7 @@ fixtures:
       ref:  "4.1.0"
     apt:
       repo: "puppetlabs/apt"
-      ref:  "0.1.0"
+      ref:  "1.7.0"
     postgresql:
       repo: "puppetlabs/postgresql"
       ref:  "1.1.0"
