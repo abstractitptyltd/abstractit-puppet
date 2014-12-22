@@ -1,14 +1,13 @@
 # Class puppet::master::passenger
 
 class puppet::master::passenger (
-) {
-  include ::puppet::master
-  $passenger_max_pool_size      = $puppet::master::passenger_max_pool_size
-  $passenger_max_requests       = $puppet::master::passenger_max_requests
-  $passenger_pool_idle_time     = $puppet::master::passenger_pool_idle_time
-  $passenger_stat_throttle_rate = $puppet::master::passenger_stat_throttle_rate
-  $puppet_fqdn                  = $puppet::master::puppet_fqdn
-  #input validation
+  $passenger_max_pool_size      = $puppet::master::env::passenger_max_pool_size,
+  $passenger_max_requests       = $puppet::master::env::passenger_max_requests,
+  $passenger_pool_idle_time     = $puppet::master::env::passenger_pool_idle_time,
+  $passenger_stat_throttle_rate = $puppet::master::env::passenger_stat_throttle_rate,
+  $puppet_fqdn                  = $puppet::master::env::puppet_fqdn,
+) inherits puppet::master::env {
+
   validate_string(
     $passenger_max_pool_size,
     $passenger_max_requests,

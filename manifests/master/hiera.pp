@@ -1,24 +1,18 @@
 # Class puppet::master::hiera
 
 class puppet::master::hiera (
-) {
-  include ::puppet::master
-
-  $env_owner      = $puppet::master::env_owner
-  $eyaml_keys     = $puppet::master::eyaml_keys
-  $hiera_backends = $puppet::master::hiera_backends
-  $hieradata_path = $puppet::master::hieradata_path
-  $hierarchy      = $puppet::master::hiera_hierarchy
+  $env_owner       = $puppet::master::env::env_owner,
+  $eyaml_keys      = $puppet::master::env::eyaml_keys,
+  $hieradata_path  = $puppet::master::env::hieradata_path,
+  $hiera_backends  = $puppet::master::env::hiera_backends,
+  $hiera_hierarchy = $puppet::master::env::hiera_hierarchy
+) inherits puppet::master::env {
 
   #input validation
   validate_absolute_path($hieradata_path)
-
-  validate_array($hierarchy)
-
+  validate_array($hiera_hierarchy)
   validate_bool($eyaml_keys)
-
   validate_hash($hiera_backends)
-
   validate_string($env_owner)
 
   file { $hieradata_path:
@@ -34,7 +28,6 @@ class puppet::master::hiera (
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    notify  => Class['apache::service']
   }
 
   file { '/etc/puppet/hiera.yaml':

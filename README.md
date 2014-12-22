@@ -50,6 +50,7 @@ If it works for you, awesome! If not, let me know *or send me a pull request*.
   * /etc/puppet/keys
   * /etc/puppet/keys/eyaml
 * **Files:**  `dynamically updated files are displayed like this`
+  * `/etc/default/puppet`
   * `/etc/hiera.yaml`
   * `/etc/puppet/puppet.conf`
   * `/etc/puppet/hiera.yaml`
@@ -287,6 +288,10 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
   Whether or not to enable autosign.
 
+  * **dns_alt_names**: (*array* Default: `[]`)
+
+  List of alternative DNS names to inject into the Puppet Master SSL certificate (if `manage_ssl=True`).
+
   * **env_owner**: (*string* Default: `puppet`)
 
   The user which should own hieradata and r10k repos
@@ -299,8 +304,8 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
   Toggle whether or not to deploy [eyaml](https://github.com/TomPoulton/hiera-eyaml) keys
 
-
   * **future_parser**: (*bool* Default: `false`)
+
   Toggle to dictate whether or not to enable the [future parser](http://docs.puppetlabs.com/puppet/latest/reference/experiments_future.html)
 
   * **hiera_backends**: (*hash* Default: `{'yaml' => { 'datadir' => '/etc/puppet/hiera/%{environment}',} }`)
@@ -319,7 +324,11 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
   The location to configure hiera to look for the hierarchy. This also impacts the [puppet::master::modules](#public-class-puppetmastermodules) module's deployment of your r10k hiera repo.
 
-  * **module_path**: (*string* Default: '')
+  * **manage_ssl**: (*bool* Default: `false`)
+
+  If `True`, manages the Puppet Master SSL directory (`/var/lib/puppet/ssl`) and handles generating SSL certificates. Requires `puppet_ca_cert`, `puppet_ca_key` and `puppet_ca_pass` parameters.
+
+  * **module_path**: (*string* Default: undef)
 
   If this is set, it will be used to populate the basemodulepath parameter in `/etc/puppet/puppet.conf`. This does not impact [environment.conf](http://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html), which should live in your [r10k](https://github.com/adrienthebo/r10k) environment repo.
 
@@ -339,17 +348,25 @@ The `config.pp` manifest is responsible for altering the configuration of `/etc/
 
   Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [stat throttle rate](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#_passengerstatthrottlerate_lt_integer_gt)
 
-  * **pre_module_path**: (*string* Default: '')
+  * **pre_module_path**: (*string* Default: undef)
 
   If set, this is prepended to the modulepath parameter *if it is set* and to a static modulepath list if modulepath is unspecified. *A colon separator will be appended to the end of this if needed*
 
+  * **puppet_ca_cert**: (*string* Default: undef)
+
+  The contents of the Puppet Master Certificate Authority Cert file (in PEM format). Used with `manage_ssl=True` to generate puppet master certificates.
+
+  * **puppet_ca_key**: (*string* Default: undef)
+
+  The contents of the Puppet Master Certificate Authority Private Key file (in PEM format). Used with `manage_ssl=True` to generate puppet master certificates.
+
+  * **puppet_ca_pass**: (*string* Default: undef)
+
+  The password (*optional*) used to decode the `puppet_ca_key` file. Used with `manage_ssl=True` to generate puppet master certificates.
+
   * **puppet_fqdn**: (*string* Default: `$::fqdn`)
 
-  Sets the namevar of the [apache::vhost](https://github.com/puppetlabs/puppetlabs-apache#defined-type-apachevhost) resource declared. It is also used to derive the `ssl_cert` and `ssl_key` parameters to the apache::vhost resource.
-
-  * **puppet_server**: (*string* Default: `$::fqdn`)
-
-  Changing this does not appear to do anything.
+  Configures the Puppet Master server `certname`, sets the namevar of the [apache::vhost](https://github.com/puppetlabs/puppetlabs-apache#defined-type-apachevhost) resource, and used to derive the `ssl_cert` and `ssl_key` parameters to the apache::vhost resource.
 
   * **puppet_version**: (*string* Default: `installed`)
 

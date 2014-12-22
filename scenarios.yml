@@ -1,0 +1,26 @@
+__default_facts: &default_facts
+  architecture: x86_64
+  ipaddress: 127.0.0.1
+  osfamily: Debian
+  operatingsystem: Ubuntu
+  operatingsystemrelease: '12.04'
+  lsbdistid: Ubuntu
+  lsbdistcodename: precise
+  lsbdistrelease: 12.04
+  lsbmajdistrelease: 12
+  lsbdistdescription: Ubuntu 12.04.1 LTS
+  disable_asserts: true
+  interfaces: eth0
+  processorcount: 1
+  processor0: UnitTest Processor 0
+  hardwaremodel: x86_64
+  hostname: unittest
+  domain: cloud.unittest.com
+  puppetversion: 3.2.3
+  rubyversion: 1.8.7
+  facterversion: 1.7.4
+  kernel: linux
+  kernelrelease: 3.2.0-23-generic
+  concat_basedir: /var/lib/puppet/concat
+  fqdn: unittest.cloud.unittest.com
+  memorysize: 16.00 GB
