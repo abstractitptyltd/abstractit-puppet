@@ -7,7 +7,7 @@ describe 'puppet::master::config', :type => :class do
 
     ['environmentpath'].each do |paths|
       context "when the #{paths} parameter is not an absolute path" do
-        let (:params) {{ paths => 'foo' }}
+        let(:params) {{ paths => 'foo' }}
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
         end
@@ -16,7 +16,7 @@ describe 'puppet::master::config', :type => :class do
 
 #    ['array'].each do |arrays|
 #      context "when the #{arrays} parameter is not an array" do
-#        let (:params) {{ arrays => 'this is a string'}}
+#        let(:params) {{ arrays => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not an Array./)
 #        end
@@ -25,7 +25,7 @@ describe 'puppet::master::config', :type => :class do
 
     ['autosign','future_parser'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
-        let (:params) {{bools => "BOGON"}}
+        let(:params) {{bools => "BOGON"}}
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
         end
@@ -34,7 +34,7 @@ describe 'puppet::master::config', :type => :class do
 
 #    ['hash'].each do |hashes|
 #      context "when the #{hashes} parameter is not an hash" do
-#        let (:params) {{ hashes => 'this is a string'}}
+#        let(:params) {{ hashes => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
 #        end
@@ -43,7 +43,7 @@ describe 'puppet::master::config', :type => :class do
 
     ['extra_module_path'].each do |strings|
       context "when the #{strings} parameter is not a string" do
-        let (:params) {{strings => false }}
+        let(:params) {{strings => false }}
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
@@ -53,7 +53,7 @@ describe 'puppet::master::config', :type => :class do
   end#input validation
   ['Debian'].each do |osfam|
     context "When on an #{osfam} system" do
-      let (:facts) {{'osfamily' => osfam}}
+      let(:facts) {{'osfamily' => osfam}}
       context 'when fed no parameters' do
         it 'should behave differently' do
           #binding.pry;
@@ -96,7 +96,7 @@ describe 'puppet::master::config', :type => :class do
       end#no params
 
       context 'when the environmentpath param has a custom value' do
-        let (:params){{'environmentpath' => '/BOGON'}}
+        let(:params){{'environmentpath' => '/BOGON'}}
         it 'should update the environmentpath via an ini_setting' do
           should contain_ini_setting('Puppet environmentpath').with({
             :ensure=>"present",
@@ -109,7 +109,7 @@ describe 'puppet::master::config', :type => :class do
       end
 
       context 'when the extra_module_path param has a custom value' do
-        let (:params){{'extra_module_path' => '/BOGON:/BOGON2'}}
+        let(:params){{'extra_module_path' => '/BOGON:/BOGON2'}}
         it 'should update the basemodulepath via an ini_setting' do
           should contain_ini_setting('Puppet basemodulepath').with({
             :ensure=>"present",
@@ -122,7 +122,7 @@ describe 'puppet::master::config', :type => :class do
       end
 
       context 'when the future_parser param is true' do
-        let (:params) {{'future_parser' => true}}
+        let(:params) {{'future_parser' => true}}
         it 'should update the autosign param via an ini_setting' do
           should contain_ini_setting('master parser').with({
             :ensure=>"present",
@@ -135,9 +135,9 @@ describe 'puppet::master::config', :type => :class do
       end
 
       context 'when the autosign param is true' do
-       # let (:facts)
-        let (:params) {{'autosign' => true}}
-        let (:facts)  {{ 'environment' => 'production'}}
+       # let(:facts)
+        let(:params) {{'autosign' => true}}
+        let(:facts)  {{ 'environment' => 'production'}}
         context 'and the environment is production' do
           it 'should not enable autosign' do
 #            Puppet.settings[:environment] = 'production'
@@ -151,8 +151,8 @@ describe 'puppet::master::config', :type => :class do
           end
         end#autosign true in production
         context 'and the environment is not production' do
-          let (:params) {{'autosign' => true}}
-          let (:facts) {{'environment' => 'testenv'}}
+          let(:params) {{'autosign' => true}}
+          let(:facts) {{'environment' => 'testenv'}}
           it 'should enable autosign' do
             should contain_ini_setting('autosign').with({
               :ensure=>"present",

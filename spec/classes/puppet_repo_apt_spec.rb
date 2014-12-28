@@ -7,7 +7,7 @@ describe 'puppet::repo::apt', :type => :class do
 
 #    ['path'].each do |paths|
 #      context "when the #{paths} parameter is not an absolute path" do
-#        let (:params) {{ paths => 'foo' }}
+#        let(:params) {{ paths => 'foo' }}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
 #        end
@@ -16,7 +16,7 @@ describe 'puppet::repo::apt', :type => :class do
 
 #    ['array'].each do |arrays|
 #      context "when the #{arrays} parameter is not an array" do
-#        let (:params) {{ arrays => 'this is a string'}}
+#        let(:params) {{ arrays => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not an Array./)
 #        end
@@ -25,7 +25,7 @@ describe 'puppet::repo::apt', :type => :class do
 
 #    ['bools'].each do |bools|
 #      context "when the #{bools} parameter is not an boolean" do
-#        let (:params) {{bools => "BOGON"}}
+#        let(:params) {{bools => "BOGON"}}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
 #        end
@@ -34,7 +34,7 @@ describe 'puppet::repo::apt', :type => :class do
 
 #    ['hash'].each do |hashes|
 #      context "when the #{hashes} parameter is not an hash" do
-#        let (:params) {{ hashes => 'this is a string'}}
+#        let(:params) {{ hashes => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
 #        end
@@ -43,7 +43,7 @@ describe 'puppet::repo::apt', :type => :class do
 
 #    ['opt_hash'].each do |opt_hashes|
 #      context "when the optional param #{opt_hashes} parameter has a value, but not a hash" do
-#        let (:params) {{ hashes => 'this is a string'}}
+#        let(:params) {{ hashes => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
 #        end
@@ -53,7 +53,7 @@ describe 'puppet::repo::apt', :type => :class do
 
 #    ['string'].each do |strings|
 #      context "when the #{strings} parameter is not a string" do
-#        let (:params) {{strings => false }}
+#        let(:params) {{strings => false }}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
 #        end
@@ -62,7 +62,7 @@ describe 'puppet::repo::apt', :type => :class do
 
 #    ['opt_strings'].each do |optional_strings|
 #      context "when the optional parameter #{optional_strings} has a value, but it is not a string" do
-#        let (:params) {{optional_strings => true }}
+#        let(:params) {{optional_strings => true }}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /true is not a string./)
 #        end
@@ -72,9 +72,9 @@ describe 'puppet::repo::apt', :type => :class do
   end#input validation
   ['Debian'].each do |osfam|
     context "When on an #{osfam} system" do
-      let (:facts) {{'osfamily' => osfam, 'operatingsystem' => 'Ubuntu', 'lsbdistid' => 'Ubuntu', 'lsbdistcodename' => 'trusty'}}
+      let(:facts) {{'osfamily' => osfam, 'operatingsystem' => 'Ubuntu', 'lsbdistid' => 'Ubuntu', 'lsbdistcodename' => 'trusty'}}
       context 'when ::puppet has default parameters' do
-        let (:pre_condition){"class{'::puppet':}"}
+        let(:pre_condition){"class{'::puppet':}"}
         it 'should add the puppetlabs apt source' do
           should contain_apt__source('puppetlabs').with({
            :name=>"puppetlabs",
@@ -107,7 +107,7 @@ describe 'puppet::repo::apt', :type => :class do
         end
       end#no params
       context 'when ::puppet::manage_repos is false' do
-        let (:pre_condition){"class{'::puppet': manage_repos => false}"}
+        let(:pre_condition){"class{'::puppet': manage_repos => false}"}
         it 'should not lay down any apt sources' do
           should_not contain_apt__source('puppetlabs')
           should_not contain_apt__source('puppetlabs_devel')
@@ -115,7 +115,7 @@ describe 'puppet::repo::apt', :type => :class do
       end
       context 'when ::puppet::manage_repos is true' do
         context 'when ::puppet::devel_repo is false' do
-          let (:pre_condition){"class{'::puppet': devel_repo => false}"}
+          let(:pre_condition){"class{'::puppet': devel_repo => false}"}
           it 'should remove the puppetlabs_devel apt source' do
             should contain_apt__source('puppetlabs_devel').with({
               :name=>"puppetlabs_devel",
@@ -132,7 +132,7 @@ describe 'puppet::repo::apt', :type => :class do
             })
           end
           context 'and ::puppet::enable_devel_repo is true' do
-            let (:pre_condition){"class{'::puppet': devel_repo => false, enable_devel_repo => true }"}
+            let(:pre_condition){"class{'::puppet': devel_repo => false, enable_devel_repo => true }"}
             it 'should add the puppetlabs_devel apt source' do
               should contain_apt__source('puppetlabs_devel').with({
                 :name=>"puppetlabs_devel",
@@ -151,7 +151,7 @@ describe 'puppet::repo::apt', :type => :class do
           end
         end
         context 'when ::puppet::devel_repo is true' do
-          let (:pre_condition){"class{'::puppet': devel_repo => true}"}
+          let(:pre_condition){"class{'::puppet': devel_repo => true}"}
           it 'should add the puppetlabs_devel apt source' do
             should contain_apt__source('puppetlabs_devel').with({
               :name=>"puppetlabs_devel",
@@ -168,7 +168,7 @@ describe 'puppet::repo::apt', :type => :class do
             })
           end
           context 'and ::puppet::enable_devel_repo is false' do
-            let (:pre_condition){"class{'::puppet': devel_repo => true, enable_devel_repo => false}"}
+            let(:pre_condition){"class{'::puppet': devel_repo => true, enable_devel_repo => false}"}
              it 'should behave the same' do
               should contain_apt__source('puppetlabs_devel').with({
                 :name=>"puppetlabs_devel",

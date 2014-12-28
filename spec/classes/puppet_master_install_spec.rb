@@ -3,12 +3,12 @@ require 'spec_helper'
 require 'pry'
 
 describe 'puppet::master::install', :type => :class do
-  let (:default_params) {{'hiera_eyaml_version' => 'installed'}}
+  let(:default_params) {{'hiera_eyaml_version' => 'installed'}}
   context 'input validation' do
 
 #    ['path'].each do |paths|
 #      context "when the #{paths} parameter is not an absolute path" do
-#        let (:params) {{ paths => 'foo' }}
+#        let(:params) {{ paths => 'foo' }}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
 #        end
@@ -17,7 +17,7 @@ describe 'puppet::master::install', :type => :class do
 
 #    ['array'].each do |arrays|
 #      context "when the #{arrays} parameter is not an array" do
-#        let (:params) {{ arrays => 'this is a string'}}
+#        let(:params) {{ arrays => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not an Array./)
 #        end
@@ -26,7 +26,7 @@ describe 'puppet::master::install', :type => :class do
 
 #    ['bool'].each do |bools|
 #      context "when the #{bools} parameter is not an boolean" do
-#        let (:params) {{bools => "BOGON"}}
+#        let(:params) {{bools => "BOGON"}}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
 #        end
@@ -35,7 +35,7 @@ describe 'puppet::master::install', :type => :class do
 
 #    ['hash'].each do |hashes|
 #      context "when the #{hashes} parameter is not an hash" do
-#        let (:params) {{ hashes => 'this is a string'}}
+#        let(:params) {{ hashes => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
 #        end
@@ -44,7 +44,7 @@ describe 'puppet::master::install', :type => :class do
 
     ['hiera_eyaml_version','puppet_version','r10k_version'].each do |strings|
       context "when the #{strings} parameter is not a string" do
-        let (:params) {default_params.merge({strings => false })}
+        let(:params) {default_params.merge({strings => false })}
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
@@ -54,10 +54,10 @@ describe 'puppet::master::install', :type => :class do
   end#input validation
   ['Debian'].each do |osfam|
     context "When on an #{osfam} system" do
-      let (:pre_condition){"package{'puppet': ensure => 'present'}"}
-      let (:facts) {{'osfamily' => osfam}}
+      let(:pre_condition){"package{'puppet': ensure => 'present'}"}
+      let(:facts) {{'osfamily' => osfam}}
       context 'when fed no parameters' do
-        let (:params){default_params}
+        let(:params){default_params}
 
         it 'should install the puppetmaster-common package' do
           should contain_package('puppetmaster-common').with({
@@ -111,7 +111,7 @@ describe 'puppet::master::install', :type => :class do
         end
       end#no params
       context 'when the hiera_eyaml_version param has a non-standard value' do
-        let (:params){default_params.merge({'hiera_eyaml_version' => 'BOGON'})}
+        let(:params){default_params.merge({'hiera_eyaml_version' => 'BOGON'})}
         it 'should install the specified version of the hiera-eyaml package' do
           should contain_package('hiera-eyaml').with({
             :name=>"hiera-eyaml",
@@ -121,7 +121,7 @@ describe 'puppet::master::install', :type => :class do
         end
       end
       context 'when the puppet_version param has a non-standard value' do
-        let (:params){default_params.merge({'puppet_version' => 'BOGON'})}
+        let(:params){default_params.merge({'puppet_version' => 'BOGON'})}
         it 'should install the specified version of the puppetmaster-common package' do
           should contain_package('puppetmaster-common').with({
             :ensure=>"BOGON",
@@ -141,7 +141,7 @@ describe 'puppet::master::install', :type => :class do
         end
       end
       context 'when the r10k_version param has a non-standard value' do
-        let (:params){default_params.merge({'r10k_version' => 'BOGON'})}
+        let(:params){default_params.merge({'r10k_version' => 'BOGON'})}
         it 'should install the specified version of the r10k package' do
           should contain_package('r10k').with({
             :name=>"r10k",

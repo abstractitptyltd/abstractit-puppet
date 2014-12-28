@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'pry'
 
 describe 'puppet::facts', :type => :class do
-      let (:facts) {{
+      let(:facts) {{
         'clientcert'  => 'my.client.cert',
         'fqdn'        => 'my.fq.hostname',
         'osfamily'    => 'Debian',
@@ -14,7 +14,7 @@ describe 'puppet::facts', :type => :class do
 
 #    ['path'].each do |paths|
 #      context "when the #{paths} parameter is not an absolute path" do
-#        let (:params) {{ paths => 'foo' }}
+#        let(:params) {{ paths => 'foo' }}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
 #        end
@@ -23,7 +23,7 @@ describe 'puppet::facts', :type => :class do
 
 #    ['array'].each do |arrays|
 #      context "when the #{arrays} parameter is not an array" do
-#        let (:params) {{ arrays => 'this is a string'}}
+#        let(:params) {{ arrays => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not an Array./)
 #        end
@@ -32,7 +32,7 @@ describe 'puppet::facts', :type => :class do
 
 #    ['bool'].each do |bools|
 #      context "when the #{bools} parameter is not an boolean" do
-#        let (:params) {{bools => "BOGON"}}
+#        let(:params) {{bools => "BOGON"}}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
 #        end
@@ -41,7 +41,7 @@ describe 'puppet::facts', :type => :class do
 
     ['custom_facts'].each do |hashes|
       context "when the #{hashes} parameter is not an hash" do
-        let (:params) {{ hashes => 'this is a string'}}
+        let(:params) {{ hashes => 'this is a string'}}
         it 'should fail' do
            expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
         end
@@ -50,7 +50,7 @@ describe 'puppet::facts', :type => :class do
 
 #    ['string'].each do |strings|
 #      context "when the #{strings} parameter is not a string" do
-#        let (:params) {{strings => false }}
+#        let(:params) {{strings => false }}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
 #        end
@@ -60,7 +60,7 @@ describe 'puppet::facts', :type => :class do
   end#input validation
   ['Debian'].each do |osfam|
     context "When on an #{osfam} system" do
-      let (:facts) {{
+      let(:facts) {{
         'clientcert'  => 'my.client.cert',
         'fqdn'        => 'my.fq.hostname',
         'osfamily'    => osfam,
@@ -94,19 +94,19 @@ describe 'puppet::facts', :type => :class do
         end
       end#no params
       context 'when ::puppet::manage_etc_facter is false' do
-        let (:pre_condition){"class{'puppet': manage_etc_facter => false}"}
+        let(:pre_condition){"class{'puppet': manage_etc_facter => false}"}
         it 'should not try to lay down the directory' do
           should_not contain_file('/etc/facter')
         end
       end
       context 'when ::puppet::manage_etc_facter_facts_d is false' do
-        let (:pre_condition){"class{'puppet': manage_etc_facter_facts_d => false}"}
+        let(:pre_condition){"class{'puppet': manage_etc_facter_facts_d => false}"}
         it 'should not try to lay down the directory' do
           should_not contain_file('/etc/facter/facts.d')
         end
       end
       context 'when the custom_facts parameter is properly set' do
-        let (:params) {{'custom_facts' => {'key1' => 'val1', 'key2' => 'val2'}}}
+        let(:params) {{'custom_facts' => {'key1' => 'val1', 'key2' => 'val2'}}}
         it 'should iterate through the hash and properly populate the local_facts.yaml file' do
           should contain_file('/etc/facter/facts.d/local.yaml').with_content(
             /key1: \"val1\"/

@@ -7,7 +7,7 @@ describe 'puppet::master::passenger', :type => :class do
 
 #    ['path'].each do |paths|
 #      context "when the #{paths} parameter is not an absolute path" do
-#        let (:params) {{ paths => 'foo' }}
+#        let(:params) {{ paths => 'foo' }}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
 #        end
@@ -16,7 +16,7 @@ describe 'puppet::master::passenger', :type => :class do
 
 #    ['array'].each do |arrays|
 #      context "when the #{arrays} parameter is not an array" do
-#        let (:params) {{ arrays => 'this is a string'}}
+#        let(:params) {{ arrays => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not an Array./)
 #        end
@@ -25,7 +25,7 @@ describe 'puppet::master::passenger', :type => :class do
 
 #    ['bool'].each do |bools|
 #      context "when the #{bools} parameter is not an boolean" do
-#        let (:params) {{bools => "BOGON"}}
+#        let(:params) {{bools => "BOGON"}}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
 #        end
@@ -34,7 +34,7 @@ describe 'puppet::master::passenger', :type => :class do
 
 #    ['hash'].each do |hashes|
 #      context "when the #{hashes} parameter is not an hash" do
-#        let (:params) {{ hashes => 'this is a string'}}
+#        let(:params) {{ hashes => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
 #        end
@@ -43,7 +43,7 @@ describe 'puppet::master::passenger', :type => :class do
 
 #    ['opt_hash'].each do |opt_hashes|
 #      context "when the optional param #{opt_hashes} parameter has a value, but not a hash" do
-#        let (:params) {{ hashes => 'this is a string'}}
+#        let(:params) {{ hashes => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
 #        end
@@ -53,7 +53,7 @@ describe 'puppet::master::passenger', :type => :class do
 
     ['passenger_max_pool_size','passenger_max_requests','passenger_pool_idle_time','passenger_stat_throttle_rate','puppet_fqdn'].each do |strings|
       context "when the #{strings} parameter is not a string" do
-        let (:params) {{strings => false }}
+        let(:params) {{strings => false }}
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
@@ -62,7 +62,7 @@ describe 'puppet::master::passenger', :type => :class do
 
 #    ['opt_strings'].each do |optional_strings|
 #      context "when the optional parameter #{optional_strings} has a value, but it is not a string" do
-#        let (:params) {{optional_strings => true }}
+#        let(:params) {{optional_strings => true }}
 #        it 'should fail' do
 #          expect { subject }.to raise_error(Puppet::Error, /true is not a string./)
 #        end
@@ -73,8 +73,8 @@ describe 'puppet::master::passenger', :type => :class do
   ['Debian'].each do |osfam|
     context "When on an #{osfam} system" do
       context '[ubuntu trusty]' do
-        let (:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'trusty', 'osfamily' => osfam, 'operatingsystemrelease' => '14.04','concat_basedir' => '/tmp'}}
-        let (:pre_condition) {"class{'puppet::master::install': hiera_eyaml_version=>'present' }"}
+        let(:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'trusty', 'osfamily' => osfam, 'operatingsystemrelease' => '14.04','concat_basedir' => '/tmp'}}
+        let(:pre_condition) {"class{'puppet::master::install': hiera_eyaml_version=>'present' }"}
         context 'when fed no parameters' do
           it 'should properly instantiate the apache class' do
             should contain_class('Apache').with({
@@ -167,7 +167,7 @@ describe 'puppet::master::passenger', :type => :class do
           end
         end#no params
         context 'when passenger_max_pool_size has a non-standard value' do
-          let (:params){{'passenger_max_pool_size' => 'BOGON'}}
+          let(:params){{'passenger_max_pool_size' => 'BOGON'}}
           it 'should properly instantiate the apache::mod::passenger class' do
             should contain_class('Apache::Mod::Passenger').with({
               :passenger_high_performance=>"On",
@@ -181,7 +181,7 @@ describe 'puppet::master::passenger', :type => :class do
         end#end passenger_max_pool_size
 
         context 'when passenger_max_requests has a non-standard value' do
-          let (:params){{'passenger_max_requests' => 'BOGON'}}
+          let(:params){{'passenger_max_requests' => 'BOGON'}}
           it 'should properly instantiate the apache::mod::passenger class' do
             should contain_class('Apache::Mod::Passenger').with({
               :passenger_high_performance=>"On",
@@ -195,7 +195,7 @@ describe 'puppet::master::passenger', :type => :class do
         end#end passenger_max_requests
 
         context 'when passenger_pool_idle_time has a non-standard value' do
-          let (:params){{'passenger_pool_idle_time' => 'BOGON'}}
+          let(:params){{'passenger_pool_idle_time' => 'BOGON'}}
           it 'should properly instantiate the apache::mod::passenger class' do
             should contain_class('Apache::Mod::Passenger').with({
               :passenger_high_performance=>"On",
@@ -209,7 +209,7 @@ describe 'puppet::master::passenger', :type => :class do
         end#end passenger_pool_idle_time
 
         context 'when passenger_stat_throttle_rate has a non-standard value' do
-          let (:params){{'passenger_stat_throttle_rate' => 'BOGON'}}
+          let(:params){{'passenger_stat_throttle_rate' => 'BOGON'}}
           it 'should properly instantiate the apache::mod::passenger class' do
             should contain_class('Apache::Mod::Passenger').with({
               :passenger_high_performance=>"On",
@@ -223,7 +223,7 @@ describe 'puppet::master::passenger', :type => :class do
         end#end passenger_stat_throttle_rate
 
         context 'when puppet_fqdn has a non-standard value' do
-          let (:params){{'puppet_fqdn' => 'BOGON'}}
+          let(:params){{'puppet_fqdn' => 'BOGON'}}
           it 'should properly instantiate the apache::vhost defined type' do
             should contain_apache__vhost('BOGON').with({
               :name=>"BOGON",
@@ -236,7 +236,7 @@ describe 'puppet::master::passenger', :type => :class do
 
       end#trusty
       context '[Debian - unspecific]' do
-        let (:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'squeeze', 'osfamily' => osfam, 'operatingsystemrelease' => '6.06','concat_basedir' => '/tmp'}}
+        let(:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'squeeze', 'osfamily' => osfam, 'operatingsystemrelease' => '6.06','concat_basedir' => '/tmp'}}
         it 'should not add the SSLCARevocationCheck chain to the apache vhost config' do
           should contain_apache__vhost('constructorfleet.vogon.gal').without({
             :custom_fragment=>/SSLCARevocationCheck chain/

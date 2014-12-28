@@ -7,7 +7,7 @@ describe 'puppet::master::modules', :type => :class do
 
     ['r10k_env_basedir'].each do |paths|
       context "when the #{paths} parameter is not an absolute path" do
-        let (:params) {{ paths => 'foo' }}
+        let(:params) {{ paths => 'foo' }}
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
         end
@@ -16,7 +16,7 @@ describe 'puppet::master::modules', :type => :class do
 
 #    ['array'].each do |arrays|
 #      context "when the #{arrays} parameter is not an array" do
-#        let (:params) {{ arrays => 'this is a string'}}
+#        let(:params) {{ arrays => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not an Array./)
 #        end
@@ -25,7 +25,7 @@ describe 'puppet::master::modules', :type => :class do
 
     ['r10k_purgedirs', 'r10k_update'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
-        let (:params) {{bools => "BOGON"}}
+        let(:params) {{bools => "BOGON"}}
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
         end
@@ -34,7 +34,7 @@ describe 'puppet::master::modules', :type => :class do
 
 #    ['hash'].each do |hashes|
 #      context "when the #{hashes} parameter is not an hash" do
-#        let (:params) {{ hashes => 'this is a string'}}
+#        let(:params) {{ hashes => 'this is a string'}}
 #        it 'should fail' do
 #           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
 #        end
@@ -43,7 +43,7 @@ describe 'puppet::master::modules', :type => :class do
 
     ['extra_env_repos'].each do |opt_hashes|
       context "when the optional param #{opt_hashes} parameter has a value, but not a hash" do
-        let (:params) {{ opt_hashes => 'this is a string'}}
+        let(:params) {{ opt_hashes => 'this is a string'}}
         it 'should fail' do
            expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
         end
@@ -52,7 +52,7 @@ describe 'puppet::master::modules', :type => :class do
 
     ['env_owner'].each do |strings|
       context "when the #{strings} parameter is not a string" do
-        let (:params) {{strings => false }}
+        let(:params) {{strings => false }}
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
@@ -61,7 +61,7 @@ describe 'puppet::master::modules', :type => :class do
 
     ['hiera_repo','puppet_env_repo'].each do |optional_strings|
       context "when the optional parameter #{optional_strings} has a value, but it is not a string" do
-        let (:params) {{optional_strings => true }}
+        let(:params) {{optional_strings => true }}
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /true is not a string./)
         end
@@ -71,8 +71,8 @@ describe 'puppet::master::modules', :type => :class do
   end#input validation
   ['Debian'].each do |osfam|
     context "When on an #{osfam} system" do
-      let (:pre_condition) {"package{'r10k': ensure => 'present'}"}
-      let (:facts) {{'osfamily' => osfam}}
+      let(:pre_condition) {"package{'r10k': ensure => 'present'}"}
+      let(:facts) {{'osfamily' => osfam}}
       context 'when fed no parameters' do
         it 'should lay down /var/cache/r10k' do
           should contain_file('/var/cache/r10k').with({
@@ -115,7 +115,7 @@ describe 'puppet::master::modules', :type => :class do
       end#no params
 
       context 'when the env_owner param has a non-standard value' do
-        let (:params) {{'env_owner' => 'BOGON'}}
+        let(:params) {{'env_owner' => 'BOGON'}}
         ['/var/cache/r10k','/etc/puppet/r10kenv'].each do |the_dir|
           it "should lay down #{the_dir}" do
             should contain_file(the_dir).with({
@@ -137,7 +137,7 @@ describe 'puppet::master::modules', :type => :class do
         end
       end
       context 'when the extra_env_repos param is populated' do
-        let (:params) {{'extra_env_repos' => {'BOGON' =>{ 'repo' => 'git@bogon.site.com/bogon.git'}}}}
+        let(:params) {{'extra_env_repos' => {'BOGON' =>{ 'repo' => 'git@bogon.site.com/bogon.git'}}}}
         it 'should lay down the properly updated /etc/r10k.yaml' do
           should contain_file('/etc/r10k.yaml').with({
             :path=>"/etc/r10k.yaml",
@@ -150,7 +150,7 @@ describe 'puppet::master::modules', :type => :class do
         end
       end
       context 'when the hiera_repo param is populated' do
-        let (:params) {{'hiera_repo' => 'BOGON'}}
+        let(:params) {{'hiera_repo' => 'BOGON'}}
           it 'should lay down the properly updated /etc/r10k.yaml' do
           should contain_file('/etc/r10k.yaml').with({
             :path=>"/etc/r10k.yaml",
@@ -163,7 +163,7 @@ describe 'puppet::master::modules', :type => :class do
         end
       end
       context 'when the puppet_env_repo is populated' do
-        let (:params) {{'puppet_env_repo' => 'BOGON'}}
+        let(:params) {{'puppet_env_repo' => 'BOGON'}}
           it 'should lay down the properly updated /etc/r10k.yaml' do
           should contain_file('/etc/r10k.yaml').with({
             :path=>"/etc/r10k.yaml",
@@ -176,7 +176,7 @@ describe 'puppet::master::modules', :type => :class do
         end
       end
       context 'when the r10k_env_basedir param has a non-standard value' do
-        let (:params) {{'r10k_env_basedir' => '/BOGON'}}
+        let(:params) {{'r10k_env_basedir' => '/BOGON'}}
         it 'should create the proper r10k_env_basedir' do
           should contain_file('/BOGON').with({
             :path=>"/BOGON",
@@ -188,7 +188,7 @@ describe 'puppet::master::modules', :type => :class do
         end
       end
       context 'when the r10k_minutes param has a non-standard value' do
-        let (:params) {{'r10k_minutes' => '1'}}
+        let(:params) {{'r10k_minutes' => '1'}}
         it 'should add the cron job to run r10k on the default schedule' do
           should contain_cron('puppet_r10k').with({
             :name=>"puppet_r10k",
@@ -201,7 +201,7 @@ describe 'puppet::master::modules', :type => :class do
         end
       end
       context 'when the r10k_purgedirs param is false' do
-        let (:params) {{'r10k_purgedirs' => false}}
+        let(:params) {{'r10k_purgedirs' => false}}
         it 'should update r10k.yaml apropriately' do
           should contain_file('/etc/r10k.yaml').with({
            :path=>"/etc/r10k.yaml",
@@ -213,7 +213,7 @@ describe 'puppet::master::modules', :type => :class do
         end
       end
       context 'when the r10k_update param is false' do
-        let (:params) {{'r10k_update' => false}}
+        let(:params) {{'r10k_update' => false}}
         it 'should remove the cronjob' do
           should contain_cron('puppet_r10k').with({
             :name=>"puppet_r10k",
