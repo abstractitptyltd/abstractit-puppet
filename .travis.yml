@@ -1,4 +1,7 @@
 ---
+before_install:
+  - sudo apt-get update -qq
+  - sudo apt-get install -y lsb-release
 language: ruby
 bundler_args: --without system_tests
 script: "bundle exec rake validate && bundle exec rake lint && bundle exec rake spec SPEC_OPTS='--format documentation'"
@@ -9,7 +12,5 @@ rvm:
 env:
   - PUPPET_VERSION=3.6.2
   - PUPPET_VERSION=3.7.3
-before_install:
-  - sudo apt-get install -y lsb-release
 notifications:
   email: true
