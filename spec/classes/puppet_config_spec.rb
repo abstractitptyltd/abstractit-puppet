@@ -52,9 +52,14 @@ describe 'puppet::config', :type => :class do
 
   end#input validation
 
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
-      let(:facts) {{'osfamily' => osfam}}
+#  ['Debian'].each do |os, facts|
+#  context "When on an #{osfam} system" do
+#      let(:facts) {{'osfamily' => osfam}}
+  on_supported_os.each do |os, facts|
+    context "When on an #{os} system" do
+      let(:facts) do
+        facts
+      end
       context 'when fed no parameters' do
         it 'should set the puppet server properly' do
           #binding.pry;
