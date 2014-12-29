@@ -23,14 +23,14 @@ describe 'puppet::config', :type => :class do
 #      end
 #    end#arrays
 
-    ['structured_facts'].each do |bools|
-      context "when the #{bools} parameter is not an boolean" do
-        let(:params) {{bools => "BOGON"}}
-        it 'should fail' do
-          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
-        end
-      end
-    end#bools
+#    ['structured_facts'].each do |bools|
+#      context "when the #{bools} parameter is not an boolean" do
+#        let(:params) {{bools => "BOGON"}}
+#        it 'should fail' do
+#          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
+#        end
+#      end
+#    end#bools
 
 #    ['hash'].each do |hashes|
 #      context "when the #{hashes} parameter is not an hash" do
@@ -41,14 +41,14 @@ describe 'puppet::config', :type => :class do
 #      end
 #    end#hashes
 
-    ['environment','puppet_server','runinterval'].each do |strings|
-      context "when the #{strings} parameter is not a string" do
-        let(:params) {{strings => false }}
-        it 'should fail' do
-          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
-        end
-      end
-    end#strings
+#    ['environment','puppet_server','runinterval'].each do |strings|
+#      context "when the #{strings} parameter is not a string" do
+#        let(:params) {{strings => false }}
+#        it 'should fail' do
+#          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
+#        end
+#      end
+#    end#strings
 
   end#input validation
   ['Debian'].each do |osfam|

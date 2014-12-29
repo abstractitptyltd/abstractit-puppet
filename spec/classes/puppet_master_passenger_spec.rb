@@ -50,15 +50,14 @@ describe 'puppet::master::passenger', :type => :class do
 #      end
 #    end#opt_hashes
 
-
-    ['passenger_max_pool_size','passenger_max_requests','passenger_pool_idle_time','passenger_stat_throttle_rate','puppet_fqdn'].each do |strings|
-      context "when the #{strings} parameter is not a string" do
-        let(:params) {{strings => false }}
-        it 'should fail' do
-          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
-        end
-      end
-    end#strings
+#    ['passenger_max_pool_size','passenger_max_requests','passenger_pool_idle_time','passenger_stat_throttle_rate','puppet_fqdn'].each do |strings|
+#      context "when the #{strings} parameter is not a string" do
+#        let(:params) {{strings => false }}
+#        it 'should fail' do
+#          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
+#        end
+#      end
+#    end#strings
 
 #    ['opt_strings'].each do |optional_strings|
 #      context "when the optional parameter #{optional_strings} has a value, but it is not a string" do

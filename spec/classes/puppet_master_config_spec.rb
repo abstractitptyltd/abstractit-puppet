@@ -5,14 +5,14 @@ require 'pry'
 describe 'puppet::master::config', :type => :class do
   context 'input validation' do
 
-    ['environmentpath'].each do |paths|
-      context "when the #{paths} parameter is not an absolute path" do
-        let(:params) {{ paths => 'foo' }}
-        it 'should fail' do
-          expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
-        end
-      end
-    end#absolute path
+#    ['environmentpath'].each do |paths|
+#      context "when the #{paths} parameter is not an absolute path" do
+#        let(:params) {{ paths => 'foo' }}
+#        it 'should fail' do
+#          expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
+#        end
+#      end
+#    end#absolute path
 
 #    ['array'].each do |arrays|
 #      context "when the #{arrays} parameter is not an array" do
@@ -23,14 +23,14 @@ describe 'puppet::master::config', :type => :class do
 #      end
 #    end#arrays
 
-    ['autosign','future_parser'].each do |bools|
-      context "when the #{bools} parameter is not an boolean" do
-        let(:params) {{bools => "BOGON"}}
-        it 'should fail' do
-          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
-        end
-      end
-    end#bools
+#    ['autosign','future_parser'].each do |bools|
+#      context "when the #{bools} parameter is not an boolean" do
+#        let(:params) {{bools => "BOGON"}}
+#        it 'should fail' do
+#          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
+#        end
+#      end
+#    end#bools
 
 #    ['hash'].each do |hashes|
 #      context "when the #{hashes} parameter is not an hash" do
@@ -41,14 +41,14 @@ describe 'puppet::master::config', :type => :class do
 #      end
 #    end#hashes
 
-    ['extra_module_path'].each do |strings|
-      context "when the #{strings} parameter is not a string" do
-        let(:params) {{strings => false }}
-        it 'should fail' do
-          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
-        end
-      end
-    end#strings
+#    ['extra_module_path'].each do |strings|
+#      context "when the #{strings} parameter is not a string" do
+#        let(:params) {{strings => false }}
+#        it 'should fail' do
+#          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
+#        end
+#      end
+#    end#strings
 
   end#input validation
   ['Debian'].each do |osfam|

@@ -41,14 +41,14 @@ describe 'puppet::install', :type => :class do
 #      end
 #    end#hashes
 
-    ['facter_version','hiera_version','puppet_version'].each do |strings|
-      context "when the #{strings} parameter is not a string" do
-        let(:params) {{strings => false }}
-        it 'should fail' do
-          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
-        end
-      end
-    end#strings
+#    ['facter_version','hiera_version','puppet_version'].each do |strings|
+#      context "when the #{strings} parameter is not a string" do
+#        let(:params) {{strings => false }}
+#        it 'should fail' do
+#          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
+#        end
+#      end
+#    end#strings
 
   end#input validation
   ['Debian'].each do |osfam|

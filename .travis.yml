@@ -9,5 +9,7 @@ rvm:
 env:
   - PUPPET_VERSION=3.6.2
   - PUPPET_VERSION=3.7.3
+before_install:
+  - sudo apt-get install -y lsb-release
 notifications:
   email: true
