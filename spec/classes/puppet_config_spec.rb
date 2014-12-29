@@ -59,34 +59,34 @@ describe 'puppet::config', :type => :class do
         it 'should set the puppet server properly' do
           #binding.pry;
           should contain_ini_setting('puppet client server').with(
-            path=>'/etc/puppet/puppet.conf',
-            section=>'agent',
-            setting=>'server',
-            value=>'puppet'
+            'path'=>'/etc/puppet/puppet.conf',
+            'section'=>'agent',
+            'setting'=>'server',
+            'value'=>'puppet'
           )
         end
         it 'should set the puppet environment properly' do
           should contain_ini_setting('puppet client environment').with(
-            path=>'/etc/puppet/puppet.conf',
-            section=>'agent',
-            setting=>'environment',
-            value=>'production'
+            'path'=>'/etc/puppet/puppet.conf',
+            'section'=>'agent',
+            'setting'=>'environment',
+            'value'=>'production'
           )
         end
         it 'should set the puppet agent runinterval properly' do
           should contain_ini_setting('puppet client runinterval').with(
-            path=>'/etc/puppet/puppet.conf',
-            section=>'agent',
-            setting=>'runinterval',
-            value=>'30m'
+            'path'=>'/etc/puppet/puppet.conf',
+            'section'=>'agent',
+            'setting'=>'runinterval',
+            'value'=>'30m'
           )
         end
         it 'should setup puppet.conf to support structured_facts' do
           should contain_ini_setting('puppet client structured_facts').with(
-            path=>'/etc/puppet/puppet.conf',
-            section=>'main',
-            setting=>'stringify_facts',
-            value=>true
+            'path'=>'/etc/puppet/puppet.conf',
+            'section'=>'main',
+            'setting'=>'stringify_facts',
+            'value'=>true
           )
         end
       end#no params
@@ -94,10 +94,10 @@ describe 'puppet::config', :type => :class do
         let(:params) {{'puppet_server' => 'BOGON'}}
         it 'should properly set the server setting in puppet.conf' do
           should contain_ini_setting('puppet client server').with(
-            path=>'/etc/puppet/puppet.conf',
-            section=>'agent',
-            setting=>'server',
-            value=>'BOGON'
+            'path'=>'/etc/puppet/puppet.conf',
+            'section'=>'agent',
+            'setting'=>'server',
+            'value'=>'BOGON'
           )
         end
       end# custom server
@@ -105,10 +105,10 @@ describe 'puppet::config', :type => :class do
         let(:params) {{'environment' => 'BOGON'}}
         it 'should properly set the environment setting in puppet.conf' do
           should contain_ini_setting('puppet client environment').with(
-            path=>'/etc/puppet/puppet.conf',
-            section=>'agent',
-            setting=>'environment',
-            value=>'BOGON'
+            'path'=>'/etc/puppet/puppet.conf',
+            'section'=>'agent',
+            'setting'=>'environment',
+            'value'=>'BOGON'
           )
         end
       end# custom environment
@@ -116,10 +116,10 @@ describe 'puppet::config', :type => :class do
         let(:params) {{'runinterval' => 'BOGON'}}
         it 'should properly set the runinterval setting in puppet.conf' do
           should contain_ini_setting('puppet client runinterval').with(
-            path=>'/etc/puppet/puppet.conf',
-            section=>'agent',
-            setting=>'runinterval',
-            value=>'BOGON'
+            'path'=>'/etc/puppet/puppet.conf',
+            'section'=>'agent',
+            'setting'=>'runinterval',
+            'value'=>'BOGON'
           )
         end
       end# custom runinterval
@@ -127,10 +127,10 @@ describe 'puppet::config', :type => :class do
         let(:params) {{'structured_facts' => false}}
         it 'should properly set the stringify_facts setting in puppet.conf' do
           should contain_ini_setting('puppet client structured_facts').with(
-            path=>'/etc/puppet/puppet.conf',
-            section=>'agent',
-            setting=>'stringify_facts',
-            value=>true
+            'path'=>'/etc/puppet/puppet.conf',
+            'section'=>'agent',
+            'setting'=>'stringify_facts',
+            'value'=>true
           )
         end
       end# custom structured_facts
