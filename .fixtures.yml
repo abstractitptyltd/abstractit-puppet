@@ -3,6 +3,9 @@ fixtures:
     apache:
       repo: "puppetlabs/apache"
       ref:  "1.0.1"
+    apache:
+      repo: "puppetlabs/concat"
+      ref:  "1.1.1"
     stdlib:
       repo: "puppetlabs/stdlib"
       ref:  "4.1.0"
