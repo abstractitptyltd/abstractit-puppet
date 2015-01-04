@@ -52,14 +52,16 @@ describe 'puppet::master::hiera', :type => :class do
 #    end#strings
 
   end#input validation
+
   ['Debian'].each do |osfam|
     context "When on an #{osfam} system" do
       let(:pre_condition){"class{'apache':}"}
       let(:facts) {{'osfamily' => osfam,'operatingsystemrelease' => '14.04','concat_basedir' => '/tmp'}}
-      let(:default_params) {{'hiera_backends' => {'yaml' => { 'datadir' => '/etc/puppet/hiera/%{environment}',} } }}
+#      let(:default_params) {{'hiera_backends' => {'yaml' => { 'datadir' => '/etc/puppet/hiera/%{environment}',} } }}
+      let(:pre_condition) {"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => '/etc/puppet/hiera/%{environment}}'}"}
 
       context 'when fed no parameters' do
-        let(:params){default_params}
+#        let(:params){default_params}
         it 'should lay down /etc/hiera.yaml' do
           should contain_file('/etc/hiera.yaml').with({
             :path=>"/etc/hiera.yaml",
@@ -90,7 +92,7 @@ describe 'puppet::master::hiera', :type => :class do
       end#no params
 
       context 'when the env_owner param has a non-standard value' do
-        let(:params){default_params.merge({'env_owner' => 'bogon'})}
+        let(:pre_condition) {"class{'::puppet::master': env_owner => 'bogon'}"}
         it 'should adjust the ownership of the environment directory apropriately' do
           should contain_file('/etc/puppet/hiera').with({
            :path=>"/etc/puppet/hiera",
@@ -102,7 +104,7 @@ describe 'puppet::master::hiera', :type => :class do
         end
       end
       context 'when the eyaml_keys param is true' do
-        let(:params){default_params.merge({'eyaml_keys' => true})}
+        let(:pre_condition) {"class{'::puppet::master': eyaml_keys => true}"}
         it 'should lay down /etc/puppet/keys' do
           should contain_file('/etc/puppet/keys').with({
             :path=>"/etc/puppet/keys",
@@ -144,7 +146,8 @@ describe 'puppet::master::hiera', :type => :class do
       end
 
       context 'when the hiera_backends param has a non-standard value' do
-        let(:params){default_params.merge({'hiera_backends' => {'yaml' => { 'datadir' => 'BOGON',} } })}
+#        let(:params){default_params.merge({'hiera_backends' => {'yaml' => { 'datadir' => 'BOGON',} } })}
+        let(:pre_condition) {"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => 'BOGON'}}"}
         it 'should update /etc/hiera.yaml apropriately' do
           should contain_file('/etc/hiera.yaml').with({
             :path=>"/etc/hiera.yaml",
@@ -158,7 +161,7 @@ describe 'puppet::master::hiera', :type => :class do
       end
 
       context 'when the hieradata_path param has a non-standard value' do
-        let(:params){default_params.merge({'hieradata_path' => '/BOGON'})}
+        let(:pre_condition) {"class{'::puppet::master': hieradata_path => '/BOGON'}"}
         it 'should create the proper directory' do
           should contain_file('/BOGON').with({
             :path=>"/BOGON",
@@ -171,7 +174,8 @@ describe 'puppet::master::hiera', :type => :class do
       end
 
       context 'when the hierarchy param has a non-standard value' do
-        let(:params){default_params.merge({'hierarchy' => ["foo", "bar", "baz"]})}
+#        let(:params){default_params.merge({'hierarchy' => ["foo", "bar", "baz"]})}
+        let(:pre_condition) {"class{'::puppet::master': hierarchy => ['foo', 'bar', 'baz'] }"}
         it 'should update /etc/hiera.yaml with the specified hierarchy' do
           should contain_file('/etc/hiera.yaml').with({
             :path=>"/etc/hiera.yaml",

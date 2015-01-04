@@ -3,7 +3,7 @@ require 'spec_helper'
 require 'pry'
 
 describe 'puppet::master::install', :type => :class do
-  let(:default_params) {{'hiera_eyaml_version' => 'installed'}}
+#  let(:default_params) {{'hiera_eyaml_version' => 'installed'}}
   context 'input validation' do
 
 #    ['path'].each do |paths|
@@ -52,10 +52,17 @@ describe 'puppet::master::install', :type => :class do
 #    end#strings
 
   end#input validation
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
+
+#  ['Debian'].each do |osfam|
+#    context "When on an #{osfam} system" do
+#      let(:facts) {{'osfamily' => osfam}}
+  on_supported_os.each do |os, facts|
+    context "When on an #{os} system" do
+      let(:facts) do
+        facts
+      end
+
       let(:pre_condition){"package{'puppet': ensure => 'present'}"}
-      let(:facts) {{'osfamily' => osfam}}
       context 'when fed no parameters' do
         let(:params){default_params}
 

@@ -51,9 +51,15 @@ describe 'puppet::install', :type => :class do
 #    end#strings
 
   end#input validation
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
-      let(:facts) {{'osfamily' => osfam}}
+
+#  ['Debian'].each do |osfam|
+#    context "When on an #{osfam} system" do
+#      let(:facts) {{'osfamily' => osfam}}
+  on_supported_os.each do |os, facts|
+    context "When on an #{os} system" do
+      let(:facts) do
+        facts
+      end
 
       ['facter','hiera','puppet','puppet-common'].each do |pkg|
         context 'when fed no parameters' do
@@ -67,16 +73,28 @@ describe 'puppet::install', :type => :class do
         should contain_package('puppetlabs-release').with({'ensure' => 'latest'})
       end#puppetlabs-release
 
-      ['facter','hiera'].each do |single_pkgs|
-        context "when the #{single_pkgs}_version param has a custom value" do
-          let(:params){{"#{single_pkgs}_version" => 'some_version'}}
-          it "should install the specified version of #{single_pkgs}" do
-            should contain_package(single_pkgs).with({'ensure' => 'some_version'})
-          end
+#      ['facter','hiera'].each do |single_pkgs|
+#        context "when the #{single_pkgs}_version param has a custom value" do
+#          let(:params){{"#{single_pkgs}_version" => 'some_version'}}
+#          it "should install the specified version of #{single_pkgs}" do
+#            should contain_package(single_pkgs).with({'ensure' => 'some_version'})
+#          end
+#        end
+#      end#facter/hiera iterator
+      context 'when the hiera_version param has a custom value' do
+        let(:pre_condition) {"class{'::puppet': hiera_version => 'some_version'}"}
+        it 'should install the specified version if the hiera packages' do
+          should contain_package('hiera').with({'ensure' => 'some_version'})
         end
-      end#facter/hiera iterator
+      end#facter_version
+      context 'when the facter_version param has a custom value' do
+        let(:pre_condition) {"class{'::puppet': facter_version => 'some_version'}"}
+        it 'should install the specified version if the facter packages' do
+          should contain_package('facter').with({'ensure' => 'some_version'})
+        end
+      end#facter_version
       context 'when the puppet_version param has a custom value' do
-        let(:params){{'puppet_version' => 'some_version'}}
+        let(:pre_condition) {"class{'::puppet': puppet_version => 'some_version'}"}
         it 'should install the specified version if the puppet-common and puppet packages' do
           should contain_package('puppet').with({'ensure' => 'some_version'})
           should contain_package('puppet-common').with({'ensure' => 'some_version'})
