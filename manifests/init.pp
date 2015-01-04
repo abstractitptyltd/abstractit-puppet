@@ -91,10 +91,12 @@ class puppet (
       custom_facts => $custom_facts,
     }
   }
+  include ::puppet::install
+  include ::puppet::config
   include ::puppet::agent
-  class { 'puppet::install':
-  } ->
-  class { 'puppet::config':
-  } ~>
+
+  Class['puppet::install'] ->
+  Class['puppet::config'] ~>
   Class['puppet::agent']
+
 }

@@ -76,13 +76,14 @@ class puppet::master (
     default => "${pre_module_path_real}${module_path}",
   }
 
-  class { 'puppet::master::install':
-  } ->
-  class { 'puppet::master::config':
-  } ->
-  class { 'puppet::master::hiera':
-  } ~>
-  class { 'puppet::master::passenger':
-  }
+  include puppet::master::install
+  include puppet::master::config
+  include puppet::master::hiera
+  include puppet::master::passenger
+
+  Class['puppet::master::install'] ->
+  Class['puppet::master::config'] ->
+  Class['puppet::master::hiera'] ~>
+  Class['puppet::master::passenger']
 
 }

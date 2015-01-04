@@ -25,7 +25,7 @@ class puppet::agent (){
     $service_enablement = false
   }
 
-  cron {"run_puppet_agent":
+  cron {'run_puppet_agent':
     ensure  => $cron_enablement,
     command => 'puppet agent -t',
     special => 'absent',
