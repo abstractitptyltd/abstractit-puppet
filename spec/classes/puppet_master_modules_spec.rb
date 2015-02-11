@@ -69,8 +69,18 @@ describe 'puppet::master::modules', :type => :class do
     end
 
   end#input validation
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
+#  ['Debian'].each do |osfam|
+#    context "When on an #{osfam} system" do
+  on_supported_os.each do |os, facts|
+    context "When on an #{os} system" do
+      let(:facts) do
+        facts
+      end
+      let:facts do
+      {
+        :concat_basedir => '/tmp'
+      }
+      end
       let(:pre_condition) {"package{'r10k': ensure => 'present'}"}
       let(:facts) {{'osfamily' => osfam}}
       context 'when fed no parameters' do

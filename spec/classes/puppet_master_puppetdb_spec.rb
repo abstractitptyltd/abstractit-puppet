@@ -61,7 +61,19 @@ describe 'puppet::master::puppetdb', :type => :class do
 #      end
 #    end#opt_strings
   end#input validation
-  context "When on a Debian system" do
+
+#  context "When on a Debian system" do
+  on_supported_os.each do |os, facts|
+    context "When on an #{os} system" do
+    let(:facts) do
+      facts
+    end
+    let:facts do
+    {
+      :concat_basedir => '/tmp',
+      :domain => 'domain.com'
+    }
+    end
     let(:pre_condition){"class{'puppet::master':}"}
     let(:facts) {{'osfamily' => 'Debian', 'domain' => 'domain.com'}}
     context '[ubuntu trusty]' do
@@ -284,4 +296,5 @@ describe 'puppet::master::puppetdb', :type => :class do
       end#end use_ssl
     end#trusty
   end#debian
+end
 end

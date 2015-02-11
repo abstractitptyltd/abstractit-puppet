@@ -53,8 +53,18 @@ describe 'puppet::master::hiera', :type => :class do
 
   end#input validation
 
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
+  #  ['Debian'].each do |osfam|
+  #    context "When on an #{osfam} system" do
+  on_supported_os.each do |os, facts|
+    context "When on an #{os} system" do
+      let(:facts) do
+        facts
+      end
+      let:facts do
+      {
+        :concat_basedir => '/tmp'
+      }
+      end
       let(:pre_condition){"class{'apache':}"}
       let(:facts) {{'osfamily' => osfam,'operatingsystemrelease' => '14.04','concat_basedir' => '/tmp'}}
 #      let(:default_params) {{'hiera_backends' => {'yaml' => { 'datadir' => '/etc/puppet/hiera/%{environment}',} } }}

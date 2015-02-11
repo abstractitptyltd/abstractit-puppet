@@ -69,10 +69,21 @@ describe 'puppet::master::passenger', :type => :class do
 #    end#opt_strings
 
   end#input validation
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
-      context '[ubuntu trusty]' do
-        let(:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'trusty', 'osfamily' => osfam, 'operatingsystemrelease' => '14.04','concat_basedir' => '/tmp'}}
+#  ['Debian'].each do |osfam|
+#    context "When on an #{osfam} system" do
+#      context '[ubuntu trusty]' do
+#        let(:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'trusty', 'osfamily' => osfam, 'operatingsystemrelease' => '14.04','concat_basedir' => '/tmp'}}
+    on_supported_os.each do |os, facts|
+      context "When on an #{os} system" do
+        let(:facts) do
+          facts
+        end
+        let:facts do
+        {
+          :concat_basedir => '/tmp',
+          :fqdn => 'constructorfleet.vogon.gal'
+        }
+        end
         let(:pre_condition) {"class{'puppet::master::install': hiera_eyaml_version=>'present' }"}
         context 'when fed no parameters' do
           it 'should properly instantiate the apache class' do

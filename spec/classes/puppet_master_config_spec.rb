@@ -59,7 +59,7 @@ describe 'puppet::master::config', :type => :class do
       end
       let:facts do
       {
-        :concat_basedir => '/var/lib/puppet/concat'
+        :concat_basedir => '/tmp'
       }
       end
       context 'when fed no parameters' do
@@ -80,7 +80,8 @@ describe 'puppet::master::config', :type => :class do
             'ensure'=>'present',
             'path'=>'/etc/puppet/puppet.conf',
             'section'=>'main',
-            'setting'=>'basemodulepath'
+            'setting'=>'basemodulepath',
+            'value'=>'/etc/puppet/site:/usr/share/puppet/modules'
           })
         end
         it 'should disable autosign' do
@@ -171,7 +172,7 @@ describe 'puppet::master::config', :type => :class do
             })
           end
         end#autosign true in other environemtns
-      end
+      end## autosign true
     end
   end
 end
