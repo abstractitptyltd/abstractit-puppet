@@ -70,19 +70,10 @@ describe 'puppet', :type => :class do
         should contain_class('puppet::repo')
       end
       it 'should instantiate the puppet::install class with the default params' do
-        should contain_class('puppet::install').with({
-          'puppet_version'=>'installed',
-          'hiera_version' =>"installed",
-          'facter_version'=>"installed",
-          }).that_comes_before('Class[Puppet::Config]')
+        should contain_class('puppet::install').that_comes_before('Class[Puppet::Config]')
       end
       it 'should instantiate the puppet::config class with the default params' do
-        should contain_class('puppet::config').with({
-         'puppet_server'=>"puppet",
-         'environment'=>"production",
-         'runinterval'=>"30m",
-         'structured_facts'=>false,
-        }).that_notifies('class[Puppet::Agent]')
+        should contain_class('puppet::config').that_notifies('class[Puppet::Agent]')
       end
       it 'should instantiate the puppet::agent class' do
         should contain_class('puppet::agent')
