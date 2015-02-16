@@ -62,9 +62,8 @@ describe 'puppet::master::hiera', :type => :class do
           :concat_basedir => '/tmp'
         })
       end
-      let(:pre_condition){"class{'apache':}"}
-#      let(:default_params) {{'hiera_backends' => {'yaml' => { 'datadir' => '/etc/puppet/hiera/%{environment}',} } }}
-      let(:pre_condition) {"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => '/etc/puppet/hiera/%{environment}}'}"}
+      let(:pre_condition){"class{'::apache':}"}
+      let(:pre_condition){"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => '/etc/puppet/hiera/%{environment}}'}"}
 
       context 'when fed no parameters' do
         it 'should lay down /etc/hiera.yaml' do
