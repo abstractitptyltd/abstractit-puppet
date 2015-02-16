@@ -74,12 +74,9 @@ describe 'puppet::master::modules', :type => :class do
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
-        facts
-      end
-      let:facts do
-      {
-        :concat_basedir => '/tmp'
-      }
+        facts.merge({
+          :concat_basedir => '/tmp'
+        })
       end
       let(:pre_condition) {"package{'r10k': ensure => 'present'}"}
       let(:facts) {{'osfamily' => osfam}}

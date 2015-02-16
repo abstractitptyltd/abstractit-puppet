@@ -55,12 +55,9 @@ describe 'puppet::master::config', :type => :class do
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
-        facts
-      end
-      let:facts do
-      {
-        :concat_basedir => '/tmp'
-      }
+        facts.merge({
+          :concat_basedir => '/tmp'
+        })
       end
       context 'when fed no parameters' do
         it 'should behave differently' do

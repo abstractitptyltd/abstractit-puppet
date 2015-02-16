@@ -65,13 +65,10 @@ describe 'puppet::master::puppetdb', :type => :class do
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
-        facts
-      end
-      let:facts do
-      {
-        :concat_basedir => '/tmp',
-        :domain => 'domain.com'
-      }
+        facts.merge({
+          :concat_basedir => '/tmp',
+          :domain => 'domain.com'
+        })
       end
       let(:pre_condition){"class{'puppet::master':}"}
       context 'when fed no parameters' do
