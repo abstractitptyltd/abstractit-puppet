@@ -76,13 +76,10 @@ describe 'puppet::master::passenger', :type => :class do
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
-        facts
-      end
-      let:facts do
-      {
-        :concat_basedir => '/tmp',
-        :fqdn => 'constructorfleet.vogon.gal'
-      }
+        facts.merge({
+          :concat_basedir => '/tmp',
+          :fqdn => 'constructorfleet.vogon.gal'
+        })
       end
       let(:pre_condition) {"class{'puppet::master::install': hiera_eyaml_version=>'present' }"}
       context 'when fed no parameters' do

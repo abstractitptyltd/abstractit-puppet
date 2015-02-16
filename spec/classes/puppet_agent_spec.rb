@@ -58,13 +58,10 @@ describe 'puppet::agent', :type => :class do
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
-        facts
-      end
-      let:facts do
-      {
-        :concat_basedir => '/tmp',
-        :fqdn => 'testy.hosty.com'
-      }
+        facts.merge({
+          :concat_basedir => '/tmp',
+          :fqdn => 'testy.hosty.com'
+        })
       end
       context 'when puppet has default agent parameters' do
         let(:pre_condition){"class{'::puppet':}"}
