@@ -68,9 +68,10 @@ describe 'puppet::master::hiera', :type => :class do
 
       context 'when fed no parameters' do
         it 'should lay down /etc/hiera.yaml' do
+#          pending 'This does not actualy work as is'
           should contain_file('/etc/hiera.yaml').with({
             'ensure' =>'file',
-            'content' => '/:datadir: \"\/etc\/puppet\/hiera\/%{environment}\"/',
+            'content' => /:datadir: \"\/etc\/puppet\/hiera\/%{environment}\"/,
 #            'content'=>"---\n:logger: console\n:backends:\n  - yaml\n\n:hierarchy:\n  - \"node/%{::clientcert}\"\n  - \"env/%{::environment}\"\n  - \"global\"\n\n:yaml:\n  :datadir: \"/etc/puppet/hiera/%{environment}\"\n\n",
             'owner'=>'root',
             'group'=>'root',
@@ -154,7 +155,8 @@ describe 'puppet::master::hiera', :type => :class do
           should contain_file('/etc/hiera.yaml').with({
             :path=>"/etc/hiera.yaml",
             :ensure=>"file",
-            :content=>"---\n:logger: console\n:backends:\n  - yaml\n\n:hierarchy:\n  - \"node/%{::clientcert}\"\n  - \"env/%{::environment}\"\n  - \"global\"\n\n:yaml:\n  :datadir: \"BOGON\"\n\n",
+            :content=>/:datadir: \"BOGON\"/,
+#            :content=>"---\n:logger: console\n:backends:\n  - yaml\n\n:hierarchy:\n  - \"node/%{::clientcert}\"\n  - \"env/%{::environment}\"\n  - \"global\"\n\n:yaml:\n  :datadir: \"BOGON\"\n\n",
             :owner=>"root",
             :group=>"root",
             :mode=>"0644"
