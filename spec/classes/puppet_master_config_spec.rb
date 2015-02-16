@@ -142,9 +142,11 @@ describe 'puppet::master::config', :type => :class do
 
       context 'when the $::puppet::master::autosign variable is true' do
         let(:pre_condition) {"class{'::puppet::master': autosign => true}"}
-        facts.merge({
-          :environment => 'production'
-        })
+        let(:facts) do
+          facts.merge({
+            :environment => 'production'
+          })
+        end
 #        let(:facts)  {{ 'environment' => 'production'}}
         context 'and the environment is production' do
           it 'should not enable autosign' do
@@ -160,9 +162,11 @@ describe 'puppet::master::config', :type => :class do
         end#autosign true in production
         context 'and the environment is not production' do
           let(:pre_condition) {"class{'::puppet::master': autosign => true}"}
-          facts.merge({
-            :environment => 'production'
-          })
+          let(:facts) do
+            facts.merge({
+              :environment => 'production'
+            })
+          end
 #          let(:facts) {{'environment' => 'testenv'}}
           it 'should enable autosign' do
             pending 'This does not actualy work as is'

@@ -63,34 +63,33 @@ describe 'puppet::master::hiera', :type => :class do
         })
       end
       let(:pre_condition){"class{'::apache':}"}
-      let(:pre_condition){"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => '/etc/puppet/hiera/%{environment}}'}"}
+      let(:pre_condition){"class{'::puppet::master':}"}
+#      let(:pre_condition){"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => '/etc/puppet/hiera/%{environment}}'}"}
 
       context 'when fed no parameters' do
         it 'should lay down /etc/hiera.yaml' do
           should contain_file('/etc/hiera.yaml').with({
-            :path=>"/etc/hiera.yaml",
-            :ensure=>"file",
-            :content=>"---\n:logger: console\n:backends:\n  - yaml\n\n:hierarchy:\n  - \"node/%{::clientcert}\"\n  - \"env/%{::environment}\"\n  - \"global\"\n\n:yaml:\n  :datadir: \"/etc/puppet/hiera/%{environment}\"\n\n",
-            :owner=>"root",
-            :group=>"root",
-            :mode=>"0644",
+            'ensure' =>'file',
+            'content' => '/:datadir: \"\/etc\/puppet\/hiera\/%{environment}\"/',
+#            'content'=>"---\n:logger: console\n:backends:\n  - yaml\n\n:hierarchy:\n  - \"node/%{::clientcert}\"\n  - \"env/%{::environment}\"\n  - \"global\"\n\n:yaml:\n  :datadir: \"/etc/puppet/hiera/%{environment}\"\n\n",
+            'owner'=>'root',
+            'group'=>'root',
+            'mode'=>'0644',
           }).that_notifies('Class[Apache::Service]')
         end
         it 'should lay down /etc/puppet/hiera.yaml' do
           should contain_file('/etc/puppet/hiera.yaml').with({
-            :path=>"/etc/puppet/hiera.yaml",
-            :ensure=>"link",
-            :target=>"/etc/hiera.yaml"
+            'ensure'=>'link',
+            'target'=>'/etc/hiera.yaml'
           }).that_requires('File[/etc/hiera.yaml]')
 
         end
         it 'should lay down or manage the permissions of the hieradata directory' do
           should contain_file('/etc/puppet/hiera').with({
-            :path=>"/etc/puppet/hiera",
-            :ensure=>"directory",
-            :owner=>"puppet",
-            :group=>"puppet",
-            :mode=>"0755"
+            'ensure'=>"directory",
+            'owner'=>"puppet",
+            'group'=>"puppet",
+            'mode'=>"0755"
           })
         end
       end#no params
