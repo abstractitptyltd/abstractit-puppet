@@ -214,7 +214,7 @@ describe 'puppet::agent', :type => :class do
            :special=>"absent"
           })
         end
-      end
+      end# puppet::enabled
     end
   end
 end

@@ -62,20 +62,18 @@ describe 'puppet::master::puppetdb', :type => :class do
 #    end#opt_strings
   end#input validation
 
-#  context "When on a Debian system" do
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
-    let(:facts) do
-      facts
-    end
-    let:facts do
-    {
-      :concat_basedir => '/tmp',
-      :domain => 'domain.com'
-    }
-    end
-    let(:pre_condition){"class{'puppet::master':}"}
-    context '[ubuntu trusty]' do
+      let(:facts) do
+        facts
+      end
+      let:facts do
+      {
+        :concat_basedir => '/tmp',
+        :domain => 'domain.com'
+      }
+      end
+      let(:pre_condition){"class{'puppet::master':}"}
       context 'when fed no parameters' do
         let(:params){default_params}
         it 'should properly instantiate the puppetdb class' do
@@ -114,7 +112,6 @@ describe 'puppet::master::puppetdb', :type => :class do
           })
         end
       end#no params
-
       context 'when puppetdb_version has a non-standard value' do
         let(:params){default_params.merge({'puppetdb_version' => 'BOGON'})}
         it 'should instantiate the puppetdb class apropriately' do
@@ -293,7 +290,6 @@ describe 'puppet::master::puppetdb', :type => :class do
           }).that_requires('class[Puppet::Master::Puppetdb]')
         end
       end#end use_ssl
-    end#trusty
-  end#debian
-end
+    end#debian
+  end# supported OS
 end
