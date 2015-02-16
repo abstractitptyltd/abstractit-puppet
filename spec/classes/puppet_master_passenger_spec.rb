@@ -183,7 +183,7 @@ describe 'puppet::master::passenger', :type => :class do
         end
       end#no params
       context 'when passenger_max_pool_size has a non-standard value' do
-        let(:params){{'passenger_max_pool_size' => 'BOGON'}}
+        let(:pre_condition) {"class{'::puppet::master': passenger_max_pool_size => 'bogon'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
           should contain_class('Apache::Mod::Passenger').with({
             :passenger_high_performance=>"On",
@@ -197,7 +197,7 @@ describe 'puppet::master::passenger', :type => :class do
       end#end passenger_max_pool_size
 
       context 'when passenger_max_requests has a non-standard value' do
-        let(:params){{'passenger_max_requests' => 'BOGON'}}
+        let(:pre_condition) {"class{'::puppet::master': passenger_max_requests => 'bogon'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
           should contain_class('Apache::Mod::Passenger').with({
             :passenger_high_performance=>"On",
@@ -211,7 +211,7 @@ describe 'puppet::master::passenger', :type => :class do
       end#end passenger_max_requests
 
       context 'when passenger_pool_idle_time has a non-standard value' do
-        let(:params){{'passenger_pool_idle_time' => 'BOGON'}}
+        let(:pre_condition) {"class{'::puppet::master': passenger_pool_idle_time => 'bogon'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
           should contain_class('Apache::Mod::Passenger').with({
             :passenger_high_performance=>"On",
@@ -225,7 +225,7 @@ describe 'puppet::master::passenger', :type => :class do
       end#end passenger_pool_idle_time
 
       context 'when passenger_stat_throttle_rate has a non-standard value' do
-        let(:params){{'passenger_stat_throttle_rate' => 'BOGON'}}
+        let(:pre_condition) {"class{'::puppet::master': passenger_stat_throttle_rate => 'bogon'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
           should contain_class('Apache::Mod::Passenger').with({
             :passenger_high_performance=>"On",
@@ -239,7 +239,7 @@ describe 'puppet::master::passenger', :type => :class do
       end#end passenger_stat_throttle_rate
 
       context 'when puppet_fqdn has a non-standard value' do
-        let(:params){{'puppet_fqdn' => 'BOGON'}}
+        let(:pre_condition) {"class{'::puppet::master': puppet_fqdn => 'bogon'}"}
         it 'should properly instantiate the apache::vhost defined type' do
           should contain_apache__vhost('BOGON').with({
             :name=>"BOGON",

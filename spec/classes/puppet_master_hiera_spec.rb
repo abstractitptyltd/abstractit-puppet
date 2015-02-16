@@ -70,7 +70,6 @@ describe 'puppet::master::hiera', :type => :class do
       let(:pre_condition) {"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => '/etc/puppet/hiera/%{environment}}'}"}
 
       context 'when fed no parameters' do
-#        let(:params){default_params}
         it 'should lay down /etc/hiera.yaml' do
           should contain_file('/etc/hiera.yaml').with({
             :path=>"/etc/hiera.yaml",
@@ -155,7 +154,6 @@ describe 'puppet::master::hiera', :type => :class do
       end
 
       context 'when the hiera_backends param has a non-standard value' do
-#        let(:params){default_params.merge({'hiera_backends' => {'yaml' => { 'datadir' => 'BOGON',} } })}
         let(:pre_condition) {"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => 'BOGON'}}"}
         it 'should update /etc/hiera.yaml apropriately' do
           should contain_file('/etc/hiera.yaml').with({
@@ -183,7 +181,6 @@ describe 'puppet::master::hiera', :type => :class do
       end
 
       context 'when the hierarchy param has a non-standard value' do
-#        let(:params){default_params.merge({'hierarchy' => ["foo", "bar", "baz"]})}
         let(:pre_condition) {"class{'::puppet::master': hierarchy => ['foo', 'bar', 'baz'] }"}
         it 'should update /etc/hiera.yaml with the specified hierarchy' do
           should contain_file('/etc/hiera.yaml').with({

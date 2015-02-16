@@ -61,6 +61,11 @@ describe 'puppet::master::install', :type => :class do
       let(:facts) do
         facts
       end
+      let:facts do
+      {
+        :concat_basedir => '/tmp'
+      }
+      end
 
       let(:pre_condition){"package{'puppet': ensure => 'present'}"}
       context 'when fed no parameters' do
@@ -118,7 +123,7 @@ describe 'puppet::master::install', :type => :class do
         end
       end#no params
       context 'when the hiera_eyaml_version param has a non-standard value' do
-        let(:params){default_params.merge({'hiera_eyaml_version' => 'BOGON'})}
+        let(:pre_condition) {"class{'puppet::master': hiera_eyaml_version=>'BOGON' }"}
         it 'should install the specified version of the hiera-eyaml package' do
           should contain_package('hiera-eyaml').with({
             :name=>"hiera-eyaml",
@@ -128,7 +133,7 @@ describe 'puppet::master::install', :type => :class do
         end
       end
       context 'when the puppet_version param has a non-standard value' do
-        let(:params){default_params.merge({'puppet_version' => 'BOGON'})}
+        let(:pre_condition) {"class{'puppet::master': puppet_version=>'BOGON' }"}
         it 'should install the specified version of the puppetmaster-common package' do
           should contain_package('puppetmaster-common').with({
             :ensure=>"BOGON",
@@ -148,7 +153,7 @@ describe 'puppet::master::install', :type => :class do
         end
       end
       context 'when the r10k_version param has a non-standard value' do
-        let(:params){default_params.merge({'r10k_version' => 'BOGON'})}
+        let(:pre_condition) {"class{'puppet::master': r10k_version=>'BOGON' }"}
         it 'should install the specified version of the r10k package' do
           should contain_package('r10k').with({
             :name=>"r10k",
