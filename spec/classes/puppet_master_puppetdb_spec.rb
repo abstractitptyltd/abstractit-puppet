@@ -75,9 +75,7 @@ describe 'puppet::master::puppetdb', :type => :class do
     }
     end
     let(:pre_condition){"class{'puppet::master':}"}
-    let(:facts) {{'osfamily' => 'Debian', 'domain' => 'domain.com'}}
     context '[ubuntu trusty]' do
-      let(:facts) {{'osfamily' => 'Debian', 'domain' => 'domain.com', 'operatingsystem' => 'Ubuntu', 'operatingsystemrelease' => '14.04','concat_basedir' => '/tmp'}}
       context 'when fed no parameters' do
         let(:params){default_params}
         it 'should properly instantiate the puppetdb class' do
@@ -116,6 +114,7 @@ describe 'puppet::master::puppetdb', :type => :class do
           })
         end
       end#no params
+
       context 'when puppetdb_version has a non-standard value' do
         let(:params){default_params.merge({'puppetdb_version' => 'BOGON'})}
         it 'should instantiate the puppetdb class apropriately' do
