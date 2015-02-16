@@ -66,7 +66,6 @@ describe 'puppet::master::hiera', :type => :class do
       }
       end
       let(:pre_condition){"class{'apache':}"}
-      let(:facts) {{'osfamily' => osfam,'operatingsystemrelease' => '14.04','concat_basedir' => '/tmp'}}
 #      let(:default_params) {{'hiera_backends' => {'yaml' => { 'datadir' => '/etc/puppet/hiera/%{environment}',} } }}
       let(:pre_condition) {"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => '/etc/puppet/hiera/%{environment}}'}"}
 

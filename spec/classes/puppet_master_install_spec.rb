@@ -64,7 +64,7 @@ describe 'puppet::master::install', :type => :class do
 
       let(:pre_condition){"package{'puppet': ensure => 'present'}"}
       context 'when fed no parameters' do
-        let(:params){default_params}
+#        let(:params){default_params}
 
         it 'should install the puppetmaster-common package' do
           should contain_package('puppetmaster-common').with({
