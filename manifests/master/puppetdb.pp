@@ -45,7 +45,7 @@ class puppet::master::puppetdb (
     node_purge_ttl     => $node_purge_ttl,
     report_ttl         => $report_ttl,
     puppetdb_version   => $puppetdb_version,
-    require            => Class['puppet::master'],
+    require            => Class['::puppet::master'],
   }
 
   class { '::puppetdb::master::config':
@@ -56,7 +56,7 @@ class puppet::master::puppetdb (
     manage_report_processor => $reports,
     restart_puppet          => true,
     puppetdb_version        => $puppetdb_version,
-    require                 => Class['puppetdb'],
+    require                 => Class['::puppetdb'],
   }
 
   # cleanup old puppet reports
