@@ -131,7 +131,7 @@ describe 'puppet::master::puppetdb', :type => :class do
             :manage_report_processor=>true,
             :restart_puppet=>true,
             :puppetdb_version=>"BOGON",
-          }).that_requires('class[::puppetdb]')
+          }).that_requires('class[Puppetdb]')
         end
       end#end puppetdb_version
       context 'when node_purge_ttl has a non-standard value' do
