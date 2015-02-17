@@ -43,7 +43,7 @@ describe 'puppet::facts', :type => :class do
       context "when the #{hashes} parameter is not an hash" do
         let(:params) {{ hashes => 'this is a string'}}
         it 'should fail' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
         end
       end

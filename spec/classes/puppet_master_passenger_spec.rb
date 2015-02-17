@@ -85,7 +85,7 @@ describe 'puppet::master::passenger', :type => :class do
 #      let(:pre_condition){"class{'puppet::master::install': hiera_eyaml_version=>'present' }"}
       context 'when fed no parameters' do
         it 'should properly instantiate the apache class' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           should contain_class('apache').with({
             'mpm_module'=>'worker',
             'default_vhost'=>false,
@@ -136,7 +136,7 @@ describe 'puppet::master::passenger', :type => :class do
 #          })
         end
         it 'should properly instantiate the apache module "access_compat"' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           should contain_apache__mod('access_compat').with({
             'name'=>"access_compat",
             'package_ensure'=>'undef'
@@ -155,7 +155,7 @@ describe 'puppet::master::passenger', :type => :class do
         end
 
         it 'should set up the apache vhost' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           should contain_apache__vhost('constructorfleet.vogon.gal').with({
             :name=>"constructorfleet.vogon.gal",
             :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
@@ -185,7 +185,7 @@ describe 'puppet::master::passenger', :type => :class do
       context 'when passenger_max_pool_size has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_max_pool_size => 'bogon'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"BOGON",
@@ -200,7 +200,7 @@ describe 'puppet::master::passenger', :type => :class do
       context 'when passenger_max_requests has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_max_requests => 'bogon'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"12",
@@ -215,7 +215,7 @@ describe 'puppet::master::passenger', :type => :class do
       context 'when passenger_pool_idle_time has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_pool_idle_time => 'bogon'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"12",
@@ -230,7 +230,7 @@ describe 'puppet::master::passenger', :type => :class do
       context 'when passenger_stat_throttle_rate has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_stat_throttle_rate => 'bogon'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"12",
@@ -245,7 +245,7 @@ describe 'puppet::master::passenger', :type => :class do
       context 'when puppet_fqdn has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': puppet_fqdn => 'bogon'}"}
         it 'should properly instantiate the apache::vhost defined type' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           should contain_apache__vhost('BOGON').with({
             :name=>"BOGON",
             :ssl_cert=>"/var/lib/puppet/ssl/certs/BOGON.pem",
@@ -259,7 +259,7 @@ describe 'puppet::master::passenger', :type => :class do
     context '[Debian - unspecific]' do
       let(:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'squeeze', 'osfamily' => osfam, 'operatingsystemrelease' => '6.06','concat_basedir' => '/tmp'}}
       it 'should not add the SSLCARevocationCheck chain to the apache vhost config' do
-        pending 'This does not actualy work as is'
+        pending 'This does not work as is'
         should contain_apache__vhost('constructorfleet.vogon.gal').without({
           :custom_fragment=>/SSLCARevocationCheck chain/
         })

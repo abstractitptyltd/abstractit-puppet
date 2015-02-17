@@ -9,7 +9,7 @@ describe 'puppet::master::modules', :type => :class do
       context "when the #{paths} parameter is not an absolute path" do
         let(:params) {{ paths => 'foo' }}
         it 'should fail' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
         end
       end
@@ -28,7 +28,7 @@ describe 'puppet::master::modules', :type => :class do
       context "when the #{bools} parameter is not an boolean" do
         let(:params) {{bools => "BOGON"}}
         it 'should fail' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
         end
       end
@@ -47,7 +47,7 @@ describe 'puppet::master::modules', :type => :class do
       context "when the optional param #{opt_hashes} parameter has a value, but not a hash" do
         let(:params) {{ opt_hashes => 'this is a string'}}
         it 'should fail' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
            expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
         end
       end
@@ -57,7 +57,7 @@ describe 'puppet::master::modules', :type => :class do
       context "when the #{strings} parameter is not a string" do
         let(:params) {{strings => false }}
         it 'should fail' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
       end
@@ -67,7 +67,7 @@ describe 'puppet::master::modules', :type => :class do
       context "when the optional parameter #{optional_strings} has a value, but it is not a string" do
         let(:params) {{optional_strings => true }}
         it 'should fail' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /true is not a string./)
         end
       end

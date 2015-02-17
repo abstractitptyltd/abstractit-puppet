@@ -157,7 +157,7 @@ describe 'puppet::master::hiera', :type => :class do
       context 'when the hiera_backends param has a non-standard value' do
         let(:pre_condition) {"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => 'BOGON'}}"}
         it 'should update /etc/hiera.yaml apropriately' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           should contain_file('/etc/hiera.yaml').with({
             'ensure'=>'file',
             'owner'=>'root',
@@ -191,7 +191,7 @@ describe 'puppet::master::hiera', :type => :class do
       context 'when the hierarchy param has a non-standard value' do
         let(:pre_condition) {"class{'::puppet::master': hierarchy => ['foo', 'bar', 'baz'] }"}
         it 'should update /etc/hiera.yaml with the specified hierarchy' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           should contain_file('/etc/hiera.yaml').with({
             'ensure'=>'file',
             'owner'=>'root',
