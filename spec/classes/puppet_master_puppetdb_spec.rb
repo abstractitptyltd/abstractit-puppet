@@ -112,7 +112,7 @@ describe 'puppet::master::puppetdb', :type => :class do
       context 'when puppetdb_version has a non-standard value' do
         let(:params){default_params.merge({'puppetdb_version' => 'BOGON'})}
         it 'should instantiate the puppetdb class apropriately' do
-          should contain_class('::puppetdb').with({
+          should contain_class('puppetdb').with({
             :disable_ssl=>false,
             :listen_address=>"127.0.0.1",
             :ssl_listen_address=>"127.0.0.1",
@@ -120,7 +120,7 @@ describe 'puppet::master::puppetdb', :type => :class do
             :node_purge_ttl=>"0s",
             :report_ttl=>"14d",
             :puppetdb_version=>"BOGON",
-          }).that_requires('class[::puppet::master]')
+          }).that_requires('class[Puppet::Master]')
         end
         it 'should instantiate the puppetdb::master::config class apropriately' do
           should contain_class('::puppetdb::master::config').with({
@@ -137,7 +137,7 @@ describe 'puppet::master::puppetdb', :type => :class do
       context 'when node_purge_ttl has a non-standard value' do
         let(:params){default_params.merge({'node_purge_ttl' => '999d'})}
         it 'should instantiate the puppetdb class apropriately' do
-          should contain_class('::puppetdb').with({
+          should contain_class('Puppetdb').with({
             :disable_ssl=>false,
             :listen_address=>"127.0.0.1",
             :ssl_listen_address=>"127.0.0.1",
@@ -229,7 +229,7 @@ describe 'puppet::master::puppetdb', :type => :class do
             :manage_report_processor=>false,
             :restart_puppet=>true,
             :puppetdb_version=>"installed",
-          }).that_requires('class[::puppetdb]')
+          }).that_requires('class[Puppetdb]')
         end
       end#end reports
       context 'when use_ssl is false' do
@@ -254,7 +254,7 @@ describe 'puppet::master::puppetdb', :type => :class do
             :manage_report_processor=>true,
             :restart_puppet=>true,
             :puppetdb_version=>"installed",
-          }).that_requires('class[::puppetdb]')
+          }).that_requires('class[Puppetdb]')
         end
       end#end use_ssl
     end#debian
