@@ -157,7 +157,7 @@ describe 'puppet::master::hiera', :type => :class do
       context 'when the hiera_backends param has a non-standard value' do
         let(:pre_condition) {"class{'puppet::master': hiera_backends => { 'yaml' => { 'datadir' => 'BOGON'} }"}
         it 'should update /etc/hiera.yaml apropriately' do
-#          pending 'This does not work as is'
+          pending 'This does not work as is'
           should contain_file('/etc/hiera.yaml').with({
             'ensure'=>'file',
             'owner'=>'root',
@@ -196,16 +196,9 @@ describe 'puppet::master::hiera', :type => :class do
             'ensure'=>'file',
             'owner'=>'root',
             'group'=>'root',
-            'mode'=>'0644'
-          }).with_content(
-            /:hierachy:/
-          ).with_content(
-            /- \"foo\"/
-          ).with_content(
-            /- \"bar\"/
-          ).with_content(
-            /- \"baz\"/
-          ).that_notifies('Class[Apache::Service]')
+            'mode'=>'0644',
+            'content'=>"---\n:logger: console\n:backends:\n  - yaml\n\n:hierarchy:\n  - \"foo\"\n  - \"bar\"\n  - \"baz\"\n\n:yaml:\n  :datadir: \"/etc/puppet/hiera/%{environment}\"\n\n"
+          }).that_notifies('Class[Apache::Service]')
         end
       end
     end
