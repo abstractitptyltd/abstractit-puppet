@@ -29,7 +29,7 @@ describe 'puppet', :type => :class do
       context "when the #{bools} parameter is not an boolean" do
         let(:params) {{bools => "BOGON"}}
         it 'should fail' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
         end
       end
@@ -39,7 +39,7 @@ describe 'puppet', :type => :class do
       context "when the #{hashes} parameter is not an hash" do
         let(:params) {{ hashes => 'this is a string'}}
         it 'should fail' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
            expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
         end
       end
@@ -49,7 +49,7 @@ describe 'puppet', :type => :class do
       context "when #{regex} has an unsupported value" do
         let(:params) {{regex => 'BOGON'}}
         it 'should fail' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" does not match/)
         end
       end
@@ -60,7 +60,7 @@ describe 'puppet', :type => :class do
       context "when the #{strings} parameter is not a string" do
         let(:params) {{strings => false }}
         it 'should fail' do
-          pending 'This does not actualy work as is'
+          pending 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
       end
