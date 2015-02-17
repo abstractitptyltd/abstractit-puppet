@@ -171,14 +171,6 @@ describe 'puppet::master::hiera', :type => :class do
           ).with_content(
             /- yaml/
           ).with_content(
-            /:hierarchy:/
-          ).with_content(
-            /"node\/\%\{::clientcert\}\"/
-          ).with_content(
-            /"env\/\%\{::environment\}\"/
-          ).with_content(
-            /"global"/
-          ).with_content(
             /:yaml:/
           ).with_content(
             /:datadir: "BOGON"/
@@ -211,11 +203,11 @@ describe 'puppet::master::hiera', :type => :class do
           }).with_content(
             /:hierachy:/
           ).with_content(
-            /\- "foo"/
+            /\- \"foo\"/
           ).with_content(
-            /\- "bar"/
+            /\- \"bar\"/
           ).with_content(
-            /\- "baz"/
+            /\- \"baz\"/
           ).that_notifies('Class[Apache::Service]')
         end
       end

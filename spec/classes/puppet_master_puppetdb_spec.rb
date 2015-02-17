@@ -22,9 +22,9 @@ describe 'puppet::master::puppetdb', :type => :class do
 #    end#arrays
     ['reports','use_ssl'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
-        pending 'This does not actualy work as is'
         let(:params) {default_params.merge({bools => "BOGON"})}
         it 'should fail' do
+          pending 'This does not actualy work as is'
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
         end
       end
@@ -47,9 +47,9 @@ describe 'puppet::master::puppetdb', :type => :class do
 #    end#opt_hashes
     ['node_purge_ttl','node_ttl','puppetdb_listen_address','puppetdb_server','puppetdb_ssl_listen_address','puppetdb_version','report_ttl'].each do |strings|
       context "when the #{strings} parameter is not a string" do
-        pending 'This does not actualy work as is'
         let(:params) {default_params.merge({strings => false })}
         it 'should fail' do
+          pending 'This does not actualy work as is'
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
       end

@@ -8,8 +8,8 @@ describe 'puppet::master::modules', :type => :class do
     ['r10k_env_basedir'].each do |paths|
       context "when the #{paths} parameter is not an absolute path" do
         let(:params) {{ paths => 'foo' }}
-        pending 'This does not actualy work as is'
         it 'should fail' do
+          pending 'This does not actualy work as is'
           expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
         end
       end
@@ -27,8 +27,8 @@ describe 'puppet::master::modules', :type => :class do
     ['r10k_purgedirs', 'r10k_update'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
         let(:params) {{bools => "BOGON"}}
-        pending 'This does not actualy work as is'
         it 'should fail' do
+          pending 'This does not actualy work as is'
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
         end
       end
@@ -46,8 +46,8 @@ describe 'puppet::master::modules', :type => :class do
     ['extra_env_repos'].each do |opt_hashes|
       context "when the optional param #{opt_hashes} parameter has a value, but not a hash" do
         let(:params) {{ opt_hashes => 'this is a string'}}
-        pending 'This does not actualy work as is'
         it 'should fail' do
+          pending 'This does not actualy work as is'
            expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
         end
       end
@@ -56,8 +56,8 @@ describe 'puppet::master::modules', :type => :class do
     ['env_owner'].each do |strings|
       context "when the #{strings} parameter is not a string" do
         let(:params) {{strings => false }}
-        pending 'This does not actualy work as is'
         it 'should fail' do
+          pending 'This does not actualy work as is'
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
       end
@@ -66,8 +66,8 @@ describe 'puppet::master::modules', :type => :class do
     ['hiera_repo','puppet_env_repo'].each do |optional_strings|
       context "when the optional parameter #{optional_strings} has a value, but it is not a string" do
         let(:params) {{optional_strings => true }}
-        pending 'This does not actualy work as is'
         it 'should fail' do
+          pending 'This does not actualy work as is'
           expect { subject }.to raise_error(Puppet::Error, /true is not a string./)
         end
       end
@@ -191,14 +191,6 @@ describe 'puppet::master::modules', :type => :class do
             :group=>"root",
             :mode=>"0644",
           }).with_content(
-            /:cachedir: \/var\/cache\/r10k/
-            ).with_content(
-              /:sources:/
-            ).with_content(
-              /  hiera:/
-            ).with_content(
-              /  prefix: false/
-            ).with_content(
               /  basedir: \/etc\/puppet\/hiera/
             ).with_content(
               /  remote: \"BOGON\"/
@@ -216,18 +208,6 @@ describe 'puppet::master::modules', :type => :class do
             :group=>"root",
             :mode=>"0644",
           }).with_content(
-            /:cachedir: \/var\/cache\/r10k/
-            ).with_content(
-              /:sources:/
-            ).with_content(
-              /  hiera:/
-            ).with_content(
-              /  prefix: false/
-            ).with_content(
-              /  basedir: \/etc\/puppet\/hiera/
-            ).with_content(
-              /  remote: \"\"/
-            ).with_content(
               /  puppet:/
             ).with_content(
               /  basedir: \/etc\/puppet\/environments/
@@ -270,7 +250,9 @@ describe 'puppet::master::modules', :type => :class do
            :content=>":cachedir: /var/cache/r10k\n:sources:\n  hiera:\n    prefix: false\n    basedir: \"/etc/puppet/hiera\"\n    remote: \"\"\n\n",
            :owner=>"root",
            :group=>"root",
-           :mode=>"0644",}).that_requires('File[/var/cache/r10k]')
+           :mode=>"0644",}).without_content(
+            /:purgedirs:/
+          ).that_requires('File[/var/cache/r10k]')
         end
       end
       context 'when the r10k_update param is false' do

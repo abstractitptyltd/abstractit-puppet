@@ -84,8 +84,8 @@ describe 'puppet::master::passenger', :type => :class do
       let(:pre_condition){"class{'puppet::master::install':}"}
 #      let(:pre_condition){"class{'puppet::master::install': hiera_eyaml_version=>'present' }"}
       context 'when fed no parameters' do
-        pending 'This does not actualy work as is'
         it 'should properly instantiate the apache class' do
+          pending 'This does not actualy work as is'
           should contain_class('apache').with({
             'mpm_module'=>'worker',
             'default_vhost'=>false,
@@ -183,8 +183,8 @@ describe 'puppet::master::passenger', :type => :class do
       end#no params
       context 'when passenger_max_pool_size has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_max_pool_size => 'bogon'}"}
-        pending 'This does not actualy work as is'
         it 'should properly instantiate the apache::mod::passenger class' do
+          pending 'This does not actualy work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"BOGON",
@@ -198,8 +198,8 @@ describe 'puppet::master::passenger', :type => :class do
 
       context 'when passenger_max_requests has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_max_requests => 'bogon'}"}
-        pending 'This does not actualy work as is'
         it 'should properly instantiate the apache::mod::passenger class' do
+          pending 'This does not actualy work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"12",
@@ -213,8 +213,8 @@ describe 'puppet::master::passenger', :type => :class do
 
       context 'when passenger_pool_idle_time has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_pool_idle_time => 'bogon'}"}
-        pending 'This does not actualy work as is'
         it 'should properly instantiate the apache::mod::passenger class' do
+          pending 'This does not actualy work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"12",
@@ -228,8 +228,8 @@ describe 'puppet::master::passenger', :type => :class do
 
       context 'when passenger_stat_throttle_rate has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_stat_throttle_rate => 'bogon'}"}
-        pending 'This does not actualy work as is'
         it 'should properly instantiate the apache::mod::passenger class' do
+          pending 'This does not actualy work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"12",
@@ -243,8 +243,8 @@ describe 'puppet::master::passenger', :type => :class do
 
       context 'when puppet_fqdn has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': puppet_fqdn => 'bogon'}"}
-        pending 'This does not actualy work as is'
         it 'should properly instantiate the apache::vhost defined type' do
+          pending 'This does not actualy work as is'
           should contain_apache__vhost('BOGON').with({
             :name=>"BOGON",
             :ssl_cert=>"/var/lib/puppet/ssl/certs/BOGON.pem",
@@ -257,8 +257,8 @@ describe 'puppet::master::passenger', :type => :class do
     end#trusty
     context '[Debian - unspecific]' do
       let(:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'squeeze', 'osfamily' => osfam, 'operatingsystemrelease' => '6.06','concat_basedir' => '/tmp'}}
-      pending 'This does not actualy work as is'
       it 'should not add the SSLCARevocationCheck chain to the apache vhost config' do
+        pending 'This does not actualy work as is'
         should contain_apache__vhost('constructorfleet.vogon.gal').without({
           :custom_fragment=>/SSLCARevocationCheck chain/
         })
