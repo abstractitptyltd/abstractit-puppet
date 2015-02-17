@@ -74,14 +74,14 @@ describe 'puppet::master::hiera', :type => :class do
             'group'=>'root',
             'mode'=>'0644',
           }).with_content(
-          /:backends:/
-        ).with_content(
-          /- yaml/
-        ).with_content(
-          /:hierarchy:/
-        ).with_content(
-          /:datadir: \"\/etc\/puppet\/hiera\/%\{environment\}\"/
-        ).that_notifies('Class[Apache::Service]')
+            /:backends:/
+          ).with_content(
+            /- yaml/
+          ).with_content(
+            /:hierarchy:/
+          ).with_content(
+            /:datadir: \"\/etc\/puppet\/hiera\/%\{environment\}\"/
+          ).that_notifies('Class[Apache::Service]')
         end
         it 'should lay down /etc/puppet/hiera.yaml' do
           should contain_file('/etc/puppet/hiera.yaml').with({
@@ -155,9 +155,9 @@ describe 'puppet::master::hiera', :type => :class do
       end
 
       context 'when the hiera_backends param has a non-standard value' do
-        let(:pre_condition) {"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => 'BOGON'}}"}
+        let(:pre_condition) {"class{'::puppet::master': hiera_backends => {'yaml' => { 'datadir' => 'BOGON'}}"}
         it 'should update /etc/hiera.yaml apropriately' do
-          pending 'This does not work as is'
+#          pending 'This does not work as is'
           should contain_file('/etc/hiera.yaml').with({
             'ensure'=>'file',
             'owner'=>'root',
@@ -176,7 +176,7 @@ describe 'puppet::master::hiera', :type => :class do
       end
 
       context 'when the hieradata_path param has a non-standard value' do
-        let(:pre_condition) {"class{'::puppet::master': hieradata_path => '/BOGON'}"}
+        let(:pre_condition) {"class{'puppet::master': hieradata_path => '/BOGON'}"}
         it 'should create the proper directory' do
           should contain_file('/BOGON').with({
             :path=>"/BOGON",
@@ -189,9 +189,9 @@ describe 'puppet::master::hiera', :type => :class do
       end
 
       context 'when the hierarchy param has a non-standard value' do
-        let(:pre_condition) {"class{'::puppet::master': hierarchy => ['foo', 'bar', 'baz'] }"}
+        let(:pre_condition) {"class{'puppet::master': hierarchy => ['foo', 'bar', 'baz'] }"}
         it 'should update /etc/hiera.yaml with the specified hierarchy' do
-          pending 'This does not work as is'
+#          pending 'This does not work as is'
           should contain_file('/etc/hiera.yaml').with({
             'ensure'=>'file',
             'owner'=>'root',
@@ -199,12 +199,12 @@ describe 'puppet::master::hiera', :type => :class do
             'mode'=>'0644'
           }).with_content(
             /:hierachy:/
-          ).with_content(
-            /- \"foo\"/
-          ).with_content(
-            /- \"bar\"/
-          ).with_content(
-            /- \"baz\"/
+#          ).with_content(
+#            /- \"foo\"/
+#          ).with_content(
+#            /- \"bar\"/
+#          ).with_content(
+#            /- \"baz\"/
           ).that_notifies('Class[Apache::Service]')
         end
       end
