@@ -68,11 +68,8 @@ describe 'puppet::master::hiera', :type => :class do
 
       context 'when fed no parameters' do
         it 'should lay down /etc/hiera.yaml' do
-#          pending 'This does not actualy work as is'
           should contain_file('/etc/hiera.yaml').with({
             'ensure' =>'file',
-#            'content' => /:datadir: \"\/etc\/puppet\/hiera\/%{environment}\"/,
-#            'content'=>"---\n:logger: console\n:backends:\n  - yaml\n\n:hierarchy:\n  - \"node/%{::clientcert}\"\n  - \"env/%{::environment}\"\n  - \"global\"\n\n:yaml:\n  :datadir: \"/etc/puppet/hiera/%{environment}\"\n\n",
             'owner'=>'root',
             'group'=>'root',
             'mode'=>'0644',
@@ -161,19 +158,18 @@ describe 'puppet::master::hiera', :type => :class do
         let(:pre_condition) {"class{'::puppet::master': hiera_backends => {'yaml' => { datadir => 'BOGON'}}"}
         it 'should update /etc/hiera.yaml apropriately' do
           should contain_file('/etc/hiera.yaml').with({
-            :path=>"/etc/hiera.yaml",
-            :ensure=>"file",
-            :owner=>"root",
-            :group=>"root",
-            :mode=>"0644"
+            'ensure'=>'file',
+            'owner'=>'root',
+            'group'=>'root',
+            'mode'=>'0644'
           }).with_content(
             /:backends:/
           ).with_content(
-            /\- yaml/
+            /- yaml/
           ).with_content(
             /:yaml:/
           ).with_content(
-            /:datadir: "BOGON"/
+            /:datadir: \"BOGON\"/
           ).that_notifies('Class[Apache::Service]')
         end
       end
@@ -195,19 +191,18 @@ describe 'puppet::master::hiera', :type => :class do
         let(:pre_condition) {"class{'::puppet::master': hierarchy => ['foo', 'bar', 'baz'] }"}
         it 'should update /etc/hiera.yaml with the specified hierarchy' do
           should contain_file('/etc/hiera.yaml').with({
-            :path=>"/etc/hiera.yaml",
-            :ensure=>"file",
-            :owner=>"root",
-            :group=>"root",
-            :mode=>"0644"
+            'ensure'=>'file',
+            'owner'=>'root',
+            'group'=>'root',
+            'mode'=>'0644'
           }).with_content(
             /:hierachy:/
           ).with_content(
-            /\- \"foo\"/
+            /- \"foo\"/
           ).with_content(
-            /\- \"bar\"/
+            /- \"bar\"/
           ).with_content(
-            /\- \"baz\"/
+            /- \"baz\"/
           ).that_notifies('Class[Apache::Service]')
         end
       end

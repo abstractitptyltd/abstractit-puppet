@@ -137,9 +137,8 @@ describe 'puppet::master::passenger', :type => :class do
         end
         it 'should properly instantiate the apache module "access_compat"' do
           should contain_apache__mod('access_compat').with({
-            :name=>"access_compat",
-            :package_ensure=>"present",
-            :lib_path=>"/usr/lib/apache2/modules"
+            'name'=>"access_compat",
+            'package_ensure'=>'undef'
           })
         end
 
@@ -176,7 +175,7 @@ describe 'puppet::master::passenger', :type => :class do
             :ssl_options=>["+StdEnvVars", "+ExportCertData"],
             :rack_base_uris=>"/",
             :directories=>{"path"=>"/usr/share/puppet/rack/puppetmasterd/", "options"=>"None"},
-            :custom_fragment=>"  SSLCARevocationCheck chain\n  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd\n  PassengerRoot /usr/lib/passenger",
+            :custom_fragment=>"  SSLCARevocationCheck chain\n  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd",
             :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
             }).that_subscribes_to('Class[Puppet::Master::Install]')
         end
