@@ -14,10 +14,10 @@ fixtures:
       ref:  "1.7.0"
     postgresql:
       repo: "puppetlabs/postgresql"
-      ref:  "3.0.0"
+      ref:  "3.4.2"
     puppetdb:
       repo: "puppetlabs/puppetdb"
-      ref:  "3.0.0"
+      ref:  "3.0.1"
     inifile:
       repo: "puppetlabs/inifile"
       ref:  "1.1.0"

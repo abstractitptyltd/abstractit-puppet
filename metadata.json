@@ -42,11 +42,11 @@
     },
     {
       "name": "puppetlabs/postgresql",
-      "version_requirement": ">=3.0.0"
+      "version_requirement": ">=3.4.2"
     },
     {
       "name": "puppetlabs/puppetdb",
-      "version_requirement": ">=3.0.0"
+      "version_requirement": ">=3.0.1"
     },
     {
       "name": "puppetlabs/inifile",

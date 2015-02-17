@@ -76,7 +76,7 @@ describe 'puppet::master::puppetdb', :type => :class do
       context 'when fed no parameters' do
         let(:params){default_params}
         it 'should properly instantiate the puppetdb class' do
-          should contain_class('::puppetdb').with({
+          should contain_class('puppetdb').with({
             :disable_ssl=>false,
             :listen_address=>"127.0.0.1",
             :ssl_listen_address=>"127.0.0.1",
@@ -84,10 +84,10 @@ describe 'puppet::master::puppetdb', :type => :class do
             :node_purge_ttl=>"0s",
             :report_ttl=>"14d",
             :puppetdb_version=>"installed",
-          }).that_requires('class[::puppet::master]')
+          }).that_requires('class[Puppet::Master]')
         end
         it 'should properly instantiate the puppetdb::master::config class' do
-          should contain_class('::puppetdb::master::config').with({
+          should contain_class('puppetdb::master::config').with({
             :puppetdb_port=>"8081",
             :puppetdb_server=>"puppet.domain.com",
             :puppet_service_name=>"httpd",
@@ -95,7 +95,7 @@ describe 'puppet::master::puppetdb', :type => :class do
             :manage_report_processor=>true,
             :restart_puppet=>true,
             :puppetdb_version=>"installed",
-          }).that_requires('class[::puppetdb]')
+          }).that_requires('class[Puppetdb]')
         end
 
         it 'should create the \'puppet clean reports\' cronjob' do
@@ -120,7 +120,7 @@ describe 'puppet::master::puppetdb', :type => :class do
             :node_purge_ttl=>"0s",
             :report_ttl=>"14d",
             :puppetdb_version=>"BOGON",
-          }).that_requires('class[Puppet::Master]')
+          }).that_requires('class[::puppet::master]')
         end
         it 'should instantiate the puppetdb::master::config class apropriately' do
           should contain_class('::puppetdb::master::config').with({
@@ -131,7 +131,7 @@ describe 'puppet::master::puppetdb', :type => :class do
             :manage_report_processor=>true,
             :restart_puppet=>true,
             :puppetdb_version=>"BOGON",
-          })
+          }).that_requires('class[::puppetdb]')
         end
       end#end puppetdb_version
       context 'when node_purge_ttl has a non-standard value' do
@@ -187,7 +187,7 @@ describe 'puppet::master::puppetdb', :type => :class do
             :manage_report_processor=>true,
             :restart_puppet=>true,
             :puppetdb_version=>"installed",
-          }).that_requires('class[::puppetdb]')
+          }).that_requires('class[Puppetdb]')
         end
       end#end puppetdb_server
       context 'when puppetdb_ssl_listen_address has a non-standard value' do
@@ -215,7 +215,7 @@ describe 'puppet::master::puppetdb', :type => :class do
             :manage_report_processor=>true,
             :restart_puppet=>true,
             :puppetdb_version=>"installed",
-          }).that_requires('class[::puppetdb]')
+          }).that_requires('class[Puppetdb]')
         end
       end#end puppetdb_server
       context 'when reports is false' do

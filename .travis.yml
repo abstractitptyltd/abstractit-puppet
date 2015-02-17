@@ -8,6 +8,6 @@ rvm:
   - 2.0.0
 env:
   - PUPPET_VERSION=3.6.2
-  - PUPPET_VERSION=3.7.3
+  - PUPPET_VERSION=3.7.4
 notifications:
   email: true
