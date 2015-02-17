@@ -155,12 +155,30 @@ describe 'puppet::master::hiera', :type => :class do
           should contain_file('/etc/hiera.yaml').with({
             :path=>"/etc/hiera.yaml",
             :ensure=>"file",
-            :content=>/:datadir: \"BOGON\"/,
-#            :content=>"---\n:logger: console\n:backends:\n  - yaml\n\n:hierarchy:\n  - \"node/%{::clientcert}\"\n  - \"env/%{::environment}\"\n  - \"global\"\n\n:yaml:\n  :datadir: \"BOGON\"\n\n",
             :owner=>"root",
             :group=>"root",
             :mode=>"0644"
-          }).that_notifies('Class[Apache::Service]')
+          }).with_content(
+          /^---$/
+          ).with_content(
+            /:logger: console/
+          ).with_content(
+            /backends:/
+          ).with_content(
+            /- yaml/
+          ).with_content(
+            /:hierarchy:/
+          ).with_content(
+            /"node\/\%\{::clientcert\}\"/
+          ).with_content(
+            /"env\/\%\{::environment\}\"/
+          ).with_content(
+            /"global"/
+          ).with_content(
+            /:yaml:/
+          ).with_content(
+            /:datadir: "BOGON"/
+          ).that_notifies('Class[Apache::Service]')
         end
       end
 
@@ -183,11 +201,18 @@ describe 'puppet::master::hiera', :type => :class do
           should contain_file('/etc/hiera.yaml').with({
             :path=>"/etc/hiera.yaml",
             :ensure=>"file",
-            :content=>"---\n:logger: console\n:backends:\n  - yaml\n\n:hierarchy:\n  - \"foo\"\n  - \"bar\"\n  - \"baz\"\n\n:yaml:\n  :datadir: \"/etc/puppet/hiera/%{environment}\"\n\n",
             :owner=>"root",
             :group=>"root",
             :mode=>"0644"
-          }).that_notifies('Class[Apache::Service]')
+          }).with_content(
+            /^:hierachy:/
+          ).with_content(
+            /- "foo"/
+          ).with_content(
+            /- "bar"/
+          ).with_content(
+            /- "baz"/
+          ).that_notifies('Class[Apache::Service]')
         end
       end
     end
