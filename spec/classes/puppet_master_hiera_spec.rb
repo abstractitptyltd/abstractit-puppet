@@ -191,7 +191,6 @@ describe 'puppet::master::hiera', :type => :class do
       context 'when the hierarchy param has a non-standard value' do
         let(:pre_condition) {"class{'puppet::master': hiera_hierarchy => ['foo', 'bar', 'baz'] }"}
         it 'should update /etc/hiera.yaml with the specified hierarchy' do
-#          pending 'This does not work as is'
           should contain_file('/etc/hiera.yaml').with({
             'ensure'=>'file',
             'owner'=>'root',
