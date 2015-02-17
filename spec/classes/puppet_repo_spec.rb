@@ -70,10 +70,17 @@ describe 'puppet::repo', :type => :class do
 #    end#opt_strings
 
   end#input validation
-  context "When on a Debian system" do
-    let(:facts) {{'osfamily' => 'Debian', 'operatingsystem' => 'Ubuntu', 'lsbdistid' => 'Ubuntu', 'lsbdistcodename' => 'trusty'}}
-    it 'should contain the apt subclass' do
-      should contain_class('puppet::repo::apt')
-    end
-  end
+  on_supported_os.each do |os, facts|
+    context "When on an #{os} system" do
+      let(:facts) do
+        facts
+      end
+      case facts[:osfamily]
+      when 'Debian'
+        it 'should contain the apt subclass' do
+          should contain_class('puppet::repo::apt')
+        end
+      end #  case osfamily
+    end #each OS
+  end #on_supported_os
 end

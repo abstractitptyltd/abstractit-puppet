@@ -70,9 +70,22 @@ describe 'puppet::repo::apt', :type => :class do
 #    end#opt_strings
 
   end#input validation
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
-      let(:facts) {{'osfamily' => osfam, 'operatingsystem' => 'Ubuntu', 'lsbdistid' => 'Ubuntu', 'lsbdistcodename' => 'trusty'}}
+    on_supported_os({
+      :hardwaremodels => ['x86_64'],
+      :supported_os   => [
+        {
+          "operatingsystem" => "Ubuntu",
+          "operatingsystemrelease" => [
+            "12.04",
+            "14.04"
+          ]
+        }
+      ],
+    }).each do |os, facts|
+    context "on #{os}" do
+      let(:facts) do
+        facts
+      end
       context 'when ::puppet has default parameters' do
         let(:pre_condition){"class{'::puppet':}"}
         it 'should add the puppetlabs apt source' do
@@ -106,6 +119,7 @@ describe 'puppet::repo::apt', :type => :class do
           })
         end
       end#no params
+
       context 'when ::puppet::manage_repos is false' do
         let(:pre_condition){"class{'::puppet': manage_repos => false}"}
         it 'should not lay down any apt sources' do
@@ -150,6 +164,7 @@ describe 'puppet::repo::apt', :type => :class do
             end
           end
         end
+
         context 'when ::puppet::devel_repo is true' do
           let(:pre_condition){"class{'::puppet': devel_repo => true}"}
           it 'should add the puppetlabs_devel apt source' do
