@@ -7,8 +7,8 @@ describe 'puppet::master::modules', :type => :class do
 
     ['r10k_env_basedir'].each do |paths|
       context "when the #{paths} parameter is not an absolute path" do
-        pending 'This does not actualy work as is'
         let(:params) {{ paths => 'foo' }}
+        pending 'This does not actualy work as is'
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
         end
@@ -26,8 +26,8 @@ describe 'puppet::master::modules', :type => :class do
 
     ['r10k_purgedirs', 'r10k_update'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
-        pending 'This does not actualy work as is'
         let(:params) {{bools => "BOGON"}}
+        pending 'This does not actualy work as is'
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
         end
@@ -45,8 +45,8 @@ describe 'puppet::master::modules', :type => :class do
 
     ['extra_env_repos'].each do |opt_hashes|
       context "when the optional param #{opt_hashes} parameter has a value, but not a hash" do
-        pending 'This does not actualy work as is'
         let(:params) {{ opt_hashes => 'this is a string'}}
+        pending 'This does not actualy work as is'
         it 'should fail' do
            expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
         end
@@ -55,8 +55,8 @@ describe 'puppet::master::modules', :type => :class do
 
     ['env_owner'].each do |strings|
       context "when the #{strings} parameter is not a string" do
-        pending 'This does not actualy work as is'
         let(:params) {{strings => false }}
+        pending 'This does not actualy work as is'
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
@@ -65,8 +65,8 @@ describe 'puppet::master::modules', :type => :class do
 
     ['hiera_repo','puppet_env_repo'].each do |optional_strings|
       context "when the optional parameter #{optional_strings} has a value, but it is not a string" do
-        pending 'This does not actualy work as is'
         let(:params) {{optional_strings => true }}
+        pending 'This does not actualy work as is'
         it 'should fail' do
           expect { subject }.to raise_error(Puppet::Error, /true is not a string./)
         end
@@ -107,11 +107,17 @@ describe 'puppet::master::modules', :type => :class do
           should contain_file('/etc/r10k.yaml').with({
             :path=>"/etc/r10k.yaml",
             :ensure=>"file",
-            :content=>":cachedir: /var/cache/r10k\n:sources:\n  hiera:\n    prefix: false\n    basedir: \"/etc/puppet/hiera\"\n    remote: \"\"\n\n:purgedirs:\n  - /etc/puppet/hiera\n",
+#            :content=>"\n\n  hiera:\n    \n    basedir: \"/etc/puppet/hiera\"\n    remote: \"\"\n\n:purgedirs:\n  - /etc/puppet/hiera\n",
             :owner=>"root",
             :group=>"root",
             :mode=>"0644",
-          }).that_requires('file[/var/cache/r10k]')
+          }).with_content(
+            /:cachedir: \/var\/cache\/r10k/
+          ).with_content(
+            /:sources:/
+          ).with_content(
+            /prefix: false/
+          ).that_requires('file[/var/cache/r10k]')
         end
         it 'should add the cron job to run r10k on the default schedule' do
           should contain_cron('puppet_r10k').with({
@@ -153,11 +159,25 @@ describe 'puppet::master::modules', :type => :class do
           should contain_file('/etc/r10k.yaml').with({
             :path=>"/etc/r10k.yaml",
             :ensure=>"file",
-            :content=>":cachedir: /var/cache/r10k\n:sources:\n  hiera:\n    prefix: false\n    basedir: \"/etc/puppet/hiera\"\n    remote: \"\"\n  BOGON:\n    prefix: false\n    basedir: /etc/puppet/r10kenv/BOGON\n    remote: \"git@bogon.site.com/bogon.git\"\n\n:purgedirs:\n  - /etc/puppet/r10kenv\n  - /etc/puppet/hiera\n",
+#            :content=>"basedir: \"/etc/puppet/hiera\"\n    remote: \"\"\n  BOGON:\n    prefix: false\n    \n    remote: \"git@bogon.site.com/bogon.git\"\n\n:purgedirs:\n  - /etc/puppet/r10kenv\n  - /etc/puppet/hiera\n",
             :owner=>"root",
             :group=>"root",
             :mode=>"0644",
-          }).that_requires('File[/var/cache/r10k]')
+          }).with_content(
+          /:cachedir: \/var\/cache\/r10k/
+          ).with_content(
+            /:sources:/
+          ).with_content(
+            /prefix: false/
+          ).with_content(
+            /remote:/
+          ).with_content(
+            /  BOGON:/
+          ).with_content(
+            /  basedir: \/etc\/puppet\/r10kenv\/BOGON/
+          ).with_content(
+            /  remote: \"git@bogon.site.com\/bogon.git\"/
+          ).that_requires('File[/var/cache/r10k]')
         end
       end
       context 'when the hiera_repo param is populated' do
@@ -166,11 +186,23 @@ describe 'puppet::master::modules', :type => :class do
           should contain_file('/etc/r10k.yaml').with({
             :path=>"/etc/r10k.yaml",
             :ensure=>"file",
-            :content=>":cachedir: /var/cache/r10k\n:sources:\n  hiera:\n    prefix: false\n    basedir: \"/etc/puppet/hiera\"\n    remote: \"BOGON\"\n\n:purgedirs:\n  - /etc/puppet/hiera\n",
+#            :content=>":cachedir: /var/cache/r10k\n:sources:\n  hiera:\n    prefix: false\n    basedir: \"/etc/puppet/hiera\"\n    remote: \"BOGON\"\n\n:purgedirs:\n  - /etc/puppet/hiera\n",
             :owner=>"root",
             :group=>"root",
             :mode=>"0644",
-          }).that_requires('File[/var/cache/r10k]')
+          }).with_content(
+            /:cachedir: \/var\/cache\/r10k/
+            ).with_content(
+              /:sources:/
+            ).with_content(
+              /  hiera:/
+            ).with_content(
+              /  prefix: false/
+            ).with_content(
+              /  basedir: \/etc\/puppet\/hiera/
+            ).with_content(
+              /  remote: \"BOGON\"/
+            ).that_requires('File[/var/cache/r10k]')
         end
       end
       context 'when the puppet_env_repo is populated' do
@@ -179,11 +211,29 @@ describe 'puppet::master::modules', :type => :class do
           should contain_file('/etc/r10k.yaml').with({
             :path=>"/etc/r10k.yaml",
             :ensure=>"file",
-            :content=>":cachedir: /var/cache/r10k\n:sources:\n  hiera:\n    prefix: false\n    basedir: \"/etc/puppet/hiera\"\n    remote: \"\"\n  puppet:\n    prefix: false\n    basedir: /etc/puppet/environments\n    remote: \"BOGON\"\n\n:purgedirs:\n  - /etc/puppet/environments\n  - /etc/puppet/hiera\n",
+#            :content=>":cachedir: /var/cache/r10k\n:sources:\n  hiera:\n    prefix: false\n    basedir: \"/etc/puppet/hiera\"\n    remote: \"\"\n  puppet:\n    prefix: false\n    basedir: /etc/puppet/environments\n    remote: \"BOGON\"\n\n:purgedirs:\n  - /etc/puppet/environments\n  - /etc/puppet/hiera\n",
             :owner=>"root",
             :group=>"root",
             :mode=>"0644",
-          }).that_requires('File[/var/cache/r10k]')
+          }).with_content(
+            /:cachedir: \/var\/cache\/r10k/
+            ).with_content(
+              /:sources:/
+            ).with_content(
+              /  hiera:/
+            ).with_content(
+              /  prefix: false/
+            ).with_content(
+              /  basedir: \/etc\/puppet\/hiera/
+            ).with_content(
+              /  remote: \"\"/
+            ).with_content(
+              /  puppet:/
+            ).with_content(
+              /  basedir: \/etc\/puppet\/environments/
+            ).with_content(
+              /  remote: \"BOGON\"/
+            ).that_requires('File[/var/cache/r10k]')
         end
       end
       context 'when the r10k_env_basedir param has a non-standard value' do

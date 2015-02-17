@@ -71,12 +71,20 @@ describe 'puppet::master::hiera', :type => :class do
 #          pending 'This does not actualy work as is'
           should contain_file('/etc/hiera.yaml').with({
             'ensure' =>'file',
-            'content' => /:datadir: \"\/etc\/puppet\/hiera\/%{environment}\"/,
+#            'content' => /:datadir: \"\/etc\/puppet\/hiera\/%{environment}\"/,
 #            'content'=>"---\n:logger: console\n:backends:\n  - yaml\n\n:hierarchy:\n  - \"node/%{::clientcert}\"\n  - \"env/%{::environment}\"\n  - \"global\"\n\n:yaml:\n  :datadir: \"/etc/puppet/hiera/%{environment}\"\n\n",
             'owner'=>'root',
             'group'=>'root',
             'mode'=>'0644',
-          }).that_notifies('Class[Apache::Service]')
+          }).with_content(
+          /:backends:/
+        ).with_content(
+          /- yaml/
+        ).with_content(
+          /:hierarchy:/
+        ).with_content(
+          /:datadir: \"\/etc\/puppet\/hiera\/%{environment}\"/
+        ).that_notifies('Class[Apache::Service]')
         end
         it 'should lay down /etc/puppet/hiera.yaml' do
           should contain_file('/etc/puppet/hiera.yaml').with({
@@ -159,10 +167,6 @@ describe 'puppet::master::hiera', :type => :class do
             :group=>"root",
             :mode=>"0644"
           }).with_content(
-          /^---$/
-          ).with_content(
-            /:logger: console/
-          ).with_content(
             /backends:/
           ).with_content(
             /- yaml/
@@ -205,13 +209,13 @@ describe 'puppet::master::hiera', :type => :class do
             :group=>"root",
             :mode=>"0644"
           }).with_content(
-            /^:hierachy:/
+            /:hierachy:/
           ).with_content(
-            /- "foo"/
+            /\- "foo"/
           ).with_content(
-            /- "bar"/
+            /\- "bar"/
           ).with_content(
-            /- "baz"/
+            /\- "baz"/
           ).that_notifies('Class[Apache::Service]')
         end
       end
