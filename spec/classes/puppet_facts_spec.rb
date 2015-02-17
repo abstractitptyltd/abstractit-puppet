@@ -41,11 +41,11 @@ describe 'puppet::facts', :type => :class do
 
     ['custom_facts'].each do |hashes|
       context "when the #{hashes} parameter is not an hash" do
-        pending 'This does not actualy work as is'
-#        let(:params) {{ hashes => 'this is a string'}}
-#        it 'should fail' do
-#           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
-#        end
+        let(:params) {{ hashes => 'this is a string'}}
+        it 'should fail' do
+          pending 'This does not actualy work as is'
+          expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
+        end
       end
     end#hashes
 

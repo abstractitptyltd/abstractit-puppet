@@ -83,7 +83,7 @@ describe 'puppet::master::hiera', :type => :class do
         ).with_content(
           /:hierarchy:/
         ).with_content(
-          /:datadir: \"\/etc\/puppet\/hiera\/%{environment}\"/
+          /:datadir: \"\/etc\/puppet\/hiera\/%\{environment\}\"/
         ).that_notifies('Class[Apache::Service]')
         end
         it 'should lay down /etc/puppet/hiera.yaml' do
@@ -167,9 +167,9 @@ describe 'puppet::master::hiera', :type => :class do
             :group=>"root",
             :mode=>"0644"
           }).with_content(
-            /backends:/
+            /:backends:/
           ).with_content(
-            /- yaml/
+            /\- yaml/
           ).with_content(
             /:yaml:/
           ).with_content(

@@ -27,9 +27,9 @@ describe 'puppet', :type => :class do
 
     ['devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','structured_facts'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
-        pending 'This does not actualy work as is'
         let(:params) {{bools => "BOGON"}}
         it 'should fail' do
+          pending 'This does not actualy work as is'
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
         end
       end
@@ -37,9 +37,9 @@ describe 'puppet', :type => :class do
 
     ['custom_facts'].each do |hashes|
       context "when the #{hashes} parameter is not an hash" do
-        pending 'This does not actualy work as is'
         let(:params) {{ hashes => 'this is a string'}}
         it 'should fail' do
+          pending 'This does not actualy work as is'
            expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
         end
       end
@@ -47,9 +47,9 @@ describe 'puppet', :type => :class do
 
     ['enable_mechanism'].each do |regex|
       context "when #{regex} has an unsupported value" do
-        pending 'This does not actualy work as is'
         let(:params) {{regex => 'BOGON'}}
         it 'should fail' do
+          pending 'This does not actualy work as is'
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" does not match/)
         end
       end
@@ -58,9 +58,9 @@ describe 'puppet', :type => :class do
 
     ['environment','facter_version','hiera_version','puppet_server','puppet_version','runinterval',].each do |strings|
       context "when the #{strings} parameter is not a string" do
-        pending 'This does not actualy work as is'
         let(:params) {{strings => false }}
         it 'should fail' do
+          pending 'This does not actualy work as is'
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
       end
