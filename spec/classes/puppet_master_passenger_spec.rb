@@ -82,62 +82,23 @@ describe 'puppet::master::passenger', :type => :class do
       let(:pre_condition){"class{'puppet::master::install':}"}
       context 'when fed no parameters' do
         it 'should properly instantiate the apache class' do
-#          pending 'This does not work as is'
           should contain_class('Apache').with({
             'mpm_module'=>'worker',
             'default_vhost'=>false,
             'serveradmin'=>'webmaster@vogon.gal',
             :default_mods=>false
           })
-#          should contain_class('Apache').with({
-#            :apache_version=>"2.2",
-#            :conf_template=>"apache/httpd.conf.erb",
-#            :confd_dir=>"/etc/apache2/conf.d",
-#            :default_confd_files=>true,
-#            :default_mods=>false,
-#            :default_ssl_cert=>"/etc/ssl/certs/ssl-cert-snakeoil.pem",
-#            :default_ssl_key=>"/etc/ssl/private/ssl-cert-snakeoil.key",
-#            :default_ssl_vhost=>false,
-#            :default_vhost=>false,
-#            :error_documents=>false,
-#            :group=>"www-data",
-#            :httpd_dir=>"/etc/apache2",
-#            :keepalive=>"Off",
-#            :keepalive_timeout=>"15",
-#            :log_formats=>{},
-#            :log_level=>"warn",
-#            :logroot=>"/var/log/apache2",
-#            :manage_group=>true,
-#            :manage_user=>true,
-#            :max_keepalive_requests=>"100",
-#            :mod_dir=>"/etc/apache2/mods-available",
-#            :mod_enable_dir=>"/etc/apache2/mods-enabled",
-#            :mpm_module=>"worker",
-#            :name=>"Apache",
-#            :package_ensure=>"installed",
-#            :ports_file=>"/etc/apache2/ports.conf",
-#            :purge_configs=>true,
-#            :sendfile=>"On",
-#            :server_root=>"/etc/apache2",
-#            :server_signature=>"On",
-#            :server_tokens=>"OS",
-#            :servername=>'constructorfleet.vogon.gal',
-#            :service_enable=>true,
-#            :service_ensure=>"running",
-#            :service_name=>"apache2",
-#            :timeout=>"120",
-#            :trace_enable=>"On",
-#            :user=>"www-data",
-#            :vhost_dir=>"/etc/apache2/sites-available",
-#            :vhost_enable_dir=>"/etc/apache2/sites-enabled",
-#          })
         end
-        it 'should properly instantiate the apache module "access_compat"' do
-          pending 'This does not work as is'
-          should contain_apache__mod('access_compat').with({
-            'name'=>"access_compat",
-            'package_ensure'=>'undef'
-          })
+        case facts[:lsbdistcodename]
+          when 'trusty'
+            it 'should properly instantiate the apache module "access_compat"' do
+#              pending 'This does not work as is'
+              should contain_apache__mod('access_compat').with({
+                'name'=>"access_compat",
+                'package_ensure'=>'undef'
+              })
+            end
+          end
         end
 
         it 'should properly instantiate the apache::mod::passenger class' do
@@ -182,7 +143,6 @@ describe 'puppet::master::passenger', :type => :class do
       context 'when passenger_max_pool_size has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_max_pool_size => 'BOGON'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
-#          pending 'This does not work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"BOGON",
@@ -197,7 +157,6 @@ describe 'puppet::master::passenger', :type => :class do
       context 'when passenger_max_requests has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_max_requests => 'BOGON'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
-#          pending 'This does not work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"12",
@@ -212,7 +171,6 @@ describe 'puppet::master::passenger', :type => :class do
       context 'when passenger_pool_idle_time has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_pool_idle_time => 'BOGON'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
-#          pending 'This does not work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"12",
@@ -227,7 +185,6 @@ describe 'puppet::master::passenger', :type => :class do
       context 'when passenger_stat_throttle_rate has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': passenger_stat_throttle_rate => 'BOGON'}"}
         it 'should properly instantiate the apache::mod::passenger class' do
-#          pending 'This does not work as is'
           should contain_class('apache::mod::passenger').with({
             :passenger_high_performance=>"On",
             :passenger_max_pool_size=>"12",
@@ -242,7 +199,6 @@ describe 'puppet::master::passenger', :type => :class do
       context 'when puppet_fqdn has a non-standard value' do
         let(:pre_condition){"class{'::puppet::master': puppet_fqdn => 'BOGON'}"}
         it 'should properly instantiate the apache::vhost defined type' do
-#          pending 'This does not work as is'
           should contain_apache__vhost('BOGON').with({
             :name=>"BOGON",
             :ssl_cert=>"/var/lib/puppet/ssl/certs/BOGON.pem",
