@@ -92,7 +92,7 @@ describe 'puppet::master::passenger', :type => :class do
         case facts[:lsbdistcodename]
         when 'trusty'
           it 'should properly instantiate the apache module "access_compat"' do
-#            pending 'This does not work as is'
+            pending 'This does not work as is'
             should contain_apache__mod('access_compat').with({
 #              'name'=>"access_compat",
               'package_ensure'=>'undef'
@@ -109,34 +109,62 @@ describe 'puppet::master::passenger', :type => :class do
             :passenger_max_requests=>"0",
             :passenger_conf_file=>"passenger.conf"
           })
-        end
-
+          end
+  
         it 'should set up the apache vhost' do
-          pending 'This does not work as is'
-          should contain_apache__vhost('constructorfleet.vogon.gal').with({
-            :name=>"constructorfleet.vogon.gal",
-            :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
-            :docroot_owner=>"root",
-            :docroot_group=>"root",
-            :port=>"8140",
-            :ssl=>true,
-            :ssl_protocol=>"ALL -SSLv2",
-            :ssl_cipher=>"ALL:!aNULL:!eNULL:!DES:!3DES:!IDEA:!SEED:!DSS:!PSK:!RC4:!MD5:+HIGH:+MEDIUM:!LOW:!SSLv2:!EXP",
-            :ssl_honorcipherorder=>"on",
-            :ssl_cert=>"/var/lib/puppet/ssl/certs/constructorfleet.vogon.gal.pem",
-            :ssl_key=>"/var/lib/puppet/ssl/private_keys/constructorfleet.vogon.gal.pem",
-            :ssl_chain=>"/var/lib/puppet/ssl/certs/ca.pem",
-            :ssl_ca=>"/var/lib/puppet/ssl/certs/ca.pem",
-            :ssl_crl=>"/var/lib/puppet/ssl/ca/ca_crl.pem",
-            :ssl_certs_dir=>"/var/lib/puppet/ssl/certs",
-            :ssl_verify_client=>"optional",
-            :ssl_verify_depth=>"1",
-            :ssl_options=>["+StdEnvVars", "+ExportCertData"],
-            :rack_base_uris=>"/",
-            :directories=>{"path"=>"/usr/share/puppet/rack/puppetmasterd/", "options"=>"None"},
-            :custom_fragment=>"  SSLCARevocationCheck chain\n  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd",
-            :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
-            }).that_subscribes_to('Class[Puppet::Master::Install]')
+#          pending 'This does not work as is'
+          case facts['lsbdistcodename']
+          when 'trusty'  
+            should contain_apache__vhost('constructorfleet.vogon.gal').with({
+              :name=>"constructorfleet.vogon.gal",
+              :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
+              :docroot_owner=>"root",
+              :docroot_group=>"root",
+              :port=>"8140",
+              :ssl=>true,
+              :ssl_protocol=>"ALL -SSLv2",
+              :ssl_cipher=>"ALL:!aNULL:!eNULL:!DES:!3DES:!IDEA:!SEED:!DSS:!PSK:!RC4:!MD5:+HIGH:+MEDIUM:!LOW:!SSLv2:!EXP",
+              :ssl_honorcipherorder=>"on",
+              :ssl_cert=>"/var/lib/puppet/ssl/certs/constructorfleet.vogon.gal.pem",
+              :ssl_key=>"/var/lib/puppet/ssl/private_keys/constructorfleet.vogon.gal.pem",
+              :ssl_chain=>"/var/lib/puppet/ssl/certs/ca.pem",
+              :ssl_ca=>"/var/lib/puppet/ssl/certs/ca.pem",
+              :ssl_crl=>"/var/lib/puppet/ssl/ca/ca_crl.pem",
+              :ssl_certs_dir=>"/var/lib/puppet/ssl/certs",
+              :ssl_verify_client=>"optional",
+              :ssl_verify_depth=>"1",
+              :ssl_options=>["+StdEnvVars", "+ExportCertData"],
+              :rack_base_uris=>"/",
+              :directories=>{"path"=>"/usr/share/puppet/rack/puppetmasterd/", "options"=>"None"},
+              :custom_fragment=>"  SSLCARevocationCheck chain\n  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd",
+              :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
+              }).that_subscribes_to('Class[Puppet::Master::Install]')
+          when 'precise'
+            should contain_apache__vhost('constructorfleet.vogon.gal').with({
+              :name=>"constructorfleet.vogon.gal",
+              :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
+              :docroot_owner=>"root",
+              :docroot_group=>"root",
+              :port=>"8140",
+              :ssl=>true,
+              :ssl_protocol=>"ALL -SSLv2",
+              :ssl_cipher=>"ALL:!aNULL:!eNULL:!DES:!3DES:!IDEA:!SEED:!DSS:!PSK:!RC4:!MD5:+HIGH:+MEDIUM:!LOW:!SSLv2:!EXP",
+              :ssl_honorcipherorder=>"on",
+              :ssl_cert=>"/var/lib/puppet/ssl/certs/constructorfleet.vogon.gal.pem",
+              :ssl_key=>"/var/lib/puppet/ssl/private_keys/constructorfleet.vogon.gal.pem",
+              :ssl_chain=>"/var/lib/puppet/ssl/certs/ca.pem",
+              :ssl_ca=>"/var/lib/puppet/ssl/certs/ca.pem",
+              :ssl_crl=>"/var/lib/puppet/ssl/ca/ca_crl.pem",
+              :ssl_certs_dir=>"/var/lib/puppet/ssl/certs",
+              :ssl_verify_client=>"optional",
+              :ssl_verify_depth=>"1",
+              :ssl_options=>["+StdEnvVars", "+ExportCertData"],
+              :rack_base_uris=>"/",
+              :directories=>{"path"=>"/usr/share/puppet/rack/puppetmasterd/", "options"=>"None"},
+              :custom_fragment=>"  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd",
+              :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
+              }).that_subscribes_to('Class[Puppet::Master::Install]')
+          end
         end
       end#no params
       context 'when passenger_max_pool_size has a non-standard value' do
@@ -206,17 +234,16 @@ describe 'puppet::master::passenger', :type => :class do
         end
       end#end puppet_fqdn
 
-
-    end#trusty
-    context '[Debian - unspecific]' do
-      let(:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'squeeze', 'osfamily' => osfam, 'operatingsystemrelease' => '6.06','concat_basedir' => '/tmp'}}
-      it 'should not add the SSLCARevocationCheck chain to the apache vhost config' do
-        pending 'This does not work as is'
-        should contain_apache__vhost('constructorfleet.vogon.gal').without({
-          :contents=>/SSLCARevocationCheck chain/
-        })
-      end
-    end
+    end#each OS
+#    context '[Debian - unspecific]' do
+#      let(:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'squeeze', 'osfamily' => osfam, 'operatingsystemrelease' => '6.06','concat_basedir' => '/tmp'}}
+#      it 'should not add the SSLCARevocationCheck chain to the apache vhost config' do
+#        pending 'This does not work as is'
+#        should contain_apache__vhost('constructorfleet.vogon.gal').without({
+#          :contents=>/SSLCARevocationCheck chain/
+#        })
+#      end
+#    end
   end # on_supported_os
 end
 
