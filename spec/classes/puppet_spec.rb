@@ -67,8 +67,6 @@ describe 'puppet', :type => :class do
     end#strings
 
   end#input validation
-#  context "When on a Debian system" do
-#    let(:facts) {{'osfamily' => 'Debian', 'lsbdistid' => 'Debian', 'lsbdistcodename' => 'trusty'}}
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do

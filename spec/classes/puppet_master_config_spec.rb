@@ -151,7 +151,6 @@ describe 'puppet::master::config', :type => :class do
         context 'and the environment is production' do
           it 'should not enable autosign' do
             pending 'This does not actualy work as is'
-#            Puppet.settings[:environment] = 'production'
             should contain_ini_setting('autosign').with({
               'ensure'=>'absent',
               'path'=>'/etc/puppet/puppet.conf',
@@ -165,7 +164,7 @@ describe 'puppet::master::config', :type => :class do
           let(:pre_condition) {"class{'::puppet::master': autosign => true}"}
           let(:facts) do
             facts.merge({
-              :environment => 'production'
+              :environment => 'testenv'
             })
           end
 #          let(:facts) {{'environment' => 'testenv'}}
