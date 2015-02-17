@@ -189,8 +189,6 @@ describe 'puppet::master::modules', :type => :class do
             'group'=>'root',
             'mode'=>'0644',
           }).with_content(
-              /basedir: \/etc\/puppet\/hiera/
-            ).with_content(
               /remote: \"BOGON\"/
             ).that_requires('File[/var/cache/r10k]')
         end
@@ -243,7 +241,7 @@ describe 'puppet::master::modules', :type => :class do
           should contain_file('/etc/r10k.yaml').with({
            :path=>"/etc/r10k.yaml",
            :ensure=>"file",
-           :content=>":cachedir: /var/cache/r10k\n:sources:\n  hiera:\n    prefix: false\n    basedir: \"/etc/puppet/hiera\"\n    remote: \"\"\n\n",
+#           :content=>":cachedir: /var/cache/r10k\n:sources:\n  hiera:\n    prefix: false\n    basedir: \"/etc/puppet/hiera\"\n    remote: \"\"\n\n",
            :owner=>"root",
            :group=>"root",
            :mode=>"0644",}).without_content(
