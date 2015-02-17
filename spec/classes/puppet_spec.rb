@@ -98,6 +98,7 @@ describe 'puppet', :type => :class do
           should contain_class('puppet::facts').with({'custom_facts' => {'fact1' => 'value1','fact2' => 'value2'} })
         end
       end#custom_facts
+
       context 'when the devel_repo param is true' do
         let(:params){{'devel_repo' => true}}
         it 'should instantiate the puppet::repo class apropriately' do
@@ -113,21 +114,22 @@ describe 'puppet', :type => :class do
       context 'when the environment param is set' do
         let(:params) {{'environment' => 'BOGON'}}
         it 'should instantiate the puppet::config class apropriately' do
-          should contain_class('puppet::config').with({'environment' => 'BOGON'})
+          should contain_class('puppet::config')
         end
       end#environment
+
       ['facter_version','hiera_version','puppet_version'].each do |versions|
         context "when the #{versions} param has a non-standard value" do
           let(:params) {{versions => 'BOGON'}}
           it 'should instantiate the puppet::install class apropriately' do
-            should contain_class('puppet::install').with({versions => 'BOGON'})
+            should contain_class('puppet::install')
           end
         end
       end#versions
       context 'when the puppet_server param has a non-standard value' do
         let(:params){{'puppet_server' => 'BOGON'}}
         it 'should instantiate the puppet::config class apropriately' do
-          should contain_class('puppet::config').with({'puppet_server' => 'BOGON'})
+          should contain_class('puppet::config')
         end
       end#puppet_server
       context 'when the reports param is false' do
@@ -153,7 +155,7 @@ describe 'puppet', :type => :class do
       context 'when the structured facts param has a value of true' do
         let(:params){{'structured_facts' => true}}
         it 'should instantiate the puppet::config class apropriately' do
-          should contain_class('puppet::config').with({'structured_facts' => true})
+          should contain_class('puppet::config')
         end
       end
     end

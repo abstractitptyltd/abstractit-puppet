@@ -68,93 +68,57 @@ describe 'puppet::master', :type => :class do
       end
       context 'when fed no parameters' do
         it 'should properly instantiate the puppet::master::install class' do
-          should contain_class('Puppet::Master::Install').with({
-            :name=>"Puppet::Master::Install",
-            :puppet_version=>"installed",
-            :r10k_version=>"installed",
-            :hiera_eyaml_version=>"installed",
-          }).that_comes_before('Class[Puppet::Master::Config]')
+          should contain_class('Puppet::Master::Install').that_comes_before('Class[Puppet::Master::Config]')
         end
         it 'should properly instantiate the puppet::master::config class' do
-          should contain_class('Puppet::Master::Config').with({
-            :name=>"Puppet::Master::Config",
-            :future_parser=>false,
-            :environmentpath=>"/etc/puppet/environments",
-            :extra_module_path=>"/etc/puppet/site:/usr/share/puppet/modules",
-            :autosign=>false,
-          }).that_comes_before('Class[Puppet::Master::Hiera]')
+          should contain_class('Puppet::Master::Config').that_comes_before('Class[Puppet::Master::Hiera]')
         end
         it 'should properly instantiate the puppet::master::hiera class' do
-          should contain_class('Puppet::Master::Hiera').with({
-            :name=>"Puppet::Master::Hiera",
-            :hiera_backends=>{"yaml"=>{"datadir"=>"/etc/puppet/hiera/%{environment}"}},
-            :hierarchy=>["node/%{::clientcert}", "env/%{::environment}", "global"],
-            :hieradata_path=>"/etc/puppet/hiera",
-            :env_owner=>"puppet",
-            :eyaml_keys=>false,
-          }).that_notifies('Class[Puppet::Master::Passenger]')
+          should contain_class('Puppet::Master::Hiera').that_notifies('Class[Puppet::Master::Passenger]')
         end
 
         it 'should properly instantiate the puppet::master::passenger class' do
-          should contain_class('Puppet::Master::Passenger').with({
-            :name=>"Puppet::Master::Passenger",
-            :passenger_max_pool_size=>"12",
-            :passenger_pool_idle_time=>"1500",
-            :passenger_stat_throttle_rate=>"120",
-            :passenger_max_requests=>"0"
-          })
+          should contain_class('Puppet::Master::Passenger')
         end
       end#no params
 
       context 'when the autosign parameter is true' do
         let(:params) {{'autosign' => true}}
         it 'should properly instantiate the puppet::master::config class' do
-          should contain_class('Puppet::Master::Config').with({
-            :autosign=>true
-          }).that_comes_before('Class[Puppet::Master::Hiera]')
+          should contain_class('Puppet::Master::Config').that_comes_before('Class[Puppet::Master::Hiera]')
         end
       end#autosign
       context 'when the environmentpath parameter has a custom value' do
         let(:params) {{'environmentpath' => '/BOGON'}}
         it 'should properly instantiate the puppet::master::config class' do
-          should contain_class('Puppet::Master::Config').with({
-            :environmentpath=>"/BOGON"
-          })
+          should contain_class('Puppet::Master::Config')
         end
       end#environmentpath
       context 'when the future_parser parameter is set to true' do
         let(:params) {{'future_parser' => true}}
         it 'should properly instantiate the puppet::master::config class' do
-          should contain_class('puppet::master::config').with({
-            :future_parser => true
-          })
+          should contain_class('puppet::master::config')
         end
       end#future_parser
 
       context 'when the module_path parameter has a custom value' do
         let(:params) {{'module_path' => 'BOGON'}}
         it 'should properly instantiate the puppet::master::config class' do
-          should contain_class('puppet::master::config').with({
-            :extra_module_path=>"BOGON",
-          })
+          should contain_class('puppet::master::config')
         end
       end#module_path
 
       context 'when the pre_module_path parameter has a custom value' do
         let(:params) {{'pre_module_path' => 'BOGON'}}
         it 'should properly instantiate the puppet::master::config class' do
-          should contain_class('puppet::master::config').with({
-            :extra_module_path=>"BOGON:/etc/puppet/site:/usr/share/puppet/modules",
-          })
+          should contain_class('puppet::master::config')
         end
       end#pre_module_path
 
       context 'when the pre_module_path parameter has a custom value that ends in a :' do
         let(:params) {{'pre_module_path' => 'BOGON:'}}
         it 'should properly instantiate the puppet::master::config class' do
-          should contain_class('puppet::master::config').with({
-            :extra_module_path=>"BOGON:/etc/puppet/site:/usr/share/puppet/modules",
-          })
+          should contain_class('puppet::master::config')
         end
       end#pre_module_path
 
@@ -163,36 +127,28 @@ describe 'puppet::master', :type => :class do
       context 'when the eyaml_keys parameter is set to true' do
         let(:params) {{'eyaml_keys' => true}}
         it 'should properly instantiate the puppet::master::hiera class' do
-          should contain_class('Puppet::Master::Hiera').with({
-            :eyaml_keys=>true
-          })
+          should contain_class('Puppet::Master::Hiera')
         end
       end#eyaml_keys
 
       context 'when the hiera_backends parameter has a custom value' do
         let(:params) {{'hiera_backends' => {'yaml' => { 'datadir' => 'BOGON',} } }}
         it 'should properly instantiate the puppet::master::hiera class' do
-          should contain_class('puppet::master::hiera').with({
-            :hiera_backends=>{"yaml"=>{"datadir"=>"BOGON"}}
-          })
+          should contain_class('puppet::master::hiera')
         end
       end#hiera_backends
 
       context 'when the hiera_hierarchy parameter has a custom value' do
         let(:params) {{'hiera_hierarchy' => ['foo', 'bar', 'baz']}}
         it 'should properly instantiate the puppet::master::hiera class' do
-          should contain_class('puppet::master::hiera').with({
-            :hierarchy=>["foo", "bar", "baz"],
-          })
+          should contain_class('puppet::master::hiera')
         end
       end#hiera_hierarchy
 
       context 'when the hieradatata_path parameter has a custom value' do
         let(:params) {{'hieradata_path' => '/BOGON'}}
         it 'should properly instantiate the puppet::master::hiera class' do
-          should contain_class('puppet::master::hiera').with({
-            :hieradata_path=>"/BOGON",
-          })
+          should contain_class('puppet::master::hiera')
         end
       end#hieradatata_path
 
@@ -200,27 +156,21 @@ describe 'puppet::master', :type => :class do
       context 'when the hiera_eyaml_version parameter has a custom value' do
         let(:params) {{'hiera_eyaml_version' => 'BOGON'}}
         it 'should properly instantiate the puppet::master::install class' do
-          should contain_class('puppet::master::install').with({
-            :hiera_eyaml_version=>"BOGON",
-          })
+          should contain_class('puppet::master::install')
         end
       end#hiera_eyaml_version
 
       context 'when the puppet_version parameter has a custom value' do
         let(:params) {{'puppet_version' => 'BOGON'}}
         it 'should properly instantiate the puppet::master::install class' do
-          should contain_class('puppet::master::install').with({
-            :puppet_version=>"BOGON",
-          })
+          should contain_class('puppet::master::install')
         end
       end#puppet_version
 
       context 'when the r10k_version parameter has a custom value' do
         let(:params) {{'r10k_version' => 'BOGON'}}
         it 'should properly instantiate the puppet::master::install class' do
-          should contain_class('puppet::master::install').with({
-            :r10k_version=>"BOGON",
-          })
+          should contain_class('puppet::master::install')
         end
       end#r10k_version
 
@@ -229,45 +179,35 @@ describe 'puppet::master', :type => :class do
       context 'when the passenger_max_pool_size parameter has a custom value' do
         let(:params) {{'passenger_max_pool_size' => 'BOGON'}}
         it 'should properly instantiate the puppet::master::passenger class' do
-          should contain_class('puppet::master::passenger').with({
-            :passenger_max_pool_size=>"BOGON"
-          })
+          should contain_class('puppet::master::passenger')
         end
       end#passenger_max_pool_size
 
       context 'when the passenger_max_requests parameter has a custom value' do
         let(:params) {{'passenger_max_requests' => 'BOGON'}}
         it 'should properly instantiate the puppet::master::passenger class' do
-          should contain_class('puppet::master::passenger').with({
-            :passenger_max_requests=>"BOGON"
-          })
+          should contain_class('puppet::master::passenger')
         end
       end#passenger_max_requests
 
       context 'when the passenger_pool_idle_time parameter has a custom value' do
         let(:params) {{'passenger_pool_idle_time' => 'BOGON'}}
         it 'should properly instantiate the puppet::master::passenger class' do
-          should contain_class('puppet::master::passenger').with({
-            :passenger_pool_idle_time=>"BOGON"
-          })
+          should contain_class('puppet::master::passenger')
         end
       end#passenger_pool_idle_time
 
       context 'when the passenger_stat_throttle_rate parameter has a custom value' do
         let(:params) {{'passenger_stat_throttle_rate' => 'BOGON'}}
         it 'should properly instantiate the puppet::master::passenger class' do
-          should contain_class('puppet::master::passenger').with({
-            :passenger_stat_throttle_rate=>"BOGON"
-          })
+          should contain_class('puppet::master::passenger')
         end
       end#passenger_stat_throttle_rate
 
       context 'when the puppet_fqdn parameter has a custom value' do
         let(:params) {{'puppet_fqdn' => 'BOGON'}}
         it 'should properly instantiate the puppet::master::passenger class' do
-          should contain_class('puppet::master::passenger').with({
-            :puppet_fqdn=>"BOGON",
-          })
+          should contain_class('puppet::master::passenger')
         end
       end#puppet_fqdn
 
