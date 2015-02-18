@@ -6,5 +6,8 @@ class puppet::repo {
     'Debian': {
       include ::puppet::repo::apt
     }
+    'RedHat': {
+      include ::puppet::repo::yum
+    }
   }
 }
