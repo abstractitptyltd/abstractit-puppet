@@ -1,3 +1,15 @@
+##2015-02-18 - Pete Brown <pete@abstractit.com.au> 1.8.1
+###Summary
+Bugfix release
+
+####Bugfixes
+fix links in metadata.json @rendhalver
+Code cleanup
+
+####Known bugs
+* RedHat support is only available for an agent at this stage
+
+
 ##2015-02-18 - Pete Brown <pete@abstractit.com.au> 1.8.0
 ###Summary
 Bugfix and new feature release
@@ -8,9 +20,6 @@ Initial support for running the agent on osfamily == RedHat @rendhalver
 Spec tests are actually running now! (Well most of them anyhow) @rendhalver
 "Fix" POODLE attack by upgrading to new release of puppetlabs-apache @rendhalver
 Documentation fixes and updates. @wolfspyre
-
-####Known bugs
-* RedHat support is only available for an agent at this stage
 
 
 ## 2014-09-18 - Pete Brown <pete@abstractit.com.au> 1.7.6
@@ -34,9 +43,6 @@ Added operatingsystem_support and requirements to metadata.json @rendhalver
 
 ###Bugfixes
 - none this time
-
-###Known bugs
-* No known bugs. Please let us know if you find any.
 
 ---
 #### 2014-07-21 - Pete Brown <pete@abstractit.com.au> 1.7.3
