@@ -120,11 +120,10 @@ describe 'puppet::master::passenger', :type => :class do
               :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
               :docroot_owner=>"root",
               :docroot_group=>"root",
+              :passenger_app_root=>"/usr/share/puppet/rack/puppetmasterd",
               :port=>"8140",
               :ssl=>true,
-              :ssl_protocol=>"ALL -SSLv2",
-              :ssl_cipher=>"ALL:!aNULL:!eNULL:!DES:!3DES:!IDEA:!SEED:!DSS:!PSK:!RC4:!MD5:+HIGH:+MEDIUM:!LOW:!SSLv2:!EXP",
-              :ssl_honorcipherorder=>"on",
+              :ssl_crl_check=>'chain',
               :ssl_cert=>"/var/lib/puppet/ssl/certs/constructorfleet.vogon.gal.pem",
               :ssl_key=>"/var/lib/puppet/ssl/private_keys/constructorfleet.vogon.gal.pem",
               :ssl_chain=>"/var/lib/puppet/ssl/certs/ca.pem",
@@ -136,7 +135,6 @@ describe 'puppet::master::passenger', :type => :class do
               :ssl_options=>["+StdEnvVars", "+ExportCertData"],
               :rack_base_uris=>"/",
               :directories=>{"path"=>"/usr/share/puppet/rack/puppetmasterd/", "options"=>"None"},
-              :custom_fragment=>"  SSLCARevocationCheck chain\n  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd",
               :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
               }).that_subscribes_to('Class[Puppet::Master::Install]')
           when 'precise'
@@ -145,11 +143,10 @@ describe 'puppet::master::passenger', :type => :class do
               :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
               :docroot_owner=>"root",
               :docroot_group=>"root",
+              :passenger_app_root=>"/usr/share/puppet/rack/puppetmasterd",
               :port=>"8140",
               :ssl=>true,
-              :ssl_protocol=>"ALL -SSLv2",
-              :ssl_cipher=>"ALL:!aNULL:!eNULL:!DES:!3DES:!IDEA:!SEED:!DSS:!PSK:!RC4:!MD5:+HIGH:+MEDIUM:!LOW:!SSLv2:!EXP",
-              :ssl_honorcipherorder=>"on",
+              :ssl_crl_check=>'chain',
               :ssl_cert=>"/var/lib/puppet/ssl/certs/constructorfleet.vogon.gal.pem",
               :ssl_key=>"/var/lib/puppet/ssl/private_keys/constructorfleet.vogon.gal.pem",
               :ssl_chain=>"/var/lib/puppet/ssl/certs/ca.pem",
@@ -161,7 +158,6 @@ describe 'puppet::master::passenger', :type => :class do
               :ssl_options=>["+StdEnvVars", "+ExportCertData"],
               :rack_base_uris=>"/",
               :directories=>{"path"=>"/usr/share/puppet/rack/puppetmasterd/", "options"=>"None"},
-              :custom_fragment=>"  PassengerAppRoot /usr/share/puppet/rack/puppetmasterd",
               :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
               }).that_subscribes_to('Class[Puppet::Master::Install]')
           end
