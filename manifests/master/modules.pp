@@ -37,6 +37,15 @@ class puppet::master::modules (
     validate_hash($extra_env_repos)
   }
 
+  case $r10k_update {
+    default: {
+      $r10k_ensure = present
+    }
+    false: {
+      $r10k_ensure = absent
+    }
+  }
+
   # r10k setup
   file { '/var/cache/r10k':
     ensure  => directory,
@@ -64,10 +73,7 @@ class puppet::master::modules (
 
   # cron for updating the r10k environment
   cron { 'puppet_r10k':
-    ensure      => $r10k_update ? {
-      default => present,
-      false   => absent,
-    },
+    ensure      => $r10k_ensure,
     command     => '/usr/local/bin/r10k deploy environment production -p',
     environment => 'PATH=/usr/local/bin:/bin:/usr/bin:/usr/sbin',
     user        => $env_owner,

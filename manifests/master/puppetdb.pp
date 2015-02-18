@@ -28,17 +28,19 @@ class puppet::master::puppetdb (
   )
 
   case $use_ssl {
-    default : { $puppetdb_port = '8081' }
-    false   : { $puppetdb_port = '8080' }
+    default : {
+      $puppetdb_port = '8081'
+      $disable_ssl = false
+    }
+    false   : {
+      $puppetdb_port = '8080'
+      $disable_ssl = true
+    }
   }
 
   # setup puppetdb
   class { '::puppetdb':
-    disable_ssl        => $use_ssl ? {
-      default => false,
-      true    => false,
-      false   => true,
-    },
+    disable_ssl        => $disable_ssl,
     listen_address     => $puppetdb_listen_address,
     ssl_listen_address => $puppetdb_ssl_listen_address,
     node_ttl           => $node_ttl,

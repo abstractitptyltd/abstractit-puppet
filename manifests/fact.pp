@@ -4,8 +4,9 @@
 #
 
 define puppet::fact (
+  $value,
   $ensure = present,
-  $value) {
+  ) {
   file { "/etc/facter/facts.d/${title}.yaml":
     ensure  => $ensure,
     owner   => 'root',
