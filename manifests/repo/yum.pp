@@ -18,7 +18,7 @@ class puppet::repo::yum (
     }
 
     yumrepo { 'puppetlabs-products':
-      descr    => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture}",
+      descr    => "Puppet Labs Products EL ${::operatingsystemmajrelease} - ${::architecture}",
       baseurl  => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/products/${::architecture}",
       enabled  => '1',
       gpgcheck => '1',
@@ -26,7 +26,7 @@ class puppet::repo::yum (
     }
 
     yumrepo { 'puppetlabs-products-source':
-      descr    => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture} - Source",
+      descr    => "Puppet Labs Products EL ${::operatingsystemmajrelease} - ${::architecture} - Source",
       baseurl  => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/products/SRPMS",
       enabled  => $source_enable,
       gpgcheck => '1',
@@ -51,7 +51,7 @@ class puppet::repo::yum (
     }
 
     yumrepo { 'puppetlabs-devel':
-      descr    => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture}",
+      descr    => "Puppet Labs Devel EL ${::operatingsystemmajrelease} - ${::architecture}",
       baseurl  => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/devel/${::architecture}",
       enabled  => $devel_enabled,
       gpgcheck => '1',
@@ -59,7 +59,7 @@ class puppet::repo::yum (
     }
 
     yumrepo { 'puppetlabs-devel-source':
-      descr    => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture} - Source",
+      descr    => "Puppet Labs Devel EL ${::operatingsystemmajrelease} - ${::architecture} - Source",
       baseurl  => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/devel/SRPMS",
       enabled  => $source_enable,
       gpgcheck => '1',

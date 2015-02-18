@@ -102,7 +102,7 @@ describe 'puppet::repo::yum', :type => :class do
           case facts['operatingsystemmajrelease']
           when '5'
             should contain_yumrepo('puppetlabs-products').with({
-              'descr'=>'Puppet Labs Dependencies EL 5 - x86_64',
+              'descr'=>'Puppet Labs Products EL 5 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/5/products/x86_64',
               'enabled'=>'1',
               'gpgcheck'=>'1',
@@ -110,7 +110,7 @@ describe 'puppet::repo::yum', :type => :class do
             })
           when '6'
             should contain_yumrepo('puppetlabs-products').with({
-              'descr'=>'Puppet Labs Dependencies EL 6 - x86_64',
+              'descr'=>'Puppet Labs Products EL 6 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/6/products/x86_64',
               'enabled'=>'1',
               'gpgcheck'=>'1',
@@ -118,7 +118,7 @@ describe 'puppet::repo::yum', :type => :class do
             })
           when '7'
             should contain_yumrepo('puppetlabs-products').with({
-              'descr'=>'Puppet Labs Dependencies EL 7 - x86_64',
+              'descr'=>'Puppet Labs Products EL 7 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/7/products/x86_64',
               'enabled'=>'1',
               'gpgcheck'=>'1',
@@ -158,7 +158,7 @@ describe 'puppet::repo::yum', :type => :class do
           case facts['operatingsystemmajrelease']
           when '5'
             should contain_yumrepo('puppetlabs-devel').with({
-              'descr'=>'Puppet Labs Dependencies EL 5 - x86_64',
+              'descr'=>'Puppet Labs Devel EL 5 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
               'enabled'=>'0',
               'gpgcheck'=>'1',
@@ -166,7 +166,7 @@ describe 'puppet::repo::yum', :type => :class do
             })
           when '6'
             should contain_yumrepo('puppetlabs-devel').with({
-              'descr'=>'Puppet Labs Dependencies EL 6 - x86_64',
+              'descr'=>'Puppet Labs Devel EL 6 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
               'enabled'=>'0',
               'gpgcheck'=>'1',
@@ -174,7 +174,7 @@ describe 'puppet::repo::yum', :type => :class do
             })
           when '7'
             should contain_yumrepo('puppetlabs-devel').with({
-              'descr'=>'Puppet Labs Dependencies EL 7 - x86_64',
+              'descr'=>'Puppet Labs Devel EL 7 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
               'enabled'=>'0',
               'gpgcheck'=>'1',
@@ -198,7 +198,7 @@ describe 'puppet::repo::yum', :type => :class do
             case facts['operatingsystemmajrelease']
             when '5'
               should contain_yumrepo('puppetlabs-devel').with({
-                'descr'=>'Puppet Labs Dependencies EL 5 - x86_64',
+                'descr'=>'Puppet Labs Devel EL 5 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
                 'enabled'=>'0',
                 'gpgcheck'=>'1',
@@ -206,7 +206,7 @@ describe 'puppet::repo::yum', :type => :class do
               })
             when '6'
               should contain_yumrepo('puppetlabs-devel').with({
-                'descr'=>'Puppet Labs Dependencies EL 6 - x86_64',
+                'descr'=>'Puppet Labs Devel EL 6 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
                 'enabled'=>'0',
                 'gpgcheck'=>'1',
@@ -214,7 +214,7 @@ describe 'puppet::repo::yum', :type => :class do
               })
             when '7'
               should contain_yumrepo('puppetlabs-devel').with({
-                'descr'=>'Puppet Labs Dependencies EL 7 - x86_64',
+                'descr'=>'Puppet Labs Devel EL 7 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
                 'enabled'=>'0',
                 'gpgcheck'=>'1',
@@ -228,7 +228,7 @@ describe 'puppet::repo::yum', :type => :class do
               case facts['operatingsystemmajrelease']
               when '5'
                 should contain_yumrepo('puppetlabs-devel').with({
-                  'descr'=>'Puppet Labs Dependencies EL 5 - x86_64',
+                  'descr'=>'Puppet Labs Devel EL 5 - x86_64',
                   'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
                   'enabled'=>'1',
                   'gpgcheck'=>'1',
@@ -236,7 +236,7 @@ describe 'puppet::repo::yum', :type => :class do
                 })
               when '6'
                 should contain_yumrepo('puppetlabs-devel').with({
-                  'descr'=>'Puppet Labs Dependencies EL 6 - x86_64',
+                  'descr'=>'Puppet Labs Devel EL 6 - x86_64',
                   'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
                   'enabled'=>'1',
                   'gpgcheck'=>'1',
@@ -244,7 +244,7 @@ describe 'puppet::repo::yum', :type => :class do
                 })
               when '7'
                 should contain_yumrepo('puppetlabs-devel').with({
-                  'descr'=>'Puppet Labs Dependencies EL 7 - x86_64',
+                  'descr'=>'Puppet Labs Devel EL 7 - x86_64',
                   'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
                   'enabled'=>'1',
                   'gpgcheck'=>'1',
@@ -260,7 +260,7 @@ describe 'puppet::repo::yum', :type => :class do
             case facts['operatingsystemmajrelease']
             when '5'
               should contain_yumrepo('puppetlabs-devel').with({
-                'descr'=>'Puppet Labs Dependencies EL 5 - x86_64',
+                'descr'=>'Puppet Labs Devel EL 5 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
@@ -268,7 +268,7 @@ describe 'puppet::repo::yum', :type => :class do
               })
             when '6'
               should contain_yumrepo('puppetlabs-devel').with({
-                'descr'=>'Puppet Labs Dependencies EL 6 - x86_64',
+                'descr'=>'Puppet Labs Devel EL 6 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
@@ -276,7 +276,7 @@ describe 'puppet::repo::yum', :type => :class do
               })
             when '7'
               should contain_yumrepo('puppetlabs-devel').with({
-                'descr'=>'Puppet Labs Dependencies EL 7 - x86_64',
+                'descr'=>'Puppet Labs Devel EL 7 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
@@ -290,7 +290,7 @@ describe 'puppet::repo::yum', :type => :class do
                case facts['operatingsystemmajrelease']
                when '5'
                  should contain_yumrepo('puppetlabs-devel').with({
-                   'descr'=>'Puppet Labs Dependencies EL 5 - x86_64',
+                   'descr'=>'Puppet Labs Devel EL 5 - x86_64',
                    'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
                    'enabled'=>'1',
                    'gpgcheck'=>'1',
@@ -298,7 +298,7 @@ describe 'puppet::repo::yum', :type => :class do
                  })
                when '6'
                  should contain_yumrepo('puppetlabs-devel').with({
-                   'descr'=>'Puppet Labs Dependencies EL 6 - x86_64',
+                   'descr'=>'Puppet Labs Devel EL 6 - x86_64',
                    'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
                    'enabled'=>'1',
                    'gpgcheck'=>'1',
@@ -306,7 +306,7 @@ describe 'puppet::repo::yum', :type => :class do
                  })
                when '7'
                  should contain_yumrepo('puppetlabs-devel').with({
-                   'descr'=>'Puppet Labs Dependencies EL 7 - x86_64',
+                   'descr'=>'Puppet Labs Devel EL 7 - x86_64',
                    'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
                    'enabled'=>'1',
                    'gpgcheck'=>'1',
