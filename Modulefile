@@ -1,5 +1,5 @@
 name 'abstractit-puppet'
-version '1.7.7'
+version '1.8.0'
 author 'Abstract IT'
 license 'Apache-2.0'
 source 'https://github.com/abstractitptyltd/abstractit-puppet'

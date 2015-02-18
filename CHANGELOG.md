@@ -1,3 +1,30 @@
+##2015-02-18 - Pete Brown <pete@abstractit.com.au> 1.8.0
+###Summary
+Bugfix and new feature release
+Adding ability to run agent via cron. @wolfspyre
+Initial support for running the agent on osfamily == RedHat @rendhalver
+
+####Bugfixes
+Spec tests are actually running now! (Well most of them anyhow) @rendhalver
+"Fix" POODLE attack by upgrading to new release of puppetlabs-apache @rendhalver
+Documentation fixes and updates. @wolfspyre
+
+####Known bugs
+* RedHat support is only available for an agent at this stage
+
+
+## 2014-09-18 - Pete Brown <pete@abstractit.com.au> 1.7.6
+### Summary
+  Bugfix release
+
+####Bugfixes
+- remove symlink in fixtures. @rendhalver
+
+
+---
+#### 2014-08-21 - Release 1.7.5
+ * set PassengerRoot properly on Ubuntu trusty. @rendhalver
+
 ## 2014-07-26 - Release 1.7.4
 ###Summary
 Added spec tests courtesy of @wolfspyre

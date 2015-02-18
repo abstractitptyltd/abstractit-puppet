@@ -73,12 +73,18 @@ If it works for you, awesome! If not, let me know *or send me a pull request*.
         * r10k `master/install.pp`
 
     * **RedHat:**
-    CURRENTLY UNSUPPORTED
+        * facter
+        * hiera
+        * puppet
+        * puppetlabs-release
+    MASTER CURRENTLY UNSUPPORTED
 * puppet and it's config files, hiera config, apache vhost for puppetmaster.
 
 ###Setup Requirements
 
-This module currently only works on Ubuntu Precise at this stage. I will be adding support for other operating systems when I get a chance.
+This module currently only works completely on Ubuntu Precise and Trusty at this stage. 
+Initial support for RedHat and CentOS 5,6 and 7 has been added but only as an agent. Puppet master on RedHat and CentOS will be added soon.
+I will be adding support for other operating systems when I get a chance.
 It also only configures puppet 3.6.x. If you need support for previous versions let me know.
 
 
@@ -784,6 +790,7 @@ Max Requests for Passenger. Default `0` (unlimited).
 ##Limitations
 
 Currently the only tested operating system is Ubuntu with puppet 3.6.x.
+It only supports an agent setup on RedHat and CentOS at this stage.
 Other operating systems and puppet versions will be added when I get the time to test them.
 
 ##Development
