@@ -70,7 +70,34 @@ describe 'puppet::repo', :type => :class do
 #    end#opt_strings
 
   end#input validation
-  on_supported_os.each do |os, facts|
+  on_supported_os({
+    :hardwaremodels => ['x86_64'],
+    :supported_os   => [
+      {
+        "operatingsystem" => "Ubuntu",
+        "operatingsystemrelease" => [
+          "12.04",
+          "14.04"
+        ]
+      },
+      {
+        "operatingsystem" => "RedHat",
+        "operatingsystemrelease" => [
+          "5",
+          "6",
+          "7"
+        ]
+      },
+      {
+        "operatingsystem" => "CentOS",
+        "operatingsystemrelease" => [
+          "5",
+          "6",
+          "7"
+        ]
+      }
+    ],
+  }).each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
         facts
@@ -80,7 +107,11 @@ describe 'puppet::repo', :type => :class do
         it 'should contain the apt subclass' do
           should contain_class('puppet::repo::apt')
         end
-      end #  case osfamily
+      when 'RedHat'
+        it 'should contain the yum subclass' do
+          should contain_class('puppet::repo::yum')
+        end
+      end #case osfamily
     end #each OS
   end #on_supported_os
 end
