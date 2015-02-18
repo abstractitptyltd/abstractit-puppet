@@ -24,7 +24,7 @@ class puppet::profile::master (
   $puppet_server                = 'puppet',
   $modules                      = true,
   $extra_env_repos              = undef,
-  $hiera_repo,
+  $hiera_repo                   = undef,
   $puppet_env_repo              = undef,
   $r10k_env_basedir             = '/etc/puppet/r10kenv',
   $r10k_minutes                 = [
