@@ -18,7 +18,7 @@ class puppet::repo::yum (
     }
 
     yumrepo { 'puppetlabs-products':
-      name     => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture}",
+      descr    => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture}",
       baseurl  => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/products/${::architecture}",
       enabled  => '1',
       gpgcheck => '1',
@@ -26,7 +26,7 @@ class puppet::repo::yum (
     }
 
     yumrepo { 'puppetlabs-products-source':
-      name     => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture} - Source",
+      descr    => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture} - Source",
       baseurl  => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/products/SRPMS",
       enabled  => $source_enable,
       gpgcheck => '1',
@@ -34,7 +34,7 @@ class puppet::repo::yum (
     }
 
     yumrepo { 'puppetlabs-deps':
-      name     => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture}",
+      descr    => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture}",
       baseurl  => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/dependencies/${::architecture}",
       enabled  => '1',
       gpgcheck => '1',
@@ -42,15 +42,16 @@ class puppet::repo::yum (
     }
 
     yumrepo { 'puppetlabs-deps-source':
-      name     => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture} - Source",
-      baseurl  => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/dependencies/SRPMS",
-      enabled  => $source_enable,
-      gpgcheck => '1',
-      gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
+      descr          => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture} - Source",
+      baseurl        => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/dependencies/SRPMS",
+      enabled        => $source_enable,
+      gpgcheck       => '1',
+      gpgkey         => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
+      failovermethod => 'priority'
     }
 
     yumrepo { 'puppetlabs-devel':
-      name     => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture}",
+      descr    => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture}",
       baseurl  => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/devel/${::architecture}",
       enabled  => $devel_enabled,
       gpgcheck => '1',
@@ -58,7 +59,7 @@ class puppet::repo::yum (
     }
 
     yumrepo { 'puppetlabs-devel-source':
-      name     => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture} - Source",
+      descr    => "Puppet Labs Dependencies EL ${::operatingsystemmajrelease} - ${::architecture} - Source",
       baseurl  => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/devel/SRPMS",
       enabled  => $source_enable,
       gpgcheck => '1',
