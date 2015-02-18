@@ -52,52 +52,119 @@ describe 'puppet::install', :type => :class do
 
   end#input validation
 
-#  ['Debian'].each do |osfam|
-#    context "When on an #{osfam} system" do
-#      let(:facts) {{'osfamily' => osfam}}
-  on_supported_os.each do |os, facts|
+  on_supported_os({
+    :hardwaremodels => ['x86_64'],
+    :supported_os   => [
+      {
+        "operatingsystem" => "Ubuntu",
+        "operatingsystemrelease" => [
+          "12.04",
+          "14.04"
+        ]
+      },
+      {
+        "operatingsystem" => "RedHat",
+        "operatingsystemrelease" => [
+          "5",
+          "6",
+          "7"
+        ]
+      },
+      {
+        "operatingsystem" => "CentOS",
+        "operatingsystemrelease" => [
+          "5",
+          "6",
+          "7"
+        ]
+      }
+    ],
+  }).each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
         facts
       end
 
-      ['facter','hiera','puppet','puppet-common'].each do |pkg|
-        context 'when fed no parameters' do
-          it "should install the #{pkg} package"do
-            should contain_package(pkg).with({'ensure' => 'installed'})
-          end#specific package
-        end#no params
-      end#package iterator
-
       it "should install the puppetlabs-release package" do
         should contain_package('puppetlabs-release').with({'ensure' => 'latest'})
       end#puppetlabs-release
 
-#      ['facter','hiera'].each do |single_pkgs|
-#        context "when the #{single_pkgs}_version param has a custom value" do
-#          let(:params){{"#{single_pkgs}_version" => 'some_version'}}
-#          it "should install the specified version of #{single_pkgs}" do
-#            should contain_package(single_pkgs).with({'ensure' => 'some_version'})
-#          end
-#        end
-#      end#facter/hiera iterator
-      context 'when the hiera_version param has a custom value' do
+      case facts[:osfamily]
+      when 'Debian'
+        ['puppet','puppet-common'].each do |pkg|
+          context 'when fed no parameters' do
+            it "should install the #{pkg} package"do
+              should contain_package(pkg).with({
+                'ensure' => 'installed'
+              }).that_requires(
+                'Package[puppetlabs-release]'
+              ).that_requires(
+                'Package[hiera]'
+              ).that_requires(
+                'Package[facter]'
+              )
+            end#specific package
+          end#no params
+        end#package iterator
+      when 'RedHat'
+        ['puppet'].each do |pkg|
+          context 'when fed no parameters' do
+            it "should install the #{pkg} package"do
+              should contain_package(pkg).with({
+                'ensure' => 'installed'
+              }).that_requires(
+                'Package[puppetlabs-release]'
+              ).that_requires(
+                'Package[hiera]'
+              ).that_requires(
+                'Package[facter]'
+              )
+            end#specific package
+          end#no params
+        end#package iterator
+      end
+
+      context 'when the $puppet::hiera_version param has a custom value' do
         let(:pre_condition) {"class{'::puppet': hiera_version => 'some_version'}"}
         it 'should install the specified version if the hiera packages' do
           should contain_package('hiera').with({'ensure' => 'some_version'})
         end
       end#facter_version
-      context 'when the facter_version param has a custom value' do
+      context 'when the $puppet::facter_version param has a custom value' do
         let(:pre_condition) {"class{'::puppet': facter_version => 'some_version'}"}
         it 'should install the specified version if the facter packages' do
           should contain_package('facter').with({'ensure' => 'some_version'})
         end
       end#facter_version
-      context 'when the puppet_version param has a custom value' do
+
+      context 'when the $puppet::puppet_version param has a custom value' do
         let(:pre_condition) {"class{'::puppet': puppet_version => 'some_version'}"}
-        it 'should install the specified version if the puppet-common and puppet packages' do
-          should contain_package('puppet').with({'ensure' => 'some_version'})
-          should contain_package('puppet-common').with({'ensure' => 'some_version'})
+        case facts[:osfamily]
+        when 'Debian'
+          it 'should install the specified version if the puppet-common and puppet packages' do
+            should contain_package('puppet').with({'ensure' => 'some_version'})
+            should contain_package('puppet-common').with({
+              'ensure' => 'some_version'
+            }).that_requires(
+              'Package[puppetlabs-release]'
+            ).that_requires(
+              'Package[hiera]'
+            ).that_requires(
+              'Package[facter]'
+            )
+          end
+        when 'RedHat'
+          it 'should install the specified version if the puppet package' do
+            should contain_package('puppet').with({
+              'ensure' => 'some_version'
+            }).that_requires(
+              'Package[puppetlabs-release]'
+            ).that_requires(
+              'Package[hiera]'
+            ).that_requires(
+              'Package[facter]'
+            )
+          end
         end
       end#puppet_version
     end
