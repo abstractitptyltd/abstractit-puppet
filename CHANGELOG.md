@@ -1,3 +1,14 @@
+##2015-02-18 - Pete Brown <pete@abstractit.com.au> 1.8.2
+###Summary
+Bugfix release
+
+####Bugfixes
+Fix descriptions in yum repos
+
+####Known bugs
+* RedHat support is only available for an agent at this stage
+
+
 ##2015-02-18 - Pete Brown <pete@abstractit.com.au> 1.8.1
 ###Summary
 Bugfix release
@@ -5,9 +16,6 @@ Bugfix release
 ####Bugfixes
 fix links in metadata.json @rendhalver
 Code cleanup
-
-####Known bugs
-* RedHat support is only available for an agent at this stage
 
 
 ##2015-02-18 - Pete Brown <pete@abstractit.com.au> 1.8.0
