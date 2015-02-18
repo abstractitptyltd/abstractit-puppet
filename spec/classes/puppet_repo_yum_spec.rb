@@ -131,7 +131,7 @@ describe 'puppet::repo::yum', :type => :class do
           pending 'Working on it'
           case facts['operatingsystemmajrelease']
           when '5'
-            should contain_yumrepo('puppetlabs-products').with({
+            should contain_yumrepo('puppetlabs-deps').with({
               'name'=>'Puppet Labs Dependencies EL 5 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/5/dependencies/x86_64',
               'enabled'=>'1',
@@ -139,7 +139,7 @@ describe 'puppet::repo::yum', :type => :class do
               'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
             })
           when '6'
-            should contain_yumrepo('puppetlabs-products').with({
+            should contain_yumrepo('puppetlabs-deps').with({
               'name'=>'Puppet Labs Dependencies EL 6 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/6/dependencies/x86_64',
               'enabled'=>'1',
@@ -147,7 +147,7 @@ describe 'puppet::repo::yum', :type => :class do
               'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
             })
           when '7'
-            should contain_yumrepo('puppetlabs-products').with({
+            should contain_yumrepo('puppetlabs-deps').with({
               'name'=>'Puppet Labs Dependencies EL 7 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/7/dependencies/x86_64',
               'enabled'=>'1',
@@ -160,7 +160,7 @@ describe 'puppet::repo::yum', :type => :class do
           pending 'Working on it'
           case facts['operatingsystemmajrelease']
           when '5'
-            should contain_yumrepo('puppetlabs-products').with({
+            should contain_yumrepo('puppetlabs-devel').with({
               'name'=>'Puppet Labs Dependencies EL 5 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
               'enabled'=>'0',
@@ -168,7 +168,7 @@ describe 'puppet::repo::yum', :type => :class do
               'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
             })
           when '6'
-            should contain_yumrepo('puppetlabs-products').with({
+            should contain_yumrepo('puppetlabs-devel').with({
               'name'=>'Puppet Labs Dependencies EL 6 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
               'enabled'=>'0',
@@ -176,7 +176,7 @@ describe 'puppet::repo::yum', :type => :class do
               'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
             })
           when '7'
-            should contain_yumrepo('puppetlabs-products').with({
+            should contain_yumrepo('puppetlabs-devel').with({
               'name'=>'Puppet Labs Dependencies EL 7 - x86_64',
               'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
               'enabled'=>'0',
@@ -202,7 +202,7 @@ describe 'puppet::repo::yum', :type => :class do
             pending 'Working on it'
             case facts['operatingsystemmajrelease']
             when '5'
-              should contain_yumrepo('puppetlabs-products').with({
+              should contain_yumrepo('puppetlabs-devel').with({
                 'name'=>'Puppet Labs Dependencies EL 5 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
                 'enabled'=>'0',
@@ -210,7 +210,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
               })
             when '6'
-              should contain_yumrepo('puppetlabs-products').with({
+              should contain_yumrepo('puppetlabs-devel').with({
                 'name'=>'Puppet Labs Dependencies EL 6 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
                 'enabled'=>'0',
@@ -218,7 +218,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
               })
             when '7'
-              should contain_yumrepo('puppetlabs-products').with({
+              should contain_yumrepo('puppetlabs-devel').with({
                 'name'=>'Puppet Labs Dependencies EL 7 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
                 'enabled'=>'0',
@@ -233,7 +233,7 @@ describe 'puppet::repo::yum', :type => :class do
               pending 'Working on it'
               case facts['operatingsystemmajrelease']
               when '5'
-                should contain_yumrepo('puppetlabs-products').with({
+                should contain_yumrepo('puppetlabs-devel').with({
                   'name'=>'Puppet Labs Dependencies EL 5 - x86_64',
                   'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
                   'enabled'=>'1',
@@ -241,7 +241,7 @@ describe 'puppet::repo::yum', :type => :class do
                   'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
                 })
               when '6'
-                should contain_yumrepo('puppetlabs-products').with({
+                should contain_yumrepo('puppetlabs-devel').with({
                   'name'=>'Puppet Labs Dependencies EL 6 - x86_64',
                   'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
                   'enabled'=>'1',
@@ -249,7 +249,7 @@ describe 'puppet::repo::yum', :type => :class do
                   'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
                 })
               when '7'
-                should contain_yumrepo('puppetlabs-products').with({
+                should contain_yumrepo('puppetlabs-devel').with({
                   'name'=>'Puppet Labs Dependencies EL 7 - x86_64',
                   'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
                   'enabled'=>'1',
@@ -266,7 +266,7 @@ describe 'puppet::repo::yum', :type => :class do
             pending 'Working on it'
             case facts['operatingsystemmajrelease']
             when '5'
-              should contain_yumrepo('puppetlabs-products').with({
+              should contain_yumrepo('puppetlabs-devel').with({
                 'name'=>'Puppet Labs Dependencies EL 5 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
                 'enabled'=>'1',
@@ -274,7 +274,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
               })
             when '6'
-              should contain_yumrepo('puppetlabs-products').with({
+              should contain_yumrepo('puppetlabs-devel').with({
                 'name'=>'Puppet Labs Dependencies EL 6 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
                 'enabled'=>'1',
@@ -282,7 +282,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
               })
             when '7'
-              should contain_yumrepo('puppetlabs-products').with({
+              should contain_yumrepo('puppetlabs-devel').with({
                 'name'=>'Puppet Labs Dependencies EL 7 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
                 'enabled'=>'1',
@@ -297,7 +297,7 @@ describe 'puppet::repo::yum', :type => :class do
                pending 'Working on it'
                case facts['operatingsystemmajrelease']
                when '5'
-                 should contain_yumrepo('puppetlabs-products').with({
+                 should contain_yumrepo('puppetlabs-devel').with({
                    'name'=>'Puppet Labs Dependencies EL 5 - x86_64',
                    'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
                    'enabled'=>'1',
@@ -305,7 +305,7 @@ describe 'puppet::repo::yum', :type => :class do
                    'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
                  })
                when '6'
-                 should contain_yumrepo('puppetlabs-products').with({
+                 should contain_yumrepo('puppetlabs-devel').with({
                    'name'=>'Puppet Labs Dependencies EL 6 - x86_64',
                    'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
                    'enabled'=>'1',
@@ -313,7 +313,7 @@ describe 'puppet::repo::yum', :type => :class do
                    'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
                  })
                when '7'
-                 should contain_yumrepo('puppetlabs-products').with({
+                 should contain_yumrepo('puppetlabs-devel').with({
                    'name'=>'Puppet Labs Dependencies EL 7 - x86_64',
                    'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
                    'enabled'=>'1',
