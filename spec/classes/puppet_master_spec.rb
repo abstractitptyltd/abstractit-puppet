@@ -56,9 +56,7 @@ describe 'puppet::master', :type => :class do
     end#strings
 
   end#input validation
-#  ['Debian'].each do |osfam|
-#    context "When on an #{osfam} system" do
-#      let(:facts) {{'osfamily' => osfam, 'operatingsystemrelease' => '14.04','concat_basedir' => '/tmp'}}
+
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
