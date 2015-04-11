@@ -1,6 +1,9 @@
 #abstractit-puppet
 
+[![Puppet Forge](https://img.shields.io/puppetforge/v/abstractit/puppet.svg?style=plastic)](https://forge.puppetlabs.com/abstractit/puppet)
 [![Build Status](https://travis-ci.org/abstractitptyltd/abstractit-puppet.svg?branch=production)](https://travis-ci.org/abstractitptyltd/abstractit-puppet)
+[![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/abstractit/puppet.svg?style=plastic)](https://forge.puppetlabs.com/abstractit/puppet)
+[![Puppet Forge Modules](https://img.shields.io/puppetforge/mc/abstractit.svg?style=plastic)](https://forge.puppetlabs.com/abstractit)
 
 ####Table of Contents
 
