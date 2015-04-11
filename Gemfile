@@ -10,6 +10,7 @@ gem 'rake'
 gem 'puppet-lint'
 gem 'rspec-puppet'
 gem 'rspec-puppet-facts', :require => false
+gem 'metadata-json-lint', :require => false
 gem 'puppetlabs_spec_helper'
 gem 'puppet', puppetversion
 
