@@ -1,18 +1,23 @@
 source 'https://rubygems.org'
 
-if ENV.key?('PUPPET_VERSION')
-  puppetversion = "= #{ENV['PUPPET_VERSION']}"
-else
-  puppetversion = ['>= 3.6']
+group :test do
+  gem 'rake'
+  gem 'puppet', ENV['PUPPET_VERSION'] || '~> 3.7.0'
+  gem 'puppet-lint'
+  gem "rspec-puppet", :git => 'https://github.com/rodjek/rspec-puppet.git'
+  gem 'rspec-puppet-facts', :require => false
+  gem "puppet-syntax"
+  gem 'metadata-json-lint', :require => false
+  gem 'puppetlabs_spec_helper'
+  gem "rspec", '< 3.2.0'
 end
 
-gem 'rake'
-gem 'puppet-lint'
-gem 'rspec-puppet'
-gem 'rspec-puppet-facts', :require => false
-gem 'metadata-json-lint', :require => false
-gem 'puppetlabs_spec_helper'
-gem 'puppet', puppetversion
-
-# Pry 0.9.9+ has some bugs on Ruby 1.8
-gem 'pry', '<= 0.9.8'
+group :development do
+  gem 'travis'
+  gem 'travis-lint'
+  # Pry 0.9.9+ has some bugs on Ruby 1.8
+  gem 'pry', '<= 0.9.8'
+#  gem "beaker", :git => 'https://github.com/puppetlabs/beaker.git'
+#  gem "beaker-rspec"
+#  gem "puppet-blacksmith"
+end

@@ -1,13 +1,17 @@
 ---
 language: ruby
-bundler_args: --without system_tests
-script: "bundle exec rake validate && bundle exec rake lint && bundle exec rake spec SPEC_OPTS='--format documentation'"
+bundler_args: --without development
+#script: "bundle exec rake validate && bundle exec rake lint && bundle exec rake spec"
+script: "bundle exec rake test"
 rvm:
   - 1.8.7
   - 1.9.3
   - 2.0.0
+  - 2.1.0
 env:
-  - PUPPET_VERSION=3.6.2
-  - PUPPET_VERSION=3.7.4
+  - PUPPET_VERSION="~> 3.6.0"
+  - PUPPET_VERSION="~> 3.7.0"
+#  - PUPPET_VERSION="~> 3.6.0" PARSER="future"
+#  - PUPPET_VERSION="~> 3.7.0" PARSER="future"
 notifications:
   email: true
