@@ -24,7 +24,7 @@ describe 'puppet::master::puppetdb', :type => :class do
       context "when the #{bools} parameter is not an boolean" do
         let(:params) {default_params.merge({bools => "BOGON"})}
         it 'should fail' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
         end
       end
@@ -49,7 +49,7 @@ describe 'puppet::master::puppetdb', :type => :class do
       context "when the #{strings} parameter is not a string" do
         let(:params) {default_params.merge({strings => false })}
         it 'should fail' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
       end
@@ -123,7 +123,7 @@ describe 'puppet::master::puppetdb', :type => :class do
           }).that_requires('class[Puppet::Master]')
         end
         it 'should instantiate the puppetdb::master::config class apropriately' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
           should contain_class('::puppetdb::master::config').with({
             :puppetdb_port=>"8081",
             :puppetdb_server=>"puppet.domain.com",

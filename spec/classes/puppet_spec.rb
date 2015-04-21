@@ -133,7 +133,7 @@ describe 'puppet', :type => :class do
       context 'when the reports param is false' do
         let(:params){{'reports' => false}}
         it 'should do something' do
-          pending 'need to know what to do here'
+          skip 'need to know what to do here'
         #binding.pry
         end
       end

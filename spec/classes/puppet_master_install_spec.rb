@@ -122,7 +122,7 @@ describe 'puppet::master::install', :type => :class do
       context 'when the hiera_eyaml_version param has a non-standard value' do
         let(:pre_condition) {"class{'::puppet::master': hiera_eyaml_version=>'BOGON' }"}
         it 'should install the specified version of the hiera-eyaml package' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
           should contain_package('hiera-eyaml').with({
             'ensure' => "BOGON",
             'provider'=> "gem"
@@ -132,21 +132,21 @@ describe 'puppet::master::install', :type => :class do
       context 'when the puppet_version param has a non-standard value' do
         let(:pre_condition) {"class{'::puppet::master': puppet_version=>'BOGON' }"}
         it 'should install the specified version of the puppetmaster-common package' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
           should contain_package('puppetmaster-common').with({
             'ensure' => 'BOGON',
           }).that_requires('Package[puppet]')
         end
 
         it 'should install the specified version of the puppetmaster package' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
           should contain_package('puppetmaster').with({
             :ensure=>"BOGON",
           }).that_requires('Package[puppetmaster-common]')
         end
 
         it 'should install the specified version of the puppetmaster-passenger package' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
           should contain_package('puppetmaster-passenger').with({
             :ensure=>"BOGON",
           }).that_requires("Package[puppetmaster]").that_requires("Service[puppetmaster]")
@@ -155,7 +155,7 @@ describe 'puppet::master::install', :type => :class do
       context 'when the r10k_version param has a non-standard value' do
         let(:pre_condition) {"class{'::puppet::master': r10k_version=>'BOGON' }"}
         it 'should install the specified version of the r10k package' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
           should contain_package('r10k').with({
             :name=>"r10k",
             :ensure=>"BOGON",

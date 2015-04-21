@@ -92,7 +92,7 @@ describe 'puppet::master::passenger', :type => :class do
         case facts[:lsbdistcodename]
         when 'trusty'
           it 'should properly instantiate the apache module "access_compat"' do
-            pending 'This does not work as is'
+            skip 'This does not work as is'
             should contain_apache__mod('access_compat').with({
 #              'name'=>"access_compat",
               'package_ensure'=>'undef'
@@ -112,7 +112,7 @@ describe 'puppet::master::passenger', :type => :class do
           end
   
         it 'should set up the apache vhost' do
-#          pending 'This does not work as is'
+#          skip 'This does not work as is'
           case facts['lsbdistcodename']
           when 'trusty'  
             should contain_apache__vhost('constructorfleet.vogon.gal').with({
@@ -234,7 +234,7 @@ describe 'puppet::master::passenger', :type => :class do
 #    context '[Debian - unspecific]' do
 #      let(:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'squeeze', 'osfamily' => osfam, 'operatingsystemrelease' => '6.06','concat_basedir' => '/tmp'}}
 #      it 'should not add the SSLCARevocationCheck chain to the apache vhost config' do
-#        pending 'This does not work as is'
+#        skip 'This does not work as is'
 #        should contain_apache__vhost('constructorfleet.vogon.gal').without({
 #          :contents=>/SSLCARevocationCheck chain/
 #        })

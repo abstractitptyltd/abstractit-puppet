@@ -150,7 +150,7 @@ describe 'puppet::master::config', :type => :class do
 #        let(:facts)  {{ 'environment' => 'production'}}
         context 'and the environment is production' do
           it 'should not enable autosign' do
-            pending 'This does not work as is'
+            skip 'This does not work as is'
             should contain_ini_setting('autosign').with({
               'ensure'=>'absent',
               'path'=>'/etc/puppet/puppet.conf',
@@ -169,7 +169,7 @@ describe 'puppet::master::config', :type => :class do
           end
 #          let(:facts) {{'environment' => 'testenv'}}
           it 'should enable autosign' do
-            pending 'This does not work as is'
+            skip 'This does not work as is'
             should contain_ini_setting('autosign').with({
               'ensure'=>'present',
               'path'=>'/etc/puppet/puppet.conf',
