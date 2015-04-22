@@ -1,7 +1,6 @@
 # # Class puppet::master::config.pp
 
-class puppet::master::config (
-) {
+class puppet::master::config {
   include ::puppet::master
   $environmentpath   = $puppet::master::environmentpath
   $extra_module_path = $puppet::master::extra_module_path

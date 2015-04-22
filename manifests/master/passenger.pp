@@ -1,7 +1,6 @@
 # Class puppet::master::passenger
 
-class puppet::master::passenger (
-) {
+class puppet::master::passenger {
   include ::puppet::master
   $passenger_max_pool_size      = $puppet::master::passenger_max_pool_size
   $passenger_max_requests       = $puppet::master::passenger_max_requests

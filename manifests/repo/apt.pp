@@ -1,6 +1,6 @@
 # # setup the puppetlabs apt repo
 
-class puppet::repo::apt (){
+class puppet::repo::apt {
   include ::puppet
   if $::puppet::manage_repos {
     #we only do anything if we're managing repos.
@@ -10,10 +10,20 @@ class puppet::repo::apt (){
     } else {
       $source_ensure = 'absent'
     }
-    if $::puppet::enable_devel_repo_interpolated {
+    if $::puppet::enable_devel_repo {
       $devel_ensure = 'present'
     } else {
       $devel_ensure = 'absent'
+    }
+
+    if $::puppet::collection != undef {
+      apt::source { "puppetlabs-${::puppet::collection}":
+        ensure     => 'present',
+        location   => 'http://apt.puppetlabs.com',
+        repos      => $::puppet::collection,
+        key        => '4BD6EC30',
+        key_server => 'pgp.mit.edu',
+      }
     }
 
     apt::source { 'puppetlabs':

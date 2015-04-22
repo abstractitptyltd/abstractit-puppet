@@ -1,40 +1,26 @@
 # install client packages
 
-class puppet::install (
-) {
+class puppet::install {
   include ::puppet
   include ::puppet::defaults
 
-  $facter_version = $::puppet::facter_version
-  $hiera_version  = $::puppet::hiera_version
-  $puppet_version = $::puppet::puppet_version
+  $collection     = $::puppet::collection
+  $agent_version  = $::puppet::agent_version
+  $puppet_version  = $::puppet::puppet_version
 
-  $puppet_pkgs    = $::puppet::defaults::puppet_pkgs
-
-  # Input validation
-  validate_string($facter_version, $hiera_version, $puppet_version,)
-
-  validate_array($puppet_pkgs)
-
-  package { 'puppetlabs-release':
-    ensure => latest,
+  if ($collection != undef) {
+    $agent_package  = 'puppet-agent'
+    $package_ensure = $agent_version
+  } else {
+    $agent_package  = 'puppet'
+    $package_ensure = $puppet_version
   }
 
-  package { $puppet_pkgs:
-    ensure  => $puppet_version,
-    require => [
-      Package['puppetlabs-release'],
-      Package['hiera'],
-      Package['facter'],
-      ]
-  }
+  include ::puppet::install::deps
 
-  package { 'hiera':
-    ensure => $hiera_version,
-  }
-
-  package { 'facter':
-    ensure => $facter_version,
+  package { $agent_package:
+    ensure  => $package_ensure,
+    # require => Class['::puppet::install::deps']
   }
 
 }

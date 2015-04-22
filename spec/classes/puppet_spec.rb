@@ -25,11 +25,11 @@ describe 'puppet', :type => :class do
 #      end
 #    end#arrays
 
-    ['devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','structured_facts'].each do |bools|
+    ['cfacter','enable_devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','structured_facts'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
         let(:params) {{bools => "BOGON"}}
         it 'should fail' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
         end
       end
@@ -39,7 +39,7 @@ describe 'puppet', :type => :class do
       context "when the #{hashes} parameter is not an hash" do
         let(:params) {{ hashes => 'this is a string'}}
         it 'should fail' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
            expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
         end
       end
@@ -49,18 +49,18 @@ describe 'puppet', :type => :class do
       context "when #{regex} has an unsupported value" do
         let(:params) {{regex => 'BOGON'}}
         it 'should fail' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /"BOGON" does not match/)
         end
       end
     end#regexes
 
 
-    ['environment','facter_version','hiera_version','puppet_server','puppet_version','runinterval',].each do |strings|
+    ['agent_version','collection','environment','facter_version','hiera_version','puppet_server','puppet_version','runinterval'].each do |strings|
       context "when the #{strings} parameter is not a string" do
         let(:params) {{strings => false }}
         it 'should fail' do
-          pending 'This does not work as is'
+          skip 'This does not work as is'
           expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
         end
       end
@@ -90,6 +90,27 @@ describe 'puppet', :type => :class do
         end
       end#no params
 
+      context 'when the agent_version param is something other than installed' do
+        let(:params) {{'agent_version' => 'BOGON'}}
+        it 'should instantiate the puppet::install class apropriately' do
+          should contain_class('puppet::install')
+        end
+      end#agent_version
+
+      context 'when the cfacter param is true' do
+        let(:params){{'cfacter' => true}}
+        it 'should instantiate the puppet::config class apropriately' do
+          should contain_class('puppet::config')
+        end
+      end#cfacter
+
+      context 'when the collection param is defined' do
+        let(:params) {{'collection' => 'BOGON'}}
+        it 'should instantiate the puppet::repo class apropriately' do
+          should contain_class('puppet::repo')
+        end
+      end#collection
+
       context 'when the custom_facts param is set' do
         let(:params){{'custom_facts' => {'fact1' => 'value1','fact2' => 'value2'} }}
         it 'should instantiate the puppet::facts class apropriately' do
@@ -97,12 +118,13 @@ describe 'puppet', :type => :class do
         end
       end#custom_facts
 
-      context 'when the devel_repo param is true' do
-        let(:params){{'devel_repo' => true}}
+      context 'when the enable_devel_repo param is true' do
+        let(:params){{'enable_devel_repo' => true}}
         it 'should instantiate the puppet::repo class apropriately' do
           should contain_class('puppet::repo')
         end
-      end#devel_repo
+      end#enable_devel_repo
+
       context 'when the enabled param is false' do
         let(:params){{'enabled' => false}}
         it 'should instantiate the puppet::agent class' do
@@ -132,22 +154,14 @@ describe 'puppet', :type => :class do
       end#puppet_server
       context 'when the reports param is false' do
         let(:params){{'reports' => false}}
-        it 'should do something' do
-          skip 'need to know what to do here'
-        #binding.pry
+        it 'should instantiate the puppet::config class apropriately' do
+          should contain_class('puppet::config')
         end
       end
       context 'when the runinterval param has a non-standard value' do
-        let(:params){{'runinterval' => '60m'}}
-        it 'should contain the ini_setting resourse with the proper value' do
-          should contain_ini_setting('puppet client runinterval').with({
-           'name'    =>"puppet client runinterval",
-           'ensure'  =>"present",
-           'path'    =>"/etc/puppet/puppet.conf",
-           'section' =>"agent",
-           'setting' =>"runinterval",
-           'value'   =>"60m"
-          }).that_requires('Class[Puppet::Install]')
+        let(:params){{'runinterval' => 'BOGON'}}
+        it 'should instantiate the puppet::config class apropriately' do
+          should contain_class('puppet::config')
         end
       end#runinterval
       context 'when the structured facts param has a value of true' do

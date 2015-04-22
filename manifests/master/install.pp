@@ -1,7 +1,6 @@
-# # class puppet::master::install
+# Class puppet::master::install
 
-class puppet::master::install (
-) {
+class puppet::master::install {
   include ::puppet::master
   $hiera_eyaml_version = 'installed'
   $puppet_version = 'installed'

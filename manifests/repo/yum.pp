@@ -1,7 +1,6 @@
 # setup the puppetlabs yum repo
 
-class puppet::repo::yum (
-) {
+class puppet::repo::yum {
   include ::puppet
 
   if $::puppet::manage_repos {
@@ -11,10 +10,19 @@ class puppet::repo::yum (
       $source_enable = '0'
     }
 
-    if $::puppet::enable_devel_repo_interpolated {
+    if $::puppet::enable_devel_repo {
       $devel_enabled = '1'
     } else {
       $devel_enabled = '0'
+    }
+    if $::puppet::collection != undef {
+      yumrepo { "puppetlabs-${::puppet::collection}":
+        descr    => "Puppet Labs Collection ${::puppet::collection} EL ${::operatingsystemmajrelease} - ${::architecture}",
+        baseurl  => "http://yum.puppetlabs.com/el/${::operatingsystemmajrelease}/${::puppet::collection}/${::architecture}",
+        enabled  => '1',
+        gpgcheck => '1',
+        gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
+      }
     }
 
     yumrepo { 'puppetlabs-products':

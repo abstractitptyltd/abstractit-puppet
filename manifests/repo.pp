@@ -2,6 +2,15 @@
 
 class puppet::repo {
 
+  package { 'puppetlabs-release':
+    ensure => latest,
+  }
+  if $::puppet::collection != undef {
+    package { "puppetlabs-release-${::puppet::collection}":
+      ensure => latest,
+    }
+  }
+
   case $::osfamily {
     'Debian': {
       include ::puppet::repo::apt

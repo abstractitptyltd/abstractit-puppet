@@ -1,7 +1,6 @@
 # Class puppet::master::hiera
 
-class puppet::master::hiera (
-) {
+class puppet::master::hiera {
   include ::puppet::master
 
   $env_owner      = $puppet::master::env_owner

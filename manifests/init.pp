@@ -1,6 +1,10 @@
 class puppet (
   $agent_cron_hour           = '*',
   $agent_cron_min            = 'two_times_an_hour',
+  $agent_version             = 'installed',
+  $cfacter                   = false,
+  $collection                = undef,
+  $custom_facts              = undef,
   $devel_repo                = false,
   $enabled                   = true,
   $enable_devel_repo         = false,
@@ -17,11 +21,11 @@ class puppet (
   $reports                   = true,
   $runinterval               = '30m',
   $structured_facts          = false,
-  $custom_facts              = undef,
 ) {
   #input validation
   validate_bool(
-    $devel_repo,
+    $cfacter,
+    $enable_devel_repo,
     $enabled,
     $enable_repo,
     $manage_etc_facter,
@@ -32,6 +36,8 @@ class puppet (
   )
 
   validate_string(
+    $agent_version,
+    $collection,
     $environment,
     $facter_version,
     $hiera_version,
@@ -41,6 +47,10 @@ class puppet (
   )
   $supported_mechanisms = ['service', 'cron']
   validate_re($enable_mechanism, $supported_mechanisms)
+
+  if $devel_repo == true {
+    notify { 'Deprecation notice: puppet::devel_repo is deprecated, use puppet::enable_devel_repo instead': }
+  }
 
   if $enable_mechanism == 'cron' {
     #no point in generating this unless we're using it
@@ -74,15 +84,6 @@ class puppet (
 
   if $manage_repos {
     #only manage this if we're managing repos
-    if $devel_repo {
-      $enable_devel_repo_interpolated = true
-    } else {
-      if $enable_devel_repo {
-        $enable_devel_repo_interpolated = true
-      } else {
-        $enable_devel_repo_interpolated = false
-      }
-    }
     include ::puppet::repo
     Class['::puppet::repo'] -> Class['::puppet::install']
   }
