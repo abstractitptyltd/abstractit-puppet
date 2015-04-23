@@ -3,13 +3,6 @@ require 'spec_helper'
 require 'pry'
 
 describe 'puppet::facts', :type => :class do
-      let(:facts) {{
-        'clientcert'  => 'my.client.cert',
-        'fqdn'        => 'my.fq.hostname',
-        'osfamily'    => 'Debian',
-        'lsbdistid'   => 'Ubuntu',
-        'lsbdistcodename' => 'trusty',
-        }}
   context 'input validation' do
 
 #    ['path'].each do |paths|
@@ -59,15 +52,17 @@ describe 'puppet::facts', :type => :class do
 #    end#strings
 
   end#input validation
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
-      let(:facts) {{
-        'clientcert'  => 'my.client.cert',
-        'fqdn'        => 'my.fq.hostname',
-        'osfamily'    => osfam,
-        'lsbdistid'   => 'Ubuntu',
-        'lsbdistcodename' => 'trusty',
-        }}
+
+  on_supported_os.each do |os, facts|
+    context "When on an #{os} system" do
+      let(:facts) do
+        facts.merge({
+          :concat_basedir => '/tmp',
+          :clientcert     => 'my.client.cert',
+          :fqdn           => 'my.fq.hostname',
+          :environment    => 'production'
+        })
+      end
       context 'when fed no parameters' do
         it 'should manage the facts directories' do
           #binding.pry;

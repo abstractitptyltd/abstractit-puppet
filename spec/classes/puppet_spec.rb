@@ -30,7 +30,7 @@ describe 'puppet', :type => :class do
         let(:params) {{bools => "BOGON"}}
         it 'should fail' do
           skip 'This does not work as is'
-          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
+          it { expect { should raise_error(Puppet::Error) } }
         end
       end
     end#bools
@@ -40,7 +40,7 @@ describe 'puppet', :type => :class do
         let(:params) {{ hashes => 'this is a string'}}
         it 'should fail' do
           skip 'This does not work as is'
-           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
+          it { expect { should raise_error(Puppet::Error) } }
         end
       end
     end#hashes
@@ -50,7 +50,7 @@ describe 'puppet', :type => :class do
         let(:params) {{regex => 'BOGON'}}
         it 'should fail' do
           skip 'This does not work as is'
-          expect { subject }.to raise_error(Puppet::Error, /"BOGON" does not match/)
+          it { expect { should raise_error(Puppet::Error) } }
         end
       end
     end#regexes
@@ -61,7 +61,7 @@ describe 'puppet', :type => :class do
         let(:params) {{strings => false }}
         it 'should fail' do
           skip 'This does not work as is'
-          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
+          it { expect { should raise_error(Puppet::Error) } }
         end
       end
     end#strings

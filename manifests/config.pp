@@ -4,8 +4,10 @@
 class puppet::config (
 ) {
   include ::puppet
+  $cfacter          = $::puppet::cfacter
   $puppet_server    = $::puppet::puppet_server
   $environment      = $::puppet::environment
+  $reports          = $::puppet::reports
   $runinterval      = $::puppet::runinterval
   $structured_facts = $::puppet::structured_facts
 
@@ -29,6 +31,15 @@ class puppet::config (
     require => Class['puppet::install'],
   }
 
+  ini_setting { 'puppet client cfacter':
+    ensure  => present,
+    path    => "${::settings::confdir}/puppet.conf",
+    section => 'main',
+    setting => 'cfacter',
+    value   => $cfacter,
+    require => Class['puppet::install'],
+  }
+
   ini_setting { 'puppet client environment':
     ensure  => present,
     path    => "${::settings::confdir}/puppet.conf",
@@ -44,6 +55,15 @@ class puppet::config (
     section => 'agent',
     setting => 'runinterval',
     value   => $runinterval,
+    require => Class['puppet::install'],
+  }
+
+  ini_setting { 'puppet client reports':
+    ensure  => present,
+    path    => "${::settings::confdir}/puppet.conf",
+    section => 'agent',
+    setting => 'reports',
+    value   => $reports,
     require => Class['puppet::install'],
   }
 

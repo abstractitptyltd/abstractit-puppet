@@ -51,9 +51,15 @@ describe 'puppet::fact', :type => :define do
 #    end#strings
 
   end#input validation
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
-      let (:facts) {{'osfamily' => osfam}}
+
+  on_supported_os.each do |os, facts|
+    context "When on an #{os} system" do
+      let(:facts) do
+        facts.merge({
+          :concat_basedir => '/tmp',
+          :domain => 'domain.com'
+        })
+      end
       context 'when fed no parameters' do
         let (:title) { 'my_fact'}
         let (:params) {{'value' => 'my_val'}}
