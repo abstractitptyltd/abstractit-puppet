@@ -18,13 +18,13 @@ if ENV['PARSER'] == 'future'
   end
 end
 
-if ENV['PUPPET_VERSION'] =~ '^4'
-  RSpec.configure do |c|
-    c.confdir = '/etc/puppetlabs/puppet'
-    # c.codedir = '/etc/puppetlabs/code'
-  end
-else
-  RSpec.configure do |c|
-    c.confdir = '/etc/puppet'
-  end
-end
+# if ENV['PUPPET_VERSION'] =~ '^4'
+#   RSpec.configure do |c|
+#     c.confdir = '/etc/puppetlabs/puppet'
+#     # c.codedir = '/etc/puppetlabs/code'
+#   end
+# else
+#   RSpec.configure do |c|
+#     c.confdir = '/etc/puppet'
+#   end
+# end
