@@ -21,5 +21,8 @@ fixtures:
     puppetdb:
       repo: "puppetlabs/puppetdb"
       ref:  "4.2.1"
+    firewall:
+      repo: "puppetlabs/firewall"
+      ref:  "1.5.0"
   symlinks:
     puppet: "#{source_dir}"
