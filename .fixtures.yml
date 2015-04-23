@@ -2,24 +2,24 @@ fixtures:
   forge_modules:
     apache:
       repo: "puppetlabs/apache"
-      ref:  "1.3.0"
+      ref:  "1.4.0"
     concat:
       repo: "puppetlabs/concat"
-      ref:  "1.1.1"
+      ref:  "1.2.1"
     stdlib:
       repo: "puppetlabs/stdlib"
-      ref:  "4.1.0"
+      ref:  "4.6.0"
     apt:
       repo: "puppetlabs/apt"
-      ref:  "1.7.0"
-    postgresql:
-      repo: "puppetlabs/postgresql"
-      ref:  "3.4.2"
-    puppetdb:
-      repo: "puppetlabs/puppetdb"
-      ref:  "3.0.1"
+      ref:  "2.0.0"
     inifile:
       repo: "puppetlabs/inifile"
-      ref:  "1.1.0"
+      ref:  "1.2.0"
+    postgresql:
+      repo: "puppetlabs/postgresql"
+      ref:  "4.3.0"
+    puppetdb:
+      repo: "puppetlabs/puppetdb"
+      ref:  "4.2.1"
   symlinks:
     puppet: "#{source_dir}"
