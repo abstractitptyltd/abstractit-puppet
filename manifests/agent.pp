@@ -2,6 +2,13 @@
 
 class puppet::agent (){
   include ::puppet
+
+  if ($::puppetversion =~ /^4/) {
+    $bin_dir = '/opt/puppetlabs/bin'
+  } else {
+    $bin_dir = '/usr/bin'
+  }
+
   if $::puppet::enabled {
     #we want puppet enabled
     case $::puppet::enable_mechanism {
@@ -27,7 +34,7 @@ class puppet::agent (){
 
   cron {'run_puppet_agent':
     ensure  => $cron_enablement,
-    command => 'puppet agent -t',
+    command => "${bin_dir}/puppet agent -t",
     special => 'absent',
     minute  => $::puppet::agent_cron_min_interpolated,
     hour    => $::puppet::agent_cron_hour_interpolated,

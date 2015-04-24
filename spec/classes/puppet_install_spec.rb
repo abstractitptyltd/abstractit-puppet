@@ -45,13 +45,13 @@ describe 'puppet::install', :type => :class do
         context 'when ::puppet::collection is defined' do
           let(:pre_condition) {"class{'puppet': collection => 'BOGON'}"}
           it 'should install puppet-agent' do
-            contain_package('puppet-agent')
+            contain_package('puppet-agent').that_requires("Class['::puppet::install::deps]")
           end
         end#end ::puppet::collection defined
         context 'when ::puppet::collection is not defined' do
           let(:pre_condition) {"class{'puppet': collection => 'undef'}"}
           it 'should install puppet' do
-            contain_package('puppet')
+            contain_package('puppet').that_requires("Class['::puppet::install::deps]")
           end
         end#end ::puppet::collection not defined
       end#end default paramaters

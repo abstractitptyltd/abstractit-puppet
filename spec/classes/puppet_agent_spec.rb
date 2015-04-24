@@ -12,13 +12,18 @@ describe 'puppet::agent', :type => :class do
           :fqdn => 'testy.hosty.com'
         })
       end
+      if facts[:puppetversion] =~ '^4'
+        bin_dir = '/opt/puppetlabs/bin'
+      else
+        bin_dir = '/usr/bin'
+      end
       context 'when puppet has default agent parameters' do
         let(:pre_condition){"class{'::puppet':}"}
         it 'should contain the puppet agent cronjob, in a disabled state' do
           should contain_cron('run_puppet_agent').with({
            :name=>"run_puppet_agent",
            :ensure=>"absent",
-           :command=>"puppet agent -t",
+           :command=>"#{bin_dir}/puppet agent -t",
            :special=>"absent"
           })
         end
@@ -36,7 +41,7 @@ describe 'puppet::agent', :type => :class do
             should contain_cron('run_puppet_agent').with({
              :name=>"run_puppet_agent",
              :ensure=>"absent",
-             :command=>"puppet agent -t",
+             :command=>"#{bin_dir}/puppet agent -t",
              :special=>"absent"
             })
            end
@@ -59,7 +64,7 @@ describe 'puppet::agent', :type => :class do
           it 'should enable the cronjob, running puppet twice an hour' do
             should contain_cron('run_puppet_agent').with({
               :ensure=>"present",
-              :command=>"puppet agent -t",
+              :command=>"#{bin_dir}/puppet agent -t",
               :special=>"absent",
               :minute=>["3", 33],
               :hour=>"*"
@@ -70,7 +75,7 @@ describe 'puppet::agent', :type => :class do
             it 'should enable the cronjob, running puppet twice an hour' do
               should contain_cron('run_puppet_agent').with({
                 :ensure=>"present",
-                :command=>"puppet agent -t",
+                :command=>"#{bin_dir}/puppet agent -t",
                 :special=>"absent",
                 :minute=>["3", 33],
                 :hour=>"*"
@@ -89,7 +94,7 @@ describe 'puppet::agent', :type => :class do
             it 'should enable the cronjob, running puppet four times an hour' do
               should contain_cron('run_puppet_agent').with({
                 :ensure=>"present",
-                :command=>"puppet agent -t",
+                :command=>"#{bin_dir}/puppet agent -t",
                 :special=>"absent",
                 :minute=>["3", 18, 33, 48],
                 :hour=>"*"
@@ -108,7 +113,7 @@ describe 'puppet::agent', :type => :class do
             it 'should enable the cronjob, running puppet twice an hour' do
               should contain_cron('run_puppet_agent').with({
                 :ensure=>"present",
-                :command=>"puppet agent -t",
+                :command=>"#{bin_dir}/puppet agent -t",
                 :special=>"absent",
                 :minute=>"30",
                 :hour=>"*"
@@ -127,7 +132,7 @@ describe 'puppet::agent', :type => :class do
             it 'should enable the cronjob, running puppet twice an hour' do
               should contain_cron('run_puppet_agent').with({
                 :ensure=>"present",
-                :command=>"puppet agent -t",
+                :command=>"#{bin_dir}/puppet agent -t",
                 :special=>"absent",
                 :minute=>["3", 33],
                 :hour=>"20"
@@ -156,7 +161,7 @@ describe 'puppet::agent', :type => :class do
           should contain_cron('run_puppet_agent').with({
            :name=>"run_puppet_agent",
            :ensure=>"absent",
-           :command=>"puppet agent -t",
+           :command=>"#{bin_dir}/puppet agent -t",
            :special=>"absent"
           })
         end
