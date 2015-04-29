@@ -38,7 +38,7 @@ describe 'puppet::master::passenger', :type => :class do
           :puppetversion => Puppet.version
         })
       end
-      if facts[:puppetversion] =~ '^3'
+      if Puppet.version =~ /^3/
         context 'when puppet_version < 4' do
           # let(:pre_condition){"class{'puppet::master::install':}"}
           context 'when fed no parameters' do

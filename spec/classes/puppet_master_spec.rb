@@ -76,7 +76,7 @@ describe 'puppet::master', :type => :class do
           should contain_class('puppet::master::hiera')
         end
 
-        if facts[:puppetversion] =~ '^4'
+        if Puppet.version =~ /^4./
           context 'when puppetversion >= 4' do
             it 'should properly instantiate the puppet::master::server class' do
               should contain_class('puppet::master::server')

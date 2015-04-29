@@ -12,8 +12,7 @@ describe 'puppet::master::hiera', :type => :class do
           :puppetversion => Puppet.version
         })
       end
-      case facts[:puppetversion]
-      when '4.0.0'
+      if Puppet.version =~ /^4./
         hieraconf_dir  = '/opt/puppetlabs/code'
         confdir        = '/etc/puppetlabs/puppet'
         codedir        = '/etc/puppetlabs/code'

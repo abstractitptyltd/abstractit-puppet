@@ -12,8 +12,7 @@ describe 'puppet::master::config', :type => :class do
           :puppetversion => Puppet.version
         })
       end
-      case facts[:puppetversion]
-      when '4.0.0'
+      if Puppet.version=~ /^4./
         confdir        = '/etc/puppetlabs/puppet'
         codedir        = '/etc/puppetlabs/code'
         basemodulepath = "#{codedir}/modules:/#{confdir}/modules"

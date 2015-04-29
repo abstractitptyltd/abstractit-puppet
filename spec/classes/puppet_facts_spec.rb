@@ -64,8 +64,7 @@ describe 'puppet::facts', :type => :class do
           :puppetversion => Puppet.version
         })
       end
-      case facts[:puppetversion]
-      when '4.0.0'
+      if Puppet.version=~ /^4./
         facterbasepath  = '/opt/puppetlabs/facter'
       else
         facterbasepath  = '/etc/facter'

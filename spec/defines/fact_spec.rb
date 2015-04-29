@@ -57,10 +57,11 @@ describe 'puppet::fact', :type => :define do
       let(:facts) do
         facts.merge({
           :concat_basedir => '/tmp',
-          :domain => 'domain.com'
+          :domain => 'domain.com',
+          :puppetversion => Puppet.version
         })
       end
-      if facts[:puppetversion] =~ '^4'
+      if Puppet.version=~ /^4./
         facterbasepath  = '/opt/puppetlabs/facter'
       else
         facterbasepath  = '/etc/facter'
