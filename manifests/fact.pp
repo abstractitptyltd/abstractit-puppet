@@ -7,7 +7,10 @@ define puppet::fact (
   $value,
   $ensure = present,
   ) {
-  file { "/etc/facter/facts.d/${title}.yaml":
+  include ::puppet::defaults
+  $facterbasepath = $::puppet::defaults::facterbasepath
+
+  file { "${facterbasepath}/facts.d/${title}.yaml":
     ensure  => $ensure,
     owner   => 'root',
     group   => 'puppet',

@@ -60,12 +60,17 @@ describe 'puppet::fact', :type => :define do
           :domain => 'domain.com'
         })
       end
+      if facts[:puppetversion] =~ '^4'
+        facterbasepath  = '/opt/puppetlabs/facter'
+      else
+        facterbasepath  = '/etc/facter'
+      end
       context 'when fed no parameters' do
         let (:title) { 'my_fact'}
         let (:params) {{'value' => 'my_val'}}
         it 'should lay down our fact file as expected' do
-          should contain_file('/etc/facter/facts.d/my_fact.yaml').with({
-            :path=>"/etc/facter/facts.d/my_fact.yaml",
+          should contain_file("#{facterbasepath}/facts.d/my_fact.yaml").with({
+            :path=>"#{facterbasepath}/facts.d/my_fact.yaml",
             :ensure=>"present",
             :owner=>"root",
             :group=>"puppet",

@@ -1,3 +1,9 @@
+GIT
+  remote: https://github.com/rodjek/puppet-lint
+  revision: 2546fed6be894bbcff15c3f48d4b6f6bc15d94d1
+  specs:
+    puppet-lint (1.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -48,21 +54,34 @@ GEM
       facter (> 1.6, < 3)
       hiera (~> 1.0)
       json_pure
-    puppet-lint (0.3.2)
-    puppet-syntax (1.2.0)
-      puppet (>= 2.7.0)
+    puppet-lint-absolute_classname-check (0.1.3)
+      puppet-lint (~> 1.0)
+    puppet-lint-empty_string-check (0.2.1)
+      puppet-lint (~> 1.0)
+    puppet-lint-leading_zero-check (0.1.0)
+      puppet-lint (~> 1.0)
+    puppet-lint-roles_and_profiles-check (0.1.0)
+      puppet-lint (~> 1.0)
+    puppet-lint-spaceship_operator_without_tag-check (0.1.0)
+      puppet-lint (~> 1.0)
+    puppet-lint-undef_in_function-check (0.1.0)
+      puppet-lint (~> 1.0)
+    puppet-lint-unquoted_string-check (0.2.5)
+      puppet-lint (~> 1.0)
+    puppet-lint-variable_contains_upcase (1.0.0)
+      puppet-lint (~> 1.0)
+    puppet-syntax (2.0.0)
       rake
-    puppetlabs_spec_helper (0.8.0)
+    puppetlabs_spec_helper (0.10.2)
       mocha
       puppet-lint
       puppet-syntax
       rake
-      rspec
       rspec-puppet
     pusher-client (0.6.0)
       json
       websocket (~> 1.0)
-    rake (10.3.2)
+    rake (10.4.2)
     rspec (3.1.0)
       rspec-core (~> 3.1.0)
       rspec-expectations (~> 3.1.0)
@@ -107,7 +126,15 @@ DEPENDENCIES
   metadata-json-lint
   pry (<= 0.9.8)
   puppet (~> 3.7.0)
-  puppet-lint
+  puppet-lint!
+  puppet-lint-absolute_classname-check
+  puppet-lint-empty_string-check
+  puppet-lint-leading_zero-check
+  puppet-lint-roles_and_profiles-check
+  puppet-lint-spaceship_operator_without_tag-check
+  puppet-lint-undef_in_function-check
+  puppet-lint-unquoted_string-check
+  puppet-lint-variable_contains_upcase
   puppet-syntax
   puppetlabs_spec_helper
   rake

@@ -6,12 +6,9 @@ class puppet::master::hiera {
   $env_owner      = $puppet::master::env_owner
   $eyaml_keys     = $puppet::master::eyaml_keys
   $hiera_backends = $puppet::master::hiera_backends
-  $hieradata_path = $puppet::master::hieradata_path
   $hierarchy      = $puppet::master::hiera_hierarchy
 
   #input validation
-  validate_absolute_path($hieradata_path)
-
   validate_array($hierarchy)
 
   validate_bool($eyaml_keys)
@@ -20,26 +17,18 @@ class puppet::master::hiera {
 
   validate_string($env_owner)
 
-  file { $hieradata_path:
-    ensure => directory,
-    owner  => $env_owner,
-    group  => $env_owner,
-    mode   => '0755',
+  if ( versioncmp($::puppetversion, '4.0.0') >= 0 ) {
+    $hieraconf_dir = '/opt/puppetlabs/code'
+  } else {
+    $hieraconf_dir = '/etc'
   }
 
-  file { '/etc/hiera.yaml':
+  file { "${hieraconf_dir}/hiera.yaml":
     ensure  => file,
     content => template('puppet/hiera.yaml.erb'),
     owner   => 'root',
     group   => 'root',
     mode    => '0644',
-    notify  => Class['apache::service']
-  }
-
-  file { '/etc/puppet/hiera.yaml':
-    ensure  => link,
-    target  => '/etc/hiera.yaml',
-    require => File['/etc/hiera.yaml']
   }
 
   # eyaml for hiera

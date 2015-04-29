@@ -8,9 +8,13 @@ describe 'puppet::config', :type => :class do
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
-        facts
+        facts.merge({
+          :concat_basedir => '/tmp',
+          :puppetversion => Puppet.version
+        })
       end
-      if facts[:puppetversion] =~ '^4'
+      case facts[:puppetversion]
+      when '4.0.0'
         confdir = '/etc/puppetlabs/puppet'
         codedir = '/etc/puppetlabs/code'
       else

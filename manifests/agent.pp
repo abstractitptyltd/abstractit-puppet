@@ -1,9 +1,9 @@
 # # puppet agent service
 
-class puppet::agent (){
+class puppet::agent {
   include ::puppet
 
-  if ($::puppetversion =~ /^4/) {
+  if ( versioncmp($::puppetversion, '4.0.0') >= 0 ) {
     $bin_dir = '/opt/puppetlabs/bin'
   } else {
     $bin_dir = '/usr/bin'

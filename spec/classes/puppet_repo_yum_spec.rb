@@ -27,7 +27,10 @@ describe 'puppet::repo::yum', :type => :class do
   }).each do |os, facts|
     context "on #{os}" do
       let(:facts) do
-        facts
+        facts.merge({
+          :concat_basedir => '/tmp',
+          :puppetversion => Puppet.version
+        })
       end
       context 'when ::puppet has default parameters' do
         let(:pre_condition){"class{'::puppet':}"}

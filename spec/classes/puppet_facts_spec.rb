@@ -60,27 +60,34 @@ describe 'puppet::facts', :type => :class do
           :concat_basedir => '/tmp',
           :clientcert     => 'my.client.cert',
           :fqdn           => 'my.fq.hostname',
-          :environment    => 'production'
+          :environment    => 'production',
+          :puppetversion => Puppet.version
         })
+      end
+      case facts[:puppetversion]
+      when '4.0.0'
+        facterbasepath  = '/opt/puppetlabs/facter'
+      else
+        facterbasepath  = '/etc/facter'
       end
       context 'when fed no parameters' do
         it 'should manage the facts directories' do
           #binding.pry;
-          should contain_file('/etc/facter').with({
+          should contain_file("#{facterbasepath}").with({
             :ensure=>"directory",
             :owner=>"root",
             :group=>"puppet",
             :mode=>"0755"
           })
-          should contain_file('/etc/facter/facts.d').with({
+          should contain_file("#{facterbasepath}/facts.d").with({
             :ensure=>"directory",
             :owner=>"root",
             :group=>"puppet",
             :mode=>"0755"
           })
         end
-        it 'should lay down /etc/facter/facts.d/local.yaml' do
-          should contain_file('/etc/facter/facts.d/local.yaml').with_content(
+        it "should lay down #{facterbasepath}/facts.d/local.yaml" do
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
             /facts for my.client.cert/
           ).with_content(
             /FQDN my.fq.hostname/
@@ -92,19 +99,19 @@ describe 'puppet::facts', :type => :class do
       context 'when ::puppet::manage_etc_facter is false' do
         let(:pre_condition){"class{'puppet': manage_etc_facter => false}"}
         it 'should not try to lay down the directory' do
-          should_not contain_file('/etc/facter')
+          should_not contain_file("#{facterbasepath}")
         end
       end
       context 'when ::puppet::manage_etc_facter_facts_d is false' do
         let(:pre_condition){"class{'puppet': manage_etc_facter_facts_d => false}"}
         it 'should not try to lay down the directory' do
-          should_not contain_file('/etc/facter/facts.d')
+          should_not contain_file("#{facterbasepath}/facts.d")
         end
       end
       context 'when the custom_facts parameter is properly set' do
         let(:params) {{'custom_facts' => {'key1' => 'val1', 'key2' => 'val2'}}}
         it 'should iterate through the hash and properly populate the local_facts.yaml file' do
-          should contain_file('/etc/facter/facts.d/local.yaml').with_content(
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
             /key1: \"val1\"/
           ).with_content(
             /key2: \"val2\"/

@@ -3,17 +3,9 @@
 class puppet::master::config {
   include ::puppet::master
   $environmentpath   = $puppet::master::environmentpath
-  $extra_module_path = $puppet::master::extra_module_path
+  $basemodulepath    = $puppet::master::basemodulepath
   $future_parser     = $puppet::master::future_parser
   $autosign          = $puppet::master::autosign
-
-  validate_absolute_path($environmentpath)
-
-  validate_bool(
-    $autosign,
-    $future_parser,
-    )
-  validate_string($extra_module_path)
 
   ini_setting { 'Puppet environmentpath':
     ensure  => present,
@@ -28,7 +20,7 @@ class puppet::master::config {
     path    => "${::settings::confdir}/puppet.conf",
     section => 'main',
     setting => 'basemodulepath',
-    value   => $extra_module_path
+    value   => $basemodulepath
   }
 
   if ($autosign == true and $::environment != 'production') {

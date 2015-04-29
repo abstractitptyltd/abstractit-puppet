@@ -11,7 +11,7 @@ describe 'puppet', :type => :class do
 #      context "when the #{paths} parameter is not an absolute path" do
 #        let(:params) {{ paths => 'foo' }}
 #        it 'should fail' do
-#          expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
+#          expect { should compile }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
 #        end
 #      end
 #    end#absolute path
@@ -20,17 +20,21 @@ describe 'puppet', :type => :class do
 #      context "when the #{arrays} parameter is not an array" do
 #        let(:params) {{ arrays => 'this is a string'}}
 #        it 'should fail' do
-#           expect { subject }.to raise_error(Puppet::Error, /is not an Array./)
+#          expect {
+#           should compile
+#          }.to raise_error(Puppet::Error, /is not an Array/)
 #        end
 #      end
 #    end#arrays
 
-    ['cfacter','enable_devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','structured_facts'].each do |bools|
+    ['allinone','cfacter','enable_devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','structured_facts'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
         let(:params) {{bools => "BOGON"}}
         it 'should fail' do
           skip 'This does not work as is'
-          it { expect { should raise_error(Puppet::Error) } }
+          expect {
+           should compile
+          }.to raise_error(Puppet::Error)#, /must be a boolean/)
         end
       end
     end#bools
@@ -40,7 +44,9 @@ describe 'puppet', :type => :class do
         let(:params) {{ hashes => 'this is a string'}}
         it 'should fail' do
           skip 'This does not work as is'
-          it { expect { should raise_error(Puppet::Error) } }
+          expect { 
+            should compile
+          }.to raise_error(Puppet::Error)
         end
       end
     end#hashes
@@ -50,29 +56,34 @@ describe 'puppet', :type => :class do
         let(:params) {{regex => 'BOGON'}}
         it 'should fail' do
           skip 'This does not work as is'
-          it { expect { should raise_error(Puppet::Error) } }
+          expect { 
+            should compile
+          }.to raise_error(Puppet::Error)
         end
       end
     end#regexes
-
 
     ['agent_version','collection','environment','facter_version','hiera_version','puppet_server','puppet_version','runinterval'].each do |strings|
       context "when the #{strings} parameter is not a string" do
         let(:params) {{strings => false }}
         it 'should fail' do
           skip 'This does not work as is'
-          it { expect { should raise_error(Puppet::Error) } }
+          expect { 
+            should compile
+          }.to raise_error(Puppet::Error)
         end
       end
     end#strings
 
   end#input validation
+
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
         facts.merge({
           :concat_basedir => '/tmp',
-          :domain => 'domain.com'
+          :domain => 'domain.com',
+          :puppetversion => Puppet.version
         })
       end
       context 'when fed no parameters' do
@@ -96,6 +107,13 @@ describe 'puppet', :type => :class do
           should contain_class('puppet::install')
         end
       end#agent_version
+
+      context 'when the allinone param is true' do
+        let(:params){{'allinone' => true}}
+        it 'should instantiate the puppet::install class apropriately' do
+          should contain_class('puppet::install')
+        end
+      end#allinone
 
       context 'when the cfacter param is true' do
         let(:params){{'cfacter' => true}}

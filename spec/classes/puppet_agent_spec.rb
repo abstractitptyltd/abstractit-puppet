@@ -9,15 +9,17 @@ describe 'puppet::agent', :type => :class do
       let(:facts) do
         facts.merge({
           :concat_basedir => '/tmp',
-          :fqdn => 'testy.hosty.com'
+          :fqdn => 'testy.hosty.com',
+          :puppetversion => Puppet.version
         })
       end
-      if facts[:puppetversion] =~ '^4'
+      case facts[:puppetversion]
+      when '4.0.0'
         bin_dir = '/opt/puppetlabs/bin'
       else
         bin_dir = '/usr/bin'
       end
-      context 'when puppet has default agent parameters' do
+      context "puppet version: #{Puppet.version} : when puppet has default agent parameters" do
         let(:pre_condition){"class{'::puppet':}"}
         it 'should contain the puppet agent cronjob, in a disabled state' do
           should contain_cron('run_puppet_agent').with({

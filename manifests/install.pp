@@ -4,11 +4,11 @@ class puppet::install {
   include ::puppet
   include ::puppet::defaults
 
-  $collection     = $::puppet::collection
-  $agent_version  = $::puppet::agent_version
+  $allinone        = $::puppet::allinone
+  $agent_version   = $::puppet::agent_version
   $puppet_version  = $::puppet::puppet_version
 
-  if ($collection != undef) {
+  if ($allinone) {
     $agent_package  = 'puppet-agent'
     $package_ensure = $agent_version
   } else {

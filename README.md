@@ -86,7 +86,9 @@ If it works for you, awesome! If not, let me know *or send me a pull request*.
 ###Setup Requirements
 
 This module currently only works completely on Ubuntu Precise and Trusty at this stage. 
-Initial support for RedHat and CentOS 5,6 and 7 has been added but only as an agent. Puppet master on RedHat and CentOS will be added soon.
+Support for RedHat and CentOS 5,6 and 7 has been added with a few limitations.
+The new pupet-agent and puppetserver are supported on Ubuntu Centos and RedHat but a puppet master running under Passenger is only supported on Ubuntu.
+
 I will be adding support for other operating systems when I get a chance.
 It also only configures puppet 3.6.x. If you need support for previous versions let me know.
 

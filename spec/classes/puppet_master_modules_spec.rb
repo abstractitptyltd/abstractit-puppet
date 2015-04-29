@@ -10,7 +10,7 @@ describe 'puppet::master::modules', :type => :class do
         let(:params) {{ paths => 'foo' }}
         it 'should fail' do
           skip 'This does not work as is'
-          expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
+          expect { should compile }.to raise_error(Puppet::Error)#, /"foo" is not an absolute path/)
         end
       end
     end#absolute path
@@ -19,7 +19,7 @@ describe 'puppet::master::modules', :type => :class do
 #      context "when the #{arrays} parameter is not an array" do
 #        let(:params) {{ arrays => 'this is a string'}}
 #        it 'should fail' do
-#           expect { subject }.to raise_error(Puppet::Error, /is not an Array./)
+#           expect { should compile }.to raise_error(Puppet::Error)#, /is not an Array./)
 #        end
 #      end
 #    end#arrays
@@ -29,7 +29,7 @@ describe 'puppet::master::modules', :type => :class do
         let(:params) {{bools => "BOGON"}}
         it 'should fail' do
           skip 'This does not work as is'
-          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
+          expect { should compile }.to raise_error(Puppet::Error)#, /"BOGON" is not a boolean.  It looks to be a String/)
         end
       end
     end#bools
@@ -38,7 +38,7 @@ describe 'puppet::master::modules', :type => :class do
 #      context "when the #{hashes} parameter is not an hash" do
 #        let(:params) {{ hashes => 'this is a string'}}
 #        it 'should fail' do
-#           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
+#           expect { should compile }.to raise_error(Puppet::Error)#, /is not a Hash./)
 #        end
 #      end
 #    end#hashes
@@ -48,7 +48,7 @@ describe 'puppet::master::modules', :type => :class do
         let(:params) {{ opt_hashes => 'this is a string'}}
         it 'should fail' do
           skip 'This does not work as is'
-           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
+           expect { should compile }.to raise_error(Puppet::Error)#, /is not a Hash./)
         end
       end
     end#opt_hashes
@@ -58,7 +58,7 @@ describe 'puppet::master::modules', :type => :class do
         let(:params) {{strings => false }}
         it 'should fail' do
           skip 'This does not work as is'
-          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
+          expect { should compile }.to raise_error(Puppet::Error)#, /false is not a string./)
         end
       end
     end#strings
@@ -68,23 +68,31 @@ describe 'puppet::master::modules', :type => :class do
         let(:params) {{optional_strings => true }}
         it 'should fail' do
           skip 'This does not work as is'
-          expect { subject }.to raise_error(Puppet::Error, /true is not a string./)
+          expect { should compile }.to raise_error(Puppet::Error)#, /true is not a string./)
         end
       end
     end
 
   end#input validation
-#  ['Debian'].each do |osfam|
-#    context "When on an #{osfam} system" do
+
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
         facts.merge({
-          :concat_basedir => '/tmp'
+          :concat_basedir => '/tmp',
+          :puppetversion => Puppet.version
         })
       end
       let(:pre_condition) {"package{'r10k': ensure => 'present'}"}
       context 'when fed no parameters' do
+        #move to modules class
+        # it 'should install the r10k package' do
+        #   should contain_package('r10k').with({
+        #     :ensure => 'installed',
+        #     :provider => 'gem'
+        #   })
+        # end
+
         it 'should lay down /var/cache/r10k' do
           should contain_file('/var/cache/r10k').with({
             :path=>"/var/cache/r10k",
@@ -131,6 +139,18 @@ describe 'puppet::master::modules', :type => :class do
         end
       end#no params
 
+      # move to modules class
+      # context 'when the r10k_version param has a non-standard value' do
+      #   let(:pre_condition) {"class{'::puppet::master': r10k_version=>'BOGON' }"}
+      #   it 'should install the specified version of the r10k package' do
+      #     # skip 'This does not work as is'
+      #     should contain_package('r10k').with({
+      #       :name=>"r10k",
+      #       :ensure=>"BOGON",
+      #       :provider=>"gem"
+      #     })
+      #   end
+      # end#end R10K
       context 'when the env_owner param has a non-standard value' do
         let(:params) {{'env_owner' => 'BOGON'}}
         ['/var/cache/r10k','/etc/puppet/r10kenv'].each do |the_dir|

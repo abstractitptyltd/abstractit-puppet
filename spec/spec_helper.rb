@@ -18,7 +18,11 @@ if ENV['PARSER'] == 'future'
   end
 end
 
-# if ENV['PUPPET_VERSION'] =~ '^4'
+# Store any environment variables away to be restored later
+@old_env = {}
+ENV.each_key {|k| @old_env[k] = ENV[k]}
+
+# if ENV['PUPPET_GEM_VERSION'] =~ '^4'
 #   RSpec.configure do |c|
 #     c.confdir = '/etc/puppetlabs/puppet'
 #     # c.codedir = '/etc/puppetlabs/code'

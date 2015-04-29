@@ -1,54 +1,32 @@
 # Class puppet::master::install
 
 class puppet::master::install {
+  include ::puppet
+  include ::puppet::defaults
   include ::puppet::master
-  $hiera_eyaml_version = 'installed'
-  $puppet_version = 'installed'
-  $r10k_version   = 'installed'
 
-  validate_string(
-    $hiera_eyaml_version,
-    $puppet_version,
-    $r10k_version
-  )
+  $allinone            = $::puppet::allinone
+  $hiera_eyaml_version = $::puppet::master::hiera_eyaml_version
+  $puppet_version      = $::puppet::master::puppet_version
+  $puppetmaster_pkg    = $::puppet::defaults::puppetmaster_pkg
+  $server_version      = $::puppet::master::server_version
 
-  package { 'puppetmaster-common':
-    ensure  => $puppet_version,
-    require => Package['puppet']
+  if ($allinone) {
+    $server_package  = 'puppetserver'
+    $package_ensure  = $server_version
+  } else {
+    $server_package  = $puppetmaster_pkg
+    $package_ensure  = $puppet_version
   }
 
-  package { 'puppetmaster':
-    ensure  => $puppet_version,
-    require => Package['puppetmaster-common']
-  }
+  include ::puppet::master::install::deps
 
-  service { 'puppetmaster':
-    ensure  => stopped,
-    enable  => false,
-    require => Package['puppetmaster'],
-  }
-
-  file { '/etc/apache2/sites-enabled/puppetmaster.conf':
-    ensure  => absent,
-    require => Package['puppetmaster-passenger']
-  }
-
-  file { '/etc/apache2/sites-available/puppetmaster.conf':
-    ensure  => absent,
-    require => Package['puppetmaster-passenger']
-  }
-
-  package { 'puppetmaster-passenger':
-    ensure  => $puppet_version,
+  package { $server_package:
+    ensure  => $package_ensure,
     require => [
-      Package['puppetmaster'],
-      Service['puppetmaster']]
-  }
-
-  # install some needed gems
-  package { 'r10k':
-    ensure   => $r10k_version,
-    provider => gem
+      Class[puppet::master::install::deps],
+      Class[puppet::install],
+    ],
   }
 
   package { 'hiera-eyaml':

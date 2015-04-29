@@ -8,35 +8,46 @@ describe 'puppet::master::config', :type => :class do
     context "When on an #{os} system" do
       let(:facts) do
         facts.merge({
-          :concat_basedir => '/tmp'
+          :concat_basedir => '/tmp',
+          :puppetversion => Puppet.version
         })
       end
+      case facts[:puppetversion]
+      when '4.0.0'
+        confdir        = '/etc/puppetlabs/puppet'
+        codedir        = '/etc/puppetlabs/code'
+        basemodulepath = "#{codedir}/modules:/#{confdir}/modules"
+      else
+        confdir        = '/etc/puppet'
+        codedir        = '/etc/puppet'
+        basemodulepath = "#{confdir}/modules:/usr/share/puppet/modules"
+      end
       context 'when fed no parameters' do
-        it 'should behave differently' do
-          #binding.pry;
-        end
+        # it 'should behave differently' do
+        #   #binding.pry;
+        # end
         it 'should properly set the environmentpath' do
           should contain_ini_setting('Puppet environmentpath').with({
             'ensure'=>'present',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'environmentpath',
-            'value'=>'/etc/puppet/environments'
+            'value'=>"#{confdir}/environments"
           })
         end
         it 'should properly set the basemodulepath' do
           should contain_ini_setting('Puppet basemodulepath').with({
             'ensure'=>'present',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'basemodulepath',
-            'value'=>'/etc/puppet/site:/usr/share/puppet/modules'
+            'value'=>"#{basemodulepath}"
           })
         end
         it 'should disable autosign' do
           should contain_ini_setting('autosign').with({
             'ensure'=>'absent',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'master',
             'setting'=>'autosign',
             'value'=>true
@@ -45,7 +56,7 @@ describe 'puppet::master::config', :type => :class do
         it 'should disable the future parser' do
           should contain_ini_setting('master parser').with({
             'ensure'=>'absent',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'master',
             'setting'=>'parser',
             'value'=>'future'
@@ -58,7 +69,7 @@ describe 'puppet::master::config', :type => :class do
         it 'should update the environmentpath via an ini_setting' do
           should contain_ini_setting('Puppet environmentpath').with({
             'ensure'=>'present',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'environmentpath',
             'value'=>'/BOGON'
@@ -66,25 +77,25 @@ describe 'puppet::master::config', :type => :class do
         end
       end # environmentpath
 
-      context 'when the $::puppet::master::module_path variable has a custom value' do
-        let(:pre_condition) {"class{'::puppet::master': module_path => '/BOGON:/BOGON2'}"}
+      context 'when the $::puppet::master::basemodulepath variable has a custom value' do
+        let(:pre_condition) {"class{'::puppet::master': basemodulepath => '/BOGON:/BOGON2'}"}
         it 'should update the basemodulepath via an ini_setting' do
           should contain_ini_setting('Puppet basemodulepath').with({
             'ensure'=>'present',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'basemodulepath',
             'value'=>'/BOGON:/BOGON2'
           })
         end
-      end # module_path
+      end # basemodulepath
 
       context 'when the $::puppet::master::future_parser variable is true' do
         let(:pre_condition) {"class{'::puppet::master': future_parser => true}"}
         it 'should update the autosign param via an ini_setting' do
           should contain_ini_setting('master parser').with({
             'ensure'=>'present',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'master',
             'setting'=>'parser',
             'value'=>'future'
@@ -105,7 +116,7 @@ describe 'puppet::master::config', :type => :class do
             skip 'This does not work as is'
             should contain_ini_setting('autosign').with({
               'ensure'=>'absent',
-              'path'=>'/etc/puppet/puppet.conf',
+              'path'=>"#{confdir}/puppet.conf",
               'section'=>'master',
               'setting'=>'autosign',
               'value'=>true
@@ -124,7 +135,7 @@ describe 'puppet::master::config', :type => :class do
             skip 'This does not work as is'
             should contain_ini_setting('autosign').with({
               'ensure'=>'present',
-              'path'=>'/etc/puppet/puppet.conf',
+              'path'=>"#{confdir}/puppet.conf",
               'section'=>'master',
               'setting'=>'autosign',
               'value'=>true

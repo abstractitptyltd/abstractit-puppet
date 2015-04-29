@@ -1,6 +1,6 @@
-# # class puppet::master::puppetdb
+# Class puppet::profile::puppetdb
 
-class puppet::master::puppetdb (
+class puppet::profile::puppetdb (
   $puppetdb_version            = 'installed',
   $node_purge_ttl              = '0s',
   $node_ttl                    = '0s',
@@ -11,22 +11,6 @@ class puppet::master::puppetdb (
   $reports                     = true,
   $use_ssl                     = true,
 ) {
-  #input validation
-  validate_bool(
-    $reports,
-    $use_ssl,
-  )
-
-  validate_string(
-    $node_purge_ttl,
-    $node_ttl,
-    $puppetdb_listen_address,
-    $puppetdb_server,
-    $puppetdb_ssl_listen_address,
-    $puppetdb_version,
-    $report_ttl,
-  )
-
   case $use_ssl {
     default : {
       $puppetdb_port = '8081'

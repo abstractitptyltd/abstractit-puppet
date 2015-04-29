@@ -1,4 +1,5 @@
 class puppet (
+  $allinone                  = false,
   $agent_cron_hour           = '*',
   $agent_cron_min            = 'two_times_an_hour',
   $agent_version             = 'installed',
@@ -24,6 +25,7 @@ class puppet (
 ) {
   #input validation
   validate_bool(
+    $allinone,
     $cfacter,
     $enable_devel_repo,
     $enabled,
@@ -88,7 +90,7 @@ class puppet (
     Class['::puppet::repo'] -> Class['::puppet::install']
   }
   if $custom_facts {
-    class { 'puppet::facts':
+    class { '::puppet::facts':
       custom_facts => $custom_facts,
     }
   }

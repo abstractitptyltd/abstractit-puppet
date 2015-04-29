@@ -3,37 +3,13 @@ require 'spec_helper'
 require 'pry'
 
 describe 'puppet::install::deps', :type => :class do
-  on_supported_os({
-    :hardwaremodels => ['x86_64'],
-    :supported_os   => [
-      {
-        "operatingsystem" => "Ubuntu",
-        "operatingsystemrelease" => [
-          "12.04",
-          "14.04"
-        ]
-      },
-      {
-        "operatingsystem" => "RedHat",
-        "operatingsystemrelease" => [
-          "5",
-          "6",
-          "7"
-        ]
-      },
-      {
-        "operatingsystem" => "CentOS",
-        "operatingsystemrelease" => [
-          "5",
-          "6",
-          "7"
-        ]
-      }
-    ],
-  }).each do |os, facts|
+  on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
-        facts
+        facts.merge({
+          :concat_basedir => '/tmp',
+          :puppetversion => Puppet.version
+        })
       end
 
       context 'when ::puppet::collection is not defined' do
