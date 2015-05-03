@@ -20,13 +20,13 @@ end
 
 # Store any environment variables away to be restored later
 
-# if ENV['PUPPET_GEM_VERSION'] =~ '^4'
-#   RSpec.configure do |c|
-#     c.confdir = '/etc/puppetlabs/puppet'
-#     # c.codedir = '/etc/puppetlabs/code'
-#   end
-# else
-#   RSpec.configure do |c|
-#     c.confdir = '/etc/puppet'
-#   end
-# end
+if ENV['PUPPET_GEM_VERSION'] =~ /^4\./
+  RSpec.configure do |c|
+    c.confdir = '/etc/puppetlabs/puppet'
+    # c.codedir = '/etc/puppetlabs/code'
+  end
+else
+  RSpec.configure do |c|
+    c.confdir = '/etc/puppet'
+  end
+end
