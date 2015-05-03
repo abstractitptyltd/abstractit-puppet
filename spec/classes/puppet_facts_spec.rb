@@ -64,7 +64,7 @@ describe 'puppet::facts', :type => :class do
           :puppetversion => Puppet.version
         })
       end
-      if Puppet.version=~ /^4\./
+      if Puppet.version.to_f >= 4.0
         facterbasepath  = '/opt/puppetlabs/facter'
       else
         facterbasepath  = '/etc/facter'

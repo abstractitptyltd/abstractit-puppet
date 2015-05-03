@@ -10,23 +10,14 @@ fixture_path = File.expand_path(File.join(__FILE__, '..', 'fixtures'))
 RSpec.configure do |c|
   c.module_path = File.join(fixture_path, 'modules')
   c.manifest_dir = File.join(fixture_path, 'manifests')
-end
-
-if ENV['PARSER'] == 'future'
-  RSpec.configure do |c|
-    c.parser = 'future'
+  if Puppet.version.to_f >= 4.0
+    c.add_setting :confdir, :default => '/etc/puppet'
+    Puppet.settings[:confdir] = '/etc/puppetlabs/puppet'
+    Puppet.settings[:codedir] = '/etc/puppetlabs/code'
+  else
+    Puppet.settings[:confdir] = '/etc/puppet'
   end
-end
-
-# Store any environment variables away to be restored later
-
-if ENV['PUPPET_VERSION'] =~ /^4\./
-  RSpec.configure do |c|
-    c.confdir = '/etc/puppetlabs/puppet'
-    # c.codedir = '/etc/puppetlabs/code'
-  end
-else
-  RSpec.configure do |c|
-    c.confdir = '/etc/puppet'
+  if ENV['PARSER']
+    Puppet.settings[:parser] = ENV['PARSER']
   end
 end

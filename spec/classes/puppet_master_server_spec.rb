@@ -12,7 +12,7 @@ describe 'puppet::master::server', :type => :class do
           :puppetversion => Puppet.version
         })
       end
-      if Puppet.version=~ /^4\./
+      if Puppet.version.to_f >= 4.0
         confdir        = '/etc/puppetlabs/puppet'
         codedir        = '/etc/puppetlabs/code'
         basemodulepath = "#{codedir}/modules:/#{confdir}/modules"

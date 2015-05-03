@@ -1,8 +1,34 @@
 GIT
+  remote: https://github.com/mcanevet/rspec-puppet-facts
+  revision: 33a59473995b6d9dbbe6364ed08b29534c42c33d
+  specs:
+    rspec-puppet-facts (0.8.0)
+      facter
+      json
+
+GIT
+  remote: https://github.com/puppetlabs/puppetlabs_spec_helper
+  revision: 30baec57a16ed3d54256cc11fbe40f8a366fc18f
+  specs:
+    puppetlabs_spec_helper (0.10.2)
+      mocha
+      puppet-lint
+      puppet-syntax
+      rake
+      rspec-puppet
+
+GIT
   remote: https://github.com/rodjek/puppet-lint
   revision: 2546fed6be894bbcff15c3f48d4b6f6bc15d94d1
   specs:
     puppet-lint (1.1.0)
+
+GIT
+  remote: https://github.com/rodjek/rspec-puppet
+  revision: 4ff4fd2fde14c616fd4ba0b8853fbcce04ffdd78
+  specs:
+    rspec-puppet (2.1.0)
+      rspec
 
 GEM
   remote: https://rubygems.org/
@@ -28,7 +54,7 @@ GEM
       multi_json (~> 1.0)
       net-http-persistent (>= 2.7)
       net-http-pipeline
-    hiera (1.3.4)
+    hiera (2.0.0)
       json_pure
     highline (1.7.2)
     json (1.8.2)
@@ -50,9 +76,9 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.7)
       slop (>= 2.4.3, < 3)
-    puppet (3.7.5)
-      facter (> 1.6, < 3)
-      hiera (~> 1.0)
+    puppet (4.0.0)
+      facter (> 2.0, < 4)
+      hiera (>= 2.0, < 3)
       json_pure
     puppet-lint-absolute_classname-check (0.1.3)
       puppet-lint (~> 1.0)
@@ -72,12 +98,6 @@ GEM
       puppet-lint (~> 1.0)
     puppet-syntax (2.0.0)
       rake
-    puppetlabs_spec_helper (0.10.2)
-      mocha
-      puppet-lint
-      puppet-syntax
-      rake
-      rspec-puppet
     pusher-client (0.6.0)
       json
       websocket (~> 1.0)
@@ -93,11 +113,6 @@ GEM
       rspec-support (~> 3.1.0)
     rspec-mocks (3.1.3)
       rspec-support (~> 3.1.0)
-    rspec-puppet (2.1.0)
-      rspec
-    rspec-puppet-facts (0.6.0)
-      facter
-      json
     rspec-support (3.1.2)
     slop (2.4.4)
     spdx-licenses (1.0.0)
@@ -125,7 +140,7 @@ PLATFORMS
 DEPENDENCIES
   metadata-json-lint
   pry (<= 0.9.8)
-  puppet (~> 3.7.0)
+  puppet (= 4.0.0)
   puppet-lint!
   puppet-lint-absolute_classname-check
   puppet-lint-empty_string-check
@@ -136,10 +151,10 @@ DEPENDENCIES
   puppet-lint-unquoted_string-check
   puppet-lint-variable_contains_upcase
   puppet-syntax
-  puppetlabs_spec_helper
+  puppetlabs_spec_helper!
   rake
   rspec (< 3.2.0)
-  rspec-puppet (~> 2.1)
-  rspec-puppet-facts
+  rspec-puppet!
+  rspec-puppet-facts!
   travis
   travis-lint
