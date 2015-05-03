@@ -86,7 +86,7 @@ describe 'puppet::master::passenger', :type => :class do
               })
             end
 
-            if Puppet.parser == 'future'
+            if ENV['PARSER'] == 'future'
               it 'parser=future: should set up the apache vhost' do
                 should contain_apache__vhost('constructorfleet.vogon.gal').with({
                   :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
@@ -130,7 +130,7 @@ describe 'puppet::master::passenger', :type => :class do
                   :ssl_verify_depth=>"1",
                   :ssl_options=>["+StdEnvVars", "+ExportCertData"],
                   :rack_base_uris=>["/"],
-                  :directories=>[["path","/usr/share/puppet/rack/puppetmasterd/"], ["options","None"],
+                  :directories=>[["path","/usr/share/puppet/rack/puppetmasterd/"], ["options","None"]],
                   :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
                   }).that_subscribes_to('Class[puppet::master::install]')
               end
@@ -213,8 +213,8 @@ describe 'puppet::master::passenger', :type => :class do
               })
             end
           end#end puppet_fqdn
-        end
-      end
+        end#end puppet < 4
+      end# puppetversion
     end#each OS
 #    context '[Debian - unspecific]' do
 #      let(:facts) {{'fqdn' => 'constructorfleet.vogon.gal','lsbdistcodename' => 'squeeze', 'osfamily' => osfam, 'operatingsystemrelease' => '6.06','concat_basedir' => '/tmp'}}
