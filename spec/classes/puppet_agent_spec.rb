@@ -13,7 +13,7 @@ describe 'puppet::agent', :type => :class do
           :puppetversion => Puppet.version
         })
       end
-      if Puppet.version=~ /^4./
+      if Puppet.version=~ /^4\./
         bin_dir = '/opt/puppetlabs/bin'
       else
         bin_dir = '/usr/bin'

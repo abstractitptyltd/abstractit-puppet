@@ -38,7 +38,7 @@ describe 'puppet::master::passenger', :type => :class do
           :puppetversion => Puppet.version
         })
       end
-      if Puppet.version =~ /^3/
+      if Puppet.version =~ /^3\./
         context 'when puppet_version < 4' do
           # let(:pre_condition){"class{'puppet::master::install':}"}
           context 'when fed no parameters' do
@@ -86,28 +86,54 @@ describe 'puppet::master::passenger', :type => :class do
               })
             end
 
-            it 'should set up the apache vhost' do
-              should contain_apache__vhost('constructorfleet.vogon.gal').with({
-                :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
-                :docroot_owner=>"root",
-                :docroot_group=>"root",
-                :passenger_app_root=>"/usr/share/puppet/rack/puppetmasterd",
-                :port=>"8140",
-                :ssl=>true,
-                :ssl_crl_check=>'chain',
-                :ssl_cert=>"/var/lib/puppet/ssl/certs/constructorfleet.vogon.gal.pem",
-                :ssl_key=>"/var/lib/puppet/ssl/private_keys/constructorfleet.vogon.gal.pem",
-                :ssl_chain=>"/var/lib/puppet/ssl/certs/ca.pem",
-                :ssl_ca=>"/var/lib/puppet/ssl/certs/ca.pem",
-                :ssl_crl=>"/var/lib/puppet/ssl/ca/ca_crl.pem",
-                :ssl_certs_dir=>"/var/lib/puppet/ssl/certs",
-                :ssl_verify_client=>"optional",
-                :ssl_verify_depth=>"1",
-                :ssl_options=>["+StdEnvVars", "+ExportCertData"],
-                :rack_base_uris=>["/"],
-                :directories=>[{"path"=>"/usr/share/puppet/rack/puppetmasterd/", "options"=>"None"}],
-                :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
-                }).that_subscribes_to('Class[puppet::master::install]')
+            if Puppet.parser == 'future'
+              it 'parser=future: should set up the apache vhost' do
+                should contain_apache__vhost('constructorfleet.vogon.gal').with({
+                  :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
+                  :docroot_owner=>"root",
+                  :docroot_group=>"root",
+                  :passenger_app_root=>"/usr/share/puppet/rack/puppetmasterd",
+                  :port=>"8140",
+                  :ssl=>true,
+                  :ssl_crl_check=>'chain',
+                  :ssl_cert=>"/var/lib/puppet/ssl/certs/constructorfleet.vogon.gal.pem",
+                  :ssl_key=>"/var/lib/puppet/ssl/private_keys/constructorfleet.vogon.gal.pem",
+                  :ssl_chain=>"/var/lib/puppet/ssl/certs/ca.pem",
+                  :ssl_ca=>"/var/lib/puppet/ssl/certs/ca.pem",
+                  :ssl_crl=>"/var/lib/puppet/ssl/ca/ca_crl.pem",
+                  :ssl_certs_dir=>"/var/lib/puppet/ssl/certs",
+                  :ssl_verify_client=>"optional",
+                  :ssl_verify_depth=>"1",
+                  :ssl_options=>["+StdEnvVars", "+ExportCertData"],
+                  :rack_base_uris=>["/"],
+                  :directories=>[{"path"=>"/usr/share/puppet/rack/puppetmasterd/", "options"=>"None"}],
+                  :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
+                  }).that_subscribes_to('Class[puppet::master::install]')
+              end
+            else
+              it 'parser=standard: should set up the apache vhost' do
+                should contain_apache__vhost('constructorfleet.vogon.gal').with({
+                  :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
+                  :docroot_owner=>"root",
+                  :docroot_group=>"root",
+                  :passenger_app_root=>"/usr/share/puppet/rack/puppetmasterd",
+                  :port=>"8140",
+                  :ssl=>true,
+                  :ssl_crl_check=>'chain',
+                  :ssl_cert=>"/var/lib/puppet/ssl/certs/constructorfleet.vogon.gal.pem",
+                  :ssl_key=>"/var/lib/puppet/ssl/private_keys/constructorfleet.vogon.gal.pem",
+                  :ssl_chain=>"/var/lib/puppet/ssl/certs/ca.pem",
+                  :ssl_ca=>"/var/lib/puppet/ssl/certs/ca.pem",
+                  :ssl_crl=>"/var/lib/puppet/ssl/ca/ca_crl.pem",
+                  :ssl_certs_dir=>"/var/lib/puppet/ssl/certs",
+                  :ssl_verify_client=>"optional",
+                  :ssl_verify_depth=>"1",
+                  :ssl_options=>["+StdEnvVars", "+ExportCertData"],
+                  :rack_base_uris=>["/"],
+                  :directories=>[["path","/usr/share/puppet/rack/puppetmasterd/"], ["options","None"],
+                  :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
+                  }).that_subscribes_to('Class[puppet::master::install]')
+              end
             end
           end#no params
 
