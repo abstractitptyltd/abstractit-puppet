@@ -17,15 +17,11 @@ describe 'puppet::master::hiera', :type => :class do
         confdir        = '/etc/puppetlabs/puppet'
         codedir        = '/etc/puppetlabs/code'
         basemodulepath = "#{codedir}/modules:/#{confdir}/modules"
-        context 'puppetversion: #{puppetversion} Puppet.version #{Puppet.version} hieraconf_dir: #{hieraconf_dir} confdir: #{confdir} codedir: #{codedir} basemodulepath: #{basemodulepath}' do
-        end
       else
         hieraconf_dir  = '/etc'
         confdir        = '/etc/puppet'
         codedir        = '/etc/puppet'
         basemodulepath = "#{confdir}/modules:/usr/share/puppet/modules"
-        context 'puppetversion: #{puppetversion} Puppet.version #{Puppet.version} hieraconf_dir: #{hieraconf_dir} confdir: #{confdir} codedir: #{codedir} basemodulepath: #{basemodulepath}' do
-        end
       end
 
       context 'when fed no parameters' do
