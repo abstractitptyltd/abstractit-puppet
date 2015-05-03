@@ -17,37 +17,68 @@ describe 'puppet::master::hiera', :type => :class do
         confdir        = '/etc/puppetlabs/puppet'
         codedir        = '/etc/puppetlabs/code'
         basemodulepath = "#{codedir}/modules:/#{confdir}/modules"
+        context 'puppetversion: #{puppetversion} Puppet.version #{Puppet.version} hieraconf_dir: #{hieraconf_dir} confdir: #{confdir} codedir: #{codedir} basemodulepath: #{basemodulepath}' do
+        end
       else
         hieraconf_dir  = '/etc'
         confdir        = '/etc/puppet'
         codedir        = '/etc/puppet'
         basemodulepath = "#{confdir}/modules:/usr/share/puppet/modules"
+        context 'puppetversion: #{puppetversion} Puppet.version #{Puppet.version} hieraconf_dir: #{hieraconf_dir} confdir: #{confdir} codedir: #{codedir} basemodulepath: #{basemodulepath}' do
+        end
       end
 
       context 'when fed no parameters' do
-        it "should lay down #{hieraconf_dir}/hiera.yaml" do
-          should contain_file("#{hieraconf_dir}/hiera.yaml").with({
-            'ensure' =>'file',
-            'owner'  =>'root',
-            'group'  =>'root',
-            'mode'   =>'0644'
-          }).with_content(
-            /:backends:/
-          ).with_content(
-            /  - yaml/
-          ).with_content(
-            /:hierarchy:/
-          ).with_content(
-            /  - \"node\/\%\{\:\:clientcert\}\"/
-          ).with_content(
-            /  - \"env\/\%\{\:\:environment\}\"/
-          ).with_content(
-            /  - \"global\"/
-          ).with_content(
-            /:yaml:/
-          ).with_content(
-            /  :datadir: \"\/etc\/puppet\/hieradata\/%\{environment\}\"/
-          )
+        if Puppet.version =~ /^4./
+          it "should lay down #{hieraconf_dir}/hiera.yaml" do
+            should contain_file("#{hieraconf_dir}/hiera.yaml").with({
+              'ensure' =>'file',
+              'owner'  =>'root',
+              'group'  =>'root',
+              'mode'   =>'0644'
+            }).with_content(
+              /:backends:/
+            ).with_content(
+              /  - yaml/
+            ).with_content(
+              /:hierarchy:/
+            ).with_content(
+              /  - \"node\/\%\{\:\:clientcert\}\"/
+            ).with_content(
+              /  - \"env\/\%\{\:\:environment\}\"/
+            ).with_content(
+              /  - \"global\"/
+            ).with_content(
+              /:yaml:/
+            ).with_content(
+              /  :datadir: \"\/etc\/puppetlabs\/code\/hieradata\/%\{environment\}\"/
+            )
+          end
+        else
+          it "should lay down #{hieraconf_dir}/hiera.yaml" do
+            should contain_file("#{hieraconf_dir}/hiera.yaml").with({
+              'ensure' =>'file',
+              'owner'  =>'root',
+              'group'  =>'root',
+              'mode'   =>'0644'
+            }).with_content(
+              /:backends:/
+            ).with_content(
+              /  - yaml/
+            ).with_content(
+              /:hierarchy:/
+            ).with_content(
+              /  - \"node\/\%\{\:\:clientcert\}\"/
+            ).with_content(
+              /  - \"env\/\%\{\:\:environment\}\"/
+            ).with_content(
+              /  - \"global\"/
+            ).with_content(
+              /:yaml:/
+            ).with_content(
+              /  :datadir: \"\/etc\/puppet\/hieradata\/%\{environment\}\"/
+            )
+          end
         end
 
       end#no params

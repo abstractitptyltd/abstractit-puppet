@@ -24,7 +24,7 @@ class puppet::config (
 
   ini_setting { 'puppet client server':
     ensure  => present,
-    path    => "${::settings::confdir}/puppet.conf",
+    path    => "${settings::confdir}/puppet.conf",
     section => 'agent',
     setting => 'server',
     value   => $puppet_server,
@@ -33,7 +33,7 @@ class puppet::config (
 
   ini_setting { 'puppet client cfacter':
     ensure  => present,
-    path    => "${::settings::confdir}/puppet.conf",
+    path    => "${settings::confdir}/puppet.conf",
     section => 'main',
     setting => 'cfacter',
     value   => $cfacter,
@@ -42,7 +42,7 @@ class puppet::config (
 
   ini_setting { 'puppet client environment':
     ensure  => present,
-    path    => "${::settings::confdir}/puppet.conf",
+    path    => "${settings::confdir}/puppet.conf",
     section => 'agent',
     setting => 'environment',
     value   => $environment,
@@ -51,7 +51,7 @@ class puppet::config (
 
   ini_setting { 'puppet client runinterval':
     ensure  => present,
-    path    => "${::settings::confdir}/puppet.conf",
+    path    => "${settings::confdir}/puppet.conf",
     section => 'agent',
     setting => 'runinterval',
     value   => $runinterval,
@@ -60,7 +60,7 @@ class puppet::config (
 
   ini_setting { 'puppet client reports':
     ensure  => present,
-    path    => "${::settings::confdir}/puppet.conf",
+    path    => "${settings::confdir}/puppet.conf",
     section => 'agent',
     setting => 'reports',
     value   => $reports,
@@ -69,7 +69,7 @@ class puppet::config (
 
   ini_setting { 'puppet client structured_facts':
     ensure  => present,
-    path    => "${::settings::confdir}/puppet.conf",
+    path    => "${settings::confdir}/puppet.conf",
     section => 'main',
     setting => 'stringify_facts',
     value   => $stringify_facts,

@@ -23,7 +23,7 @@ class puppet::profile::r10k (
 ) {
 
   if ( versioncmp($::puppetversion, '4.0.0') >= 0 ) {
-    $r10k_basedir = $::settings::codedir
+    $r10k_basedir = $settings::codedir
   } else {
     $r10k_basedir = '/etc/puppet'
   }
