@@ -2,7 +2,9 @@
 
 class puppet::master::hiera {
   include ::puppet::master
+  include ::puppet::defaults
 
+  $codedir        = $puppet::defaults::codedir
   $env_owner      = $puppet::master::env_owner
   $eyaml_keys     = $puppet::master::eyaml_keys
   $hiera_backends = $puppet::master::hiera_backends
@@ -17,13 +19,7 @@ class puppet::master::hiera {
 
   validate_string($env_owner)
 
-  if ( versioncmp($::puppetversion, '4.0.0') >= 0 ) {
-    $hieraconf_dir = '/opt/puppetlabs/code'
-  } else {
-    $hieraconf_dir = '/etc'
-  }
-
-  file { "${hieraconf_dir}/hiera.yaml":
+  file { "${codedir}/hiera.yaml":
     ensure  => file,
     content => template('puppet/hiera.yaml.erb'),
     owner   => 'root',
