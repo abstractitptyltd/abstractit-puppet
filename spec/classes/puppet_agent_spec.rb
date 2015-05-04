@@ -18,7 +18,7 @@ describe 'puppet::agent', :type => :class do
       else
         bin_dir = '/usr/bin'
       end
-      context "puppet version: #{Puppet.version} Puppet.settings[:confdir]: #{Puppet.settings[:confdir]} when puppet has default agent parameters" do
+      context "when puppet has default agent parameters" do
         let(:pre_condition){"class{'::puppet':}"}
         it 'should contain the puppet agent cronjob, in a disabled state' do
           should contain_cron('run_puppet_agent').with({

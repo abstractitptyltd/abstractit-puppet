@@ -2,14 +2,17 @@
 
 class puppet::master::config {
   include ::puppet::master
-  $environmentpath   = $puppet::master::environmentpath
-  $basemodulepath    = $puppet::master::basemodulepath
-  $future_parser     = $puppet::master::future_parser
-  $autosign          = $puppet::master::autosign
+  include ::puppet::defaults
+  $confdir          = $::puppet::defaults::confdir
+  $codedir          = $::puppet::defaults::codedir
+  $environmentpath  = $puppet::master::environmentpath
+  $basemodulepath   = $puppet::master::basemodulepath
+  $future_parser    = $puppet::master::future_parser
+  $autosign         = $puppet::master::autosign
 
   ini_setting { 'Puppet environmentpath':
     ensure  => present,
-    path    => "${settings::confdir}/puppet.conf",
+    path    => "${confdir}/puppet.conf",
     section => 'main',
     setting => 'environmentpath',
     value   => $environmentpath
@@ -17,7 +20,7 @@ class puppet::master::config {
 
   ini_setting { 'Puppet basemodulepath':
     ensure  => present,
-    path    => "${settings::confdir}/puppet.conf",
+    path    => "${confdir}/puppet.conf",
     section => 'main',
     setting => 'basemodulepath',
     value   => $basemodulepath
@@ -27,7 +30,7 @@ class puppet::master::config {
     # enable autosign
     ini_setting { 'autosign':
       ensure  => present,
-      path    => "${settings::confdir}/puppet.conf",
+      path    => "${confdir}/puppet.conf",
       section => 'master',
       setting => 'autosign',
       value   => true
@@ -36,7 +39,7 @@ class puppet::master::config {
     # disable autosign
     ini_setting { 'autosign':
       ensure  => absent,
-      path    => "${settings::confdir}/puppet.conf",
+      path    => "${confdir}/puppet.conf",
       section => 'master',
       setting => 'autosign',
       value   => true
@@ -47,7 +50,7 @@ class puppet::master::config {
     # enable future parser
     ini_setting { 'master parser':
       ensure  => present,
-      path    => "${settings::confdir}/puppet.conf",
+      path    => "${confdir}/puppet.conf",
       section => 'master',
       setting => 'parser',
       value   => 'future'
@@ -56,7 +59,7 @@ class puppet::master::config {
     # disable future parser
     ini_setting { 'master parser':
       ensure  => absent,
-      path    => "${settings::confdir}/puppet.conf",
+      path    => "${confdir}/puppet.conf",
       section => 'master',
       setting => 'parser',
       value   => 'future'

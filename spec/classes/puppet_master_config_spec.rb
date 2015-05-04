@@ -15,23 +15,20 @@ describe 'puppet::master::config', :type => :class do
       if Puppet.version.to_f >= 4.0
         confdir        = '/etc/puppetlabs/puppet'
         codedir        = '/etc/puppetlabs/code'
-        basemodulepath = "#{codedir}/modules:/#{confdir}/modules"
+        basemodulepath = "#{codedir}/modules:#{confdir}/modules"
       else
         confdir        = '/etc/puppet'
         codedir        = '/etc/puppet'
         basemodulepath = "#{confdir}/modules:/usr/share/puppet/modules"
       end
-      context 'when fed no parameters' do
-        # it 'should behave differently' do
-        #   #binding.pry;
-        # end
-        it 'should properly set the environmentpath' do
+      context "when fed no parameters" do
+        it "should properly set the environmentpath in #{confdir}/puppet.conf" do
           should contain_ini_setting('Puppet environmentpath').with({
             'ensure'=>'present',
             'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'environmentpath',
-            'value'=>"#{confdir}/environments"
+            'value'=>"#{codedir}/environments"
           })
         end
         it 'should properly set the basemodulepath' do

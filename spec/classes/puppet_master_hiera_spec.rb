@@ -13,10 +13,10 @@ describe 'puppet::master::hiera', :type => :class do
         })
       end
       if Puppet.version.to_f >= 4.0
-        hieraconf_dir  = '/opt/puppetlabs/code'
         confdir        = '/etc/puppetlabs/puppet'
         codedir        = '/etc/puppetlabs/code'
-        basemodulepath = "#{codedir}/modules:/#{confdir}/modules"
+        hieraconf_dir  = '/etc/puppetlabs/code'
+        basemodulepath = "#{codedir}/modules:#{confdir}/modules"
       else
         hieraconf_dir  = '/etc'
         confdir        = '/etc/puppet'
@@ -25,7 +25,7 @@ describe 'puppet::master::hiera', :type => :class do
       end
 
       context 'when fed no parameters' do
-        if Puppet.version =~ /^4\./
+        if Puppet.version.to_f >= 4.0
           it "should lay down #{hieraconf_dir}/hiera.yaml" do
             should contain_file("#{hieraconf_dir}/hiera.yaml").with({
               'ensure' =>'file',

@@ -21,7 +21,6 @@ describe 'puppet::config', :type => :class do
       end
       context 'when fed no parameters' do
         it "should properly set the puppet server setting in #{confdir}/puppet.conf" do
-          #binding.pry;
           should contain_ini_setting('puppet client server').with(
             'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',

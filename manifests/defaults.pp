@@ -27,26 +27,31 @@ class puppet::defaults {
     }
   }
 
-  $environmentpath = "${settings::confdir}/environments"
   if ( versioncmp($::puppetversion, '4.0.0') >= 0 ) {
-    $server_type    = 'puppetserver'
-    $basemodulepath = "${settings::codedir}/modules:${settings::confdir}/modules"
-    $hieradata_path = "${settings::codedir}/hieradata"
-    $hiera_backends = {
+    $server_type     = 'puppetserver'
+    $confdir         = '/etc/puppetlabs/puppet'
+    $codedir         = '/etc/puppetlabs/code'
+    $environmentpath = "${codedir}/environments"
+    $basemodulepath  = "${codedir}/modules:${confdir}/modules"
+    $hieradata_path  = "${codedir}/hieradata"
+    $hiera_backends  = {
       'yaml' => {
-        'datadir' => '/opt/puppetlabs/code/hieradata/%{environment}'
+        'datadir' => '/etc/puppetlabs/code/hieradata/%{environment}'
       }
     }
     $facterbasepath = '/opt/puppetlabs/facter'
   } else {
-    $server_type    = 'passenger'
-    $basemodulepath = "${settings::confdir}/modules:/usr/share/puppet/modules"
-    $hieradata_path = "${settings::confdir}/hieradata"
-    $hiera_backends = {
+    $server_type     = 'passenger'
+    $confdir         = '/etc/puppet'
+    $codedir         = '/etc/puppet'
+    $environmentpath = "${codedir}/environments"
+    $basemodulepath  = "${confdir}/modules:/usr/share/puppet/modules"
+    $hieradata_path  = "${confdir}/hieradata"
+    $hiera_backends  = {
       'yaml' => {
         'datadir' => '/etc/puppet/hieradata/%{environment}'
       }
     }
-    $facterbasepath = '/etc/facter'
+    $facterbasepath  = '/etc/facter'
   }
 }
