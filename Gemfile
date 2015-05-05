@@ -20,12 +20,12 @@ group :test do
   gem "rspec", '< 3.2.0'
   # gem 'coveralls', require: false
   gem 'pry', '<= 0.9.8'
+  gem "puppet-blacksmith"
 end
 
 group :development do
   gem 'travis'
   gem 'travis-lint'
-  gem "puppet-blacksmith"
 #  gem "beaker", :git => 'https://github.com/puppetlabs/beaker.git'
 #  gem "beaker-rspec"
 end
