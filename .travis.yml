@@ -9,34 +9,46 @@ rvm:
   - 2.1
 script: "bundle exec rake test"
 env:
-  - PUPPET_VERSION="~> 3.6.0"
-  - PUPPET_VERSION="~> 3.7.0"
-  - PUPPET_VERSION="~> 3.7.0" PARSER="future"
-  - PUPPET_VERSION="~> 4.0.0"
+  - PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
+  - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
+  - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
+  - PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
 matrix:
   fast_finish: true
   include:
     - rvm: 1.9
-      env: PUPPET_VERSION="~> 3.6.0"
+      env: PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
     - rvm: 1.9
-      env: PUPPET_VERSION="~> 3.7.0"
+      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
     - rvm: 2.0
-      env: PUPPET_VERSION="~> 3.6.0"
+      env: PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
     - rvm: 2.0
-      env: PUPPET_VERSION="~> 3.7.0"
+      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
+    - rvm: 2.0
+      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
+    - rvm: 2.1
+      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
+    - rvm: 2.1
+      env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
   exclude:
     - rvm: 1.9
-      env: PUPPET_VERSION="~> 3.7.0" PARSER="future"
+      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
     - rvm: 1.9
-      env: PUPPET_VERSION="~> 4.0.0"
+      env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
     - rvm: 2.0
-      env: PUPPET_VERSION="~> 4.0.0"
-  allow_failures:
-    - rvm: 2.0
-      env: PUPPET_VERSION="~> 3.7.0" PARSER="future"
-    - rvm: 2.1
-      env: PUPPET_VERSION="~> 3.7.0" PARSER="future"
-    - rvm: 2.1
-      env: PUPPET_VERSION="~> 4.0.0"
+      env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
 notifications:
   email: true
+
+deploy:
+  provider: puppetforge
+  user: abstractit
+  password:
+    secure: "cD3pSDgI0hI/0/D4r+tpZb2fPFXK9iG3pvnADb/LPIMT/WkuK7u9lwUY2EZSOn8xkDsBy6wYXWnUOlgde1FvEX+Lgu9a5tUzdM4i/tZdGyQ/SuBgK/u7mtK6cd/Ii7XNU2a8Inbg62FfDX7ujkSNeD3JIQOoLo/89+G84oqbCWU="
+  on:
+    tags: true
+    # all_branches is required to use tags
+    all_branches: true
+    # Only publish if our main Ruby target builds
+    rvm: 2.1
+    condition: "$PUPPET_VERSION = 4.0.0"

@@ -1,7 +1,6 @@
 # Class puppet::master::install::deps
 
 class puppet::master::install::deps {
-
   include ::puppet::master
   include ::puppet
 

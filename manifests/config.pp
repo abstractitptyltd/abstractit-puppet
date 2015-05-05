@@ -1,8 +1,7 @@
 # # class puppet::config
 # config for puppet agent
 
-class puppet::config (
-) {
+class puppet::config {
   include ::puppet
   include ::puppet::defaults
   $confdir          = $::puppet::defaults::confdir
