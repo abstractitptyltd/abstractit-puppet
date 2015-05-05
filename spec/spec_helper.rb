@@ -26,3 +26,5 @@ RSpec.configure do |c|
     Puppet.settings[:parser] = ENV['PARSER']
   end
 end
+
+at_exit { RSpec::Puppet::Coverage.report! }
