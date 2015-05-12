@@ -32,7 +32,7 @@ matrix:
       env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
     - rvm: 2.1
       env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
-  exclude:
+  allow_failures:
     - rvm: 1.9
       env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
     - rvm: 2.0
