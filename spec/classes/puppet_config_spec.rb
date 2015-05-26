@@ -19,6 +19,12 @@ describe 'puppet::config', :type => :class do
       else
         confdir = '/etc/puppet'
       end
+      case facts[:osfamily]
+      when 'Debian'
+        sysconfigdir   = '/etc/defaults'
+      when 'RedHat'
+        sysconfigdir   = '/etc/sysconfig'
+      end
       context 'when fed no parameters' do
         it "should properly set the puppet server setting in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client server').with(
@@ -65,6 +71,21 @@ describe 'puppet::config', :type => :class do
         })
         end
       end# cfacter
+
+      context 'when ::puppet::logdest is true' do
+        let(:pre_condition){"class{'::puppet': logdest => '/var/log/BOGON'}"}
+        it "should properly set the logdest setting in #{sysconfigdir}/puppet" do
+          should contain_ini_subsetting('puppet sysconfig logdest').with({
+            'ensure'=>'present',
+            'path'=>"#{sysconfigdir}/puppet",
+            'section'=>'',
+            'key_val_separator' => '=',
+            'setting'=>'DAEMON_OPTS',
+            'subsetting'=>'--logdest',
+            'value'=>'/var/log/BOGON'
+        })
+        end
+      end# logdest
 
       context 'when ::puppet::puppet_server has a non-standard value' do
         let(:pre_condition){"class{'::puppet': puppet_server => 'BOGON'}"}

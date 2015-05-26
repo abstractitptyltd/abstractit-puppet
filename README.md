@@ -419,7 +419,7 @@ The `config.pp` manifest is responsible for altering the configuration of `$conf
 
   The hierarchy to configure hiera to use
 
-  * **hieradata_path**: (*absolute path* Default Puppet 3: `/etc/puppet/hiera` Default Puppet 3: `$codedir/hieradata`)
+  * **hieradata_path**: (*absolute path* Default Puppet 3: `/etc/puppet/hiera` Default Puppet 4: `$codedir/hieradata`)
 
   The location to configure hiera to look for the hierarchy. This also impacts the [puppet::master::modules](#public-class-puppetmastermodules) module's deployment of your r10k hiera repo.
 

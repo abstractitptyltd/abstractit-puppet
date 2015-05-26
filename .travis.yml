@@ -13,36 +13,36 @@ env:
   - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
   - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
   - PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
-matrix:
-  fast_finish: true
-  include:
-    - rvm: 1.9
-      env: PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
-    - rvm: 1.9
-      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
-    - rvm: 1.9
-      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
-    - rvm: 2.0
-      env: PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
-    - rvm: 2.0
-      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
-    - rvm: 2.0
-      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
-    - rvm: 2.1
-      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
-    - rvm: 2.1
-      env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
-  allow_failures:
-    - rvm: 1.9
-      env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
-    - rvm: 2.0
-      env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
-    - rvm: 2.1
-      env: PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
-    - rvm: 2.1
-      env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
+# matrix:
+#   fast_finish: true
+#   include:
+#     - rvm: 1.9
+#       env: PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
+#     - rvm: 1.9
+#       env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
+#     - rvm: 1.9
+#       env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
+#     - rvm: 2.0
+#       env: PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
+#     - rvm: 2.0
+#       env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
+#     - rvm: 2.0
+#       env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
+#     - rvm: 2.1
+#       env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true PARSER="future"
+#     - rvm: 2.1
+#       env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
+#   allow_failures:
+#     - rvm: 1.9
+#       env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
+#     - rvm: 2.0
+#       env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
+#     - rvm: 2.1
+#       env: PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
+#     - rvm: 2.1
+#       env: PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
 notifications:
-  email: true
+  email: dev@abstractit.com.au
 
 deploy:
   provider: puppetforge

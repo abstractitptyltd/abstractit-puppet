@@ -45,7 +45,7 @@ describe 'puppet::master', :type => :class do
       end
     end#hashes
 
-    ['env_owner','hiera_eyaml_version','java_ram','passenger_max_pool_size','passenger_max_requests','passenger_pool_idle_time','passenger_stat_throttle_rate','puppet_fqdn','server_type','puppet_version','r10k_version'].each do |strings|
+    ['env_owner','environment_timeout','hiera_eyaml_version','java_ram','passenger_max_pool_size','passenger_max_requests','passenger_pool_idle_time','passenger_stat_throttle_rate','puppet_fqdn','server_type','puppet_version','r10k_version'].each do |strings|
       context "when the #{strings} parameter is not a string" do
         let(:params) {{strings => false }}
         it 'should fail' do
@@ -110,7 +110,13 @@ describe 'puppet::master', :type => :class do
         it 'should properly instantiate the puppet::master::config class' do
           should contain_class('puppet::master::config')
         end
-      end#environmentpath
+      end#basemodulepath
+      context 'when the environment_timeout parameter has a custom value' do
+        let(:params) {{'environment_timeout' => 'BOGON'}}
+        it 'should properly instantiate the puppet::master::config class' do
+          should contain_class('puppet::master::config')
+        end
+      end#environment_timeout
       context 'when the environmentpath parameter has a custom value' do
         let(:params) {{'environmentpath' => '/BOGON'}}
         it 'should properly instantiate the puppet::master::config class' do

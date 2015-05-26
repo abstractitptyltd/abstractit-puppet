@@ -4,6 +4,7 @@
 class puppet::config {
   include ::puppet
   include ::puppet::defaults
+  $sysconfigdir     = $::puppet::defaults::sysconfigdir
   $confdir          = $::puppet::defaults::confdir
   $codedir          = $::puppet::defaults::codedir
   $cfacter          = $::puppet::cfacter
@@ -12,6 +13,7 @@ class puppet::config {
   $reports          = $::puppet::reports
   $runinterval      = $::puppet::runinterval
   $structured_facts = $::puppet::structured_facts
+  $logdest          = $::puppet::logdest
 
   validate_string(
     $environment,
@@ -22,6 +24,10 @@ class puppet::config {
   $stringify_facts = $structured_facts ? {
     default => true,
     true    => false,
+  }
+  $logdest_ensure = $logdest ? {
+    default => present,
+    undef   => absent,
   }
 
   ini_setting { 'puppet client server':
@@ -78,4 +84,13 @@ class puppet::config {
     require => Class['puppet::install'],
   }
 
+  ini_subsetting { 'puppet sysconfig logdest':
+    ensure            => $logdest_ensure,
+    section           => '',
+    key_val_separator => '=',
+    path              => "${sysconfigdir}/puppet",
+    setting           => 'DAEMON_OPTS',
+    subsetting        => '--logdest',
+    value             => $logdest
+  }
 }

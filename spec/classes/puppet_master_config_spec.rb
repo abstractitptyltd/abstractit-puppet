@@ -60,6 +60,19 @@ describe 'puppet::master::config', :type => :class do
         end
       end#no params
 
+      context 'when the $::puppet::master::environment_timeout variable has a custom value' do
+        let(:pre_condition) {"class{'::puppet::master': environment_timeout => 'BOGON'}"}
+        it 'should update the environment_timeout via an ini_setting' do
+          should contain_ini_setting('Puppet environment_timeout').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'environment_timeout',
+            'value'=>'BOGON'
+          })
+        end
+      end # environment_timeout
+
       context 'when the $::puppet::master::environmentpath variable has a custom value' do
         let(:pre_condition) {"class{'::puppet::master': environmentpath => '/BOGON'}"}
         it 'should update the environmentpath via an ini_setting' do

@@ -7,14 +7,15 @@ describe 'puppet', :type => :class do
   context 'input validation' do
     let(:facts){{'lsbdistid' => 'Debian', 'lsbdistcodename' => 'trusty'}}
 
-#    ['path'].each do |paths|
-#      context "when the #{paths} parameter is not an absolute path" do
-#        let(:params) {{ paths => 'foo' }}
-#        it 'should fail' do
-#          expect { should compile }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
-#        end
-#      end
-#    end#absolute path
+    ['logdest'].each do |paths|
+      context "when the #{paths} parameter is not an absolute path" do
+        let(:params) {{ paths => 'foo' }}
+        it 'should fail' do
+          skip 'This does not work as is'
+            expect { should compile }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
+        end
+      end
+    end#absolute path
 
 #    ['array'].each do |arrays|
 #      context "when the #{arrays} parameter is not an array" do
@@ -151,6 +152,12 @@ describe 'puppet', :type => :class do
       end#enabled
       context 'when the environment param is set' do
         let(:params) {{'environment' => 'BOGON'}}
+        it 'should instantiate the puppet::config class apropriately' do
+          should contain_class('puppet::config')
+        end
+      end#environment
+      context 'when the logdest param is set' do
+        let(:params) {{'logdest' => '/var/log/BOGON'}}
         it 'should instantiate the puppet::config class apropriately' do
           should contain_class('puppet::config')
         end

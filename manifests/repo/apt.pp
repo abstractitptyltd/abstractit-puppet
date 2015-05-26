@@ -1,4 +1,4 @@
-# # setup the puppetlabs apt repo
+# setup the puppetlabs apt repo
 
 class puppet::repo::apt {
   include ::puppet

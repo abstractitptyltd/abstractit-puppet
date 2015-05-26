@@ -3,12 +3,13 @@
 class puppet::master::config {
   include ::puppet::master
   include ::puppet::defaults
-  $confdir          = $::puppet::defaults::confdir
-  $codedir          = $::puppet::defaults::codedir
-  $environmentpath  = $puppet::master::environmentpath
-  $basemodulepath   = $puppet::master::basemodulepath
-  $future_parser    = $puppet::master::future_parser
-  $autosign         = $puppet::master::autosign
+  $confdir             = $::puppet::defaults::confdir
+  $codedir             = $::puppet::defaults::codedir
+  $environmentpath     = $puppet::master::environmentpath
+  $environment_timeout = $puppet::master::environment_timeout
+  $basemodulepath      = $puppet::master::basemodulepath
+  $future_parser       = $puppet::master::future_parser
+  $autosign            = $puppet::master::autosign
 
   ini_setting { 'Puppet environmentpath':
     ensure  => present,
@@ -24,6 +25,14 @@ class puppet::master::config {
     section => 'main',
     setting => 'basemodulepath',
     value   => $basemodulepath
+  }
+
+  ini_setting { 'Puppet environment_timeout':
+    ensure  => present,
+    path    => "${confdir}/puppet.conf",
+    section => 'main',
+    setting => 'environment_timeout',
+    value   => $environment_timeout
   }
 
   if ($autosign == true and $::environment != 'production') {
