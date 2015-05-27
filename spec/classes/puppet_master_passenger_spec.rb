@@ -46,14 +46,14 @@ describe 'puppet::master::passenger', :type => :class do
             it 'should install the puppetmaster-passenger package' do
               should contain_package('puppetmaster-passenger').with({
                 :ensure=>"installed",
-              }).that_requires("Package[puppetmaster]").that_requires("Service[puppetmaster]")
+              }).that_requires("Class[puppet::master::install]").that_requires("Service[puppetmaster]")
             end
 
             it 'should disable the puppetmaster service' do
               should contain_service('puppetmaster').with({
                 :ensure=>"stopped",
                 :enable=>false,
-              }).that_requires('Package[puppetmaster]')
+              }).that_requires('Class[puppet::master::install]')
             end
 
             it 'should remove the default puppetmaster.conf vhost file from /etc/apache2/sites-available' do
@@ -144,7 +144,7 @@ describe 'puppet::master::passenger', :type => :class do
               # skip 'This does not work as is'
               should contain_package('puppetmaster-passenger').with({
                 :ensure=>"BOGON",
-              }).that_requires("Package[puppetmaster]").that_requires("Service[puppetmaster]")
+              }).that_requires("Class[puppet::master::install]").that_requires("Service[puppetmaster]")
             end
           end
 

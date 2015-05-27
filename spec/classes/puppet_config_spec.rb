@@ -28,6 +28,7 @@ describe 'puppet::config', :type => :class do
       context 'when fed no parameters' do
         it "should properly set the puppet server setting in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client server').with(
+            'ensure'=>'present',
             'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
             'setting'=>'server',
@@ -36,6 +37,7 @@ describe 'puppet::config', :type => :class do
         end
         it "should properly set the environment setting in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client environment').with({
+            'ensure'=>'present',
             'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
             'setting'=>'environment',
@@ -44,6 +46,7 @@ describe 'puppet::config', :type => :class do
         end
         it "should set the puppet agent runinterval properly in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client runinterval').with({
+            'ensure'=>'present',
             'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
             'setting'=>'runinterval',
@@ -52,11 +55,21 @@ describe 'puppet::config', :type => :class do
         end
         it "should setup puppet.conf to support structured_facts in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client structured_facts').with({
+            'ensure'=>'present',
             'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'stringify_facts',
             'value'=>true
           })
+        end
+        it "should properly set the cfacter setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client cfacter').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'cfacter',
+            'value'=>false
+        })
         end
       end#no params
 
@@ -64,6 +77,7 @@ describe 'puppet::config', :type => :class do
         let(:pre_condition){"class{'::puppet': cfacter => true}"}
         it "should properly set the cfacter setting in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client cfacter').with({
+            'ensure'=>'present',
             'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'cfacter',

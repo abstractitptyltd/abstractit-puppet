@@ -14,7 +14,7 @@ class puppet::master::passenger {
     service { 'puppetmaster':
       ensure  => stopped,
       enable  => false,
-      require => Package['puppetmaster'],
+      require => Class['puppet::master::install'],
     }
 
     file { '/etc/apache2/sites-enabled/puppetmaster.conf':
@@ -30,7 +30,7 @@ class puppet::master::passenger {
     package { 'puppetmaster-passenger':
       ensure  => $puppet_version,
       require => [
-        Package['puppetmaster'],
+        Class['puppet::master::install'],
         Service['puppetmaster']]
     }
 

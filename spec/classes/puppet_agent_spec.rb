@@ -18,6 +18,12 @@ describe 'puppet::agent', :type => :class do
       else
         bin_dir = '/usr/bin'
       end
+      case facts[:osfamily]
+      when 'Debian'
+        sysconfigdir   = '/etc/defaults'
+      when 'RedHat'
+        sysconfigdir   = '/etc/sysconfig'
+      end
       context "when puppet has default agent parameters" do
         let(:pre_condition){"class{'::puppet':}"}
         it 'should contain the puppet agent cronjob, in a disabled state' do
@@ -33,6 +39,18 @@ describe 'puppet::agent', :type => :class do
             :ensure=>true,
             :enable=>true,
           }).that_requires('Class[Puppet::Config]')
+        end
+        case facts[:osfamily]
+        when 'Debian'
+          it "should set the start setting in #{sysconfigdir}/puppet to yes" do
+            should contain_ini_setting('puppet sysconfig start').with({
+              'ensure'=>'present',
+              'path'=>"#{sysconfigdir}/puppet",
+              'section'=>'',
+              'setting'=>'START',
+              'value'=>'yes'
+          })
+          end
         end
       end#no params
       context 'when $::puppet::enabled is true' do
@@ -52,6 +70,18 @@ describe 'puppet::agent', :type => :class do
               :enable=>true,
             }).that_requires('Class[Puppet::Config]')
           end
+          case facts[:osfamily]
+          when 'Debian'
+            it "should set the start setting in #{sysconfigdir}/puppet to yes" do
+              should contain_ini_setting('puppet sysconfig start').with({
+                'ensure'=>'present',
+                'path'=>"#{sysconfigdir}/puppet",
+                'section'=>'',
+                'setting'=>'START',
+                'value'=>'yes'
+            })
+            end
+          end
         end
         context 'when $::puppet::enable_mechanism is cron' do
           let(:pre_condition){"class{'::puppet': enabled => true, enable_mechanism => 'cron', }"}
@@ -61,6 +91,18 @@ describe 'puppet::agent', :type => :class do
               :ensure=>false,
               :enable=>false,
             }).that_requires('Class[Puppet::Config]')
+          end
+          case facts[:osfamily]
+          when 'Debian'
+            it "should set the start setting in #{sysconfigdir}/puppet to no" do
+              should contain_ini_setting('puppet sysconfig start').with({
+                'ensure'=>'present',
+                'path'=>"#{sysconfigdir}/puppet",
+                'section'=>'',
+                'setting'=>'START',
+                'value'=>'no'
+            })
+            end
           end
           it 'should enable the cronjob, running puppet twice an hour' do
             should contain_cron('run_puppet_agent').with({
@@ -89,6 +131,18 @@ describe 'puppet::agent', :type => :class do
                 :enable=>false,
               })
             end
+            case facts[:osfamily]
+            when 'Debian'
+              it "should set the start setting in #{sysconfigdir}/puppet to no" do
+                should contain_ini_setting('puppet sysconfig start').with({
+                  'ensure'=>'present',
+                  'path'=>"#{sysconfigdir}/puppet",
+                  'section'=>'',
+                  'setting'=>'START',
+                  'value'=>'no'
+              })
+              end
+            end
           end
           context 'when agent_cron_min has the value of four_times_an_hour' do
             let(:pre_condition){"class{'::puppet': enabled => true, enable_mechanism => 'cron', agent_cron_min => 'four_times_an_hour'}"}
@@ -107,6 +161,18 @@ describe 'puppet::agent', :type => :class do
                 :ensure=>false,
                 :enable=>false,
               })
+            end
+            case facts[:osfamily]
+            when 'Debian'
+              it "should set the start setting in #{sysconfigdir}/puppet to no" do
+                should contain_ini_setting('puppet sysconfig start').with({
+                  'ensure'=>'present',
+                  'path'=>"#{sysconfigdir}/puppet",
+                  'section'=>'',
+                  'setting'=>'START',
+                  'value'=>'no'
+              })
+              end
             end
           end
           context 'when agent_cron_min has the value of \'30\'' do
@@ -127,6 +193,18 @@ describe 'puppet::agent', :type => :class do
                 :enable=>false,
               })
             end
+            case facts[:osfamily]
+            when 'Debian'
+              it "should set the start setting in #{sysconfigdir}/puppet to no" do
+                should contain_ini_setting('puppet sysconfig start').with({
+                  'ensure'=>'present',
+                  'path'=>"#{sysconfigdir}/puppet",
+                  'section'=>'',
+                  'setting'=>'START',
+                  'value'=>'no'
+              })
+              end
+            end
           end
           context 'when agent_cron_hour has the value of \'20\'' do
             let(:pre_condition){"class{'::puppet': enabled => true, enable_mechanism => 'cron', agent_cron_hour => '20'}"}
@@ -146,6 +224,18 @@ describe 'puppet::agent', :type => :class do
                 :enable=>false,
               })
             end
+            case facts[:osfamily]
+            when 'Debian'
+              it "should set the start setting in #{sysconfigdir}/puppet to no" do
+                should contain_ini_setting('puppet sysconfig start').with({
+                  'ensure'=>'present',
+                  'path'=>"#{sysconfigdir}/puppet",
+                  'section'=>'',
+                  'setting'=>'START',
+                  'value'=>'no'
+              })
+              end
+            end
           end
         end
       end
@@ -157,6 +247,18 @@ describe 'puppet::agent', :type => :class do
             :ensure=>false,
             :enable=>false,
           })
+        end
+        case facts[:osfamily]
+        when 'Debian'
+          it "should set the start setting in #{sysconfigdir}/puppet to no" do
+            should contain_ini_setting('puppet sysconfig start').with({
+              'ensure'=>'present',
+              'path'=>"#{sysconfigdir}/puppet",
+              'section'=>'',
+              'setting'=>'START',
+              'value'=>'no'
+          })
+          end
         end
         it 'should contain the puppet agent cronjob, in a disabled state' do
           should contain_cron('run_puppet_agent').with({
