@@ -23,7 +23,7 @@ describe 'puppet::master::server', :type => :class do
       end
       case facts[:osfamily]
       when 'Debian'
-        sysconfigdir   = '/etc/defaults'
+        sysconfigdir   = '/etc/default'
       when 'RedHat'
         sysconfigdir   = '/etc/sysconfig'
       end

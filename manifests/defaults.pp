@@ -16,7 +16,7 @@ class puppet::defaults {
   case $::osfamily {
     'Debian' : {
       $puppetmaster_pkg   = 'puppetmaster'
-      $sysconfigdir       = '/etc/defaults'
+      $sysconfigdir       = '/etc/default'
     }
     'RedHat' : {
       $puppetmaster_pkg   = 'puppet-server'
