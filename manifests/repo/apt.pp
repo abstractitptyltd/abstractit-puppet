@@ -17,7 +17,8 @@ class puppet::repo::apt {
     }
 
     if $::puppet::collection != undef {
-      apt::source { "puppetlabs-${::puppet::collection}":
+      $lc_collection_name = downcase($puppet::collection)
+      apt::source { "puppetlabs-${lc_collection_name}":
         ensure     => 'present',
         location   => 'http://apt.puppetlabs.com',
         repos      => $::puppet::collection,

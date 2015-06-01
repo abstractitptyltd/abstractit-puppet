@@ -59,8 +59,8 @@ describe 'puppet::repo::apt', :type => :class do
       context 'when ::puppet::collection is defined' do
         let(:pre_condition){"class{'::puppet': collection => 'BOGON'}"}
         it 'should contain the puppetlabs ::puppet::collection repository' do
-          should contain_apt__source('puppetlabs-BOGON').with({
-            :name=>"puppetlabs-BOGON",
+          should contain_apt__source('puppetlabs-bogon').with({
+            :name=>"puppetlabs-bogon",
             :ensure=>"present",
             :location=>"http://apt.puppetlabs.com",
             :repos=>"BOGON",
