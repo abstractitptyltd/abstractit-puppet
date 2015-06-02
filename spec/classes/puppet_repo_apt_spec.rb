@@ -27,16 +27,12 @@ describe 'puppet::repo::apt', :type => :class do
         it 'should add the puppetlabs apt source' do
           should contain_apt__source('puppetlabs').with({
            :name=>"puppetlabs",
+           :ensure=>"present",
            :location=>"http://apt.puppetlabs.com",
            :repos=>"main dependencies",
            :key=>"4BD6EC30",
            :key_server=>"pgp.mit.edu",
            :comment=>"puppetlabs",
-           :ensure=>"present",
-           :release=>"UNDEF",
-           :include_src=>true,
-           :required_packages=>false,
-           :pin=>false
           })
         end
         it 'should remove the puppetlabs_devel apt source' do
@@ -48,10 +44,6 @@ describe 'puppet::repo::apt', :type => :class do
             :key=>"4BD6EC30",
             :key_server=>"pgp.mit.edu",
             :comment=>"puppetlabs_devel",
-            :release=>"UNDEF",
-            :include_src=>true,
-            :required_packages=>false,
-            :pin=>false
           })
         end
       end#no params
@@ -67,6 +59,8 @@ describe 'puppet::repo::apt', :type => :class do
             :key=>"4BD6EC30",
             :key_server=>"pgp.mit.edu",
             })
+          should_not contain_apt__source('puppetlabs')
+          should_not contain_apt__source('puppetlabs_devel')
         end
       end
 
@@ -89,10 +83,6 @@ describe 'puppet::repo::apt', :type => :class do
               :key=>"4BD6EC30",
               :key_server=>"pgp.mit.edu",
               :comment=>"puppetlabs_devel",
-              :release=>"UNDEF",
-              :include_src=>true,
-              :required_packages=>false,
-              :pin=>false
             })
           end
         end
@@ -108,10 +98,6 @@ describe 'puppet::repo::apt', :type => :class do
               :key=>"4BD6EC30",
               :key_server=>"pgp.mit.edu",
               :comment=>"puppetlabs_devel",
-              :release=>"UNDEF",
-              :include_src=>true,
-              :required_packages=>false,
-              :pin=>false
             })
           end
         end#end devel_repo

@@ -134,29 +134,38 @@ describe 'puppet::repo::yum', :type => :class do
           it 'should contain the puppetlabs ::puppet::collection repository' do
             case facts['operatingsystemmajrelease']
             when '5'
-              should contain_yumrepo('puppetlabs-devel').with({
+              should contain_yumrepo('puppetlabs-bogon').with({
                 'descr'=>'Puppet Labs Collection BOGON EL 5 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/5/BOGON/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
                 'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
               })
+              should_not contain_yumrepo('puppetlabs-products')
+              should_not contain_yumrepo('puppetlabs-deps')
+              should_not contain_yumrepo('puppetlabs-devel')
             when '6'
-              should contain_yumrepo('puppetlabs-devel').with({
+              should contain_yumrepo('puppetlabs-bogon').with({
                 'descr'=>'Puppet Labs Collection BOGON EL 6 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/6/BOGON/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
                 'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
               })
+              should_not contain_yumrepo('puppetlabs-products')
+              should_not contain_yumrepo('puppetlabs-deps')
+              should_not contain_yumrepo('puppetlabs-devel')
             when '7'
-              should contain_yumrepo('puppetlabs-devel').with({
+              should contain_yumrepo('puppetlabs-bogon').with({
                 'descr'=>'Puppet Labs Collection BOGON EL 7 - x86_64',
                 'baseurl'=>'http://yum.puppetlabs.com/el/7/BOGON/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
                 'gpgkey'=>'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-puppetlabs',
               })
+              should_not contain_yumrepo('puppetlabs-products')
+              should_not contain_yumrepo('puppetlabs-deps')
+              should_not contain_yumrepo('puppetlabs-devel')
             end#end case
           end
         end #end puppet::collection
