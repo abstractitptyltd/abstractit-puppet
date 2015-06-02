@@ -58,6 +58,10 @@ If it works for you, awesome! If not, let me know *or send me a pull request*.
     * /etc/puppetlabs/code/environments/**
     * /etc/puppetlabs/code/hieradata/**
 * **Files:**  `dynamically updated files are displayed like this`
+  * **Debian**
+    * `/etc/default/puppet`
+  * **RedHat**
+    * `/etc/sysconfig/puppet`
   * /etc/puppet/keys/eyaml/private_key.pkcs7.pem
   * /etc/puppet/keys/eyaml/public_key.pkcs7.pem
   * Puppet 3.x
@@ -70,15 +74,16 @@ If it works for you, awesome! If not, let me know *or send me a pull request*.
     * `/etc/puppetlabs/puppet/puppet.conf`
     * `/etc/r10k.yaml`
 * **Cron Jobs**
-  * *puppet_r10k* `profile/r10k.pp`
-  * *puppet clean reports* `profile/puppetdb.pp`
-  * *run_puppet_agent* `agent.pp`
+  * *puppet_r10k* `puppet::profile::r10k`
+  * *puppet clean reports* `puppet::profile::puppetdb`
+  * *run_puppet_agent* `puppet::agent`
 * **Logs being rotated**
 * **Packages:**
+  * r10k `puppet::profile::r10k`
+  * puppetdb `puppet::profile::puppetdb`
   * Puppet 4.x
     * puppet-agent
     * puppetserver
-    * r10k
   * Puppet 3.x
     * **Debian:**
       * facter
@@ -88,7 +93,6 @@ If it works for you, awesome! If not, let me know *or send me a pull request*.
       * puppet-common
       * puppetlabs-release
       * puppetmaster-common `puppet::master::install`
-      * r10k `master/install.pp`
     * **RedHat:**
       * facter
       * hiera
@@ -100,7 +104,7 @@ If it works for you, awesome! If not, let me know *or send me a pull request*.
 ###Setup Requirements
 
 This module currently only works completely on Ubuntu Precise and Trusty.
-Support for RedHat and CentOS 5,6 and 7 has been added for the new Collections and Puppet 4.
+Support for RedHat and CentOS 5,6 and 7 has been added for the new Collections and Puppet 4.x.
 The new pupet-agent and puppetserver are supported on Ubuntu Centos and RedHat but a puppet master running under Passenger is only supported on Ubuntu.
 
 I will be adding support for other operating systems when I get a chance.
@@ -273,6 +277,10 @@ The main `init.pp` manifest is responsible for validating some of our parameters
   * **hiera_version**: (*string* Default: `installed`)
 
     Declares the version of hiera to install.
+
+  * **logdest**: (*string* Default: `undef`)
+
+    File to use a log file for agent.
 
   * **manage_etc_facter** (*bool* Default: `true`)
 
