@@ -1,4 +1,29 @@
 # Class puppet::profile::puppetdb
+# 
+# The puppet::master::puppetdb class is responsible for configuring PuppetDB
+#
+# @puppet::profile::puppetdb when declaring the puppet::profile::puppetdb class
+#   include puppet::profile::puppetdb
+#
+# @param puppetdb_version [String] Default: 'installed'
+#   The version of puppetdb to install.
+# @param node_purge_ttl [String] Default: 0s
+#   The length of time a node can be deactivated before it's deleted from the database. (a value of '0' disables purging).
+# @param node_ttl [String] Default: '0s'
+#   The length of time a node can go without receiving any new data before it's automatically deactivated. (defaults to '0', which disables auto-deactivation).
+# @param puppetdb_listen_address [String] Default: 127.0.0.1
+#   The address that the web server should bind to for HTTP requests. Set to '0.0.0.0' to listen on all addresses.
+# @param puppetdb_server [String] Default: puppet.${::domain}
+#   The dns name or ip of the puppetdb server.
+# @param puppetdb_ssl_listen_address [String] Default: 127.0.0.1
+#   The address that the web server should bind to for HTTPS requests. Set to '0.0.0.0' to listen on all addresses.
+# @param report_ttl [String] Default: '14d'
+#   The length of time reports should be stored before being deleted. (defaults to 14 days).
+# @param reports [Boolean] Default: true
+#   A toggle to alter the behavior of reports and puppetdb.
+#   If true, the module will properly set the 'reports' field in the puppet.conf file to enable the puppetdb report processor.
+# @param use_ssl [Boolean] Defaults: true
+#   A toggle to enable or disable ssl on puppetdb connections.
 
 class puppet::profile::puppetdb (
   $puppetdb_version            = 'installed',

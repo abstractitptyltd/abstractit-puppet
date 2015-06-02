@@ -1,3 +1,24 @@
+# The puppet::profile::r10k class is respinsible for setting up R10K
+#
+# @puppet::profile::r10k when declaring the puppet::profile::r10k class
+#   include puppet::profile::r10k
+#
+# @param remote [String] Default: undef
+# @param sources [String] Default: undef
+# @param purgedirs [Boolean] Default: true
+# @param cachedir [String] Default: undef
+# @param configfile [String] Default: undef
+# @param version [String] Default: undef
+# @param manage_ruby_dependency [Boolean] Default: false
+# @param r10k_basedir [String] Default: undef
+# @param mcollective [Boolean] Default: false
+# @param manage_configfile_symlink [Boolean] Default: false
+# @param configfile_symlink [String] Default: undef
+# @param include_prerun_command [Boolean] Default: false
+# @param env_owner [String] Default:'root',
+# @param r10k_minutes [Array] Default [0,15,30,45]
+# @param r10k_update [Boolean] true
+
 class puppet::profile::r10k (
   $remote                    = undef,
   $sources                   = undef,
@@ -5,8 +26,6 @@ class puppet::profile::r10k (
   $cachedir                  = undef,
   $configfile                = undef,
   $version                   = undef,
-  $modulepath                = undef,
-  $manage_module_path        = false,
   $manage_ruby_dependency    = false,
   $r10k_basedir              = undef,
   $mcollective               = false,
@@ -22,11 +41,10 @@ class puppet::profile::r10k (
   $r10k_update               = true,
 ) {
 
-  if ( versioncmp($::puppetversion, '4.0.0') >= 0 ) {
-    $r10k_basedir = $settings::codedir
-  } else {
-    $r10k_basedir = '/etc/puppet'
-  }
+  include ::puppet::defaults
+  $codedir = $::puppet::defaults::codedir
+
+  $r10k_basedir = "${codedir}/environments"
 
   case $r10k_update {
     default: {
@@ -38,13 +56,13 @@ class puppet::profile::r10k (
   }
 
   class { '::r10k':
-    version                   => $version,
     remote                    => $remote,
     sources                   => $sources,
-    r10k_basedir              => $r10k_basedir,
     purgedirs                 => $purgedirs,
     cachedir                  => $cachedir,
     configfile                => $configfile,
+    version                   => $version,
+    r10k_basedir              => $r10k_basedir,
     mcollective               => $mcollective,
     manage_configfile_symlink => $manage_configfile_symlink,
     configfile_symlink        => $configfile_symlink,
@@ -54,7 +72,7 @@ class puppet::profile::r10k (
   # cron for updating the r10k environment
   cron { 'puppet_r10k':
     ensure      => $r10k_cron_ensure,
-    command     => '/usr/local/bin/r10k deploy environment production -p',
+    command     => 'r10k deploy environment production -p',
     environment => 'PATH=/usr/local/bin:/bin:/usr/bin:/usr/sbin',
     user        => $env_owner,
     minute      => $r10k_minutes
