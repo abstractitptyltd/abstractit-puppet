@@ -4,8 +4,8 @@ class puppet::install::deps {
   include ::puppet
   include ::puppet::defaults
 
-  if ($::puppet::collection != undef) {
-    # only install these if no collection is set
+  if ($::puppet::allinone == false) {
+    # only install these allinone is false
 
     $facter_version = $::puppet::facter_version
     $hiera_version  = $::puppet::hiera_version

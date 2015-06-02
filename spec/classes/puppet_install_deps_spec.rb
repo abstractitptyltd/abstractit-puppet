@@ -12,8 +12,8 @@ describe 'puppet::install::deps', :type => :class do
         })
       end
 
-      context 'when ::puppet::collection is not defined' do
-        let(:pre_condition) {"class{'puppet': collection => 'undef'}"}
+      context 'when ::puppet::allinone is not defined' do
+        let(:pre_condition) {"class{'puppet': allinone => false}"}
 
         ['facter','hiera'].each do |pkg|
           context 'and when fed no parameters' do
@@ -41,7 +41,7 @@ describe 'puppet::install::deps', :type => :class do
           end
         end#facter_version
 
-      end#end ::puppet::collection undefined
+      end#end ::puppet::allinone undefined
 
     end
   end
