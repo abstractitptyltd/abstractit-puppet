@@ -1,16 +1,16 @@
 GIT
   remote: https://github.com/mcanevet/rspec-puppet-facts
-  revision: 33a59473995b6d9dbbe6364ed08b29534c42c33d
+  revision: 14904b39c7a8ce062110a93318d79c1e4b500d5e
   specs:
-    rspec-puppet-facts (0.8.0)
+    rspec-puppet-facts (0.10.0)
       facter
       json
 
 GIT
   remote: https://github.com/puppetlabs/puppetlabs_spec_helper
-  revision: 30baec57a16ed3d54256cc11fbe40f8a366fc18f
+  revision: b261e2535557248a7924d6e93db7ba1cbbfab407
   specs:
-    puppetlabs_spec_helper (0.10.2)
+    puppetlabs_spec_helper (0.10.3)
       mocha
       puppet-lint
       puppet-syntax
@@ -25,9 +25,9 @@ GIT
 
 GIT
   remote: https://github.com/rodjek/rspec-puppet
-  revision: 4ff4fd2fde14c616fd4ba0b8853fbcce04ffdd78
+  revision: ee85f33a47a671207f0c88713e1c82a55c096081
   specs:
-    rspec-puppet (2.1.0)
+    rspec-puppet (2.3.0)
       rspec
 
 GEM
@@ -42,7 +42,7 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     ethon (0.7.3)
       ffi (>= 1.3.0)
-    facter (2.4.3)
+    facter (2.4.4)
       CFPropertyList (~> 2.2.6)
     faraday (0.9.1)
       multipart-post (>= 1.2, < 3)
@@ -70,7 +70,7 @@ GEM
       json
       spdx-licenses (~> 1.0)
     method_source (0.7.1)
-    mime-types (2.5)
+    mime-types (2.6.1)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
     multi_json (1.11.0)
@@ -82,7 +82,7 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.7)
       slop (>= 2.4.3, < 3)
-    puppet (4.0.0)
+    puppet (4.1.0)
       facter (> 2.0, < 4)
       hiera (>= 2.0, < 3)
       json_pure
@@ -107,7 +107,7 @@ GEM
       puppet-lint (~> 1.0)
     puppet-syntax (2.0.0)
       rake
-    pusher-client (0.6.0)
+    pusher-client (0.6.2)
       json
       websocket (~> 1.0)
     rake (10.4.2)
@@ -130,7 +130,7 @@ GEM
     slop (2.4.4)
     spdx-licenses (1.0.0)
       json
-    travis (1.7.6)
+    travis (1.7.7)
       addressable (~> 2.3)
       backports
       faraday (~> 0.9)
@@ -156,7 +156,7 @@ PLATFORMS
 DEPENDENCIES
   metadata-json-lint
   pry (<= 0.9.8)
-  puppet (= 4.0.0)
+  puppet (= 4.1.0)
   puppet-blacksmith
   puppet-lint!
   puppet-lint-absolute_classname-check
