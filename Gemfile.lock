@@ -156,7 +156,7 @@ PLATFORMS
 DEPENDENCIES
   metadata-json-lint
   pry (<= 0.9.8)
-  puppet (= 4.1.0)
+  puppet (~> 4.1.0)
   puppet-blacksmith
   puppet-lint!
   puppet-lint-absolute_classname-check

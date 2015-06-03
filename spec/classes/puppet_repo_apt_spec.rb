@@ -12,6 +12,13 @@ describe 'puppet::repo::apt', :type => :class do
             "12.04",
             "14.04"
           ]
+        },
+        {
+          "operatingsystem" => "Debian",
+          "operatingsystemrelease" => [
+            "6",
+            "7"
+          ]
         }
       ],
     }).each do |os, facts|
