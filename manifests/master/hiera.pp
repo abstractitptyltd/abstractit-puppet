@@ -4,27 +4,21 @@ class puppet::master::hiera {
   include ::puppet::master
   include ::puppet::defaults
 
-  $codedir        = $puppet::defaults::codedir
-  $env_owner      = $puppet::master::env_owner
-  $eyaml_keys     = $puppet::master::eyaml_keys
-  $hiera_backends = $puppet::master::hiera_backends
-  $hierarchy      = $puppet::master::hiera_hierarchy
+  $codedir             = $puppet::defaults::codedir
+  $env_owner           = $puppet::master::env_owner
+  $eyaml_keys          = $puppet::master::eyaml_keys
+  $hiera_backends      = $puppet::master::hiera_backends
+  $hierarchy           = $puppet::master::hiera_hierarchy
+  $manage_hiera_config = $puppet::master::manage_hiera_config
 
-  #input validation
-  validate_array($hierarchy)
-
-  validate_bool($eyaml_keys)
-
-  validate_hash($hiera_backends)
-
-  validate_string($env_owner)
-
-  file { "${codedir}/hiera.yaml":
-    ensure  => file,
-    content => template('puppet/hiera.yaml.erb'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
+  if ($manage_hiera_config == true) {
+    file { "${codedir}/hiera.yaml":
+      ensure  => file,
+      content => template('puppet/hiera.yaml.erb'),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
   }
 
   # eyaml for hiera

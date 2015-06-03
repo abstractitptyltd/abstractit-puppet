@@ -79,6 +79,13 @@ describe 'puppet::master::hiera', :type => :class do
 
       end#no params
 
+      context 'when manage_hiera_config is false' do
+        let(:pre_condition) {"class{'::puppet::master': manage_hiera_config => false}"}
+        it "should not manage #{codedir}/hiera.conf" do
+          should_not contain_file("#{codedir}/hiera.yaml")
+        end
+      end# manage_hiera_config false
+
       context 'when the eyaml_keys param is true' do
         let(:pre_condition) {"class{'::puppet::master': eyaml_keys => true}"}
         it "should lay down /etc/puppet/keys" do

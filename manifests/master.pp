@@ -24,6 +24,8 @@
 #   The location to configure hiera to look for the hierarchy. This also impacts the [puppet::master::modules](#public-class-puppetmastermodules) module's deployment of your r10k hiera repo.
 # @param java_ram ([String] Default: '2g')
 #   Set the ram to use for the new puppetserver
+# @param manage_hiera_config ([Boolean] Default: true)
+#   Whether to manage the content of the hiera config file
 # @param passenger_max_pool_size ([Number] Default: 12)
 #   Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [max pool size](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerMaxPoolSize).
 # @param passenger_max_requests ([Number] Default: 0)
@@ -61,6 +63,7 @@ class puppet::master (
     'global'],
   $hieradata_path               = $::puppet::defaults::hieradata_path,
   $java_ram                     = '2g',
+  $manage_hiera_config          = true,
   $passenger_max_pool_size      = '12',
   $passenger_max_requests       = '0',
   $passenger_pool_idle_time     = '1500',
@@ -87,6 +90,7 @@ class puppet::master (
     $autosign,
     $eyaml_keys,
     $future_parser,
+    $manage_hiera_config,
   )
 
   validate_hash(
