@@ -19,7 +19,7 @@ describe 'puppet::repo', :type => :class do
       context "when ::puppet::collection is defined" do
         let(:pre_condition){"class{'::puppet': collection => 'BOGON'}"}
         it 'should contain the puppetlabs-release-$::puppet::collection package' do
-          should contain_package('puppetlabs-release-BOGON').with({'ensure' => 'latest'})
+          should contain_package('puppetlabs-release-bogon').with({'ensure' => 'latest'})
         end
       end
 

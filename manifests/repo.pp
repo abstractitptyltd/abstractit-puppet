@@ -6,7 +6,8 @@ class puppet::repo {
     ensure => latest,
   }
   if $::puppet::collection != undef {
-    package { "puppetlabs-release-${::puppet::collection}":
+    $lc_collection_name = downcase($puppet::collection)
+    package { "puppetlabs-release-${lc_collection_name}":
       ensure => latest,
     }
   }
