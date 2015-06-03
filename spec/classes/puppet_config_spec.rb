@@ -3,139 +3,161 @@ require 'spec_helper'
 require 'pry'
 
 describe 'puppet::config', :type => :class do
-  context 'input validation' do
-
-#    ['path'].each do |paths|
-#      context "when the #{paths} parameter is not an absolute path" do
-#        let(:params) {{ paths => 'foo' }}
-#        it 'should fail' do
-#          expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
-#        end
-#      end
-#    end#absolute path
-
-#    ['array'].each do |arrays|
-#      context "when the #{arrays} parameter is not an array" do
-#        let(:params) {{ arrays => 'this is a string'}}
-#        it 'should fail' do
-#           expect { subject }.to raise_error(Puppet::Error, /is not an Array./)
-#        end
-#      end
-#    end#arrays
-
-#    ['structured_facts'].each do |bools|
-#      context "when the #{bools} parameter is not an boolean" do
-#        let(:params) {{bools => "BOGON"}}
-#        it 'should fail' do
-#          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
-#        end
-#      end
-#    end#bools
-
-#    ['hash'].each do |hashes|
-#      context "when the #{hashes} parameter is not an hash" do
-#        let(:params) {{ hashes => 'this is a string'}}
-#        it 'should fail' do
-#           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
-#        end
-#      end
-#    end#hashes
-
-#    ['environment','puppet_server','runinterval'].each do |strings|
-#      context "when the #{strings} parameter is not a string" do
-#        let(:params) {{strings => false }}
-#        it 'should fail' do
-#          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
-#        end
-#      end
-#    end#strings
-
-  end#input validation
-
+  let(:pre_condition){ 'class{"puppet::install":}' }
+  # confdir = Puppet.settings[:confdir]
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
-        facts
+        facts.merge({
+          :concat_basedir => '/tmp',
+          :puppetversion => Puppet.version
+        })
+      end
+      if Puppet.version.to_f >= 4.0
+        confdir = '/etc/puppetlabs/puppet'
+        codedir = '/etc/puppetlabs/code'
+      else
+        confdir = '/etc/puppet'
+      end
+      case facts[:osfamily]
+      when 'Debian'
+        sysconfigdir   = '/etc/default'
+      when 'RedHat'
+        sysconfigdir   = '/etc/sysconfig'
       end
       context 'when fed no parameters' do
-        it 'should set the puppet server properly' do
-          #binding.pry;
-          should contain_ini_setting('puppet client server').with({
-            'path'=>'/etc/puppet/puppet.conf',
+        it "should properly set the puppet server setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client server').with(
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
             'setting'=>'server',
             'value'=>'puppet'
-          })
+          )
         end
-        it 'should set the puppet environment properly' do
+        it "should properly set the environment setting in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client environment').with({
-            'path'=>'/etc/puppet/puppet.conf',
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
             'setting'=>'environment',
             'value'=>'production'
           })
         end
-        it 'should set the puppet agent runinterval properly' do
+        it "should set the puppet agent runinterval properly in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client runinterval').with({
-            'path'=>'/etc/puppet/puppet.conf',
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
             'setting'=>'runinterval',
             'value'=>'30m'
           })
         end
-        it 'should setup puppet.conf to support structured_facts' do
+        it "should setup puppet.conf to support structured_facts in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client structured_facts').with({
-            'path'=>'/etc/puppet/puppet.conf',
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'stringify_facts',
             'value'=>true
           })
         end
+        it "should properly set the cfacter setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client cfacter').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'cfacter',
+            'value'=>false
+        })
+        end
       end#no params
-      context 'when $::puppet::puppet_server has a non-standard value' do
+
+      context 'when ::puppet::cfacter is true' do
+        let(:pre_condition){"class{'::puppet': cfacter => true}"}
+        it "should properly set the cfacter setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client cfacter').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'cfacter',
+            'value'=>true
+        })
+        end
+      end# cfacter
+
+      context 'when ::puppet::logdest is true' do
+        let(:pre_condition){"class{'::puppet': logdest => '/var/log/BOGON'}"}
+        it "should properly set the logdest setting in #{sysconfigdir}/puppet" do
+          should contain_ini_subsetting('puppet sysconfig logdest').with({
+            'ensure'=>'present',
+            'path'=>"#{sysconfigdir}/puppet",
+            'section'=>'',
+            'key_val_separator' => '=',
+            'setting'=>'DAEMON_OPTS',
+            'subsetting'=>'--logdest',
+            'value'=>'/var/log/BOGON'
+        })
+        end
+      end# logdest
+
+      context 'when ::puppet::puppet_server has a non-standard value' do
         let(:pre_condition){"class{'::puppet': puppet_server => 'BOGON'}"}
-        it 'should properly set the server setting in puppet.conf' do
+        it "should properly set the server setting in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client server').with({
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
             'setting'=>'server',
             'value'=>'BOGON'
         })
         end
       end# custom server
-      context 'when $::puppet::environment has a non-standard value' do
+      context 'when ::puppet::environment has a non-standard value' do
         let(:pre_condition) {"class{'::puppet': environment => 'BOGON'}"}
-        it 'should properly set the environment setting in puppet.conf' do
+        it "should properly set the environment setting in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client environment').with({
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
             'setting'=>'environment',
             'value'=>'BOGON'
         })
         end
       end# custom environment
-      context 'when $::puppet::runinterval has a non-standard value' do
+      context 'when ::puppet::runinterval has a non-standard value' do
         let(:pre_condition) {"class{'::puppet': runinterval => 'BOGON'}"}
-        it 'should properly set the runinterval setting in puppet.conf' do
+        it "should properly set the runinterval setting in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client runinterval').with({
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
             'setting'=>'runinterval',
             'value'=>'BOGON'
           })
         end
       end# custom runinterval
-      context 'when $::puppet::structured_facts is false' do
+      context 'when ::puppet::structured_facts is false' do
         let(:pre_condition) {"class{'::puppet': structured_facts => false}"}
-        it 'should properly set the stringify_facts setting in puppet.conf' do
+        it "should properly set the stringify_facts setting in puppet.conf" do
           should contain_ini_setting('puppet client structured_facts').with({
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'stringify_facts',
             'value'=>true
           })
         end
       end# custom structured_facts
+
+      context 'when ::puppet::reports is false' do
+        let(:pre_condition){"class{'::puppet': reports => false}"}
+        it "should properly set the reports setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client reports').with({
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'reports',
+            'value'=>false
+        })
+        end
+      end# reports
+
     end
   end
 end

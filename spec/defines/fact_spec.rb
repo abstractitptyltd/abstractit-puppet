@@ -51,15 +51,27 @@ describe 'puppet::fact', :type => :define do
 #    end#strings
 
   end#input validation
-  ['Debian'].each do |osfam|
-    context "When on an #{osfam} system" do
-      let (:facts) {{'osfamily' => osfam}}
+
+  on_supported_os.each do |os, facts|
+    context "When on an #{os} system" do
+      let(:facts) do
+        facts.merge({
+          :concat_basedir => '/tmp',
+          :domain => 'domain.com',
+          :puppetversion => Puppet.version
+        })
+      end
+      if Puppet.version.to_f >= 4.0
+        facterbasepath  = '/opt/puppetlabs/facter'
+      else
+        facterbasepath  = '/etc/facter'
+      end
       context 'when fed no parameters' do
         let (:title) { 'my_fact'}
         let (:params) {{'value' => 'my_val'}}
         it 'should lay down our fact file as expected' do
-          should contain_file('/etc/facter/facts.d/my_fact.yaml').with({
-            :path=>"/etc/facter/facts.d/my_fact.yaml",
+          should contain_file("#{facterbasepath}/facts.d/my_fact.yaml").with({
+            :path=>"#{facterbasepath}/facts.d/my_fact.yaml",
             :ensure=>"present",
             :owner=>"root",
             :group=>"puppet",

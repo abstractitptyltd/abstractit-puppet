@@ -1,24 +1,19 @@
 # # Class puppet::master::config.pp
 
-class puppet::master::config (
-) {
+class puppet::master::config {
   include ::puppet::master
-  $environmentpath   = $puppet::master::environmentpath
-  $extra_module_path = $puppet::master::extra_module_path
-  $future_parser     = $puppet::master::future_parser
-  $autosign          = $puppet::master::autosign
-
-  validate_absolute_path($environmentpath)
-
-  validate_bool(
-    $autosign,
-    $future_parser,
-    )
-  validate_string($extra_module_path)
+  include ::puppet::defaults
+  $confdir             = $::puppet::defaults::confdir
+  $codedir             = $::puppet::defaults::codedir
+  $environmentpath     = $puppet::master::environmentpath
+  $environment_timeout = $puppet::master::environment_timeout
+  $basemodulepath      = $puppet::master::basemodulepath
+  $future_parser       = $puppet::master::future_parser
+  $autosign            = $puppet::master::autosign
 
   ini_setting { 'Puppet environmentpath':
     ensure  => present,
-    path    => "${::settings::confdir}/puppet.conf",
+    path    => "${confdir}/puppet.conf",
     section => 'main',
     setting => 'environmentpath',
     value   => $environmentpath
@@ -26,17 +21,25 @@ class puppet::master::config (
 
   ini_setting { 'Puppet basemodulepath':
     ensure  => present,
-    path    => "${::settings::confdir}/puppet.conf",
+    path    => "${confdir}/puppet.conf",
     section => 'main',
     setting => 'basemodulepath',
-    value   => $extra_module_path
+    value   => $basemodulepath
+  }
+
+  ini_setting { 'Puppet environment_timeout':
+    ensure  => present,
+    path    => "${confdir}/puppet.conf",
+    section => 'main',
+    setting => 'environment_timeout',
+    value   => $environment_timeout
   }
 
   if ($autosign == true and $::environment != 'production') {
     # enable autosign
     ini_setting { 'autosign':
       ensure  => present,
-      path    => "${::settings::confdir}/puppet.conf",
+      path    => "${confdir}/puppet.conf",
       section => 'master',
       setting => 'autosign',
       value   => true
@@ -45,7 +48,7 @@ class puppet::master::config (
     # disable autosign
     ini_setting { 'autosign':
       ensure  => absent,
-      path    => "${::settings::confdir}/puppet.conf",
+      path    => "${confdir}/puppet.conf",
       section => 'master',
       setting => 'autosign',
       value   => true
@@ -56,7 +59,7 @@ class puppet::master::config (
     # enable future parser
     ini_setting { 'master parser':
       ensure  => present,
-      path    => "${::settings::confdir}/puppet.conf",
+      path    => "${confdir}/puppet.conf",
       section => 'master',
       setting => 'parser',
       value   => 'future'
@@ -65,7 +68,7 @@ class puppet::master::config (
     # disable future parser
     ini_setting { 'master parser':
       ensure  => absent,
-      path    => "${::settings::confdir}/puppet.conf",
+      path    => "${confdir}/puppet.conf",
       section => 'master',
       setting => 'parser',
       value   => 'future'

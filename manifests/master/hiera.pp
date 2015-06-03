@@ -1,46 +1,24 @@
 # Class puppet::master::hiera
 
-class puppet::master::hiera (
-) {
+class puppet::master::hiera {
   include ::puppet::master
+  include ::puppet::defaults
 
-  $env_owner      = $puppet::master::env_owner
-  $eyaml_keys     = $puppet::master::eyaml_keys
-  $hiera_backends = $puppet::master::hiera_backends
-  $hieradata_path = $puppet::master::hieradata_path
-  $hierarchy      = $puppet::master::hiera_hierarchy
+  $codedir             = $puppet::defaults::codedir
+  $env_owner           = $puppet::master::env_owner
+  $eyaml_keys          = $puppet::master::eyaml_keys
+  $hiera_backends      = $puppet::master::hiera_backends
+  $hierarchy           = $puppet::master::hiera_hierarchy
+  $manage_hiera_config = $puppet::master::manage_hiera_config
 
-  #input validation
-  validate_absolute_path($hieradata_path)
-
-  validate_array($hierarchy)
-
-  validate_bool($eyaml_keys)
-
-  validate_hash($hiera_backends)
-
-  validate_string($env_owner)
-
-  file { $hieradata_path:
-    ensure => directory,
-    owner  => $env_owner,
-    group  => $env_owner,
-    mode   => '0755',
-  }
-
-  file { '/etc/hiera.yaml':
-    ensure  => file,
-    content => template('puppet/hiera.yaml.erb'),
-    owner   => 'root',
-    group   => 'root',
-    mode    => '0644',
-    notify  => Class['apache::service']
-  }
-
-  file { '/etc/puppet/hiera.yaml':
-    ensure  => link,
-    target  => '/etc/hiera.yaml',
-    require => File['/etc/hiera.yaml']
+  if ($manage_hiera_config == true) {
+    file { "${codedir}/hiera.yaml":
+      ensure  => file,
+      content => template('puppet/hiera.yaml.erb'),
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+    }
   }
 
   # eyaml for hiera

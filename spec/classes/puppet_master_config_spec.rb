@@ -3,88 +3,47 @@ require 'spec_helper'
 require 'pry'
 
 describe 'puppet::master::config', :type => :class do
-  context 'input validation' do
-
-#    ['environmentpath'].each do |paths|
-#      context "when the #{paths} parameter is not an absolute path" do
-#        let(:params) {{ paths => 'foo' }}
-#        it 'should fail' do
-#          expect { subject }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
-#        end
-#      end
-#    end#absolute path
-
-#    ['array'].each do |arrays|
-#      context "when the #{arrays} parameter is not an array" do
-#        let(:params) {{ arrays => 'this is a string'}}
-#        it 'should fail' do
-#           expect { subject }.to raise_error(Puppet::Error, /is not an Array./)
-#        end
-#      end
-#    end#arrays
-
-#    ['autosign','future_parser'].each do |bools|
-#      context "when the #{bools} parameter is not an boolean" do
-#        let(:params) {{bools => "BOGON"}}
-#        it 'should fail' do
-#          expect { subject }.to raise_error(Puppet::Error, /"BOGON" is not a boolean.  It looks to be a String/)
-#        end
-#      end
-#    end#bools
-
-#    ['hash'].each do |hashes|
-#      context "when the #{hashes} parameter is not an hash" do
-#        let(:params) {{ hashes => 'this is a string'}}
-#        it 'should fail' do
-#           expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
-#        end
-#      end
-#    end#hashes
-
-#    ['extra_module_path'].each do |strings|
-#      context "when the #{strings} parameter is not a string" do
-#        let(:params) {{strings => false }}
-#        it 'should fail' do
-#          expect { subject }.to raise_error(Puppet::Error, /false is not a string./)
-#        end
-#      end
-#    end#strings
-
-  end#input validation
-
+  let(:pre_condition){ 'class{"puppet::master::install":}' }
   on_supported_os.each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
         facts.merge({
-          :concat_basedir => '/tmp'
+          :concat_basedir => '/tmp',
+          :puppetversion => Puppet.version
         })
       end
-      context 'when fed no parameters' do
-        it 'should behave differently' do
-          #binding.pry;
-        end
-        it 'should properly set the environmentpath' do
+      if Puppet.version.to_f >= 4.0
+        confdir        = '/etc/puppetlabs/puppet'
+        codedir        = '/etc/puppetlabs/code'
+        basemodulepath = "#{codedir}/modules:#{confdir}/modules"
+      else
+        confdir        = '/etc/puppet'
+        codedir        = '/etc/puppet'
+        basemodulepath = "#{confdir}/modules:/usr/share/puppet/modules"
+      end
+      context "when fed no parameters" do
+        it "should properly set the environmentpath in #{confdir}/puppet.conf" do
           should contain_ini_setting('Puppet environmentpath').with({
             'ensure'=>'present',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'environmentpath',
-            'value'=>'/etc/puppet/environments'
+            'value'=>"#{codedir}/environments"
           })
         end
         it 'should properly set the basemodulepath' do
           should contain_ini_setting('Puppet basemodulepath').with({
             'ensure'=>'present',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'basemodulepath',
-            'value'=>'/etc/puppet/site:/usr/share/puppet/modules'
+            'value'=>"#{basemodulepath}"
           })
         end
         it 'should disable autosign' do
           should contain_ini_setting('autosign').with({
             'ensure'=>'absent',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'master',
             'setting'=>'autosign',
             'value'=>true
@@ -93,7 +52,7 @@ describe 'puppet::master::config', :type => :class do
         it 'should disable the future parser' do
           should contain_ini_setting('master parser').with({
             'ensure'=>'absent',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'master',
             'setting'=>'parser',
             'value'=>'future'
@@ -101,12 +60,25 @@ describe 'puppet::master::config', :type => :class do
         end
       end#no params
 
+      context 'when the $::puppet::master::environment_timeout variable has a custom value' do
+        let(:pre_condition) {"class{'::puppet::master': environment_timeout => 'BOGON'}"}
+        it 'should update the environment_timeout via an ini_setting' do
+          should contain_ini_setting('Puppet environment_timeout').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'environment_timeout',
+            'value'=>'BOGON'
+          })
+        end
+      end # environment_timeout
+
       context 'when the $::puppet::master::environmentpath variable has a custom value' do
         let(:pre_condition) {"class{'::puppet::master': environmentpath => '/BOGON'}"}
         it 'should update the environmentpath via an ini_setting' do
           should contain_ini_setting('Puppet environmentpath').with({
             'ensure'=>'present',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'environmentpath',
             'value'=>'/BOGON'
@@ -114,25 +86,25 @@ describe 'puppet::master::config', :type => :class do
         end
       end # environmentpath
 
-      context 'when the $::puppet::master::module_path variable has a custom value' do
-        let(:pre_condition) {"class{'::puppet::master': module_path => '/BOGON:/BOGON2'}"}
+      context 'when the $::puppet::master::basemodulepath variable has a custom value' do
+        let(:pre_condition) {"class{'::puppet::master': basemodulepath => '/BOGON:/BOGON2'}"}
         it 'should update the basemodulepath via an ini_setting' do
           should contain_ini_setting('Puppet basemodulepath').with({
             'ensure'=>'present',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'main',
             'setting'=>'basemodulepath',
             'value'=>'/BOGON:/BOGON2'
           })
         end
-      end # module_path
+      end # basemodulepath
 
       context 'when the $::puppet::master::future_parser variable is true' do
         let(:pre_condition) {"class{'::puppet::master': future_parser => true}"}
         it 'should update the autosign param via an ini_setting' do
           should contain_ini_setting('master parser').with({
             'ensure'=>'present',
-            'path'=>'/etc/puppet/puppet.conf',
+            'path'=>"#{confdir}/puppet.conf",
             'section'=>'master',
             'setting'=>'parser',
             'value'=>'future'
@@ -147,13 +119,12 @@ describe 'puppet::master::config', :type => :class do
             :environment => 'production'
           })
         end
-#        let(:facts)  {{ 'environment' => 'production'}}
         context 'and the environment is production' do
           it 'should not enable autosign' do
             skip 'This does not work as is'
             should contain_ini_setting('autosign').with({
               'ensure'=>'absent',
-              'path'=>'/etc/puppet/puppet.conf',
+              'path'=>"#{confdir}/puppet.conf",
               'section'=>'master',
               'setting'=>'autosign',
               'value'=>true
@@ -167,12 +138,11 @@ describe 'puppet::master::config', :type => :class do
               :environment => 'testenv'
             })
           end
-#          let(:facts) {{'environment' => 'testenv'}}
           it 'should enable autosign' do
             skip 'This does not work as is'
             should contain_ini_setting('autosign').with({
               'ensure'=>'present',
-              'path'=>'/etc/puppet/puppet.conf',
+              'path'=>"#{confdir}/puppet.conf",
               'section'=>'master',
               'setting'=>'autosign',
               'value'=>true
