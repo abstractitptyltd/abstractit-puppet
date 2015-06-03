@@ -12,14 +12,19 @@ describe 'puppet::repo', :type => :class do
         })
       end
 
-      it "should install the puppetlabs-release package" do
-        should contain_package('puppetlabs-release').with({'ensure' => 'latest'})
-      end#puppetlabs-release
+      context "when ::puppet::collection is not defined" do
+        it "should install the puppetlabs-release package" do
+          should contain_package('puppetlabs-release').with({'ensure' => 'latest'})
+        end#puppetlabs-release
+      end
 
       context "when ::puppet::collection is defined" do
         let(:pre_condition){"class{'::puppet': collection => 'BOGON'}"}
         it 'should contain the puppetlabs-release-$::puppet::collection package' do
           should contain_package('puppetlabs-release-bogon').with({'ensure' => 'latest'})
+        end
+        it 'should not contain the puppetlabs-release package' do
+          should_not contain_package('puppetlabs-release')
         end
       end
 
