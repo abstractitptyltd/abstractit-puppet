@@ -63,7 +63,7 @@ class puppet::profile::master (
   $puppet_version               = 'installed',
   $server_type                  = undef,
   $server_version               = 'installed',
-) inherits puppet::profile::agent {
+) {
   class { '::puppet::master':
     autosign                     => $autosign,
     basemodulepath               => $basemodulepath,

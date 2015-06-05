@@ -49,6 +49,11 @@ class puppet::profile::puppetdb (
 
   # add pg_trgm to the puppetdb database
   # remove this once the puppetdb module supports it
+  # need postgresql-contrib package to make pg_trgm work
+  package { 'postgresql-contrib':
+    ensure => 'installed'
+  }
+
   postgresql::server::extension{ 'pg_trgm':
     database => 'puppetdb',
   }
