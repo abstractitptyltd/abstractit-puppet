@@ -19,7 +19,6 @@ describe 'puppet::master::install', :type => :class do
         should contain_class('puppet::master::install::deps')
       end
 
-      # let(:pre_condition){"package{'puppet': ensure => 'present'}"}
       context 'when fed no parameters' do
         context 'when ::puppet::allinone is true' do
           let(:pre_condition){"class{'::puppet': allinone => true}"}
@@ -31,6 +30,7 @@ describe 'puppet::master::install', :type => :class do
         end# allinone true
         context 'when ::puppet::allinone is false' do
           let(:pre_condition){"class{'::puppet': allinone => false}"}
+          let(:pre_condition){"class{'::puppet::master': server_type=>'passenger' }"}
           case facts[:osfamily]
           when 'Debian'
             it 'should install the puppetmaster package' do
@@ -72,7 +72,7 @@ describe 'puppet::master::install', :type => :class do
         end# allinone true
         context 'when ::puppet::allinone is false' do
           let(:pre_condition){"class{'::puppet': allinone => false}"}
-          let(:pre_condition){"class{'::puppet::master': puppet_version=>'BOGON' }"}
+          let(:pre_condition){"class{'::puppet::master': puppet_version=>'BOGON', server_type=>'passenger' }"}
           case facts[:osfamily]
           when 'Debian'
             it 'should install the puppetmaster package' do
@@ -92,6 +92,30 @@ describe 'puppet::master::install', :type => :class do
             end
           end
         end# allinone false
+        context 'when ::puppet::allinone is false and server_type is puppetserver' do
+          let(:pre_condition){"class{'::puppet': allinone => false}"}
+          let(:pre_condition){"class{'::puppet::master': server_type => 'puppetserver' }"}
+          it 'should install the puppetserver package' do
+            should contain_package('puppetserver').that_requires(
+              'Class[puppet::master::install::deps]'
+            ).that_requires(
+              'Class[puppet::install]'
+            )
+          end
+        end# allinone false server_type = puppetserver
+        context 'when ::puppet::allinone is false server_version is set and server_type is puppetserver' do
+          let(:pre_condition){"class{'::puppet': allinone => false}"}
+          let(:pre_condition){"class{'::puppet::master': server_type => 'puppetserver', server_version => 'BOGON' }"}
+          it 'should install the puppetserver package' do
+            should contain_package('puppetserver').with({
+              :ensure=>'BOGON',
+            }).that_requires(
+              'Class[puppet::master::install::deps]'
+            ).that_requires(
+              'Class[puppet::install]'
+            )
+          end
+        end# allinone false server_type = puppetserver
       end # specific version of puppetserver
 
       context 'when the hiera_eyaml_version param has a non-standard value' do
