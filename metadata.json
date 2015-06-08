@@ -74,6 +74,10 @@
     {
       "name": "zack/r10k",
       "version_requirement": ">=2.7.0 <3.0.0"
+    },
+    {
+      "name": "puppet/puppetboard",
+      "version_requirement": ">=2.7.0 <3.0.0"
     }
   ]
 }

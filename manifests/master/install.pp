@@ -6,6 +6,7 @@ class puppet::master::install {
   include ::puppet::master
 
   $allinone            = $::puppet::allinone
+  $server_type         = $::puppet::master::server_type
   $hiera_eyaml_version = $::puppet::master::hiera_eyaml_version
   $puppet_version      = $::puppet::master::puppet_version
   $puppetmaster_pkg    = $::puppet::defaults::puppetmaster_pkg
@@ -15,8 +16,13 @@ class puppet::master::install {
     $server_package  = 'puppetserver'
     $package_ensure  = $server_version
   } else {
-    $server_package  = $puppetmaster_pkg
-    $package_ensure  = $puppet_version
+    if ($server_type == 'puppetserver') {
+        $server_package  = 'puppetserver'
+        $package_ensure  = $server_version
+      } else {
+        $server_package  = $puppetmaster_pkg
+        $package_ensure  = $puppet_version
+      }
   }
 
   include ::puppet::master::install::deps
