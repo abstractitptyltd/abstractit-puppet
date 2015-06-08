@@ -13,7 +13,8 @@ class puppet::master::server {
     path              => "${sysconfigdir}/puppetserver",
     setting           => 'JAVA_ARGS',
     subsetting        => '-Xmx',
-    value             => $java_ram
+    value             => $java_ram,
+    require           => Class['puppet::master::install']
   }
 
   ini_subsetting { 'puppet server Xms java_ram':
@@ -23,7 +24,8 @@ class puppet::master::server {
     path              => "${sysconfigdir}/puppetserver",
     setting           => 'JAVA_ARGS',
     subsetting        => '-Xms',
-    value             => $java_ram
+    value             => $java_ram,
+    require           => Class['puppet::master::install']
   }
 
   service { 'puppetserver':

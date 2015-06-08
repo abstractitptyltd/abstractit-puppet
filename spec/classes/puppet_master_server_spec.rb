@@ -37,7 +37,9 @@ describe 'puppet::master::server', :type => :class do
             'setting'    => 'JAVA_ARGS',
             'subsetting' => '-Xms',
             'value'      => '2g',
-          })
+          }).that_requires(
+            'Class[puppet::master::install]'
+          )
           should contain_ini_subsetting('puppet server Xmx java_ram').with({
             'ensure'  => 'present',
             'section' => '',
@@ -46,7 +48,9 @@ describe 'puppet::master::server', :type => :class do
             'setting'    => 'JAVA_ARGS',
             'subsetting' => '-Xmx',
             'value'      => '2g',
-          })
+          }).that_requires(
+            'Class[puppet::master::install]'
+          )
         end
         it 'should manage the puppet server service' do
           should contain_service('puppetserver').with({
@@ -72,7 +76,9 @@ describe 'puppet::master::server', :type => :class do
             'setting'=>'JAVA_ARGS',
             'subsetting' => '-Xmx',
             'value'=>"768m"
-          })
+          }).that_requires(
+            'Class[puppet::master::install]'
+          )
           should contain_ini_subsetting('puppet server Xms java_ram').with({
             'ensure'=>'present',
             'section' => '',
@@ -81,7 +87,9 @@ describe 'puppet::master::server', :type => :class do
             'setting'=>'JAVA_ARGS',
             'subsetting' => '-Xms',
             'value'=>"768m"
-          })
+          }).that_requires(
+            'Class[puppet::master::install]'
+          )
         end
       end# end java_ram set
     end#end OS
