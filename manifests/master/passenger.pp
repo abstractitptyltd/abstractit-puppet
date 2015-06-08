@@ -34,18 +34,7 @@ class puppet::master::passenger {
         Service['puppetmaster']]
     }
 
-    class { '::apache':
-      mpm_module    => 'worker',
-      default_vhost => false,
-      serveradmin   => "webmaster@${::domain}",
-      default_mods  => false,
-    }
-
-    # if ($::lsbdistcodename == 'trusty') {
-    #   ::apache::mod { 'access_compat':
-    #     package_ensure => undef,
-    #   }
-    # }
+    include ::apache
 
     # passenger settings
     class { '::apache::mod::passenger':
