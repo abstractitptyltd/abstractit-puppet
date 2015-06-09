@@ -45,7 +45,7 @@ describe 'puppet::master', :type => :class do
       end
     end#hashes
 
-    ['env_owner','environment_timeout','hiera_eyaml_version','java_ram','passenger_max_pool_size','passenger_max_requests','passenger_pool_idle_time','passenger_stat_throttle_rate','puppet_fqdn','server_type','puppet_version','r10k_version'].each do |strings|
+    ['env_owner','environment_timeout','hiera_eyaml_version','hiera_eyaml_pkcs7_private_key','hiera_eyaml_pkcs7_private_key_file','hiera_eyaml_pkcs7_public_key','hiera_eyaml_pkcs7_public_key_file','java_ram','passenger_max_pool_size','passenger_max_requests','passenger_pool_idle_time','passenger_stat_throttle_rate','puppet_fqdn','server_type','puppet_version','r10k_version'].each do |strings|
       context "when the #{strings} parameter is not a string" do
         let(:params) {{strings => false }}
         it 'should fail' do

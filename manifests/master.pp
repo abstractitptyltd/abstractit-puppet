@@ -18,6 +18,16 @@
 #   The backends to configure hiera to query.
 # @param hiera_eyaml_version ([String] Default: 'installed')
 #   The version of the hiera-eyaml package to install. *It is important to note that the hiera-eyaml package will be installed via gem*
+# @param hiera_eyaml_key_directory ([String] Default $::settings::confdir/hiera_eyaml_keys)
+#   Directory to store the hiera-eyaml keys
+# @param hiera_eyaml_pkcs7_private_key ([String] Default: undef)
+#   The location to store the hiera-eyaml private key
+# @param hiera_eyaml_pkcs7_public_key ([String] Default: undef)
+#   The location to store the hiera-eyaml public key
+# @param hiera_eyaml_pkcs7_private_key_file ([String] Default: undef)
+#   The puppet source of the file to use as the hiera-eyaml private key
+# @param hiera_eyaml_pkcs7_public_key_file ([String] Default: undef)
+#   The puppet source of the file to use as the hiera-eyaml private key
 # @param hiera_hierarchy ([Array] Default: ['node/%{::clientcert}', 'env/%{::environment}', 'global'])
 #   The hierarchy to configure hiera to use
 # @param hieradata_path (*absolute path* Default Puppet 3: /etc/puppet/hiera Default Puppet 4: $codedir/hieradata)
@@ -48,33 +58,38 @@
 #   Specifies the version of r10k to install. *It is important to note that the r10k package will be installed via gem*
 
 class puppet::master (
-  $autosign                     = false,
-  $basemodulepath               = $::puppet::defaults::basemodulepath,
-  $env_owner                    = 'puppet',
-  $environmentpath              = $::puppet::defaults::environmentpath,
-  $environment_timeout          = '0',
-  $eyaml_keys                   = false,
-  $future_parser                = false,
-  $hiera_backends               = $::puppet::defaults::hiera_backends,
-  $hiera_eyaml_version          = 'installed',
-  $hiera_hierarchy              = [
+  $autosign                           = false,
+  $basemodulepath                     = $::puppet::defaults::basemodulepath,
+  $env_owner                          = 'puppet',
+  $environmentpath                    = $::puppet::defaults::environmentpath,
+  $environment_timeout                = '0',
+  $eyaml_keys                         = false,
+  $future_parser                      = false,
+  $hiera_backends                     = $::puppet::defaults::hiera_backends,
+  $hiera_eyaml_key_directory          = $::puppet::defaults::hiera_eyaml_key_directory,
+  $hiera_eyaml_pkcs7_private_key      = 'private_key.pkcs7.pem',
+  $hiera_eyaml_pkcs7_public_key       = 'public_key.pkcs7.pem',
+  $hiera_eyaml_pkcs7_private_key_file = undef,
+  $hiera_eyaml_pkcs7_public_key_file  = undef,
+  $hiera_eyaml_version                = 'installed',
+  $hiera_hierarchy                    = [
     'node/%{::clientcert}',
     'env/%{::environment}',
     'global'],
-  $hieradata_path               = $::puppet::defaults::hieradata_path,
-  $java_ram                     = '2g',
-  $manage_hiera_config          = true,
-  $passenger_max_pool_size      = '12',
-  $passenger_max_requests       = '0',
-  $passenger_pool_idle_time     = '1500',
-  $passenger_stat_throttle_rate = '120',
-  $puppet_fqdn                  = $::fqdn,
-  $puppet_version               = 'installed',
-  $server_type                  = $::puppet::defaults::server_type,
-  $server_version               = 'installed',
-  $module_path                  = undef,
-  $pre_module_path              = undef,
-  $r10k_version                 = undef,
+  $hieradata_path                     = $::puppet::defaults::hieradata_path,
+  $java_ram                           = '2g',
+  $manage_hiera_config                = true,
+  $passenger_max_pool_size            = '12',
+  $passenger_max_requests             = '0',
+  $passenger_pool_idle_time           = '1500',
+  $passenger_stat_throttle_rate       = '120',
+  $puppet_fqdn                        = $::fqdn,
+  $puppet_version                     = 'installed',
+  $server_type                        = $::puppet::defaults::server_type,
+  $server_version                     = 'installed',
+  $module_path                        = undef,
+  $pre_module_path                    = undef,
+  $r10k_version                       = undef,
 ) inherits ::puppet::defaults {
 
   #input validation
@@ -119,6 +134,15 @@ class puppet::master (
   }
   if $pre_module_path != undef {
     notify { 'Deprecation notice: puppet::master::pre_module_path is deprecated, use puppet::master::basemodulepath instead': }
+  }
+
+  if $eyaml_keys == true {
+    if $hiera_eyaml_pkcs7_private_key_file == undef {
+      notify { 'hiera_eyaml_pkcs7_private_key_file needs to be set if you want to manage your hiera eyaml keys': }
+    }
+    if $hiera_eyaml_pkcs7_public_key_file == undef {
+      notify { 'hiera_eyaml_pkcs7_public_key_file needs to be set if you want to manage your hiera eyaml keys': }
+    }
   }
 
   include ::puppet::master::install
