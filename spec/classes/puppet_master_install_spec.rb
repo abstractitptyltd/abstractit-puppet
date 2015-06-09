@@ -58,11 +58,10 @@ describe 'puppet::master::install', :type => :class do
       context 'when the a specific version of puppetserver is required' do
         context 'when ::puppet::allinone is true' do
           let(:pre_condition){"class{'::puppet': allinone => true}"}
-          let(:pre_condition){"class{'::puppet::master': server_version=>'BOGON' }"}
+          let(:pre_condition){"class{'::puppet::master': server_version=>'latest' }"}
           it "should install the puppetserver package" do
-            skip 'This does not work as is'
             should contain_package('puppetserver').with({
-              :ensure=>'BOGON',
+              :ensure=>'latest',
               }).that_requires(
                 'Class[puppet::master::install::deps]'
               ).that_requires(

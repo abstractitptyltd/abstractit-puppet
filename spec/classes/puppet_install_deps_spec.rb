@@ -26,18 +26,16 @@ describe 'puppet::install::deps', :type => :class do
         end#package iterator
 
         context 'and when the ::puppet::hiera_version param has a custom value' do
-          let(:pre_condition) {"class{'puppet': hiera_version => 'some_version'}"}
+          let(:pre_condition) {"class{'puppet': hiera_version => 'latest'}"}
           it 'should install the specified version if the hiera packages' do
-            skip 'This does not work as is'
-            should contain_package('hiera').with({:ensure => 'some_version'})
+            should contain_package('hiera').with({:ensure => 'latest'})
           end
         end#hiera_version
 
         context 'and when the ::puppet::facter_version param has a custom value' do
-          let(:pre_condition) {"class{'puppet': facter_version => 'some_version'}"}
+          let(:pre_condition) {"class{'puppet': facter_version => 'latest'}"}
           it 'should install the specified version if the facter packages' do
-            skip 'This does not work as is'
-            should contain_package('facter').with({:ensure => 'some_version'})
+            should contain_package('facter').with({:ensure => 'latest'})
           end
         end#facter_version
 

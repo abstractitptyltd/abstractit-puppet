@@ -102,99 +102,99 @@ describe 'puppet', :type => :class do
         end
       end#no params
 
-      context 'when the agent_version param is something other than installed' do
-        let(:params) {{'agent_version' => 'BOGON'}}
-        it 'should instantiate the puppet::install class apropriately' do
-          should contain_class('puppet::install')
-        end
-      end#agent_version
+      # context 'when the agent_version param is something other than installed' do
+      #   let(:params) {{'agent_version' => 'BOGON'}}
+      #   it 'should instantiate the puppet::install class apropriately' do
+      #     should contain_class('puppet::install')
+      #   end
+      # end#agent_version
 
-      context 'when the allinone param is true' do
-        let(:params){{'allinone' => true}}
-        it 'should instantiate the puppet::install class apropriately' do
-          should contain_class('puppet::install')
-        end
-      end#allinone
+      # context 'when the allinone param is true' do
+      #   let(:params){{'allinone' => true}}
+      #   it 'should instantiate the puppet::install class apropriately' do
+      #     should contain_class('puppet::install')
+      #   end
+      # end#allinone
 
-      context 'when the cfacter param is true' do
-        let(:params){{'cfacter' => true}}
-        it 'should instantiate the puppet::config class apropriately' do
-          should contain_class('puppet::config')
-        end
-      end#cfacter
+      # context 'when the cfacter param is true' do
+      #   let(:params){{'cfacter' => true}}
+      #   it 'should instantiate the puppet::config class apropriately' do
+      #     should contain_class('puppet::config')
+      #   end
+      # end#cfacter
 
-      context 'when the collection param is defined' do
-        let(:params) {{'collection' => 'BOGON'}}
-        it 'should instantiate the puppet::repo class apropriately' do
-          should contain_class('puppet::repo')
-        end
-      end#collection
+      # context 'when the collection param is defined' do
+      #   let(:params) {{'collection' => 'BOGON'}}
+      #   it 'should instantiate the puppet::repo class apropriately' do
+      #     should contain_class('puppet::repo')
+      #   end
+      # end#collection
 
-      context 'when the custom_facts param is set' do
-        let(:params){{'custom_facts' => {'fact1' => 'value1','fact2' => 'value2'} }}
-        it 'should instantiate the puppet::facts class apropriately' do
-          should contain_class('puppet::facts').with({'custom_facts' => {'fact1' => 'value1','fact2' => 'value2'} })
-        end
-      end#custom_facts
+      # context 'when the custom_facts param is set' do
+      #   let(:params){{'custom_facts' => {'fact1' => 'value1','fact2' => 'value2'} }}
+      #   it 'should instantiate the puppet::facts class apropriately' do
+      #     should contain_class('puppet::facts').with({'custom_facts' => {'fact1' => 'value1','fact2' => 'value2'} })
+      #   end
+      # end#custom_facts
 
-      context 'when the enable_devel_repo param is true' do
-        let(:params){{'enable_devel_repo' => true}}
-        it 'should instantiate the puppet::repo class apropriately' do
-          should contain_class('puppet::repo')
-        end
-      end#enable_devel_repo
+      # context 'when the enable_devel_repo param is true' do
+      #   let(:params){{'enable_devel_repo' => true}}
+      #   it 'should instantiate the puppet::repo class apropriately' do
+      #     should contain_class('puppet::repo')
+      #   end
+      # end#enable_devel_repo
 
-      context 'when the enabled param is false' do
-        let(:params){{'enabled' => false}}
-        it 'should instantiate the puppet::agent class' do
-          should contain_class('puppet::agent')
-        end
-      end#enabled
-      context 'when the environment param is set' do
-        let(:params) {{'environment' => 'BOGON'}}
-        it 'should instantiate the puppet::config class apropriately' do
-          should contain_class('puppet::config')
-        end
-      end#environment
-      context 'when the logdest param is set' do
-        let(:params) {{'logdest' => '/var/log/BOGON'}}
-        it 'should instantiate the puppet::config class apropriately' do
-          should contain_class('puppet::config')
-        end
-      end#environment
+      # context 'when the enabled param is false' do
+      #   let(:params){{'enabled' => false}}
+      #   it 'should instantiate the puppet::agent class' do
+      #     should contain_class('puppet::agent')
+      #   end
+      # end#enabled
+      # context 'when the environment param is set' do
+      #   let(:params) {{'environment' => 'BOGON'}}
+      #   it 'should instantiate the puppet::config class apropriately' do
+      #     should contain_class('puppet::config')
+      #   end
+      # end#environment
+      # context 'when the logdest param is set' do
+      #   let(:params) {{'logdest' => '/var/log/BOGON'}}
+      #   it 'should instantiate the puppet::config class apropriately' do
+      #     should contain_class('puppet::config')
+      #   end
+      # end#environment
 
-      ['facter_version','hiera_version','puppet_version'].each do |versions|
-        context "when the #{versions} param has a non-standard value" do
-          let(:params) {{versions => 'BOGON'}}
-          it 'should instantiate the puppet::install class apropriately' do
-            should contain_class('puppet::install')
-          end
-        end
-      end#versions
-      context 'when the puppet_server param has a non-standard value' do
-        let(:params){{'puppet_server' => 'BOGON'}}
-        it 'should instantiate the puppet::config class apropriately' do
-          should contain_class('puppet::config')
-        end
-      end#puppet_server
-      context 'when the reports param is false' do
-        let(:params){{'reports' => false}}
-        it 'should instantiate the puppet::config class apropriately' do
-          should contain_class('puppet::config')
-        end
-      end
-      context 'when the runinterval param has a non-standard value' do
-        let(:params){{'runinterval' => 'BOGON'}}
-        it 'should instantiate the puppet::config class apropriately' do
-          should contain_class('puppet::config')
-        end
-      end#runinterval
-      context 'when the structured facts param has a value of true' do
-        let(:params){{'structured_facts' => true}}
-        it 'should instantiate the puppet::config class apropriately' do
-          should contain_class('puppet::config')
-        end
-      end
+      # ['facter_version','hiera_version','puppet_version'].each do |versions|
+      #   context "when the #{versions} param has a non-standard value" do
+      #     let(:params) {{versions => 'BOGON'}}
+      #     it 'should instantiate the puppet::install class apropriately' do
+      #       should contain_class('puppet::install')
+      #     end
+      #   end
+      # end#versions
+      # context 'when the puppet_server param has a non-standard value' do
+      #   let(:params){{'puppet_server' => 'BOGON'}}
+      #   it 'should instantiate the puppet::config class apropriately' do
+      #     should contain_class('puppet::config')
+      #   end
+      # end#puppet_server
+      # context 'when the reports param is false' do
+      #   let(:params){{'reports' => false}}
+      #   it 'should instantiate the puppet::config class apropriately' do
+      #     should contain_class('puppet::config')
+      #   end
+      # end
+      # context 'when the runinterval param has a non-standard value' do
+      #   let(:params){{'runinterval' => 'BOGON'}}
+      #   it 'should instantiate the puppet::config class apropriately' do
+      #     should contain_class('puppet::config')
+      #   end
+      # end#runinterval
+      # context 'when the structured facts param has a value of true' do
+      #   let(:params){{'structured_facts' => true}}
+      #   it 'should instantiate the puppet::config class apropriately' do
+      #     should contain_class('puppet::config')
+      #   end
+      # end
     end
   end#on_supported_os
 end
