@@ -3,13 +3,18 @@
 class puppet::master::config {
   include ::puppet::master
   include ::puppet::defaults
-  $confdir             = $::puppet::defaults::confdir
-  $codedir             = $::puppet::defaults::codedir
-  $environmentpath     = $puppet::master::environmentpath
-  $environment_timeout = $puppet::master::environment_timeout
-  $basemodulepath      = $puppet::master::basemodulepath
-  $future_parser       = $puppet::master::future_parser
-  $autosign            = $puppet::master::autosign
+  $confdir              = $::puppet::defaults::confdir
+  $codedir              = $::puppet::defaults::codedir
+  $reports_dir          = $::puppet::defaults::reports_dir
+  $environmentpath      = $puppet::master::environmentpath
+  $environment_timeout  = $puppet::master::environment_timeout
+  $basemodulepath       = $puppet::master::basemodulepath
+  $future_parser        = $puppet::master::future_parser
+  $autosign             = $puppet::master::autosign
+  $report_age           = $puppet::master::report_age
+  $report_clean_hour    = $puppet::master::report_clean_hour
+  $report_clean_min     = $puppet::master::report_clean_min
+  $report_clean_weekday = $puppet::master::report_clean_weekday
 
   ini_setting { 'Puppet environmentpath':
     ensure  => present,
@@ -33,6 +38,15 @@ class puppet::master::config {
     section => 'main',
     setting => 'environment_timeout',
     value   => $environment_timeout
+  }
+
+  # cleanup old puppet reports
+  cron { 'puppet clean reports':
+    command => "cd ${reports_dir} && find . -type f -name \\*.yaml -mtime +${report_age} -print0 | xargs -0 -n50 /bin/rm -f",
+    user    => root,
+    hour    => $report_clean_hour,
+    minute  => $report_clean_min,
+    weekday => $report_clean_weekday,
   }
 
   if ($autosign == true and $::environment != 'production') {

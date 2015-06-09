@@ -48,6 +48,14 @@
 #   Sets the namevar of the [apache::vhost](https://github.com/puppetlabs/puppetlabs-apache#defined-type-apachevhost) resource declared. It is also used to derive the ssl_cert and ssl_key parameters to the apache::vhost resource.
 # @param puppet_version ([String] Default: 'installed')
 #   Specifies the version of the puppetmaster package to install
+# @param report_age ([String] Default: '7')
+#   Specifies number of days of reports to keep
+# @param report_clean_hour ([String] Default: '21')
+#   Specifies hour to run the report clean cronjob
+# @param report_clean_min ([String] Default: '22')
+#   Specifies minute to run the report clean cronjob
+# @param report_clean_weekday ([String] Default: '0')
+#   Specifies weekday to run the report clean cronjob
 # @param server_type ([String] Default Puppet 4: 'puppetserver' Default Puppet 4: 'passenger')
 #   Specifies the type of server to use puppetserver is always used on Puppet 4
 # @param module_path **DEPRECATED** ([String] Default: undef)
@@ -85,6 +93,10 @@ class puppet::master (
   $passenger_stat_throttle_rate       = '120',
   $puppet_fqdn                        = $::fqdn,
   $puppet_version                     = 'installed',
+  $report_age                         = '7',
+  $report_clean_min                   = '22',
+  $report_clean_hour                  = '21',
+  $report_clean_weekday               = '0',
   $server_type                        = $::puppet::defaults::server_type,
   $server_version                     = 'installed',
   $module_path                        = undef,

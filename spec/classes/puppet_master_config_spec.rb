@@ -16,10 +16,12 @@ describe 'puppet::master::config', :type => :class do
         confdir        = '/etc/puppetlabs/puppet'
         codedir        = '/etc/puppetlabs/code'
         basemodulepath = "#{codedir}/modules:#{confdir}/modules"
+        reports_dir    = "/opt/puppetlabs/server/data/reports"
       else
         confdir        = '/etc/puppet'
         codedir        = '/etc/puppet'
         basemodulepath = "#{confdir}/modules:/usr/share/puppet/modules"
+        reports_dir    = "/var/lib/puppet/reports"
       end
       context "when fed no parameters" do
         it "should properly set the environmentpath in #{confdir}/puppet.conf" do
@@ -58,7 +60,73 @@ describe 'puppet::master::config', :type => :class do
             'value'=>'future'
           })
         end
+        it 'should create the \'puppet clean reports\' cronjob' do
+          should contain_cron('puppet clean reports').with({
+            :name=>"puppet clean reports",
+            :command=>"cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f",
+            :user=>"root",
+            :hour=>"21",
+            :minute=>"22",
+            :weekday=>"0"
+          })
+        end
       end#no params
+
+      context 'when report_age has a custom value' do
+        let(:pre_condition) {"class{'::puppet::master': report_age => '33'}"}
+        it 'should create the \'puppet clean reports\' cronjob with custom mtime' do
+          should contain_cron('puppet clean reports').with({
+            :name=>"puppet clean reports",
+            :command=>"cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +33 -print0 | xargs -0 -n50 /bin/rm -f",
+            :user=>"root",
+            :hour=>"21",
+            :minute=>"22",
+            :weekday=>"0"
+          })
+        end
+      end #end custom report_age
+
+      context 'when report_clean_hour has a custom value' do
+        let(:pre_condition) {"class{'::puppet::master': report_clean_hour => '12'}"}
+        it 'should create the \'puppet clean reports\' cronjob with custom hour' do
+          should contain_cron('puppet clean reports').with({
+            :name=>"puppet clean reports",
+            :command=>"cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f",
+            :user=>"root",
+            :hour=>"12",
+            :minute=>"22",
+            :weekday=>"0"
+          })
+        end
+      end #end custom report_clean_hour
+
+      context 'when report_clean_min has a custom value' do
+        let(:pre_condition) {"class{'::puppet::master': report_clean_min => '59'}"}
+        it 'should create the \'puppet clean reports\' cronjob with custom minute' do
+          should contain_cron('puppet clean reports').with({
+            :name=>"puppet clean reports",
+            :command=>"cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f",
+            :user=>"root",
+            :hour=>"21",
+            :minute=>"59",
+            :weekday=>"0"
+          })
+        end
+      end #end custom report_clean_min
+
+      context 'when report_clean_weekday has a custom value' do
+        let(:pre_condition) {"class{'::puppet::master': report_clean_weekday => '7'}"}
+        it 'should create the \'puppet clean reports\' cronjob with custom weekday' do
+          should contain_cron('puppet clean reports').with({
+            :name=>"puppet clean reports",
+            :command=>"cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f",
+            :user=>"root",
+            :hour=>"21",
+            :minute=>"22",
+            :weekday=>"7"
+          })
+        end
+      end #end custom report_clean_weekday
 
       context 'when the $::puppet::master::environment_timeout variable has a custom value' do
         let(:pre_condition) {"class{'::puppet::master': environment_timeout => 'BOGON'}"}
@@ -113,13 +181,13 @@ describe 'puppet::master::config', :type => :class do
       end # future_parser
 
       context 'when the $::puppet::master::autosign variable is true' do
-        let(:pre_condition) {"class{'::puppet::master': autosign => true}"}
-        let(:facts) do
-          facts.merge({
-            :environment => 'production'
-          })
-        end
         context 'and the environment is production' do
+          let(:pre_condition) {"class{'::puppet::master': autosign => true}"}
+          let(:facts) do
+            facts.merge({
+              :environment => 'production'
+            })
+          end
           it 'should not enable autosign' do
             skip 'This does not work as is'
             should contain_ini_setting('autosign').with({

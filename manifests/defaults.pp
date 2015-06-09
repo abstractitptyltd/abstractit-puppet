@@ -41,6 +41,7 @@ class puppet::defaults {
       }
     }
     $facterbasepath            = '/opt/puppetlabs/facter'
+    $reports_dir               = '/opt/puppetlabs/server/data/reports'
   } else {
     $server_type               = 'passenger'
     $confdir                   = '/etc/puppet'
@@ -55,5 +56,6 @@ class puppet::defaults {
       }
     }
     $facterbasepath            = '/etc/facter'
+    $reports_dir               = '/var/lib/puppet/reports'
   }
 }
