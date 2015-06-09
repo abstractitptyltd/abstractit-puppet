@@ -12,7 +12,7 @@ class puppet::master::install {
   $puppetmaster_pkg    = $::puppet::defaults::puppetmaster_pkg
   $server_version      = $::puppet::master::server_version
 
-  if ($allinone) {
+  if ($allinone == true) {
     $server_package  = 'puppetserver'
     $package_ensure  = $server_version
   } else {
