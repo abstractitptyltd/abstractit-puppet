@@ -17,18 +17,18 @@ describe 'puppet::master::install::deps', :type => :class do
         when 'Debian'
           context 'when osfamily == Debian' do
             let(:pre_condition) {"class{'::puppet': allinone => false}"}
-              it 'should install the puppetmaster-common package' do
-                should contain_package('puppetmaster-common').with(
-                  'ensure'=>'installed',
-                )
+            it 'should install the puppetmaster-common package' do
+              should contain_package('puppetmaster-common').with(
+                'ensure'=>'installed',
+              )
             end#end no params
 
             context 'when the ::puppet::master::puppet_version param has a non-standard value' do
-              let(:pre_condition) {"class{'::puppet::master': puppet_version=>'BOGON' }"}
+              let(:pre_condition) {"class{'::puppet::master': puppet_version=>'latest' }"}
               it 'should install the specified version of the puppetmaster-common package' do
-                skip 'This does not work as is'
+                # skip 'This does not work as is'
                 should contain_package('puppetmaster-common').with(
-                  'ensure' => 'BOGON',
+                  'ensure' => 'latest',
                 )
               end
             end
