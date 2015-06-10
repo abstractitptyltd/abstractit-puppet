@@ -24,6 +24,8 @@
 #   If true, the module will properly set the 'reports' field in the puppet.conf file to enable the puppetdb report processor.
 # @param use_ssl [Boolean] Defaults: true
 #   A toggle to enable or disable ssl on puppetdb connections.
+# @puppet_server_type [String] Defaults: 'passenger'
+#   Type of puppet server set to puppetserver if using the new puppetserver
 
 class puppet::profile::puppetdb (
   $puppetdb_version            = 'installed',
@@ -35,6 +37,7 @@ class puppet::profile::puppetdb (
   $report_ttl                  = '14d',
   $reports                     = true,
   $use_ssl                     = true,
+  $puppet_server_type          = 'passenger',
 ) {
   case $use_ssl {
     default : {
@@ -44,6 +47,14 @@ class puppet::profile::puppetdb (
     false   : {
       $puppetdb_port = '8080'
       $disable_ssl = true
+    }
+  }
+  case $puppet_server_type {
+    default: {
+      $puppet_service_name = 'httpd'
+    }
+    'puppetserver': {
+      $puppet_service_name = 'puppetserver'
     }
   }
 
@@ -73,7 +84,7 @@ class puppet::profile::puppetdb (
   class { '::puppetdb::master::config':
     puppetdb_port           => $puppetdb_port,
     puppetdb_server         => $puppetdb_server,
-    puppet_service_name     => 'httpd',
+    puppet_service_name     => $puppet_service_name,
     enable_reports          => $reports,
     manage_report_processor => $reports,
     restart_puppet          => true,

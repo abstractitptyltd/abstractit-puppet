@@ -1,3 +1,11 @@
+##2015-06-09 - Pete Brown <pete@abstractit.com.au> 2.0.1
+###Summary
+Bugfix release
+
+####Bugfixes
+Add puppet_server_type ro puppetdb profile so we can specify the type of puppet server we run
+
+
 ##2015-06-09 - Pete Brown <pete@abstractit.com.au> 2.0.0
 ###Summary
 
