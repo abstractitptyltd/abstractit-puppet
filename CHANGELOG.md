@@ -1,3 +1,12 @@
+##2015-06-10 - Pete Brown <pete@abstractit.com.au> 2.0.2
+###Summary
+Spec test cleanup.
+Fixing deployment condition for Travis.
+Reducting the tested os versions as most tests are duplicated 10 times which is excessive and time consuming
+
+####Bugfixes
+hiera_eyaml vars were missing from puppet::master::profile
+
 ##2015-06-09 - Pete Brown <pete@abstractit.com.au> 2.0.1
 ###Summary
 Bugfix release

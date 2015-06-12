@@ -4,7 +4,7 @@
 [![Puppet Forge](https://img.shields.io/puppetforge/v/abstractit/puppet.svg?style=plastic)](https://forge.puppetlabs.com/abstractit/puppet)
 [![Puppet Forge Downloads](https://img.shields.io/puppetforge/dt/abstractit/puppet.svg?style=plastic)](https://forge.puppetlabs.com/abstractit/puppet)
 [![Puppet Forge Modules](https://img.shields.io/puppetforge/mc/abstractit.svg?style=plastic)](https://forge.puppetlabs.com/abstractit)
-[![GitHub tag](https://img.shields.io/github/tag/abstractitptyltd/abstractit-puppet.svg?style=plastic)](https://github.com/abstractitptyltd/abstractit-puppet)
+
 
 ####Table of Contents
 

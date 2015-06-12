@@ -16,6 +16,16 @@
 #   The backends to configure hiera to query.
 # @param hiera_eyaml_version ([String] Default: 'installed')
 #   The version of the hiera-eyaml package to install. *It is important to note that the hiera-eyaml package will be installed via gem*
+# @param hiera_eyaml_key_directory ([String] Default $::settings::confdir/hiera_eyaml_keys)
+#   Directory to store the hiera-eyaml keys
+# @param hiera_eyaml_pkcs7_private_key ([String] Default: undef)
+#   The location to store the hiera-eyaml private key
+# @param hiera_eyaml_pkcs7_public_key ([String] Default: undef)
+#   The location to store the hiera-eyaml public key
+# @param hiera_eyaml_pkcs7_private_key_file ([String] Default: undef)
+#   The puppet source of the file to use as the hiera-eyaml private key
+# @param hiera_eyaml_pkcs7_public_key_file ([String] Default: undef)
+#   The puppet source of the file to use as the hiera-eyaml private key
 # @param hiera_hierarchy ([Array] Default: ['node/%{::clientcert}', 'env/%{::environment}', 'global'])
 #   The hierarchy to configure hiera to use
 # @param hieradata_path (*absolute path* Default Puppet 3: /etc/puppet/hiera Default Puppet 4: $codedir/hieradata)
@@ -42,50 +52,60 @@
 #   Specifies the type of server to use puppetserver is always used on Puppet 4
 
 class puppet::profile::master (
-  $autosign                     = false,
-  $basemodulepath               = undef,
-  $env_owner                    = 'puppet',
-  $environmentpath              = undef,
-  $environment_timeout          = '0',
-  $eyaml_keys                   = false,
-  $future_parser                = false,
-  $hiera_backends               = undef,
-  $hiera_eyaml_version          = 'installed',
-  $hiera_hierarchy              = undef,
-  $hieradata_path               = undef,
-  $java_ram                     = '2g',
-  $manage_hiera_config          = true,
-  $passenger_max_pool_size      = '12',
-  $passenger_max_requests       = '0',
-  $passenger_pool_idle_time     = '1500',
-  $passenger_stat_throttle_rate = '120',
-  $puppet_fqdn                  = $::fqdn,
-  $puppet_version               = 'installed',
-  $server_type                  = undef,
-  $server_version               = 'installed',
+  $autosign                           = false,
+  $basemodulepath                     = undef,
+  $env_owner                          = 'puppet',
+  $environmentpath                    = undef,
+  $environment_timeout                = '0',
+  $eyaml_keys                         = false,
+  $future_parser                      = false,
+  $hiera_backends                     = undef,
+  $hiera_eyaml_key_directory          = undef,
+  $hiera_eyaml_pkcs7_private_key      = 'private_key.pkcs7.pem',
+  $hiera_eyaml_pkcs7_public_key       = 'public_key.pkcs7.pem',
+  $hiera_eyaml_pkcs7_private_key_file = undef,
+  $hiera_eyaml_pkcs7_public_key_file  = undef,
+  $hiera_eyaml_version                = 'installed',
+  $hiera_hierarchy                    = undef,
+  $hieradata_path                     = undef,
+  $java_ram                           = '2g',
+  $manage_hiera_config                = true,
+  $passenger_max_pool_size            = '12',
+  $passenger_max_requests             = '0',
+  $passenger_pool_idle_time           = '1500',
+  $passenger_stat_throttle_rate       = '120',
+  $puppet_fqdn                        = $::fqdn,
+  $puppet_version                     = 'installed',
+  $server_type                        = undef,
+  $server_version                     = 'installed',
 ) {
   class { '::puppet::master':
-    autosign                     => $autosign,
-    basemodulepath               => $basemodulepath,
-    env_owner                    => $env_owner,
-    environmentpath              => $environmentpath,
-    environment_timeout          => $environment_timeout,
-    eyaml_keys                   => $eyaml_keys,
-    future_parser                => $future_parser,
-    hiera_backends               => $hiera_backends,
-    hiera_eyaml_version          => $hiera_eyaml_version,
-    hiera_hierarchy              => $hiera_hierarchy,
-    hieradata_path               => $hieradata_path,
-    java_ram                     => $java_ram,
-    manage_hiera_config          => $manage_hiera_config,
-    passenger_max_pool_size      => $passenger_max_pool_size,
-    passenger_max_requests       => $passenger_max_requests,
-    passenger_pool_idle_time     => $passenger_pool_idle_time,
-    passenger_stat_throttle_rate => $passenger_stat_throttle_rate,
-    puppet_fqdn                  => $puppet_fqdn,
-    server_version               => $server_version,
-    server_type                  => $server_type,
-    puppet_version               => $puppet_version,
+    autosign                           => $autosign,
+    basemodulepath                     => $basemodulepath,
+    env_owner                          => $env_owner,
+    environmentpath                    => $environmentpath,
+    environment_timeout                => $environment_timeout,
+    eyaml_keys                         => $eyaml_keys,
+    future_parser                      => $future_parser,
+    hiera_backends                     => $hiera_backends,
+    hiera_eyaml_key_directory          => $hiera_eyaml_key_directory,
+    hiera_eyaml_pkcs7_private_key      => $hiera_eyaml_pkcs7_private_key,
+    hiera_eyaml_pkcs7_public_key       => $hiera_eyaml_pkcs7_public_key,
+    hiera_eyaml_pkcs7_private_key_file => $hiera_eyaml_pkcs7_private_key_file,
+    hiera_eyaml_pkcs7_public_key_file  => $hiera_eyaml_pkcs7_public_key_file,
+    hiera_eyaml_version                => $hiera_eyaml_version,
+    hiera_hierarchy                    => $hiera_hierarchy,
+    hieradata_path                     => $hieradata_path,
+    java_ram                           => $java_ram,
+    manage_hiera_config                => $manage_hiera_config,
+    passenger_max_pool_size            => $passenger_max_pool_size,
+    passenger_max_requests             => $passenger_max_requests,
+    passenger_pool_idle_time           => $passenger_pool_idle_time,
+    passenger_stat_throttle_rate       => $passenger_stat_throttle_rate,
+    puppet_fqdn                        => $puppet_fqdn,
+    server_version                     => $server_version,
+    server_type                        => $server_type,
+    puppet_version                     => $puppet_version,
   }
 
 }

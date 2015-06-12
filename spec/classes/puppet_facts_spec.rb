@@ -53,7 +53,23 @@ describe 'puppet::facts', :type => :class do
 
   end#input validation
 
-  on_supported_os.each do |os, facts|
+  on_supported_os({
+      :hardwaremodels => ['x86_64'],
+      :supported_os   => [
+        {
+          "operatingsystem" => "Ubuntu",
+          "operatingsystemrelease" => [
+            "14.04"
+          ]
+        },
+        {
+          "operatingsystem" => "CentOS",
+          "operatingsystemrelease" => [
+            "7"
+          ]
+        }
+      ],
+    }).each do |os, facts|
     context "When on an #{os} system" do
       let(:facts) do
         facts.merge({
@@ -64,6 +80,7 @@ describe 'puppet::facts', :type => :class do
           :puppetversion => Puppet.version
         })
       end
+      it { is_expected.to compile.with_all_deps }
       if Puppet.version.to_f >= 4.0
         facterbasepath  = '/opt/puppetlabs/facter'
       else

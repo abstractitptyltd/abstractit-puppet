@@ -32,6 +32,7 @@ describe 'puppet::repo::yum', :type => :class do
           :puppetversion => Puppet.version
         })
       end
+      it { is_expected.to compile.with_all_deps }
       context 'when ::puppet has default parameters' do
         let(:pre_condition){"class{'::puppet':}"}
         it 'should add the puppetlabs-products yum repo' do

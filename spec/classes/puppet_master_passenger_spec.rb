@@ -38,6 +38,7 @@ describe 'puppet::master::passenger', :type => :class do
           :puppetversion => Puppet.version
         })
       end
+      it { is_expected.to compile.with_all_deps }
       if Puppet.version.to_f < 4.0
         context 'when puppet_version < 4' do
           # let(:pre_condition){"class{'puppet::master::install':}"}
