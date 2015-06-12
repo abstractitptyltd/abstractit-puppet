@@ -2,6 +2,8 @@
 ###Summary
 Spec test cleanup.
 Fixing deployment condition for Travis.
+Added all vars to r10k profile
+Added r10k_update_env var to r10k profile for setting environment to update
 Reducting the tested os versions as most tests are duplicated 10 times which is excessive and time consuming
 
 ####Bugfixes
