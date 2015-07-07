@@ -4,16 +4,17 @@
 class puppet::config {
   include ::puppet
   include ::puppet::defaults
-  $sysconfigdir     = $::puppet::defaults::sysconfigdir
   $confdir          = $::puppet::defaults::confdir
   $codedir          = $::puppet::defaults::codedir
+  $sysconfigdir     = $::puppet::defaults::sysconfigdir
+  $ca_server        = $::puppet::ca_server
   $cfacter          = $::puppet::cfacter
-  $puppet_server    = $::puppet::puppet_server
   $environment      = $::puppet::environment
+  $logdest          = $::puppet::logdest
+  $puppet_server    = $::puppet::puppet_server
   $reports          = $::puppet::reports
   $runinterval      = $::puppet::runinterval
   $structured_facts = $::puppet::structured_facts
-  $logdest          = $::puppet::logdest
 
   validate_string(
     $environment,
@@ -37,6 +38,17 @@ class puppet::config {
     setting => 'server',
     value   => $puppet_server,
     require => Class['puppet::install'],
+  }
+
+  if ($ca_server != undef) {
+    ini_setting { 'puppet ca_server':
+      ensure  => present,
+      path    => "${confdir}/puppet.conf",
+      section => 'main',
+      setting => 'ca_server',
+      value   => $ca_server,
+      require => Class['puppet::install'],
+    }
   }
 
   ini_setting { 'puppet client cfacter':

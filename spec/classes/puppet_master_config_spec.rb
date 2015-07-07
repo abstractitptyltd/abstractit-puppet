@@ -89,6 +89,44 @@ describe 'puppet::master::config', :type => :class do
         end
       end#no params
 
+      context 'when ::puppet::ca_server is set and this is not the ca_server' do
+        let(:pre_condition){"class{'::puppet': ca_server => 'bogon.domain.com'}"}
+        let(:facts) do
+          facts.merge({
+            :concat_basedir => '/tmp',
+            :fqdn => 'notbogon.domain.com',
+            :puppetversion => Puppet.version
+          })
+        end
+        it 'should set ca to false' do
+          should contain_ini_setting('puppet CA').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'master',
+            'value'   => false
+          })
+        end
+      end# end not ca_server
+
+      context 'when ::puppet::ca_server is set and this is the ca_server' do
+        let(:pre_condition){"class{'::puppet': ca_server => 'bogon.domain.com'}"}
+        let(:facts) do
+          facts.merge({
+            :concat_basedir => '/tmp',
+            :fqdn => 'bogon.domain.com',
+            :puppetversion => Puppet.version
+          })
+        end
+        it 'should set ca to false' do
+          should contain_ini_setting('puppet CA').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'master',
+            'value'   => true
+          })
+        end
+      end# end ca_server
+
       context 'when report_age has a custom value' do
         let(:pre_condition) {"class{'::puppet::master': report_age => '33'}"}
         it 'should create the \'puppet clean reports\' cronjob with custom mtime' do

@@ -44,13 +44,13 @@ describe 'puppet::config', :type => :class do
       end
       context 'when fed no parameters' do
         it "should properly set the puppet server setting in #{confdir}/puppet.conf" do
-          should contain_ini_setting('puppet client server').with(
+          should contain_ini_setting('puppet client server').with({
             'ensure'=>'present',
             'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
             'setting'=>'server',
             'value'=>'puppet'
-          )
+          })
         end
         it "should properly set the environment setting in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client environment').with({
@@ -86,9 +86,21 @@ describe 'puppet::config', :type => :class do
             'section'=>'main',
             'setting'=>'cfacter',
             'value'=>false
-        })
+          })
         end
       end#no params
+
+      context 'when ::puppet::ca_server is set' do
+        let(:pre_condition){"class{'::puppet': ca_server => 'bogon.domain.com'}"}
+        it "should set ca_server to bogon.domain.com" do
+          should contain_ini_setting('puppet ca_server').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'main',
+            'value'   => 'bogon.domain.com'
+          })
+        end
+      end# ca_server
 
       context 'when ::puppet::cfacter is true' do
         let(:pre_condition){"class{'::puppet': cfacter => true}"}
@@ -99,7 +111,7 @@ describe 'puppet::config', :type => :class do
             'section'=>'main',
             'setting'=>'cfacter',
             'value'=>true
-        })
+          })
         end
       end# cfacter
 
@@ -114,9 +126,21 @@ describe 'puppet::config', :type => :class do
             'setting'=>'DAEMON_OPTS',
             'subsetting'=>'--logdest',
             'value'=>'/var/log/BOGON'
-        })
+          })
         end
       end# logdest
+
+      # context 'when ::puppet::preferred_serialization_format is set to msgpack' do
+      #   let(:pre_condition){"class{'::puppet': preferred_serialization_format => 'msgpack'}"}
+      #   it "should properly set the preferred_serialization_format setting in #{confdir}/puppet.conf" do
+      #     should contain_ini_setting('puppet preferred_serialization_format').with({
+      #       'path'=>"#{confdir}/puppet.conf",
+      #       'section'=>'agent',
+      #       'setting'=>'preferred_serialization_format',
+      #       'value'=>'msgpack'
+      #     })
+      #   end
+      # end# preferred_serialization_format
 
       context 'when ::puppet::puppet_server has a non-standard value' do
         let(:pre_condition){"class{'::puppet': puppet_server => 'BOGON'}"}
@@ -126,7 +150,7 @@ describe 'puppet::config', :type => :class do
             'section'=>'agent',
             'setting'=>'server',
             'value'=>'BOGON'
-        })
+          })
         end
       end# custom server
       context 'when ::puppet::environment has a non-standard value' do
@@ -171,7 +195,7 @@ describe 'puppet::config', :type => :class do
             'section'=>'agent',
             'setting'=>'reports',
             'value'=>false
-        })
+          })
         end
       end# reports
 
