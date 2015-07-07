@@ -130,17 +130,17 @@ describe 'puppet::config', :type => :class do
         end
       end# logdest
 
-      context 'when ::puppet::preferred_serialization_format is set to msgpack' do
-        let(:pre_condition){"class{'::puppet': preferred_serialization_format => 'msgpack'}"}
-        it "should properly set the preferred_serialization_format setting in #{confdir}/puppet.conf" do
-          should contain_ini_setting('puppet preferred_serialization_format').with({
-            'path'=>"#{confdir}/puppet.conf",
-            'section'=>'agent',
-            'setting'=>'preferred_serialization_format',
-            'value'=>'msgpack'
-          })
-        end
-      end# preferred_serialization_format
+      # context 'when ::puppet::preferred_serialization_format is set to msgpack' do
+      #   let(:pre_condition){"class{'::puppet': preferred_serialization_format => 'msgpack'}"}
+      #   it "should properly set the preferred_serialization_format setting in #{confdir}/puppet.conf" do
+      #     should contain_ini_setting('puppet preferred_serialization_format').with({
+      #       'path'=>"#{confdir}/puppet.conf",
+      #       'section'=>'agent',
+      #       'setting'=>'preferred_serialization_format',
+      #       'value'=>'msgpack'
+      #     })
+      #   end
+      # end# preferred_serialization_format
 
       context 'when ::puppet::puppet_server has a non-standard value' do
         let(:pre_condition){"class{'::puppet': puppet_server => 'BOGON'}"}
