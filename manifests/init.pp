@@ -17,6 +17,8 @@
 #   This should distribute the load more evenly on your puppetmasters.
 # @param agent_version [String] Default: 'installed'
 #   Declares the version of the puppet-agent all-in-one package to install.
+# @param ca_server [String] Default: undef
+#   Server to use as the CA server for all agents.
 # @param cfacter [Boolean] Default: false
 #   Whether or not to use cfacter instead of facter.
 # @param collection [String] Default: undef
@@ -53,6 +55,9 @@
 #   The individual repo subclasses also will perform no action if included with this param set to false.
 # @param puppet_server [String] Default: 'puppet'
 #   The hostname or fqdn of the puppet server that the agent should communicate with.
+# @param preferred_serialization_format [String] Default: 'pson'
+#   The serialization format to use for communication with the puppet server.
+#   WARNING: Setting this to msgpack is experimental! Please enable with care.
 # @param puppet_version [String] Default: 'installed'
 #   The version of puppet to install
 # @param reports [Boolean] Default: true
@@ -68,30 +73,32 @@
 #   This is why this parameter does not directly correlate with the configuration key.
 
 class puppet (
-  $allinone                  = false,
-  $agent_cron_hour           = '*',
-  $agent_cron_min            = 'two_times_an_hour',
-  $agent_version             = 'installed',
-  $cfacter                   = false,
-  $collection                = undef,
-  $custom_facts              = undef,
-  $devel_repo                = false,
-  $enabled                   = true,
-  $enable_devel_repo         = false,
-  $enable_mechanism          = 'service',
-  $enable_repo               = true,
-  $environment               = 'production',
-  $facter_version            = 'installed',
-  $hiera_version             = 'installed',
-  $logdest                   = undef,
-  $manage_etc_facter         = true,
-  $manage_etc_facter_facts_d = true,
-  $manage_repos              = true,
-  $puppet_server             = 'puppet',
-  $puppet_version            = 'installed',
-  $reports                   = true,
-  $runinterval               = '30m',
-  $structured_facts          = false,
+  $allinone                       = false,
+  $agent_cron_hour                = '*',
+  $agent_cron_min                 = 'two_times_an_hour',
+  $agent_version                  = 'installed',
+  $ca_server                      = undef,
+  $cfacter                        = false,
+  $collection                     = undef,
+  $custom_facts                   = undef,
+  $devel_repo                     = false,
+  $enabled                        = true,
+  $enable_devel_repo              = false,
+  $enable_mechanism               = 'service',
+  $enable_repo                    = true,
+  $environment                    = 'production',
+  $facter_version                 = 'installed',
+  $hiera_version                  = 'installed',
+  $logdest                        = undef,
+  $manage_etc_facter              = true,
+  $manage_etc_facter_facts_d      = true,
+  $manage_repos                   = true,
+  $preferred_serialization_format = 'pson',
+  $puppet_server                  = 'puppet',
+  $puppet_version                 = 'installed',
+  $reports                        = true,
+  $runinterval                    = '30m',
+  $structured_facts               = false,
 ) {
   #input validation
   validate_bool(
@@ -109,6 +116,7 @@ class puppet (
 
   validate_string(
     $agent_version,
+    $ca_server,
     $collection,
     $environment,
     $facter_version,
@@ -118,6 +126,9 @@ class puppet (
     $puppet_version,
     $runinterval,
   )
+  $serialization_formats = ['pson','msgpack']
+  validate_re($preferred_serialization_format,$serialization_formats)
+
   $supported_mechanisms = ['service', 'cron']
   validate_re($enable_mechanism, $supported_mechanisms)
 

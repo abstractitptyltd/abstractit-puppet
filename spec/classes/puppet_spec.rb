@@ -64,7 +64,7 @@ describe 'puppet', :type => :class do
       end
     end#regexes
 
-    ['agent_version','collection','environment','facter_version','hiera_version','puppet_server','puppet_version','runinterval'].each do |strings|
+    ['agent_version','ca_server','collection','environment','facter_version','hiera_version','preferred_serialization_format','puppet_server','puppet_version','runinterval'].each do |strings|
       context "when the #{strings} parameter is not a string" do
         let(:params) {{strings => false }}
         it 'should fail' do

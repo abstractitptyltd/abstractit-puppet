@@ -6,6 +6,7 @@ class puppet::master::config {
   $confdir              = $::puppet::defaults::confdir
   $codedir              = $::puppet::defaults::codedir
   $reports_dir          = $::puppet::defaults::reports_dir
+  $ca_server            = $::puppet::ca_server
   $environmentpath      = $puppet::master::environmentpath
   $environment_timeout  = $puppet::master::environment_timeout
   $basemodulepath       = $puppet::master::basemodulepath
@@ -15,6 +16,26 @@ class puppet::master::config {
   $report_clean_hour    = $puppet::master::report_clean_hour
   $report_clean_min     = $puppet::master::report_clean_min
   $report_clean_weekday = $puppet::master::report_clean_weekday
+
+  if ($ca_server != undef) {
+    if ($ca_server == $::fqdn) {
+      ini_setting { 'puppet CA':
+        ensure  => present,
+        path    => "${confdir}/puppet.conf",
+        section => 'master',
+        setting => 'ca',
+        value   => true,
+      }
+    } else {
+      ini_setting { 'puppet CA':
+        ensure  => present,
+        path    => "${confdir}/puppet.conf",
+        section => 'master',
+        setting => 'ca',
+        value   => false,
+      }
+    }
+  }
 
   ini_setting { 'Puppet environmentpath':
     ensure  => present,
