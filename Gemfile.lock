@@ -82,7 +82,7 @@ GEM
       coderay (~> 1.0.5)
       method_source (~> 0.7)
       slop (>= 2.4.3, < 3)
-    puppet (4.1.0)
+    puppet (4.2.0)
       facter (> 2.0, < 4)
       hiera (>= 2.0, < 3)
       json_pure
@@ -156,7 +156,7 @@ PLATFORMS
 DEPENDENCIES
   metadata-json-lint
   pry (<= 0.9.8)
-  puppet (~> 4.1.0)
+  puppet (~> 4.2.0)
   puppet-blacksmith
   puppet-lint!
   puppet-lint-absolute_classname-check

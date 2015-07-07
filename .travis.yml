@@ -1,34 +1,33 @@
----
 language: ruby
 sudo: false
 bundler_args: --without development
 before_install: rm Gemfile.lock || true
 rvm:
-  - 1.9
-  - 2.0
-  - 2.1
-script: "bundle exec rake test"
+- 1.9
+- 2.0
+- 2.1
+script: bundle exec rake test
 env:
-  - PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
-  - PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
-  - PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=true
-  - PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=true PARSER="future"
-  - PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
-  - PUPPET_VERSION="~> 4.1.0" STRICT_VARIABLES=true
+- PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
+- PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
+- PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=true
+- PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=true PARSER="future"
+- PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
+- PUPPET_VERSION="~> 4.1.0" STRICT_VARIABLES=true
+- PUPPET_VERSION="~> 4.2.0" STRICT_VARIABLES=true
 notifications:
-  email: dev@abstractit.com.au
-
+  hipchat:
+    rooms:
+      secure: AvGATrsSpfHPJQvOFJUwoAShh7mQTR3gJENqgVDm3AotZS40lxokYaAT9GNYfCBRUz2xFoR23Yeh/NTbEgM6acPoHP8oSLF37EnsyyeS0MgswFGgyqY9BcfGFjx5HcYj8zDvISL2Dby9HUBUzmnS5BmuzNv5Hrkrk/BGKDXzCY8=
 deploy:
   provider: puppetforge
   user: abstractit
-  password:
-    secure: "cD3pSDgI0hI/0/D4r+tpZb2fPFXK9iG3pvnADb/LPIMT/WkuK7u9lwUY2EZSOn8xkDsBy6wYXWnUOlgde1FvEX+Lgu9a5tUzdM4i/tZdGyQ/SuBgK/u7mtK6cd/Ii7XNU2a8Inbg62FfDX7ujkSNeD3JIQOoLo/89+G84oqbCWU="
+  pasword:
+    secure: ZbtzOD15CmlaLJ0zK2qwLLaqXDk+Ile/2nGwZQ3pV5+cx6ILBVHN/cH0PaddVM9z2bV8k/sHN9ZCe5NXEyC54Vta8jCgLvIckS0tRqNICagn5BMhyEg5jSP7IIDhM9pWgF9KiJyMtx+8iWIt6h7v5+HbOylUuSUyhA0ewpFp2GA=
   on:
     tags: true
-    # all_branches is required to use tags
     all_branches: true
-    # Only publish if our main Ruby target builds
     rvm: 2.1
     condition:
-      - "$PUPPET_VERSION = '~> 4.1.0'"
-      - "$STRICT_VARIABLES = true"
+    - $PUPPET_VERSION = '~> 4.2.0'
+    - $STRICT_VARIABLES = true

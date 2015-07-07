@@ -20,6 +20,8 @@
         * [Class: puppet](#class-puppet)
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
+7. [Contributors](#contributors)
+8. [Release Notes/Etc]#release
 
 ##Overview
 
@@ -577,7 +579,11 @@ Development and testing team consists of @rendhalver and @wolfspyre.
 The module gets extensive testing in Abstract IT and it's clients environments.
 Pull requests are welcome.
 
-##Release Notes/Contributors/Etc
+##Contributors
+
+https://github.com/abstractitptyltd/abstractit-puppet/graphs/contributors
+
+##Release Notes/Etc
 
 Check the CHANGELOG.md for release notes and bug fixes.
 It's a bit sparse right now and only contains the public releases.

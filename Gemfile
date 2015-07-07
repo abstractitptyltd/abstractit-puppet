@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 group :test do
   gem 'rake'
-  gem 'puppet', ENV['PUPPET_VERSION'] || '~> 4.1.0'
+  gem 'puppet', ENV['PUPPET_VERSION'] || '~> 4.2.0'
   gem 'puppet-lint', :git =>  'https://github.com/rodjek/puppet-lint'
   gem 'puppet-lint-unquoted_string-check', :require => false
   gem 'puppet-lint-empty_string-check', :require => false
