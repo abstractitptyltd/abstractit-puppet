@@ -59,13 +59,13 @@ describe 'puppet::master::config', :type => :class do
             'value'   => "#{basemodulepath}"
           })
         end
-        it 'should disable autosign' do
+        it 'should set autosign to the default' do
           should contain_ini_setting('autosign').with({
-            'ensure'  => 'absent',
+            'ensure'  => 'present',
             'path'    => "#{confdir}/puppet.conf",
             'section' => 'master',
             'setting' => 'autosign',
-            'value'   => true
+            'value'   => "#{confdir}/autosign.conf"
           })
         end
         it 'should disable the future parser' do
@@ -89,44 +89,104 @@ describe 'puppet::master::config', :type => :class do
         end
       end#no params
 
-      context 'when the $::puppet::master::autosign variable is true' do
-        context 'and the environment is production' do
-          let(:pre_condition) {"class{'::puppet::master': autosign => true}"}
-          let(:facts) do
-            facts.merge({
-              :environment => 'production'
-            })
-          end
-          it 'should not enable autosign' do
-            skip 'This does not work as is'
-            should contain_ini_setting('autosign').with({
-              'ensure'=>'absent',
-              'path'=>"#{confdir}/puppet.conf",
-              'section'=>'master',
-              'setting'=>'autosign',
-              'value'=>true
-            })
-          end
-        end#autosign true in production
-        context 'and the environment is not production' do
-          let(:pre_condition) {"class{'::puppet::master': autosign => true}"}
-          let(:facts) do
-            facts.merge({
-              :environment => 'testenv'
-            })
-          end
-          it 'should enable autosign' do
-            skip 'This does not work as is'
-            should contain_ini_setting('autosign').with({
-              'ensure'=>'present',
-              'path'=>"#{confdir}/puppet.conf",
-              'section'=>'master',
-              'setting'=>'autosign',
-              'value'=>true
-            })
-          end
-        end#autosign true in other environemtns
-      end## autosign true
+      context 'when  $::puppet::master::autosign_method is off' do
+        let(:pre_condition) {"class{'::puppet::master': autosign_method => 'off'}"}
+        it 'should set autosign to false' do
+          should contain_ini_setting('autosign').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'master',
+            'setting' => 'autosign',
+            'value'   => false
+          })
+        end
+      end## autosign_method off
+
+      context 'when $::puppet::master::autosign_method is on and environment == production' do
+        let(:facts) do
+          facts.merge({
+            :concat_basedir => '/tmp',
+            :puppetversion  => Puppet.version,
+            :environment    => 'production'
+          })
+        end
+        let(:pre_condition) {"class{'::puppet::master': autosign_method => 'on'}"}
+        it 'should set autosign to false' do
+          should contain_ini_setting('autosign').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'master',
+            'setting' => 'autosign',
+            'value'   => false
+          })
+        end
+      end## autosign_method on environment == production
+
+      context 'when $::puppet::master::autosign_method is on and environment != production' do
+        let(:facts) do
+          facts.merge({
+            :concat_basedir => '/tmp',
+            :puppetversion  => Puppet.version,
+            :environment    => 'development'
+          })
+        end
+        let(:pre_condition) {"class{'::puppet::master': autosign_method => 'on'}"}
+        it 'should set autosign to true' do
+          should contain_ini_setting('autosign').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'master',
+            'setting' => 'autosign',
+            'value'   => true
+          })
+        end
+      end## autosign_method on environment != production
+
+      context 'when $::puppet::master::autosign_method is file and $::puppet::master::autosign_domains is not empty' do
+        let(:pre_condition) {"class{'::puppet::master': autosign_method => 'file', autosign_domains => ['*.sub1.domain.com','sub2.domain.com']}"}
+        it 'should not set autosign to $confdir/autosign.conf and add autosign_domains to $confdir/autosign.conf' do
+          should contain_ini_setting('autosign').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'master',
+            'setting' => 'autosign',
+            'value'   => "#{confdir}/autosign.conf"
+          })
+          should contain_file("#{confdir}/autosign.conf").with({
+            'ensure' => 'file',
+            'owner'  =>'root',
+            'group'  =>'root',
+            'mode'   =>'0644'
+          }).with_content(
+            /\*.sub1.domain.com/
+          ).with_content(
+            /sub2.domain.com/
+          )
+        end
+      end## autosign_method file autosign_domains not empty
+
+      context 'when $::puppet::master::autosign_method is file and $::puppet::master::autosign_file has a custom value' do
+        let(:pre_condition) {"class{'::puppet::master': autosign_method => 'file', autosign_file => '/etc/foo/bar.conf', autosign_domains => ['*.sub1.domain.com','sub2.domain.com']}"}
+        it 'should set autosign to /etc/foo/bar.conf and add autosign_domains to /etc/foo/bar.conf' do
+          should contain_ini_setting('autosign').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'master',
+            'setting' => 'autosign',
+            'value'   => "/etc/foo/bar.conf"
+          })
+          should contain_file("/etc/foo/bar.conf").with({
+            'ensure' => 'file',
+            'owner'  =>'root',
+            'group'  =>'root',
+            'mode'   =>'0644'
+          }).with_content(
+            /\*.sub1.domain.com/
+          ).with_content(
+            /sub2.domain.com/
+          )
+        end
+      end## autosign_method file autosign_domains not empty custom autosign_file
 
       context 'when ::puppet::ca_server is set and this is not the ca_server' do
         let(:pre_condition){"class{'::puppet': ca_server => 'bogon.domain.com'}"}
