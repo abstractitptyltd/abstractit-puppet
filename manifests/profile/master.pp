@@ -2,6 +2,16 @@
 
 # @param autosign [Boolean] Default: false
 #   Whether or not to enable autosign.
+# @param autosign_domains [Array] Default: empty
+#   array of domains to use for basic autosigning
+# @param autosign_file [String] Default: $confdir/autosign.conf
+#   file to use for basic autosigning
+# @param autosign_method [String] Default: file
+#   Method to use for autosign
+#   the default 'file' will use the $confdir/autosign.conf file to determine which certs to sign.
+#   This file is empty by default so autosigning will be effectivly off
+#   'on' will set the autosign variable to true and thus all certs will be signed.
+#   'off' will set the autosign variable to false disabling autosign completely.
 # @param basemodulepath (*absolute path* Default Puppet 4: ${codedir}/environments Default Puppet 3: /etc/puppet/environments)
 #   The base directory path to have environments checked out into.
 # @param env_owner [String] Default: 'puppet'
@@ -53,6 +63,9 @@
 
 class puppet::profile::master (
   $autosign                           = false,
+  $autosign_domains                   = undef,
+  $autosign_file                      = undef,
+  $autosign_method                    = 'file',
   $basemodulepath                     = undef,
   $env_owner                          = 'puppet',
   $environmentpath                    = undef,
@@ -81,6 +94,9 @@ class puppet::profile::master (
 ) {
   class { '::puppet::master':
     autosign                           => $autosign,
+    autosign_domains                   => $autosign_domains,
+    autosign_file                      => $autosign_file,
+    autosign_method                    => $autosign_method,
     basemodulepath                     => $basemodulepath,
     env_owner                          => $env_owner,
     environmentpath                    => $environmentpath,

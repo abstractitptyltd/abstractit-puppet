@@ -1,3 +1,18 @@
+##2015-07-08 - Pete Brown <pete@abstractit.com.au> 2.1.0
+###Summary
+
+This version adds basic autosigning functionaliy which ignores the current  autosign parameter.
+
+Autosigning is now managed with the autosign_method, autosign_file and autosign_domains variables.
+
+Given that autosigning  didn't enabled autosign in a production environment it won't break any of your current production environments with default setings.
+
+Add option for setting a ca_server.
+Add option to set preferred_serialization_format for testing msgpack
+
+####Bugfixes
+
+
 ##2015-06-10 - Pete Brown <pete@abstractit.com.au> 2.0.2
 ###Summary
 Spec test cleanup.

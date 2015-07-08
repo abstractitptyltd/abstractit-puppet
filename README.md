@@ -54,27 +54,29 @@ If it works for you, awesome! If not, let me know *or send me a pull request*.
   * Puppet 3.x
     * /etc/facter
     * /etc/facter/facts.d
-    * /etc/puppet/keys
-    * /etc/puppet/keys/eyaml
+    * /etc/puppet/hiera_eyaml_keys
   * Puppet 4.x
     * /etc/puppetlabs/code/environments/**
     * /etc/puppetlabs/code/hieradata/**
+    * /etc/puppetlabs/code/hiera_eyaml_keys
 * **Files:**  `dynamically updated files are displayed like this`
   * **Debian**
     * `/etc/default/puppet`
   * **RedHat**
     * `/etc/sysconfig/puppet`
-  * /etc/puppet/keys/eyaml/private_key.pkcs7.pem
-  * /etc/puppet/keys/eyaml/public_key.pkcs7.pem
   * Puppet 3.x
     * `/etc/hiera.yaml`
     * `/etc/puppet/puppet.conf`
     * `/etc/puppet/hiera.yaml`
     * `/etc/r10k.yaml`
+    * /etc/puppet/hiera_eyaml_keys/private_key.pkcs7.pem
+    * /etc/puppet/hiera_eyaml_keys/public_key.pkcs7.pem
   * Puppet 4.x
     * `/etc/puppetlabs/code/hiera.yaml`
     * `/etc/puppetlabs/puppet/puppet.conf`
     * `/etc/r10k.yaml`
+    * /etc/puppetlabs/code/hiera_eyaml_keys/private_key.pkcs7.pem
+    * /etc/puppetlabs/code/hiera_eyaml_keys/public_key.pkcs7.pem
 * **Cron Jobs**
   * *puppet_r10k* `puppet::profile::r10k`
   * *puppet clean reports* `puppet::profile::puppetdb`
@@ -94,7 +96,7 @@ If it works for you, awesome! If not, let me know *or send me a pull request*.
       * puppet
       * puppet-common
       * puppetlabs-release
-      * puppetmaster-common `puppet::master::install`
+      * puppetmaster-common `puppet::master::install::deps`
     * **RedHat:**
       * facter
       * hiera
@@ -152,6 +154,12 @@ or
       }
     }
 
+### Set a ca_server for your environment
+
+    class { '::puppet::profile::agent':
+      ca_server => 'puppetca.domain.com'
+    }
+
 ### Enable cfacter
 
     class { '::puppet::profile::agent':
@@ -175,6 +183,12 @@ or
 
     class { '::puppet::profile::agent':
       environment => 'testenv'
+    }
+
+### Set use the new msgpack serialization format on an agent
+
+    class { '::puppet::profile::agent':
+      preferred_serialization_format => 'msgpack'
     }
 
 ###Basic setup of a puppet master
@@ -209,6 +223,12 @@ to setup a master with all the features
       java_ram => '1532M'
     }
 
+### Setup basic autosigning
+
+    class { '::puppet::profile::master':
+      autosign_method => 'file',
+      autosign_domains => ['*.sub1.domain.com','*.sub2.domain.com'],
+    }
 
 
 ##Reference
@@ -238,6 +258,10 @@ The main `init.pp` manifest is responsible for validating some of our parameters
   * **agent_version**: (*string* Default: `installed`)
 
     Declares the version of the puppet-agent all-in-one package to install.
+
+  * **ca_server**: (*string* Default: `undef`)
+
+    Server to use as the CA server for all agents.
 
   * **cfacter**: (*bool* Default: `false`)
 
@@ -295,6 +319,11 @@ The main `init.pp` manifest is responsible for validating some of our parameters
   * **manage_repos**: (*bool* Default `true`)
 
     Whether or not we pay any attention to managing repositories. This is managed by only including [puppet::repo](#private-class-puppetrepo) subclass when true. The individual repo subclasses also will perform no action if included with this param set to false.
+
+  * **preferred_serialization_format**: (*string* Default: `pson`)
+
+    The serialization format to use for communication with the puppet server.communicate with.
+    WARNING: Setting this to msgpack is experimental! Please enable with care.
 
   * **puppet_server**: (*string* Default: `puppet`)
 
@@ -396,6 +425,22 @@ The `config.pp` manifest is responsible for altering the configuration of `$conf
   * **autosign**: (*bool* Default: `false`)
 
   Whether or not to enable autosign.
+
+  * **autosign_domains**: (*array* Default: `empty`)
+
+  Array of domains to use for basic autosigning
+
+  * **autosign_file**: (*string* Default: `$confdir/autosign.conf`)
+
+  File to use for basic autosigning
+
+  * **autosign_method**: (*string* Default: `file`)
+
+  Method to use for autosign
+  The default 'file' will use the $confdir/autosign.conf file to determine which certs to sign.
+  This file is empty by default so autosigning will be effectivly off
+  'on' will set the autosign variable to true and thus all certs will be signed.
+  'off' will set the autosign variable to false disabling autosign completely.
 
   * **basemodulepath**: (*absolute path* Default Puppet 4: `${codedir}/environments` Default Puppet 3: `/etc/puppet/environments`)
 
