@@ -58,7 +58,7 @@ task :test => [
   :metadata,
 ]
 
-if RUBY_VERSION >= "2.1.0" and PUPPET_VERSION >= "4.2.0" then
+if RUBY_VERSION >= "2.1.0" then
   Blacksmith::RakeTask.new do |t|
     t.build = false # do not build the module nor push it to the Forge
     # just do the tagging [:clean, :tag, :bump_commit]

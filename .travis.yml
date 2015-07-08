@@ -41,4 +41,7 @@ deploy:
   on:
     tags: true
     rvm: 2.1
+    condition:
+      - $PUPPET_VERSION = '~> 4.2.0'
+      - $STRICT_VARIABLES = true
 #    all_branches: true
