@@ -240,7 +240,7 @@ In the near future I will be moving these docs into each class into a format sui
 
 ####[Public] *Class:* `puppet`
 #####*Description*
-The main `init.pp` manifest is responsible for validating some of our parameters, and instantiating the [puppet::facts](#private-class-puppetfacts), [puppet::repo](#private-class-puppetrepo), [pupppet::install](#private-class-puppetinstall), [puppet::config](#private-class-puppetconfig), and [puppet::agent](#public-class-puppetagent) manifests.
+The `puppet` class is responsible for validating some of our parameters, and instantiating the [puppet::facts](#private-class-puppetfacts), [puppet::repo](#private-class-puppetrepo), [pupppet::install](#private-class-puppetinstall), [puppet::config](#private-class-puppetconfig), and [puppet::agent](#public-class-puppetagent) manifests.
 #####*Parameters*
 
   * **allinone**: (*string* Default: `false`)
@@ -351,7 +351,7 @@ The main `init.pp` manifest is responsible for validating some of our parameters
 
 ####[Private] Class: **puppet::agent**
 #####*Description*
-The `agent.pp` manifest is responsible for management of the of the agent service, and agent cronjob. depending on the
+The `puppet::agent` class is responsible for management of the of the agent service, and agent cronjob. depending on the
 
 #####*Parameters*
   * None
@@ -360,7 +360,7 @@ The `agent.pp` manifest is responsible for management of the of the agent servic
 
 ####[Private] Class: **puppet::config**
 #####*Description*
-The `config.pp` manifest is responsible for altering the configuration of `$confdir/puppet.conf`. This is done via params which call [ini_file](https://forge.puppetlabs.com/puppetlabs/inifile) resources to alter the related settings.
+The `puppet::config` class is responsible for altering the configuration of `$confdir/puppet.conf`. This is done via params which call [ini_file](https://forge.puppetlabs.com/puppetlabs/inifile) resources to alter the related settings.
 
 #####*Parameters*
 
@@ -389,7 +389,7 @@ The `config.pp` manifest is responsible for altering the configuration of `$conf
 ####[Private] Class: **puppet::facts**
 #####*Description*
 
-  The `facts.pp` manifest is responsible for ensuring that `/etc/facter` and `/etc/facter/facts.d` are present on the local system. It is additionally responsible for populating `/etc/facter/facts.d/local.yaml` with the Key/Value pairs declared in `puppet::facts::custom_facts`
+  The `puppet::facts` class is responsible for ensuring that `/etc/facter` and `/etc/facter/facts.d` are present on the local system. It is additionally responsible for populating `/etc/facter/facts.d/local.yaml` with the Key/Value pairs declared in `puppet::facts::custom_facts`
 
 #####*Parameters*
   * **custom_facts**: (*hash* Default: `undef`)
@@ -402,7 +402,7 @@ The `config.pp` manifest is responsible for altering the configuration of `$conf
 
 #####*Description*
 
-  the `install.pp` manifest is responsible for the puppet agent, hiera, and facter packages.
+  the `puppet::install` class is responsible for the puppet agent, hiera, and facter packages.
 
 #####*Parameters*
 
@@ -415,7 +415,7 @@ The `config.pp` manifest is responsible for altering the configuration of `$conf
 
 #####*Description*
 
-  The `master.pp` manifest is responsible for performing some input validation, and subsequently configuring a puppetmaster. This is done internally via the  [puppet::master::config](#private-class-puppetmasterconfig), [puppet::master::hiera](#private-class-puppetmasterhiera), [pupppet::master::install](#private-class-puppetmasterinstall), and [puppet::master::passenger](#private-class-puppetmasterpassenger) manifests.
+  The `puppet::master` class is responsible for performing some input validation, and subsequently configuring a puppetmaster. This is done internally via the  [puppet::master::config](#private-class-puppetmasterconfig), [puppet::master::hiera](#private-class-puppetmasterhiera), [pupppet::master::install](#private-class-puppetmasterinstall), and [puppet::master::passenger](#private-class-puppetmasterpassenger) manifests.
 
   * Puppetdb may be configured via the [puppet::profile::puppetdb](#public-class-puppetmasterpuppetdb) class
 
@@ -530,7 +530,7 @@ The `config.pp` manifest is responsible for altering the configuration of `$conf
 
 ####[Private] Class: **puppet::master::config**
 #####*Description*
-  The `master/config.pp` manifest is responsible for managing the master-specific configuration settings of `puppet.conf`
+  The `puppet::master::config` class is responsible for managing the master-specific configuration settings of `puppet.conf`
 
 #####*Parameters*
 
@@ -541,7 +541,7 @@ The `config.pp` manifest is responsible for altering the configuration of `$conf
 ####[Private] Class: **puppet::master::hiera**
 #####*Description*
 
-  The `master/hiera.pp` manifest is responsible for configuring hiera, optionally deploying eyaml encryption keys, and setting the ownership of the hieradata path.
+  The `puppet::master::hiera` class is responsible for configuring hiera, optionally deploying eyaml encryption keys, and setting the ownership of the hieradata path.
 
 #####*Parameters*
 
@@ -553,7 +553,7 @@ The `config.pp` manifest is responsible for altering the configuration of `$conf
 
 #####*Description*
 
-  The `master::install.pp` manifest is responsible for installing the packages required to configure a puppetmaster.
+  The `puppet::master::install` class is responsible for installing the packages required to configure a puppetmaster.
 
 #####*Parameters*
 
@@ -565,7 +565,7 @@ The `config.pp` manifest is responsible for altering the configuration of `$conf
 
 #####*Description*
 
-  The `master/passenger.pp` manifest is responsible for instantiating the apache class, creating the apache vhost, and configuring passenger.
+  The `puppet::master::passenger` class is responsible for instantiating the apache class, creating the apache vhost, and configuring passenger.
 
   On Trusty, We need to be able to set SSLCARevocationCheck in apache 2.4+ to enable revocation checks for client certs. According to the [Official puppetlabs docs on passenger](http://docs.puppetlabs.com/guides/passenger.html):
     Apache 2.4 introduces the SSLCARevocationCheck directive and sets it to none
@@ -582,7 +582,7 @@ The `config.pp` manifest is responsible for altering the configuration of `$conf
 
 #####*Description*
 
-This module is responsible for including the proper package repository subclass. This is done based on the osfamily fact.
+This class is responsible for including the proper package repository subclass. This is done based on the osfamily fact.
 
   * None
 
@@ -592,7 +592,7 @@ This module is responsible for including the proper package repository subclass.
 
 #####*Description*
 
-This module is responsible for optionally managing the presence of the puppetlabs apt repositories. It consults the [$::puppet::manage_repos](#public-class-puppet) param to decide if it should perform any action. If it should, it references [$::puppet::enable_repo](#public-class-puppet)
+This class is responsible for optionally managing the presence of the puppetlabs apt repositories. It consults the [$::puppet::manage_repos](#public-class-puppet) param to decide if it should perform any action. If it should, it references [$::puppet::enable_repo](#public-class-puppet)
 
 #####*Parameters*
 
@@ -604,7 +604,7 @@ This module is responsible for optionally managing the presence of the puppetlab
 
 #####*Description*
 
-This module is responsible for optionally managing the presence of the puppetlabs yum repositories. It consults the [$::puppet::manage_repos](#public-class-puppet) param to decide if it should perform any action. If it should, it references [$::puppet::enable_repo](#public-class-puppet)
+This class is responsible for optionally managing the presence of the puppetlabs yum repositories. It consults the [$::puppet::manage_repos](#public-class-puppet) param to decide if it should perform any action. If it should, it references [$::puppet::enable_repo](#public-class-puppet)
 
 #####*Parameters*
 
