@@ -83,9 +83,8 @@ describe 'puppet::master::install', :type => :class do
       context 'when the a specific version of puppetserver is required' do
         context 'when ::puppet::allinone is true' do
           let(:pre_condition){"class{'::puppet': allinone => true}"}
-          let(:pre_condition){"class{'::puppet::master': server_version=>'latest', server_type => 'puppetserver' }"}
+          let(:pre_condition){"class{'::puppet::master': server_version => 'latest', server_type => 'puppetserver' }"}
           it "should install the specified version of the puppetserver package" do
-            skip 'This does not work as is'
             should contain_package('puppetserver').with({
               'ensure' => 'latest',
             }).that_requires(
@@ -97,7 +96,7 @@ describe 'puppet::master::install', :type => :class do
         end# allinone true
         context 'when ::puppet::allinone is false' do
           let(:pre_condition){"class{'::puppet': allinone => false}"}
-          let(:pre_condition){"class{'::puppet::master': puppet_version=>'BOGON', server_type=>'passenger' }"}
+          let(:pre_condition){"class{'::puppet::master': puppet_version => 'BOGON', server_type => 'passenger' }"}
           case facts[:osfamily]
           when 'Debian'
             it 'should install the puppetmaster package' do
