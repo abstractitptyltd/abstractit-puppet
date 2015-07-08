@@ -3,7 +3,11 @@ require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-lint/tasks/puppet-lint'
 require 'metadata-json-lint/rake_task'
 require 'puppet-syntax/tasks/puppet-syntax'
-require 'puppet_blacksmith/rake_tasks'
+
+begin
+  require 'puppet_blacksmith/rake_tasks'
+rescue LoadError
+end
 
 PuppetLint.configuration.fail_on_warnings = true
 PuppetLint.configuration.relative = true
@@ -54,7 +58,7 @@ task :test => [
   :metadata,
 ]
 
-if RUBY_VERSION >= "2.1.0" then
+if RUBY_VERSION >= "2.1.0" and PUPPET_VERSION >= "4.2.0" then
   Blacksmith::RakeTask.new do |t|
     t.build = false # do not build the module nor push it to the Forge
     # just do the tagging [:clean, :tag, :bump_commit]

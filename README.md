@@ -614,9 +614,8 @@ This class is responsible for optionally managing the presence of the puppetlabs
 
 ##Limitations
 
-Currently the only tested operating system is Ubuntu with puppet 3.6.x.
 It only supports an agent setup on RedHat and CentOS at this stage.
-Other operating systems and puppet versions will be added when I get the time to test them.
+Passenger is only supported on Ubuntu
 
 ##Development
 

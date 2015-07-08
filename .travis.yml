@@ -37,11 +37,8 @@ deploy:
   provider: puppetforge
   user: abstractit
   pasword:
-    secure: ZbtzOD15CmlaLJ0zK2qwLLaqXDk+Ile/2nGwZQ3pV5+cx6ILBVHN/cH0PaddVM9z2bV8k/sHN9ZCe5NXEyC54Vta8jCgLvIckS0tRqNICagn5BMhyEg5jSP7IIDhM9pWgF9KiJyMtx+8iWIt6h7v5+HbOylUuSUyhA0ewpFp2GA=
+    secure: "ZbtzOD15CmlaLJ0zK2qwLLaqXDk+Ile/2nGwZQ3pV5+cx6ILBVHN/cH0PaddVM9z2bV8k/sHN9ZCe5NXEyC54Vta8jCgLvIckS0tRqNICagn5BMhyEg5jSP7IIDhM9pWgF9KiJyMtx+8iWIt6h7v5+HbOylUuSUyhA0ewpFp2GA="
   on:
     tags: true
     rvm: 2.1
 #    all_branches: true
-#   condition:
-#   - $PUPPET_VERSION = '~> 4.2.0'
-#   - $STRICT_VARIABLES = true
