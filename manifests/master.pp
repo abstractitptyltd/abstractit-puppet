@@ -4,6 +4,16 @@
 
 # @param autosign [Boolean] Default: false
 #   Whether or not to enable autosign.
+# @param autosign_method [String] Default: file
+#   Method to use for autosign
+#   the default 'file' will use the $confdir/autosign.conf file to determine which certs to sign.
+#   This file is empty by default so autosigning will be effectivly off
+#   'on' will set the autosign variable to true and thus all certs will be signed.
+#   'off' will set the autosign variable to false disabling autosign completely.
+# @param autosign_file [String] Default: $confdir/autosign.conf
+#   file to use for basic autosigning
+# @param autosign_domains [Array] Default: empty
+#   array of domains to use for basic autosigning
 # @param basemodulepath (*absolute path* Default Puppet 4: ${codedir}/environments Default Puppet 3: /etc/puppet/environments)
 #   The base directory path to have environments checked out into.
 # @param env_owner [String] Default: 'puppet'
@@ -67,6 +77,9 @@
 
 class puppet::master (
   $autosign                           = false,
+  $autosign_method                    = 'file',
+  $autosign_file                      = $::puppet::defaults::autosign_file,
+  $autosign_domains                   = [],
   $basemodulepath                     = $::puppet::defaults::basemodulepath,
   $env_owner                          = 'puppet',
   $environmentpath                    = $::puppet::defaults::environmentpath,
@@ -155,6 +168,15 @@ class puppet::master (
     if $hiera_eyaml_pkcs7_public_key_file == undef {
       notify { 'hiera_eyaml_pkcs7_public_key_file needs to be set if you want to manage your hiera eyaml keys': }
     }
+  }
+
+  # check autosign methods
+  $autosign_methods = ['off','on','file']
+  validate_re($autosign_method,$autosign_methods)
+
+  # set autosign_method_interpolated to on if autosign is true
+  if $autosign == true {
+    notify { 'autosign is now managed with autosign_method. The autosign parameter is deprecated and will be removed in a future version': }
   }
 
   include ::puppet::master::install

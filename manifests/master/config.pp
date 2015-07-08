@@ -7,6 +7,9 @@ class puppet::master::config {
   $codedir              = $::puppet::defaults::codedir
   $reports_dir          = $::puppet::defaults::reports_dir
   $ca_server            = $::puppet::ca_server
+  $autosign_method      = $::puppet::master::autosign_method
+  $autosign_file        = $::puppet::master::autosign_file
+  $autosign_domains     = $::puppet::master::autosign_domains
   $environmentpath      = $puppet::master::environmentpath
   $environment_timeout  = $puppet::master::environment_timeout
   $basemodulepath       = $puppet::master::basemodulepath
@@ -34,6 +37,42 @@ class puppet::master::config {
         setting => 'ca',
         value   => false,
       }
+    }
+  }
+
+  # setup autosign and autosign file
+  case $autosign_method {
+    default,'file': {
+      $autosign_value = $autosign_file
+    }
+    'off': {
+      $autosign_value = false
+    }
+    'on': {
+      if $::environment == 'production' {
+        $autosign_value = false
+      } else {
+        $autosign_value = true
+      }
+    }
+  }
+
+  # setup autosign
+  ini_setting { 'autosign':
+    ensure  => present,
+    path    => "${confdir}/puppet.conf",
+    section => 'master',
+    setting => 'autosign',
+    value   => $autosign_value
+  }
+
+  if (! empty($autosign_domains) ) {
+    file { $autosign_file:
+      ensure  => file,
+      owner   => 'root',
+      group   => 'root',
+      mode    => '0644',
+      content => template('puppet/autosign.conf.erb')
     }
   }
 
@@ -68,26 +107,6 @@ class puppet::master::config {
     hour    => $report_clean_hour,
     minute  => $report_clean_min,
     weekday => $report_clean_weekday,
-  }
-
-  if ($autosign == true and $::environment != 'production') {
-    # enable autosign
-    ini_setting { 'autosign':
-      ensure  => present,
-      path    => "${confdir}/puppet.conf",
-      section => 'master',
-      setting => 'autosign',
-      value   => true
-    }
-  } else {
-    # disable autosign
-    ini_setting { 'autosign':
-      ensure  => absent,
-      path    => "${confdir}/puppet.conf",
-      section => 'master',
-      setting => 'autosign',
-      value   => true
-    }
   }
 
   if $future_parser {
