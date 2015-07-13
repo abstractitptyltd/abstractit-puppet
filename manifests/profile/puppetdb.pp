@@ -24,6 +24,10 @@
 #   If true, the module will properly set the 'reports' field in the puppet.conf file to enable the puppetdb report processor.
 # @param use_ssl [Boolean] Defaults: true
 #   A toggle to enable or disable ssl on puppetdb connections.
+# @param listen_port [String] Defaults: '8080'
+#   Non ssl Port to use for puppetdb
+# @param ssl_listen_port [String] Defaults: '8081'
+#   Ssl Port to use for puppetdb
 # @puppet_server_type [String] Defaults: 'passenger'
 #   Type of puppet server set to puppetserver if using the new puppetserver
 
@@ -37,15 +41,17 @@ class puppet::profile::puppetdb (
   $report_ttl                  = '14d',
   $reports                     = true,
   $use_ssl                     = true,
+  $listen_port                 = '8080',
+  $ssl_listen_port             = '8081',
   $puppet_server_type          = 'passenger',
 ) {
   case $use_ssl {
     default : {
-      $puppetdb_port = '8081'
+      $puppetdb_port = $ssl_listen_port
       $disable_ssl = false
     }
     false   : {
-      $puppetdb_port = '8080'
+      $puppetdb_port = $listen_port
       $disable_ssl = true
     }
   }
@@ -71,6 +77,8 @@ class puppet::profile::puppetdb (
 
   # setup puppetdb
   class { '::puppetdb':
+    listen_port        => $listen_port,
+    ssl_listen_port    => $ssl_listen_port,
     disable_ssl        => $disable_ssl,
     listen_address     => $puppetdb_listen_address,
     ssl_listen_address => $puppetdb_ssl_listen_address,
