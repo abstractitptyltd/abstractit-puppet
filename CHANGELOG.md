@@ -1,3 +1,10 @@
+##2015-07-13 - Pete Brown <pete@abstractit.com.au> 2.1.1
+###Summary
+
+Adding variables to set ports for puppetdb in puppetdb and puppetboard profiles
+
+####Bugfixes
+
 ##2015-07-08 - Pete Brown <pete@abstractit.com.au> 2.1.0
 ###Summary
 
