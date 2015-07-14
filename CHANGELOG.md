@@ -1,3 +1,11 @@
+##2015-07-14 - Pete Brown <pete@abstractit.com.au> 2.1.2
+###Summary
+
+Port variable was not being used for puppetboard profile
+Add variable to set hostname for puppetdb puppetboard profile
+
+####Bugfixes
+
 ##2015-07-13 - Pete Brown <pete@abstractit.com.au> 2.1.1
 ###Summary
 
