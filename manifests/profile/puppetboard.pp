@@ -15,7 +15,9 @@
 # @param port [String] Default: 5000
 #   Revision of puppetboard to install (tag,branch or commit)
 # @param puppetdb_port [String] Default: 8080
-#   Port to use for communicatiing with PuppetDB
+#   Port to use for communicating with PuppetDB
+# @param puppetdb_host [String] Default: localhost
+#   Hostname to use for communicating with PuppetDB
 # @param git_source [String] Default: https://github.com/puppet-community/puppetboard/
 #   Repo to install puppetboard from 
 # @param manage_virtualenv [Boolean] Default: true
@@ -28,6 +30,7 @@ class puppet::profile::puppetboard (
   $vhost_name        = 'pboard',
   $port              = '5000',
   $puppetdb_port     = '8080',
+  $puppetdb_host     = 'localhost',
   $git_source        = 'https://github.com/puppet-community/puppetboard/',
   $manage_virtualenv = true,
 ) {
@@ -41,6 +44,8 @@ class puppet::profile::puppetboard (
     unresponsive      => $unresponsive,
     revision          => $revision,
     git_source        => $git_source,
+    puppetdb_port     => $puppetdb_port,
+    puppetdb_host     => $puppetdb_host,
     manage_virtualenv => true,
   }
 
