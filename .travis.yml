@@ -17,31 +17,29 @@ env:
 - PUPPET_VERSION="~> 4.2.0" STRICT_VARIABLES=true
 matrix:
   exclude:
-    - rvm: 1.9
-      env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
-    - rvm: 1.9
-      env: PUPPET_VERSION="~> 4.1.0" STRICT_VARIABLES=true
-    - rvm: 1.9
-      env: PUPPET_VERSION="~> 4.2.0" STRICT_VARIABLES=true
-    - rvm: 2.0
-      env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
-    - rvm: 2.0
-      env: PUPPET_VERSION="~> 4.1.0" STRICT_VARIABLES=true
-    - rvm: 2.0
-      env: PUPPET_VERSION="~> 4.2.0" STRICT_VARIABLES=true
+  - rvm: 1.9
+    env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
+  - rvm: 1.9
+    env: PUPPET_VERSION="~> 4.1.0" STRICT_VARIABLES=true
+  - rvm: 1.9
+    env: PUPPET_VERSION="~> 4.2.0" STRICT_VARIABLES=true
+  - rvm: 2.0
+    env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
+  - rvm: 2.0
+    env: PUPPET_VERSION="~> 4.1.0" STRICT_VARIABLES=true
+  - rvm: 2.0
+    env: PUPPET_VERSION="~> 4.2.0" STRICT_VARIABLES=true
 notifications:
-  hipchat:
-    rooms:
-      secure: AvGATrsSpfHPJQvOFJUwoAShh7mQTR3gJENqgVDm3AotZS40lxokYaAT9GNYfCBRUz2xFoR23Yeh/NTbEgM6acPoHP8oSLF37EnsyyeS0MgswFGgyqY9BcfGFjx5HcYj8zDvISL2Dby9HUBUzmnS5BmuzNv5Hrkrk/BGKDXzCY8=
+  slack:
+    secure: EwJDWYpcaMh5Ebb4EbsVu+nc1QPff/OTT0aYyExl5i7e8YFKUAL6oTNtupo3s/RO1CUBUOcKGvYUmbhuTxo1o/MfKNFviR8xaYNS2sktZ0961jpd5JtLYxaZd91JKLb2ZrMuAckejM17+lMxivu8+PKZnuF7S78DHNLDLVJkBrY=
 deploy:
   provider: puppetforge
   user: abstractit
   password:
-    secure: "ZbtzOD15CmlaLJ0zK2qwLLaqXDk+Ile/2nGwZQ3pV5+cx6ILBVHN/cH0PaddVM9z2bV8k/sHN9ZCe5NXEyC54Vta8jCgLvIckS0tRqNICagn5BMhyEg5jSP7IIDhM9pWgF9KiJyMtx+8iWIt6h7v5+HbOylUuSUyhA0ewpFp2GA="
+    secure: ZbtzOD15CmlaLJ0zK2qwLLaqXDk+Ile/2nGwZQ3pV5+cx6ILBVHN/cH0PaddVM9z2bV8k/sHN9ZCe5NXEyC54Vta8jCgLvIckS0tRqNICagn5BMhyEg5jSP7IIDhM9pWgF9KiJyMtx+8iWIt6h7v5+HbOylUuSUyhA0ewpFp2GA=
   on:
     tags: true
     rvm: 2.1
     condition:
-      - $PUPPET_VERSION = '~> 4.2.0'
-      - $STRICT_VARIABLES = true
-#    all_branches: true
+    - $PUPPET_VERSION = '~> 4.2.0'
+    - $STRICT_VARIABLES = true
