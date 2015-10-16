@@ -93,6 +93,7 @@ class puppet::master (
   $hiera_eyaml_pkcs7_private_key_file = undef,
   $hiera_eyaml_pkcs7_public_key_file  = undef,
   $hiera_eyaml_version                = 'installed',
+  $manage_hiera_eyaml_package         = true,
   $hiera_hierarchy                    = [
     'node/%{::clientcert}',
     'env/%{::environment}',
