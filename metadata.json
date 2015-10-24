@@ -1,6 +1,6 @@
 {
   "name": "abstractit-puppet",
-  "version": "2.1.2",
+  "version": "2.2.0-beta",
   "author": "Abstract IT",
   "license": "Apache-2.0",
   "summary": "Manage Puppet agent, master, modules and hiera with Puppet",
@@ -65,7 +65,7 @@
     },
     {
       "name": "puppetlabs/puppetdb",
-      "version_requirement": ">=4.2.1 <5.0.0"
+      "version_requirement": ">=5.0.0 <6.0.0"
     },
     {
       "name": "zack/r10k",

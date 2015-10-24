@@ -37,7 +37,7 @@ class puppet::profile::puppetdb (
   $node_ttl                    = '0s',
   $puppetdb_listen_address     = '127.0.0.1',
   $puppetdb_server             = "puppet.${::domain}",
-  $puppetdb_ssl_listen_address = '127.0.0.1',
+  $puppetdb_ssl_listen_address = '0.0.0.0',
   $report_ttl                  = '14d',
   $reports                     = true,
   $use_ssl                     = true,
@@ -45,6 +45,8 @@ class puppet::profile::puppetdb (
   $ssl_listen_port             = '8081',
   $puppet_server_type          = 'passenger',
 ) {
+  include ::puppet::defaults
+
   case $use_ssl {
     default : {
       $puppetdb_port = $ssl_listen_port
@@ -64,15 +66,24 @@ class puppet::profile::puppetdb (
     }
   }
 
+  $terminus_package = $::puppet::defaults::terminus_package
+  $confdir          = $::puppet::defaults::puppetdb_confdir
+  $ssl_dir          = $::puppet::defaults::puppetdb_ssl_dir
+  $test_url         = $::puppet::defaults::puppetdb_test_url
+  $puppet_confdir   = $::puppet::defaults::confdir
+
   # add pg_trgm to the puppetdb database
   # remove this once the puppetdb module supports it
-  # need postgresql-contrib package to make pg_trgm work
-  package { 'postgresql-contrib':
-    ensure => 'installed'
-  }
+  # need postgresql::server::contrib class to make pg_trgm work
+  # class { '::postgresql::server::contrib':
+  # }
+  # postgresql::server::extension{ 'pg_trgm':
+  #   database => 'puppetdb',
+  # }
 
-  postgresql::server::extension{ 'pg_trgm':
-    database => 'puppetdb',
+  # version is now managed with the puppetdb::globals class
+  class { '::puppetdb::globals':
+    version   => $puppetdb_version,
   }
 
   # setup puppetdb
@@ -85,19 +96,28 @@ class puppet::profile::puppetdb (
     node_ttl           => $node_ttl,
     node_purge_ttl     => $node_purge_ttl,
     report_ttl         => $report_ttl,
-    puppetdb_version   => $puppetdb_version,
-    require            => Class['::puppet::master'],
+    confdir            => $confdir,
+    ssl_dir            => $ssl_dir,
+    # require            => Class['::puppet::master'],
   }
 
+  # setup puppetdb config for puppet master
   class { '::puppetdb::master::config':
+    manage_config           => false,
+    test_url                => $test_url,
     puppetdb_port           => $puppetdb_port,
     puppetdb_server         => $puppetdb_server,
     puppet_service_name     => $puppet_service_name,
     enable_reports          => $reports,
     manage_report_processor => $reports,
     restart_puppet          => true,
-    puppetdb_version        => $puppetdb_version,
     require                 => Class['::puppetdb'],
+  }
+
+  class { '::puppetdb::master::puppetdb_conf':
+    port            => $ssl_listen_port,
+    puppet_confdir  => $puppet_confdir,
+    legacy_terminus => $terminus_package,
   }
 
 }
