@@ -11,7 +11,7 @@ fixtures:
       ref:  "4.6.0"
     apt:
       repo: "puppetlabs/apt"
-      ref:  "1.8.0"
+      ref:  "2.1.0"
     inifile:
       repo: "puppetlabs/inifile"
       ref:  "1.2.0"
