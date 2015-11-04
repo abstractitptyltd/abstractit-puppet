@@ -11,16 +11,16 @@ fixtures:
       ref:  "4.6.0"
     apt:
       repo: "puppetlabs/apt"
-      ref:  "1.8.0"
+      ref:  "2.1.0"
     inifile:
       repo: "puppetlabs/inifile"
       ref:  "1.2.0"
     postgresql:
       repo: "puppetlabs/postgresql"
-      ref:  "4.3.0"
+      ref:  "4.6.0"
     puppetdb:
       repo: "puppetlabs/puppetdb"
-      ref:  "4.2.1"
+      ref:  "5.0.0"
     firewall:
       repo: "puppetlabs/firewall"
       ref:  "1.5.0"

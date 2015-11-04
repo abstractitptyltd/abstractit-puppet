@@ -39,6 +39,9 @@ class puppet::defaults {
     }
     $facterbasepath            = '/opt/puppetlabs/facter'
     $reports_dir               = '/opt/puppetlabs/server/data/reports'
+    $terminus_package          = 'puppetdb-termini'
+    $puppetdb_etcdir           = '/etc/puppetlabs/puppetdb'
+    $puppetdb_test_url         = '/pdb/meta/v1/version'
   } else {
     $server_type               = 'passenger'
     $confdir                   = '/etc/puppet'
@@ -51,7 +54,12 @@ class puppet::defaults {
     }
     $facterbasepath            = '/etc/facter'
     $reports_dir               = '/var/lib/puppet/reports'
+    $terminus_package          = 'puppetdb-terminus'
+    $puppetdb_etcdir           = '/etc/puppetdb'
+    $puppetdb_test_url         = '/v3/version'
   }
+  $puppetdb_confdir          = "${puppetdb_etcdir}/conf.d"
+  $puppetdb_ssl_dir          = "${puppetdb_etcdir}/ssl"
   $autosign_file             = "${confdir}/autosign.conf"
   $environmentpath           = "${codedir}/environments"
   $hiera_eyaml_key_directory = "${codedir}/hiera_eyaml_keys"

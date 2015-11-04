@@ -38,7 +38,7 @@ describe 'puppet::repo::apt', :type => :class do
            :ensure=>"present",
            :location=>"http://apt.puppetlabs.com",
            :repos=>"main dependencies",
-           :key=>"4BD6EC30",
+           :key=>"47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30",
            :key_server=>"pgp.mit.edu",
            :comment=>"puppetlabs",
           })
@@ -49,7 +49,7 @@ describe 'puppet::repo::apt', :type => :class do
             :ensure=>"absent",
             :location=>"http://apt.puppetlabs.com",
             :repos=>"devel",
-            :key=>"4BD6EC30",
+            :key=>"47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30",
             :key_server=>"pgp.mit.edu",
             :comment=>"puppetlabs_devel",
           })
@@ -64,7 +64,7 @@ describe 'puppet::repo::apt', :type => :class do
             :ensure=>"present",
             :location=>"http://apt.puppetlabs.com",
             :repos=>"BOGON",
-            :key=>"4BD6EC30",
+            :key=>"47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30",
             :key_server=>"pgp.mit.edu",
             })
           should_not contain_apt__source('puppetlabs')
@@ -88,7 +88,7 @@ describe 'puppet::repo::apt', :type => :class do
               :ensure=>"absent",
               :location=>"http://apt.puppetlabs.com",
               :repos=>"devel",
-              :key=>"4BD6EC30",
+              :key=>"47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30",
               :key_server=>"pgp.mit.edu",
               :comment=>"puppetlabs_devel",
             })
@@ -103,7 +103,7 @@ describe 'puppet::repo::apt', :type => :class do
               :ensure=>"present",
               :location=>"http://apt.puppetlabs.com",
               :repos=>"devel",
-              :key=>"4BD6EC30",
+              :key=>"47B320EB4C7C375AA9DAE1A01054B7A24BD6EC30",
               :key_server=>"pgp.mit.edu",
               :comment=>"puppetlabs_devel",
             })
