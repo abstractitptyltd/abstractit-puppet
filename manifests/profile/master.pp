@@ -60,6 +60,36 @@
 #   Specifies the version of the puppetmaster package to install
 # @param server_type ([String] Default Puppet 4: 'puppetserver' Default Puppet 4: 'passenger')
 #   Specifies the type of server to use puppetserver is always used on Puppet 4
+# @param puppetdb [Boolean] Default: false
+#   Whether to setup PuppetDB.
+#   Set this to configure a PuppetDB server on this node.
+# @param puppetdb_server [String] Default: undef
+#   The dns name or ip of the puppetdb server.
+#   Set this to specify which PuppetDB server to connect to.
+#   Set it to the fqdn of this node and puppetdb to true to configure PuppetDB 
+# @param puppetdb_version [String] Default: 'installed'
+#   The version of puppetdb to install.
+# @param puppetdb_node_purge_ttl [String] Default: 0s
+#   The length of time a node can be deactivated before it's deleted from the database. (a value of '0' disables purging).
+# @param puppetdb_node_ttl [String] Default: '0s'
+#   The length of time a node can go without receiving any new data before it's automatically deactivated. (defaults to '0', which disables auto-deactivation).
+# @param puppetdb_listen_address [String] Default: 127.0.0.1
+#   The address that the web server should bind to for HTTP requests. Set to '0.0.0.0' to listen on all addresses.
+# @param puppetdb_ssl_listen_address [String] Default: 127.0.0.1
+#   The address that the web server should bind to for HTTPS requests. Set to '0.0.0.0' to listen on all addresses.
+# @param report_ttl [String] Default: '14d'
+#   The length of time reports should be stored before being deleted. (defaults to 14 days).
+# @param reports [Boolean] Default: true
+#   A toggle to alter the behavior of reports and puppetdb.
+#   If true, the module will properly set the 'reports' field in the puppet.conf file to enable the puppetdb report processor.
+# @param puppetdb_use_ssl [Boolean] Defaults: true
+#   A toggle to enable or disable ssl on puppetdb connections.
+# @param puppetdb_listen_port [String] Defaults: '8080'
+#   Non ssl Port to use for puppetdb
+# @param puppetdb_ssl_listen_port [String] Defaults: '8081'
+#   Ssl Port to use for puppetdb
+# @puppet_server_type [String] Defaults: 'passenger'
+#   Type of puppet server set to puppetserver if using the new puppetserver
 
 class puppet::profile::master (
   $autosign                           = false,
@@ -91,6 +121,19 @@ class puppet::profile::master (
   $puppet_version                     = 'installed',
   $server_type                        = undef,
   $server_version                     = 'installed',
+  $puppetdb                           = false,
+  $puppetdb_server                    = undef,
+  $puppetdb_version                   = 'installed',
+  $puppetdb_node_purge_ttl            = '0s',
+  $puppetdb_node_ttl                  = '0s',
+  $puppetdb_listen_address            = '127.0.0.1',
+  $puppetdb_ssl_listen_address        = '0.0.0.0',
+  $report_ttl                         = '14d',
+  $reports                            = true,
+  $puppetdb_use_ssl                   = true,
+  $puppetdb_listen_port               = '8080',
+  $puppetdb_ssl_listen_port           = '8081',
+  $puppet_service_name                = 'httpd',
 ) {
   class { '::puppet::master':
     autosign                           => $autosign,
@@ -122,6 +165,48 @@ class puppet::profile::master (
     server_version                     => $server_version,
     server_type                        => $server_type,
     puppet_version                     => $puppet_version,
+  }
+
+  case $puppetdb_use_ssl {
+    default : {
+      $puppetdb_port = $puppetdb_ssl_listen_port
+      $puppetdb_disable_ssl = false
+    }
+    false   : {
+      $puppetdb_port = $puppetdb_listen_port
+      $puppetdb_disable_ssl = true
+    }
+  }
+
+  # version is now managed with the puppetdb::globals class
+  class { '::puppetdb::globals':
+    version   => $puppetdb_version,
+  }
+  if ($puppetdb == true) {
+    # setup puppetdb
+    class { '::puppetdb':
+      listen_port        => $puppetdb_listen_port,
+      ssl_listen_port    => $puppetdb_ssl_listen_port,
+      disable_ssl        => $puppetdb_disable_ssl,
+      listen_address     => $puppetdb_listen_address,
+      ssl_listen_address => $puppetdb_ssl_listen_address,
+      node_ttl           => $puppetdb_node_ttl,
+      node_purge_ttl     => $puppetdb_node_purge_ttl,
+      report_ttl         => $report_ttl,
+      require            => Class['::puppet::master'],
+    }
+  }
+  if ($puppetdb_server != undef) {
+    # setup puppetdb config for puppet master
+    class { '::puppetdb::master::config':
+      puppetdb_port           => $puppetdb_port,
+      puppetdb_server         => $puppetdb_server,
+      puppet_service_name     => $puppet_service_name,
+      enable_reports          => $reports,
+      manage_report_processor => $reports,
+      restart_puppet          => true,
+      require                 => Class['::puppetdb'],
+    }
   }
 
 }

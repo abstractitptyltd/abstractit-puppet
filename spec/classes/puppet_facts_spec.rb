@@ -32,15 +32,15 @@ describe 'puppet::facts', :type => :class do
 #      end
 #    end#bools
 
-    ['custom_facts'].each do |hashes|
-      context "when the #{hashes} parameter is not an hash" do
-        let(:params) {{ hashes => 'this is a string'}}
-        it 'should fail' do
-          skip 'This does not work as is'
-          expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
-        end
-      end
-    end#hashes
+    # ['custom_facts'].each do |hashes|
+    #   context "when the #{hashes} parameter is not an hash" do
+    #     let(:params) {{ hashes => 'this is a string'}}
+    #     it 'should fail' do
+    #       skip 'This does not work as is'
+    #       expect { subject }.to raise_error(Puppet::Error, /is not a Hash./)
+    #     end
+    #   end
+    # end#hashes
 
 #    ['string'].each do |strings|
 #      context "when the #{strings} parameter is not a string" do
