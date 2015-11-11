@@ -1,5 +1,8 @@
 # The puppet::profile::master class is responsible for configuring a puppetmaster.
-
+# This profile can also setup your puppet master to talk to puppetdb and setup puppetdb
+# If you want PuppetDB on a separate node please use the puppet::profile::puppetdb class
+# This and the puppet::profile::puppetdb class are mutually exclusive and will not work on the same node.
+# 
 # @param autosign [Boolean] Default: false
 #   Whether or not to enable autosign.
 # @param autosign_domains [Array] Default: empty

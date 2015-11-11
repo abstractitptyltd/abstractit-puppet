@@ -1,6 +1,9 @@
 # Class puppet::profile::puppetdb
 # 
 # The puppet::master::puppetdb class is responsible for configuring PuppetDB
+# It will only setup PuppetDB, if you want to setup PuppetDB on the node your puppet master run on
+# please use the puppet::profile::master class
+# This and the puppet::profile::master class are mutually exclusive and will not work on the same node.
 #
 # @puppet::profile::puppetdb when declaring the puppet::profile::puppetdb class
 #   include puppet::profile::puppetdb
