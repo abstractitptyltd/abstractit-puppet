@@ -54,8 +54,10 @@ class puppet::profile::puppetdb (
     $report_ttl,
   )
   validate_integer(
-    $listen_port,
-    $ssl_listen_port
+    [
+      $listen_port,
+      $ssl_listen_port,
+    ]
   )
 
   # add deprecation warnings
