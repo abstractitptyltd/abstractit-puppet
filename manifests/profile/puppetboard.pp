@@ -46,7 +46,7 @@ class puppet::profile::puppetboard (
     git_source        => $git_source,
     puppetdb_port     => $puppetdb_port,
     puppetdb_host     => $puppetdb_host,
-    manage_virtualenv => true,
+    manage_virtualenv => $manage_virtualenv,
   }
 
   class { '::puppetboard::apache::vhost':
