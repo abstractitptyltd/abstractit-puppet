@@ -5,12 +5,13 @@ class puppet::master::install {
   include ::puppet::defaults
   include ::puppet::master
 
-  $allinone            = $::puppet::allinone
-  $server_type         = $::puppet::master::server_type
-  $hiera_eyaml_version = $::puppet::master::hiera_eyaml_version
-  $puppet_version      = $::puppet::master::puppet_version
-  $puppetmaster_pkg    = $::puppet::defaults::puppetmaster_pkg
-  $server_version      = $::puppet::master::server_version
+  $allinone                   = $::puppet::allinone
+  $server_type                = $::puppet::master::server_type
+  $hiera_eyaml_version        = $::puppet::master::hiera_eyaml_version
+  $manage_hiera_eyaml_package = $::puppet::master::manage_hiera_eyaml_package
+  $puppet_version             = $::puppet::master::puppet_version
+  $puppetmaster_pkg           = $::puppet::defaults::puppetmaster_pkg
+  $server_version             = $::puppet::master::server_version
 
   if ($allinone == true) {
     $server_package  = 'puppetserver'
@@ -35,9 +36,11 @@ class puppet::master::install {
     ],
   }
 
-  package { 'hiera-eyaml':
-    ensure   => $hiera_eyaml_version,
-    provider => gem
+  if $manage_hiera_eyaml_package {
+    package { 'hiera-eyaml':
+      ensure   => $hiera_eyaml_version,
+      provider => gem
+    }
   }
 
 }
