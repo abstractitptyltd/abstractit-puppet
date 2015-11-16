@@ -88,6 +88,14 @@ describe 'puppet::config', :type => :class do
             'value'=>false
           })
         end
+        it "should properly set the preferred_serialization_format setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet preferred_serialization_format').with({
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'preferred_serialization_format',
+            'value'=>'pson'
+          })
+        end
       end#no params
 
       context 'when ::puppet::ca_server is set' do

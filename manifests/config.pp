@@ -17,12 +17,6 @@ class puppet::config {
   $runinterval                    = $::puppet::runinterval
   $structured_facts               = $::puppet::structured_facts
 
-  validate_string(
-    $environment,
-    $puppet_server,
-    $runinterval,
-    )
-  validate_bool($structured_facts)
   $stringify_facts = $structured_facts ? {
     default => true,
     true    => false,
@@ -79,15 +73,13 @@ class puppet::config {
     require => Class['puppet::install'],
   }
 
-  if ($preferred_serialization_format == 'msgpack') {
-    ini_setting { 'puppet preferred_serialization_format':
-      ensure  => present,
-      path    => "${confdir}/puppet.conf",
-      section => 'agent',
-      setting => 'preferred_serialization_format',
-      value   => $preferred_serialization_format,
-      require => Class['puppet::install'],
-    }
+  ini_setting { 'puppet preferred_serialization_format':
+    ensure  => present,
+    path    => "${confdir}/puppet.conf",
+    section => 'agent',
+    setting => 'preferred_serialization_format',
+    value   => $preferred_serialization_format,
+    require => Class['puppet::install'],
   }
 
   ini_setting { 'puppet client reports':
