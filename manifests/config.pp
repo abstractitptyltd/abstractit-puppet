@@ -16,6 +16,8 @@ class puppet::config {
   $reports                        = $::puppet::reports
   $runinterval                    = $::puppet::runinterval
   $structured_facts               = $::puppet::structured_facts
+  $manage_etc_facter              = $::puppet::manage_etc_facter
+  $manage_etc_facter_facts_d      = $::puppet::manage_etc_facter_facts_d
 
   $stringify_facts = $structured_facts ? {
     default => true,

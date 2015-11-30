@@ -132,6 +132,9 @@ class puppet (
   $supported_mechanisms = ['service', 'cron']
   validate_re($enable_mechanism, $supported_mechanisms)
 
+  include ::puppet::defaults
+  $facterbasepath = $::puppet::defaults::facterbasepath
+
   if $devel_repo == true {
     notify { 'Deprecation notice: puppet::devel_repo is deprecated, use puppet::enable_devel_repo instead': }
   }
@@ -171,6 +174,24 @@ class puppet (
     include ::puppet::repo
     Class['::puppet::repo'] -> Class['::puppet::install']
   }
+  if $::puppet::manage_etc_facter {
+    file { $facterbasepath:
+      ensure => directory,
+      owner  => 'root',
+      group  => 'puppet',
+      mode   => '0755',
+    }
+  }
+
+  if $::puppet::manage_etc_facter_facts_d {
+    file { "${facterbasepath}/facts.d":
+      ensure => directory,
+      owner  => 'root',
+      group  => 'puppet',
+      mode   => '0755',
+    }
+  }
+
   if $custom_facts {
     class { '::puppet::facts':
       custom_facts => $custom_facts,

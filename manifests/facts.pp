@@ -16,24 +16,6 @@ class puppet::facts (
     validate_hash($custom_facts)
   }
 
-  if $::puppet::manage_etc_facter {
-    file { $facterbasepath:
-      ensure => directory,
-      owner  => 'root',
-      group  => 'puppet',
-      mode   => '0755',
-    }
-  }
-
-  if $::puppet::manage_etc_facter_facts_d {
-    file { "${facterbasepath}/facts.d":
-      ensure => directory,
-      owner  => 'root',
-      group  => 'puppet',
-      mode   => '0755',
-    }
-  }
-
   file { "${facterbasepath}/facts.d/local.yaml":
     ensure  => file,
     owner   => 'root',

@@ -104,7 +104,11 @@ describe 'puppet', :type => :class do
         })
       end
       it { is_expected.to compile.with_all_deps }
-
+      if Puppet.version.to_f >= 4.0
+        facterbasepath  = '/opt/puppetlabs/facter'
+      else
+        facterbasepath  = '/etc/facter'
+      end
       context 'when fed no parameters' do
         it 'should instantiate the puppet::repo class with the default params' do
           should contain_class('puppet::repo')
@@ -118,7 +122,35 @@ describe 'puppet', :type => :class do
         it 'should instantiate the puppet::agent class' do
           should contain_class('puppet::agent')
         end
+        it 'should manage the facts directories' do
+          #binding.pry;
+          should contain_file("#{facterbasepath}").with({
+            :ensure=>"directory",
+            :owner=>"root",
+            :group=>"puppet",
+            :mode=>"0755"
+          })
+          should contain_file("#{facterbasepath}/facts.d").with({
+            :ensure=>"directory",
+            :owner=>"root",
+            :group=>"puppet",
+            :mode=>"0755"
+          })
+        end
       end#no params
+
+      context 'when ::puppet::manage_etc_facter is false' do
+        let(:pre_condition){"class{'puppet': manage_etc_facter => false}"}
+        it 'should not try to lay down the directory' do
+          should_not contain_file("#{facterbasepath}")
+        end
+      end
+      context 'when ::puppet::manage_etc_facter_facts_d is false' do
+        let(:pre_condition){"class{'puppet': manage_etc_facter_facts_d => false}"}
+        it 'should not try to lay down the directory' do
+          should_not contain_file("#{facterbasepath}/facts.d")
+        end
+      end
 
       # context 'when the agent_version param is something other than installed' do
       #   let(:params) {{'agent_version' => 'BOGON'}}
