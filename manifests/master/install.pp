@@ -12,6 +12,7 @@ class puppet::master::install {
   $puppet_version             = $::puppet::master::puppet_version
   $puppetmaster_pkg           = $::puppet::defaults::puppetmaster_pkg
   $server_version             = $::puppet::master::server_version
+  $gem_provider               = $::puppet::defaults::gem_provider
 
   if ($allinone == true) {
     $server_package  = 'puppetserver'
@@ -39,7 +40,7 @@ class puppet::master::install {
   if $manage_hiera_eyaml_package {
     package { 'hiera-eyaml':
       ensure   => $hiera_eyaml_version,
-      provider => gem
+      provider => $gem_provider
     }
   }
 

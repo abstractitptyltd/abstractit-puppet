@@ -24,5 +24,8 @@ fixtures:
     firewall:
       repo: "puppetlabs/firewall"
       ref:  "1.5.0"
+    puppetserver_gem:
+      repo: "puppetlabs/puppetserver_gem"
+      ref:  "0.1.0"
   symlinks:
     puppet: "#{source_dir}"
