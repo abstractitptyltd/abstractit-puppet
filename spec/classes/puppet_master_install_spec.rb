@@ -74,11 +74,24 @@ describe 'puppet::master::install', :type => :class do
 
         context 'when ::puppet::master::manage_hiera_eyaml_package is true' do
           let(:pre_condition){"class{'::puppet::master': manage_hiera_eyaml_package=>true }"}
-          it 'should install the hiera-eyaml package' do
-            should contain_package('hiera-eyaml').with({
-              :ensure => 'installed',
-              :provider => 'gem'
-            })
+          if Puppet.version.to_f >= 4.0
+            context 'when puppetversion >= 4' do
+              it 'should install the hiera-eyaml package with the puppetserver_gem provider' do
+                should contain_package('hiera-eyaml').with({
+                  :ensure   => 'installed',
+                  :provider => 'puppetserver_gem'
+                })
+              end
+            end
+          else
+            context 'when puppetversion < 4' do
+              it 'should install the hiera-eyaml package with the gem provider' do
+                should contain_package('hiera-eyaml').with({
+                  :ensure   => 'installed',
+                  :provider => 'gem'
+                })
+              end
+            end
           end
         end#manage_hiera_eyaml_package true
 
@@ -159,11 +172,24 @@ describe 'puppet::master::install', :type => :class do
       context 'when the hiera_eyaml_version param has a non-standard value' do
         let(:pre_condition) {"class{'::puppet::master': manage_hiera_eyaml_package=>true }"}
         let(:pre_condition) {"class{'::puppet::master': hiera_eyaml_version=>'BOGON' }"}
-        it 'should install the specified version of the hiera-eyaml package' do
-          should contain_package('hiera-eyaml').with({
-            'ensure' => "BOGON",
-            'provider'=> "gem"
-          })
+        if Puppet.version.to_f >= 4.0
+          context 'when puppetversion >= 4' do
+            it 'should install the specified version of the hiera-eyaml package with the puppetserver_gem provider' do
+              should contain_package('hiera-eyaml').with({
+                :ensure   => 'BOGON',
+                :provider => 'puppetserver_gem'
+              })
+            end
+          end
+        else
+          context 'when puppetversion < 4' do
+            it 'should install the specified version of the hiera-eyaml package with the gem provider' do
+              should contain_package('hiera-eyaml').with({
+                :ensure   => 'BOGON',
+                :provider => 'gem'
+              })
+            end
+          end
         end
       end # hiera_eyaml_version defined
 
