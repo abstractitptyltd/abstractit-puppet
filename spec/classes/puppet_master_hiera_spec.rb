@@ -67,6 +67,8 @@ describe 'puppet::master::hiera', :type => :class do
               /:yaml:/
             ).with_content(
               /  :datadir: \"\/etc\/puppetlabs\/code\/hieradata\/%\{environment\}\"/
+            ).without_content(
+              /  :merge_behavior: "/
             )
           end
         else
@@ -92,6 +94,8 @@ describe 'puppet::master::hiera', :type => :class do
               /:yaml:/
             ).with_content(
               /  :datadir: \"\/etc\/puppet\/hieradata\/%\{environment\}\"/
+            ).without_content(
+              /  :merge_behavior: "/
             )
           end
         end
@@ -250,6 +254,61 @@ describe 'puppet::master::hiera', :type => :class do
              :mode=>"0600",
              :source=>"puppet:///modules/local/eyaml/public_key.pkcs7.pem"
            })
+        end
+      end
+
+      context 'when the hiera_merge_behavior param is set to native' do
+        let(:pre_condition) {"class{'puppet::master': hiera_merge_behavior => 'native' }"}
+        it "should update #{codedir}/hiera.yaml with the merge_behavior set to native" do
+          should contain_file("#{codedir}/hiera.yaml").with({
+            :ensure => 'file',
+            :owner  => 'root',
+            :group  => 'root',
+            :mode   => '0644'
+          }).with_content(
+            /:merge_behavior: native/
+          )
+        end
+      end
+
+      context 'when the hiera_merge_behavior param is set to deep' do
+        let(:pre_condition) {"class{'puppet::master': hiera_merge_behavior => 'deep' }"}
+        it "should update #{codedir}/hiera.yaml with the merge_behavior set to deep" do
+          should contain_file("#{codedir}/hiera.yaml").with({
+            :ensure => 'file',
+            :owner  => 'root',
+            :group  => 'root',
+            :mode   => '0644'
+          }).with_content(
+            /:merge_behavior: deep/
+          )
+        end
+      end
+
+      context 'when the hiera_merge_behavior param is set to deeper' do
+        let(:pre_condition) {"class{'puppet::master': hiera_merge_behavior => 'deeper' }"}
+        it "should update #{codedir}/hiera.yaml with the merge_behavior set to deeper" do
+          should contain_file("#{codedir}/hiera.yaml").with({
+            :ensure => 'file',
+            :owner  => 'root',
+            :group  => 'root',
+            :mode   => '0644'
+          }).with_content(
+            /:merge_behavior: deeper/
+          )
+        end
+      end
+
+      context 'when the hiera_merge_behavior param is set to an invalid value' do
+        let(:pre_condition) {"class{'puppet::master': hiera_merge_behavior => 'foo' }"}
+        if Puppet.version.to_f >= 4.1
+          it "should fail as param value is invalid" do
+            expect { catalogue }.to raise_error(Puppet::PreformattedError, /"foo" does not match \["native", "deep", "deeper"\]/)
+          end
+        else
+          it "should fail as param value is invalid" do
+            expect { catalogue }.to raise_error(Puppet::Error, /"foo" does not match \["native", "deep", "deeper"\]/)
+          end
         end
       end
 

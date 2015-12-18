@@ -16,6 +16,8 @@
 #   'off' will set the autosign variable to false disabling autosign completely.
 # @param basemodulepath (*absolute path* Default Puppet 4: ${codedir}/environments Default Puppet 3: /etc/puppet/environments)
 #   The base directory path to have environments checked out into.
+# @param deep_merge_version ([String] Default: 'installed')
+#   The version of the deep_merge package to install.
 # @param env_owner [String] Default: 'puppet'
 #   The user which should own hieradata and r10k repos
 # @param environmentpath (*absolute path* Default Puppet 4: ${codedir}/modules:${confdir}/modules Default Puppet 3: ${confdir}/modules:/usr/share/puppet/modules)
@@ -40,10 +42,14 @@
 #   The puppet source of the file to use as the hiera-eyaml private key
 # @param hiera_hierarchy ([Array] Default: ['node/%{::clientcert}', 'env/%{::environment}', 'global'])
 #   The hierarchy to configure hiera to use
+# @param hiera_merge_behavior ([String] Default: undef)
+#  The type of [merge behaviour](http://docs.puppetlabs.com/hiera/latest/configuring.html#mergebehavior) that should be used by hiera. Defaults to not being set.
 # @param hieradata_path (*absolute path* Default Puppet 3: /etc/puppet/hiera Default Puppet 4: $codedir/hieradata)
 #   The location to configure hiera to look for the hierarchy. This also impacts the [puppet::master::modules](#public-class-puppetmastermodules) module's deployment of your r10k hiera repo.
 # @param java_ram ([String] Default: '2g')
 #   Set the ram to use for the new puppetserver
+# @param manage_deep_merge_package ([Boolean] Default: false)
+#   Whether the [deep_merge gem](https://rubygems.org/gems/deep_merge) should be installed.
 # @param manage_hiera_config ([Boolean] Default: true)
 #   Whether to manage the content of the hiera config file
 # @param passenger_max_pool_size ([Number] Default: 12)
@@ -81,6 +87,7 @@ class puppet::master (
   $autosign_file                      = $::puppet::defaults::autosign_file,
   $autosign_method                    = 'file',
   $basemodulepath                     = $::puppet::defaults::basemodulepath,
+  $deep_merge_version                 = 'installed',
   $env_owner                          = 'puppet',
   $environmentpath                    = $::puppet::defaults::environmentpath,
   $environment_timeout                = '0',
@@ -93,11 +100,13 @@ class puppet::master (
   $hiera_eyaml_pkcs7_private_key_file = undef,
   $hiera_eyaml_pkcs7_public_key_file  = undef,
   $hiera_eyaml_version                = 'installed',
+  $manage_deep_merge_package          = false,
   $manage_hiera_eyaml_package         = true,
   $hiera_hierarchy                    = [
     'node/%{::clientcert}',
     'env/%{::environment}',
     'global'],
+  $hiera_merge_behavior               = undef,
   $hieradata_path                     = $::puppet::defaults::hieradata_path,
   $java_ram                           = '2g',
   $manage_hiera_config                = true,
@@ -178,6 +187,12 @@ class puppet::master (
   # set autosign_method_interpolated to on if autosign is true
   if $autosign == true {
     notify { 'autosign is now managed with autosign_method. The autosign parameter is deprecated and will be removed in a future version': }
+  }
+
+  # check merge_behavior for hiera
+  if $hiera_merge_behavior {
+    $hiera_merge_behaviors = ['native', 'deep', 'deeper']
+    validate_re($hiera_merge_behavior,$hiera_merge_behaviors)
   }
 
   include ::puppet::master::install

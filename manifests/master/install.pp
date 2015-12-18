@@ -9,6 +9,8 @@ class puppet::master::install {
   $server_type                = $::puppet::master::server_type
   $hiera_eyaml_version        = $::puppet::master::hiera_eyaml_version
   $manage_hiera_eyaml_package = $::puppet::master::manage_hiera_eyaml_package
+  $deep_merge_version         = $::puppet::master::deep_merge_version
+  $manage_deep_merge_package  = $::puppet::master::manage_deep_merge_package
   $puppet_version             = $::puppet::master::puppet_version
   $puppetmaster_pkg           = $::puppet::defaults::puppetmaster_pkg
   $server_version             = $::puppet::master::server_version
@@ -40,7 +42,14 @@ class puppet::master::install {
   if $manage_hiera_eyaml_package {
     package { 'hiera-eyaml':
       ensure   => $hiera_eyaml_version,
-      provider => $gem_provider
+      provider => $gem_provider,
+    }
+  }
+
+  if $manage_deep_merge_package {
+    package { 'deep_merge':
+      ensure   => $deep_merge_version,
+      provider => $gem_provider,
     }
   }
 

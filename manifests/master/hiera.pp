@@ -15,6 +15,7 @@ class puppet::master::hiera {
   $hiera_eyaml_pkcs7_public_key       = $puppet::master::hiera_eyaml_pkcs7_public_key
   $hiera_eyaml_pkcs7_private_key_file = $puppet::master::hiera_eyaml_pkcs7_private_key_file
   $hiera_eyaml_pkcs7_public_key_file  = $puppet::master::hiera_eyaml_pkcs7_public_key_file
+  $hiera_merge_behavior               = $puppet::master::hiera_merge_behavior
 
   if ($manage_hiera_config == true) {
     file { "${codedir}/hiera.yaml":

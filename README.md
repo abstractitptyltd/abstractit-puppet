@@ -31,9 +31,9 @@ Manage puppet master, agents, modules using the same principals as you manage yo
 
 This module is very opinionated. It makes a few assumptions on how to manage a puppet master and it's agents.
 These opinions are what I consider the best way to do things based on my experiences using puppet.
-Those opinions have also been heavily influnced by the likes of Gary Larizza, Zack Smith, Craig Dunn and Adrien Thebo.
+Those opinions have also been heavily influenced by the likes of Gary Larizza, Zack Smith, Craig Dunn and Adrien Thebo.
 
-If you would like this module to behave differently I am happy to accept pull requests. Please maintain backwards compatability wherever prudent.
+If you would like this module to behave differently I am happy to accept pull requests. Please maintain backwards compatibility wherever prudent.
 
 Right now that that's out of the way here's how it works.
 Out of the box it manages the pupetlabs repo, the puppet agent, the versions installed and it's environment.
@@ -109,7 +109,7 @@ If it works for you, awesome! If not, let me know *or send me a pull request*.
 
 This module currently only works completely on Ubuntu Precise and Trusty.
 Support for RedHat and CentOS 5,6 and 7 has been added for the new Collections and Puppet 4.x.
-The new pupet-agent and puppetserver are supported on Ubuntu Centos and RedHat but a puppet master running under Passenger is only supported on Ubuntu.
+The new puppet-agent and puppetserver are supported on Ubuntu, Centos and RedHat but a puppet master running under Passenger is only supported on Ubuntu.
 
 I will be adding support for other operating systems when I get a chance.
 It also only configures puppet 3.6.x and 4.x If you need support for previous versions let me know.
@@ -126,18 +126,19 @@ It also only configures puppet 3.6.x and 4.x If you need support for previous ve
   * [puppetlabs-puppetdb](https://forge.puppetlabs.com/puppetlabs/puppetdb) (when using the puppetdb profile)
   * [puppet-puppetboard](https://forge.puppetlabs.com/puppet/puppetboard) (when using the puppetboard profile)
   * [zack-r10k](https://forge.puppetlabs.com/zack/r10k) (when using the r10k profile)
+  * [puppetlabs-puppetserver_gem](https://forge.puppetlabs.com/puppetlabs/puppetserver_gem) (when managing the hiera-eyaml and/or deep_merge gem on puppet 4.x)
 
 ###Beginning with puppet
 
 The best way to begin is using the example profiles puppet::profile::agent and puppet::profile::master
-These profiles wiill setup agent and master nodes.
+These profiles will setup agent and master nodes.
 I also have profiles for setting up R10K, puppetdb and puppetboard.
 
 ##Usage
 
 All interactions with puppet in done via the base classes `puppet` and `puppet::master` or the profiles
 I generally include the agent profile on all nodes and use hiera to setup the data.
-I have included some basic examples for setting up common setings on the agent or master.
+I have included some basic examples for setting up common settings on the agent or master.
 
 ###Basic setup of an agent
 
@@ -163,7 +164,7 @@ or
 ### Enable cfacter
 
     class { '::puppet::profile::agent':
-      cfacter => true 
+      cfacter => true
     }
 
 ### Disable repository management
@@ -282,7 +283,7 @@ The `puppet` class is responsible for validating some of our parameters, and ins
   * **enable_devel_repo**: (*bool* Default: `false`)
 
     This param will replace `devel_repo` in 2.x. It conveys to [puppet::repo::apt](#private-class-puppetrepoapt) whether or not to add the devel apt repo source.
-    When `devel_repo` is false, `enable_devel_repo` is consulted for enablement. This gives `devel_repo` backwards compatability at the cost of some confusion if you set `devel_repo` to true, and `enable_devel_repo` to false.
+    When `devel_repo` is false, `enable_devel_repo` is consulted for enablement. This gives `devel_repo` backwards compatibility at the cost of some confusion if you set `devel_repo` to true, and `enable_devel_repo` to false.
 
   * **enable_repo**: (*bool* Default `true`)
 
@@ -438,13 +439,17 @@ The `puppet::config` class is responsible for altering the configuration of `$co
 
   Method to use for autosign
   The default 'file' will use the $confdir/autosign.conf file to determine which certs to sign.
-  This file is empty by default so autosigning will be effectivly off
+  This file is empty by default so autosigning will be effectively off
   'on' will set the autosign variable to true and thus all certs will be signed.
   'off' will set the autosign variable to false disabling autosign completely.
 
   * **basemodulepath**: (*absolute path* Default Puppet 4: `${codedir}/environments` Default Puppet 3: `/etc/puppet/environments`)
 
   The base directory path to have environments checked out into.
+
+  * **deep_merge_version**: (*string* Default: `installed`)
+
+  The version of the deep_merge package to install.
 
   * **env_owner**: (*string* Default: `puppet`)
 
@@ -474,6 +479,10 @@ The `puppet::config` class is responsible for altering the configuration of `$co
 
   The hierarchy to configure hiera to use
 
+  * **hiera_merge_behavior**: (*string* Default: `undef`)
+
+  The type of [merge behaviour](http://docs.puppetlabs.com/hiera/latest/configuring.html#mergebehavior) that should be used by hiera. Defaults to not being set.
+
   * **hieradata_path**: (*absolute path* Default Puppet 3: `/etc/puppet/hiera` Default Puppet 4: `$codedir/hieradata`)
 
   The location to configure hiera to look for the hierarchy. This also impacts the [puppet::master::modules](#public-class-puppetmastermodules) module's deployment of your r10k hiera repo.
@@ -481,6 +490,10 @@ The `puppet::config` class is responsible for altering the configuration of `$co
   * **java_ram**: (*string* Default: `2g`)
 
   Set the ram to use for the new puppetserver
+
+  * **manage_deep_merge_package**: (*bool* Default: `false`)
+
+  Whether the [deep_merge gem](https://rubygems.org/gems/deep_merge) should be installed.
 
   * **passenger_max_pool_size**: (*string* Default: `12`)
 
