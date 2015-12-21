@@ -101,6 +101,36 @@ describe 'puppet::master::install', :type => :class do
             should_not contain_package('hiera-eyaml')
           end
         end#manage_hiera_eyaml_package false
+
+        context 'when ::puppet::master::manage_deep_merge_package is true' do
+          let(:pre_condition){"class{'::puppet::master': manage_deep_merge_package=>true }"}
+          if Puppet.version.to_f >= 4.0
+            context 'when puppetversion >= 4' do
+              it 'should install the deep_merge package with the puppetserver_gem provider' do
+                should contain_package('deep_merge').with({
+                  :ensure   => 'installed',
+                  :provider => 'puppetserver_gem'
+                })
+              end
+            end
+          else
+            context 'when puppetversion < 4' do
+              it 'should install the deep_merge package with the gem provider' do
+                should contain_package('deep_merge').with({
+                  :ensure   => 'installed',
+                  :provider => 'gem'
+                })
+              end
+            end
+          end
+        end#manage_deep_merge_package true
+
+        context 'when ::puppet::master::manage_deep_merge_package is false' do
+          let(:pre_condition){"class{'::puppet::master': manage_deep_merge_package=>false }"}
+          it 'should not install the deep_merge package' do
+            should_not contain_package('deep_merge')
+          end
+        end#manage_deep_merge_package false
       end#no params
 
       context 'when the a specific version of puppetserver is required' do
@@ -170,8 +200,7 @@ describe 'puppet::master::install', :type => :class do
       end # specific version of puppetserver
 
       context 'when the hiera_eyaml_version param has a non-standard value' do
-        let(:pre_condition) {"class{'::puppet::master': manage_hiera_eyaml_package=>true }"}
-        let(:pre_condition) {"class{'::puppet::master': hiera_eyaml_version=>'BOGON' }"}
+        let(:pre_condition) {"class{'::puppet::master': manage_hiera_eyaml_package=>true, hiera_eyaml_version=>'BOGON' }"}
         if Puppet.version.to_f >= 4.0
           context 'when puppetversion >= 4' do
             it 'should install the specified version of the hiera-eyaml package with the puppetserver_gem provider' do
@@ -192,6 +221,29 @@ describe 'puppet::master::install', :type => :class do
           end
         end
       end # hiera_eyaml_version defined
+
+      context 'when the deep_merge_version param has a non-standard value' do
+        let(:pre_condition) {"class{'::puppet::master': manage_deep_merge_package=>true, deep_merge_version=>'BOGON' }"}
+        if Puppet.version.to_f >= 4.0
+          context 'when puppetversion >= 4' do
+            it 'should install the specified version of the deep_merge package with the puppetserver_gem provider' do
+              should contain_package('deep_merge').with({
+                :ensure   => 'BOGON',
+                :provider => 'puppetserver_gem'
+              })
+            end
+          end
+        else
+          context 'when puppetversion < 4' do
+            it 'should install the specified version of the deep_merge package with the gem provider' do
+              should contain_package('deep_merge').with({
+                :ensure   => 'BOGON',
+                :provider => 'gem'
+              })
+            end
+          end
+        end
+      end # deep_merge_version defined
 
     end
   end

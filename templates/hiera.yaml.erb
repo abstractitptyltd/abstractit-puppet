@@ -17,3 +17,6 @@
   <%- end -%>
 
 <%- end -%>
+<% if @hiera_merge_behavior -%>
+:merge_behavior: <%= @hiera_merge_behavior -%>
+<% end -%>
