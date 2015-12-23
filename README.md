@@ -495,6 +495,10 @@ The `puppet::config` class is responsible for altering the configuration of `$co
 
   Whether the [deep_merge gem](https://rubygems.org/gems/deep_merge) should be installed.
 
+  * **manage_hiera_eyaml_package**: (*bool* Default: `true`)
+
+  Whether the [hiera-eyaml gem](https://rubygems.org/gems/hiera-eyaml) should be installed.
+
   * **passenger_max_pool_size**: (*string* Default: `12`)
 
   Adjusts the [apache::mod::passenger](https://github.com/puppetlabs/puppetlabs-apache/blob/master/manifests/mod/passenger.pp) configuration to configure the specified [max pool size](https://www.phusionpassenger.com/documentation/Users%20guide%20Apache.html#PassengerMaxPoolSize).

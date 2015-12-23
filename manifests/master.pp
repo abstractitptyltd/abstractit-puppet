@@ -50,6 +50,8 @@
 #   Set the ram to use for the new puppetserver
 # @param manage_deep_merge_package ([Boolean] Default: false)
 #   Whether the [deep_merge gem](https://rubygems.org/gems/deep_merge) should be installed.
+# @param manage_hiera_eyaml_package ([Boolean] Default: true)
+#   Whether the [hiera-eyaml gem](https://rubygems.org/gems/hiera-eyaml) should be installed.
 # @param manage_hiera_config ([Boolean] Default: true)
 #   Whether to manage the content of the hiera config file
 # @param passenger_max_pool_size ([Number] Default: 12)
