@@ -10,12 +10,12 @@ matrix:
     env: PUPPET_GEM_VERSION="~> 3.0"
   - rvm: 2.0.0
     env: PUPPET_GEM_VERSION="~> 3.0"
-  - rvm: 2.1.5
+  - rvm: 2.1.7
     env: PUPPET_GEM_VERSION="~> 3.0"
-  - rvm: 2.1.5
-    env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
-  - rvm: 2.1.6
-    env: PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES="yes"
+  - rvm: 2.1.7
+    env: PUPPET_GEM_VERSION="3.8.5" FUTURE_PARSER="yes"
+  - rvm: 2.1.7
+    env: PUPPET_GEM_VERSION="4.3.2" STRICT_VARIABLES="yes"
 notifications:
   slack:
     secure: EwJDWYpcaMh5Ebb4EbsVu+nc1QPff/OTT0aYyExl5i7e8YFKUAL6oTNtupo3s/RO1CUBUOcKGvYUmbhuTxo1o/MfKNFviR8xaYNS2sktZ0961jpd5JtLYxaZd91JKLb2ZrMuAckejM17+lMxivu8+PKZnuF7S78DHNLDLVJkBrY=
@@ -29,5 +29,5 @@ deploy:
     tags: true
     rvm: 2.1
     condition:
-    - $PUPPET_VERSION = '4.3.2'
+    - $PUPPET_GEM_VERSION = '4.3.2'
     - $STRICT_VARIABLES = true
