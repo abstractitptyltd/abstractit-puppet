@@ -149,12 +149,12 @@ describe 'puppet::master::install', :type => :class do
         end# allinone true
         context 'when ::puppet::allinone is false' do
           let(:pre_condition){"class{'::puppet': allinone => false}"}
-          let(:pre_condition){"class{'::puppet::master': puppet_version => 'BOGON', server_type => 'passenger' }"}
+          let(:pre_condition){"class{'::puppet::master': puppet_version => '3.8.4', server_type => 'passenger' }"}
           case facts[:osfamily]
           when 'Debian'
             it 'should install the puppetmaster package' do
               should contain_package('puppetmaster').with({
-                :ensure=>'BOGON',
+                'ensure' => '3.8.4',
               }).that_requires(
                 'Class[puppet::master::install::deps]'
               ).that_requires(
@@ -164,7 +164,7 @@ describe 'puppet::master::install', :type => :class do
           when 'RedHat'
             it 'should install the puppet-server package' do
               should contain_package('puppet-server').with({
-                :ensure=>'BOGON',
+                'ensure' => '3.8.4',
               }).that_requires(
                 'Class[puppet::master::install::deps]'
               ).that_requires(
@@ -186,10 +186,10 @@ describe 'puppet::master::install', :type => :class do
         end# allinone false server_type = puppetserver
         context 'when ::puppet::allinone is false server_version is set and server_type is puppetserver' do
           let(:pre_condition){"class{'::puppet': allinone => false}"}
-          let(:pre_condition){"class{'::puppet::master': server_type => 'puppetserver', server_version => 'BOGON' }"}
+          let(:pre_condition){"class{'::puppet::master': server_type => 'puppetserver', server_version => '2.1.2' }"}
           it 'should install the specified version of the puppetserver package' do
             should contain_package('puppetserver').with({
-              :ensure=>'BOGON',
+              'ensure' => '2.1.2',
             }).that_requires(
               'Class[puppet::master::install::deps]'
             ).that_requires(

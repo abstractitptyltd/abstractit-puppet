@@ -53,6 +53,8 @@
 #   Whether or not we pay any attention to managing repositories.
 #   This is managed by only including [puppet::repo](#private-class-puppetrepo) subclass when true.
 #   The individual repo subclasses also will perform no action if included with this param set to false.
+# @param manage_repo_method [Boolean] Default: 'file'
+#   Sets the method for managing the repo files
 # @param puppet_server [String] Default: 'puppet'
 #   The hostname or fqdn of the puppet server that the agent should communicate with.
 # @param preferred_serialization_format [String] Default: 'pson'
@@ -93,6 +95,7 @@ class puppet (
   $manage_etc_facter              = true,
   $manage_etc_facter_facts_d      = true,
   $manage_repos                   = true,
+  $manage_repo_method             = 'files',
   $preferred_serialization_format = 'pson',
   $puppet_server                  = 'puppet',
   $puppet_version                 = 'installed',
@@ -122,10 +125,14 @@ class puppet (
     $facter_version,
     $hiera_version,
     $logdest,
+    $manage_repo_method,
     $puppet_server,
     $puppet_version,
     $runinterval,
   )
+  $manage_repo_types = ['files','package']
+  validate_re($manage_repo_method,$manage_repo_types)
+
   $serialization_formats = ['pson','msgpack']
   validate_re($preferred_serialization_format,$serialization_formats)
 
