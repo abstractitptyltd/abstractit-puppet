@@ -4,11 +4,9 @@ GEM
     CFPropertyList (2.2.8)
     addressable (2.4.0)
     backports (3.6.7)
-    builder (3.2.2)
-    ci_reporter (2.0.0)
-      builder (>= 2.1.2)
     coderay (1.0.9)
     diff-lcs (1.2.5)
+    docile (1.1.5)
     domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
     ethon (0.8.1)
@@ -118,6 +116,11 @@ GEM
       json
       puppet
     rspec-support (3.1.2)
+    simplecov (0.11.1)
+      docile (~> 1.1.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     slop (2.4.4)
     spdx-licenses (1.0.0)
       json
@@ -143,10 +146,10 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  ci_reporter
+  json
   metadata-json-lint
   pry (<= 0.9.8)
-  puppet (= 4.3.2)
+  puppet
   puppet-blacksmith
   puppet-lint
   puppet-lint-absolute_classname-check
@@ -159,10 +162,9 @@ DEPENDENCIES
   puppet-lint-variable_contains_upcase
   puppet-syntax
   puppetlabs_spec_helper
-  rake
-  rspec (< 3.2.0)
-  rspec-puppet (~> 2.1)
+  rspec-core (= 3.1.7)
   rspec-puppet-facts
+  simplecov
   travis
   travis-lint
 
