@@ -1,3 +1,12 @@
+##2016-01-18 - Divan Santana <divan@santanas.co.za> 2.1.3
+###Summary
+
+Fix for r10k purgedirs error as that parameter is now deprecated in upstream module.
+
+####Bugfixes
+
+Fix for r10k purgedirs error as that parameter is now deprecated in upstream module.
+
 ##2015-07-14 - Pete Brown <pete@abstractit.com.au> 2.1.2
 ###Summary
 
@@ -58,7 +67,7 @@ I have dropped Ruby 1.8 from spec tests due to inconsistent results. The module 
 
 #####`puppet::master` class
 - `module_path` - This paramater has been removed use `basemodulepath` instead
-- `pre_module_path` - This paramater has been removed use `basemodulepath` instead 
+- `pre_module_path` - This paramater has been removed use `basemodulepath` instead
 
 #####`puppet::master::modules` class
 - This class has been removed in favour of the `puppet::profile::r10k` class
@@ -184,7 +193,7 @@ Added operatingsystem_support and requirements to metadata.json @rendhalver
 #### 2014-07-08 - Pete Brown <pete@abstractit.com.au> 1.7.2
  * Added option for setting runinterval on agent (default 30m)
  * [fix] add missing -p flag to r10k cron
- 
+
 #### 2014-07-08 - Pete Brown <pete@abstractit.com.au> 1.7.1
  * [fix] environment to r10k cron
  * [fix] fixed dependencies
