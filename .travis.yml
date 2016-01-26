@@ -2,41 +2,24 @@ language: ruby
 sudo: false
 bundler_args: --without development
 before_install: rm Gemfile.lock || true
-rvm:
-- 1.9
-- 2.0
-- 2.1
 script: bundle exec rake test
-env:
-- PUPPET_VERSION="3.6.2" STRICT_VARIABLES=true
-- PUPPET_VERSION="3.7.5" STRICT_VARIABLES=true
-- PUPPET_VERSION="3.8.5" STRICT_VARIABLES=true
-- PUPPET_VERSION="3.8.5" STRICT_VARIABLES=true PARSER="future"
-- PUPPET_VERSION="4.0.0" STRICT_VARIABLES=true
-- PUPPET_VERSION="4.1.0" STRICT_VARIABLES=true
-- PUPPET_VERSION="4.2.3" STRICT_VARIABLES=true
-- PUPPET_VERSION="4.3.2" STRICT_VARIABLES=true
 matrix:
-  exclude:
-  - rvm: 1.9
-    env: PUPPET_VERSION="4.0.0" STRICT_VARIABLES=true
-  - rvm: 1.9
-    env: PUPPET_VERSION="4.1.0" STRICT_VARIABLES=true
-  - rvm: 1.9
-    env: PUPPET_VERSION="4.2.3" STRICT_VARIABLES=true
-  - rvm: 1.9
-    env: PUPPET_VERSION="4.3.1" STRICT_VARIABLES=true
+  fast_finish: true
+  include:
+  - rvm: 1.9.3
+    env: PUPPET_GEM_VERSION="~> 3.0"
   - rvm: 2.0
-    env: PUPPET_VERSION="4.0.0" STRICT_VARIABLES=true
-  - rvm: 2.0
-    env: PUPPET_VERSION="4.1.0" STRICT_VARIABLES=true
-  - rvm: 2.0
-    env: PUPPET_VERSION="4.2.3" STRICT_VARIABLES=true
-  - rvm: 2.0
-    env: PUPPET_VERSION="4.3.2" STRICT_VARIABLES=true
+    env: PUPPET_GEM_VERSION="~> 3.0"
+  - rvm: 2.1.5
+    env: PUPPET_GEM_VERSION="~> 3.0"
+  - rvm: 2.1.5
+    env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
+  - rvm: 2.1.6
+    env: PUPPET_GEM_VERSION="~> 4.0" STRICT_VARIABLES="yes"
 notifications:
   slack:
     secure: EwJDWYpcaMh5Ebb4EbsVu+nc1QPff/OTT0aYyExl5i7e8YFKUAL6oTNtupo3s/RO1CUBUOcKGvYUmbhuTxo1o/MfKNFviR8xaYNS2sktZ0961jpd5JtLYxaZd91JKLb2ZrMuAckejM17+lMxivu8+PKZnuF7S78DHNLDLVJkBrY=
+  email: false
 deploy:
   provider: puppetforge
   user: abstractit
