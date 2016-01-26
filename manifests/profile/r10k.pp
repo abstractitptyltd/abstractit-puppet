@@ -5,7 +5,6 @@
 #
 # @param remote [String] Default: undef
 # @param sources [String] Default: undef
-# @param purgedirs [Boolean] Default: true
 # @param cachedir [String] Default: undef
 # @param configfile [String] Default: undef
 # @param version [String] Default: undef
@@ -30,7 +29,6 @@
 class puppet::profile::r10k (
   $remote                    = undef,
   $sources                   = undef,
-  $purgedirs                 = true,
   $cachedir                  = undef,
   $configfile                = undef,
   $version                   = undef,
@@ -81,7 +79,6 @@ class puppet::profile::r10k (
   class { '::r10k':
     remote                    => $remote,
     sources                   => $sources,
-    purgedirs                 => $purgedirs,
     cachedir                  => $cachedir,
     configfile                => $configfile,
     version                   => $version,

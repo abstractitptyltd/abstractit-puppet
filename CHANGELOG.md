@@ -17,6 +17,7 @@ Added support for new versions of above mentioned modules.
 manage_virtualenv variable wasn't being used in puppetboard profile. @gwarf
 preferred_serialization_format wasn't being reverted if it wasn't set to msgpack. Thanks to @topei for spotting this.
 Move management of facter.d directory out of puppet::facts so it gets setup if the class is not used. Thanks to @topei for spotting this.
+Fix for r10k purgedirs error as that parameter is now deprecated in upstream module. Thanks @divansantana
 
 ##2015-07-14 - Pete Brown <pete@abstractit.com.au> 2.1.2
 ###Summary
@@ -78,7 +79,7 @@ I have dropped Ruby 1.8 from spec tests due to inconsistent results. The module 
 
 #####`puppet::master` class
 - `module_path` - This paramater has been removed use `basemodulepath` instead
-- `pre_module_path` - This paramater has been removed use `basemodulepath` instead 
+- `pre_module_path` - This paramater has been removed use `basemodulepath` instead
 
 #####`puppet::master::modules` class
 - This class has been removed in favour of the `puppet::profile::r10k` class
@@ -204,7 +205,7 @@ Added operatingsystem_support and requirements to metadata.json @rendhalver
 #### 2014-07-08 - Pete Brown <pete@abstractit.com.au> 1.7.2
  * Added option for setting runinterval on agent (default 30m)
  * [fix] add missing -p flag to r10k cron
- 
+
 #### 2014-07-08 - Pete Brown <pete@abstractit.com.au> 1.7.1
  * [fix] environment to r10k cron
  * [fix] fixed dependencies

@@ -18,14 +18,3 @@
     remote: "<%= @extra_env_repos[key]['repo'] %>"
 <%- end -%>
 <%- end -%>
-
-<%- if @r10k_purgedirs -%>
-:purgedirs:
-<%- if @puppet_env_repo -%>
-  - /etc/puppet/environments
-<%- end -%>
-<%- if @extra_env_repos -%>
-  - <%= @r10k_env_basedir %>
-<%- end -%>
-  - <%= @hieradata_path %>
-<%- end -%>
