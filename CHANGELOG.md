@@ -6,6 +6,7 @@ Add support for puppetlabs-apt 2.1.0+
 Move puppetmaster config setup from puppetdb profile into master profile.
 Make hiera-eyaml package optional. @tequeter
 New define puppet::setting for adding any setting to puppet.conf
+Add support for hiera merge_behaviour. @jaxim
 
 ####NOTE
 This module is compatible with the 1.8 series of apt and 2.1.0 and above
@@ -17,7 +18,10 @@ Added support for new versions of above mentioned modules.
 manage_virtualenv variable wasn't being used in puppetboard profile. @gwarf
 preferred_serialization_format wasn't being reverted if it wasn't set to msgpack. Thanks to @topei for spotting this.
 Move management of facter.d directory out of puppet::facts so it gets setup if the class is not used. Thanks to @topei for spotting this.
+Fix hiera-eyaml install on Puppet 4. Thanks @jaxim
 Fix for r10k purgedirs error as that parameter is now deprecated in upstream module. Thanks @divansantana
+Fixed yum gpg key for yum repos. @djjudas21
+Fixed repo management to only use one method to manage the repository. Thanks @djjudas21
 
 ##2015-07-14 - Pete Brown <pete@abstractit.com.au> 2.1.2
 ###Summary

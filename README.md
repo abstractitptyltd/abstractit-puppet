@@ -167,6 +167,12 @@ or
       cfacter => true
     }
 
+### Use packages for repository management
+
+    class { '::puppet::profile::agent':
+      manage_repo_method => 'package'
+    }
+
 ### Disable repository management
 
     class { '::puppet::profile::agent':
@@ -320,6 +326,10 @@ The `puppet` class is responsible for validating some of our parameters, and ins
   * **manage_repos**: (*bool* Default `true`)
 
     Whether or not we pay any attention to managing repositories. This is managed by only including [puppet::repo](#private-class-puppetrepo) subclass when true. The individual repo subclasses also will perform no action if included with this param set to false.
+
+  * **manage_repo_method**: (*string* Default `files`)
+
+    Sets the method for managing the repo files
 
   * **preferred_serialization_format**: (*string* Default: `pson`)
 
