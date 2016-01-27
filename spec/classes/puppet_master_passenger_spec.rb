@@ -83,7 +83,7 @@ describe 'puppet::master::passenger', :type => :class do
             end
 
             it 'should set up the apache vhost' do
-              if Puppet.settings[:parser] == 'future'
+              if ENV['FUTURE_PARSER'] == 'yes'
                 should contain_apache__vhost('constructorfleet.vogon.gal').with({
                   :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
                   :docroot_owner=>"root",
