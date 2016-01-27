@@ -1,54 +1,38 @@
 GIT
-  remote: https://github.com/mcanevet/rspec-puppet-facts
-  revision: 14904b39c7a8ce062110a93318d79c1e4b500d5e
-  specs:
-    rspec-puppet-facts (0.10.0)
-      facter
-      json
-
-GIT
   remote: https://github.com/puppetlabs/puppetlabs_spec_helper
-  revision: b261e2535557248a7924d6e93db7ba1cbbfab407
+  revision: ad39768d69f005c414da1ee9f12a0d350f8b57a3
   specs:
-    puppetlabs_spec_helper (0.10.3)
+    puppetlabs_spec_helper (1.0.1)
       mocha
       puppet-lint
       puppet-syntax
       rake
       rspec-puppet
 
-GIT
-  remote: https://github.com/rodjek/puppet-lint
-  revision: 2546fed6be894bbcff15c3f48d4b6f6bc15d94d1
-  specs:
-    puppet-lint (1.1.0)
-
-GIT
-  remote: https://github.com/rodjek/rspec-puppet
-  revision: ee85f33a47a671207f0c88713e1c82a55c096081
-  specs:
-    rspec-puppet (2.3.0)
-      rspec
-
 GEM
   remote: https://rubygems.org/
   specs:
     CFPropertyList (2.2.8)
-    addressable (2.3.8)
-    backports (3.6.4)
+    addressable (2.4.0)
+    backports (3.6.7)
     coderay (1.0.9)
     diff-lcs (1.2.5)
-    domain_name (0.5.24)
+    docile (1.1.5)
+    domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
-    ethon (0.7.3)
+    ethon (0.8.1)
       ffi (>= 1.3.0)
-    facter (2.4.4)
+    facter (2.4.6)
       CFPropertyList (~> 2.2.6)
-    faraday (0.9.1)
+    facterdb (0.3.1)
+      facter
+      jgrep
+      json
+    faraday (0.9.2)
       multipart-post (>= 1.2, < 3)
-    faraday_middleware (0.9.1)
+    faraday_middleware (0.10.0)
       faraday (>= 0.7.4, < 0.10)
-    ffi (1.9.8)
+    ffi (1.9.10)
     gh (0.14.0)
       addressable
       backports
@@ -56,39 +40,42 @@ GEM
       multi_json (~> 1.0)
       net-http-persistent (>= 2.7)
       net-http-pipeline
-    hiera (2.0.0)
+    hiera (3.0.6)
       json_pure
-    highline (1.7.2)
+    highline (1.7.8)
     http-cookie (1.0.2)
       domain_name (~> 0.5)
-    json (1.8.2)
-    json_pure (1.8.2)
+    jgrep (1.4.0)
+      json
+    json (1.8.3)
+    json_pure (1.8.3)
     launchy (2.4.3)
       addressable (~> 2.3)
     metaclass (0.0.4)
-    metadata-json-lint (0.0.6)
+    metadata-json-lint (0.0.11)
       json
       spdx-licenses (~> 1.0)
-    method_source (0.7.1)
-    mime-types (2.6.1)
+    method_source (0.8.2)
+    mime-types (2.99)
     mocha (1.1.0)
       metaclass (~> 0.0.1)
-    multi_json (1.11.0)
+    multi_json (1.11.2)
     multipart-post (2.0.0)
     net-http-persistent (2.9.4)
     net-http-pipeline (1.0.1)
-    netrc (0.10.3)
+    netrc (0.11.0)
     pry (0.9.8)
       coderay (~> 1.0.5)
       method_source (~> 0.7)
       slop (>= 2.4.3, < 3)
-    puppet (4.2.0)
+    puppet (4.3.2)
       facter (> 2.0, < 4)
-      hiera (>= 2.0, < 3)
+      hiera (>= 2.0, < 4)
       json_pure
     puppet-blacksmith (3.3.1)
       puppet (>= 2.7.16)
       rest-client
+    puppet-lint (1.1.0)
     puppet-lint-absolute_classname-check (0.1.3)
       puppet-lint (~> 1.0)
     puppet-lint-empty_string-check (0.2.1)
@@ -105,12 +92,12 @@ GEM
       puppet-lint (~> 1.0)
     puppet-lint-variable_contains_upcase (1.0.0)
       puppet-lint (~> 1.0)
-    puppet-syntax (2.0.0)
+    puppet-syntax (2.1.0)
       rake
     pusher-client (0.6.2)
       json
       websocket (~> 1.0)
-    rake (10.4.2)
+    rake (10.5.0)
     rest-client (1.8.0)
       http-cookie (>= 1.0.2, < 2.0)
       mime-types (>= 1.16, < 3.0)
@@ -126,25 +113,35 @@ GEM
       rspec-support (~> 3.1.0)
     rspec-mocks (3.1.3)
       rspec-support (~> 3.1.0)
+    rspec-puppet (2.3.2)
+      rspec
+    rspec-puppet-facts (1.3.0)
+      facter
+      facterdb (>= 0.3.0)
+      json
+      puppet
     rspec-support (3.1.2)
+    simplecov (0.11.1)
+      docile (~> 1.1.0)
+      json (~> 1.8)
+      simplecov-html (~> 0.10.0)
+    simplecov-html (0.10.0)
     slop (2.4.4)
     spdx-licenses (1.0.0)
       json
-    travis (1.7.7)
-      addressable (~> 2.3)
+    travis (1.8.2)
       backports
       faraday (~> 0.9)
       faraday_middleware (~> 0.9, >= 0.9.1)
       gh (~> 0.13)
       highline (~> 1.6)
       launchy (~> 2.1)
-      pry (~> 0.9, < 0.10)
       pusher-client (~> 0.4)
       typhoeus (~> 0.6, >= 0.6.8)
     travis-lint (2.0.0)
       json
-    typhoeus (0.7.1)
-      ethon (>= 0.7.1)
+    typhoeus (0.8.0)
+      ethon (>= 0.8.0)
     unf (0.1.4)
       unf_ext
     unf_ext (0.0.7.1)
@@ -154,11 +151,14 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  facter (~> 2.4)
+  hiera (~> 3.0)
+  json
   metadata-json-lint
   pry (<= 0.9.8)
-  puppet (~> 4.2.0)
+  puppet (= 4.3.2)
   puppet-blacksmith
-  puppet-lint!
+  puppet-lint
   puppet-lint-absolute_classname-check
   puppet-lint-empty_string-check
   puppet-lint-leading_zero-check
@@ -169,9 +169,12 @@ DEPENDENCIES
   puppet-lint-variable_contains_upcase
   puppet-syntax
   puppetlabs_spec_helper!
-  rake
-  rspec (< 3.2.0)
-  rspec-puppet!
-  rspec-puppet-facts!
+  rspec-core (= 3.1.7)
+  rspec-puppet (= 2.3.2)
+  rspec-puppet-facts (= 1.3.0)
+  simplecov
   travis
   travis-lint
+
+BUNDLED WITH
+   1.11.2

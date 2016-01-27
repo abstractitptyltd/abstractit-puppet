@@ -2,36 +2,28 @@ language: ruby
 sudo: false
 bundler_args: --without development
 before_install: rm Gemfile.lock || true
-rvm:
-- 1.9
-- 2.0
-- 2.1
 script: bundle exec rake test
-env:
-- PUPPET_VERSION="~> 3.6.0" STRICT_VARIABLES=true
-- PUPPET_VERSION="~> 3.7.0" STRICT_VARIABLES=true
-- PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=true
-- PUPPET_VERSION="~> 3.8.0" STRICT_VARIABLES=true PARSER="future"
-- PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
-- PUPPET_VERSION="~> 4.1.0" STRICT_VARIABLES=true
-- PUPPET_VERSION="~> 4.2.0" STRICT_VARIABLES=true
 matrix:
-  exclude:
-  - rvm: 1.9
-    env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
-  - rvm: 1.9
-    env: PUPPET_VERSION="~> 4.1.0" STRICT_VARIABLES=true
-  - rvm: 1.9
-    env: PUPPET_VERSION="~> 4.2.0" STRICT_VARIABLES=true
-  - rvm: 2.0
-    env: PUPPET_VERSION="~> 4.0.0" STRICT_VARIABLES=true
-  - rvm: 2.0
-    env: PUPPET_VERSION="~> 4.1.0" STRICT_VARIABLES=true
-  - rvm: 2.0
-    env: PUPPET_VERSION="~> 4.2.0" STRICT_VARIABLES=true
+  fast_finish: true
+  include:
+  - rvm: 1.9.3
+    env: PUPPET_GEM_VERSION="~> 3.0" FACTER_GEM_VERSION="~> 2.1" HIERA_GEM_VERSION="~> 1.3"
+  - rvm: 1.9.3
+    env: PUPPET_GEM_VERSION="~> 3.0" FACTER_GEM_VERSION="~> 2.2" HIERA_GEM_VERSION="~> 1.3"
+  - rvm: 2.0.0
+    env: PUPPET_GEM_VERSION="~> 3.0" FACTER_GEM_VERSION="~> 2.1" HIERA_GEM_VERSION="~> 1.3"
+  - rvm: 2.0.0
+    env: PUPPET_GEM_VERSION="~> 3.0" FACTER_GEM_VERSION="~> 2.2" HIERA_GEM_VERSION="~> 1.3"
+  - rvm: 2.1.7
+    env: PUPPET_GEM_VERSION="~> 3.0" FACTER_GEM_VERSION="~> 2.1" HIERA_GEM_VERSION="~> 1.3"
+  - rvm: 2.1.7
+    env: PUPPET_GEM_VERSION="3.8.5" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 1.3" FUTURE_PARSER="yes"
+  - rvm: 2.1.7
+    env: PUPPET_GEM_VERSION="4.3.2" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.0"
 notifications:
   slack:
     secure: EwJDWYpcaMh5Ebb4EbsVu+nc1QPff/OTT0aYyExl5i7e8YFKUAL6oTNtupo3s/RO1CUBUOcKGvYUmbhuTxo1o/MfKNFviR8xaYNS2sktZ0961jpd5JtLYxaZd91JKLb2ZrMuAckejM17+lMxivu8+PKZnuF7S78DHNLDLVJkBrY=
+  email: false
 deploy:
   provider: puppetforge
   user: abstractit
@@ -39,7 +31,7 @@ deploy:
     secure: ZbtzOD15CmlaLJ0zK2qwLLaqXDk+Ile/2nGwZQ3pV5+cx6ILBVHN/cH0PaddVM9z2bV8k/sHN9ZCe5NXEyC54Vta8jCgLvIckS0tRqNICagn5BMhyEg5jSP7IIDhM9pWgF9KiJyMtx+8iWIt6h7v5+HbOylUuSUyhA0ewpFp2GA=
   on:
     tags: true
-    rvm: 2.1
+    rvm: 2.1.7
     condition:
-    - $PUPPET_VERSION = '~> 4.2.0'
+    - $PUPPET_GEM_VERSION = '4.3.2'
     - $STRICT_VARIABLES = true

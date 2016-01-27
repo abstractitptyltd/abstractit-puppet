@@ -148,28 +148,31 @@ describe 'puppet::master::install', :type => :class do
           end
         end# allinone true
         context 'when ::puppet::allinone is false' do
-          let(:pre_condition){"class{'::puppet': allinone => false}"}
-          let(:pre_condition){"class{'::puppet::master': puppet_version => 'BOGON', server_type => 'passenger' }"}
-          case facts[:osfamily]
-          when 'Debian'
-            it 'should install the puppetmaster package' do
-              should contain_package('puppetmaster').with({
-                :ensure=>'BOGON',
-              }).that_requires(
-                'Class[puppet::master::install::deps]'
-              ).that_requires(
-                'Class[puppet::install]'
-              )
-            end
-          when 'RedHat'
-            it 'should install the puppet-server package' do
-              should contain_package('puppet-server').with({
-                :ensure=>'BOGON',
-              }).that_requires(
-                'Class[puppet::master::install::deps]'
-              ).that_requires(
-                'Class[puppet::install]'
-              )
+          if Puppet.version.to_f < 4.0
+            # this fails in puppet 4
+            let(:pre_condition){"class{'::puppet': allinone => false}"}
+            let(:pre_condition){"class{'::puppet::master': puppet_version => '3.8.4', server_type => 'passenger' }"}
+            case facts[:osfamily]
+            when 'Debian'
+              it 'should install the puppetmaster package' do
+                should contain_package('puppetmaster').with({
+                  'ensure' => '3.8.4',
+                }).that_requires(
+                  'Class[puppet::master::install::deps]'
+                ).that_requires(
+                  'Class[puppet::install]'
+                )
+              end
+            when 'RedHat'
+              it 'should install the puppet-server package' do
+                should contain_package('puppet-server').with({
+                  'ensure' => '3.8.4',
+                }).that_requires(
+                  'Class[puppet::master::install::deps]'
+                ).that_requires(
+                  'Class[puppet::install]'
+                )
+              end
             end
           end
         end# allinone false
@@ -185,16 +188,19 @@ describe 'puppet::master::install', :type => :class do
           end
         end# allinone false server_type = puppetserver
         context 'when ::puppet::allinone is false server_version is set and server_type is puppetserver' do
-          let(:pre_condition){"class{'::puppet': allinone => false}"}
-          let(:pre_condition){"class{'::puppet::master': server_type => 'puppetserver', server_version => 'BOGON' }"}
-          it 'should install the specified version of the puppetserver package' do
-            should contain_package('puppetserver').with({
-              :ensure=>'BOGON',
-            }).that_requires(
-              'Class[puppet::master::install::deps]'
-            ).that_requires(
-              'Class[puppet::install]'
-            )
+          if Puppet.version.to_f < 4.0
+            # this fails in puppet 4
+            let(:pre_condition){"class{'::puppet': allinone => false}"}
+            let(:pre_condition){"class{'::puppet::master': server_type => 'puppetserver', server_version => '2.1.2' }"}
+            it 'should install the specified version of the puppetserver package' do
+              should contain_package('puppetserver').with({
+                'ensure' => '2.1.2',
+              }).that_requires(
+                'Class[puppet::master::install::deps]'
+              ).that_requires(
+                'Class[puppet::install]'
+              )
+            end
           end
         end# allinone false server_type = puppetserver
       end # specific version of puppetserver

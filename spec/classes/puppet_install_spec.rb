@@ -51,8 +51,7 @@ describe 'puppet::install', :type => :class do
 
       context 'when specific version is required' do
         context 'when ::puppet::allinone is true' do
-          let(:pre_condition) {"class{'puppet': allinone => true}"}
-          let(:pre_condition) {"class{'::puppet': agent_version=>'BOGON' }"}
+          let(:pre_condition) {"class{'::puppet': allinone => true, agent_version=>'BOGON' }"}
           it 'should install puppet-agent' do
             contain_package('puppet-agent').with({
             :ensure=>"BOGON",
@@ -60,8 +59,7 @@ describe 'puppet::install', :type => :class do
           end
         end# allinone true
         context 'when ::puppet::allinone is false' do
-          let(:pre_condition) {"class{'puppet': allinone => false}"}
-          let(:pre_condition) {"class{'::puppet': puppet_version=>'BOGON' }"}
+          let(:pre_condition) {"class{'::puppet': allinone => false, puppet_version=>'BOGON' }"}
           it 'should install puppet' do
             contain_package('puppet').with({
             :ensure=>"BOGON",

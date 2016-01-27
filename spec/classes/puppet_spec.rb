@@ -7,74 +7,74 @@ describe 'puppet', :type => :class do
   context 'input validation' do
     let(:facts){{'lsbdistid' => 'Debian', 'lsbdistcodename' => 'trusty'}}
 
-    # ['logdest'].each do |paths|
-    #   context "when the #{paths} parameter is not an absolute path" do
-    #     let(:params) {{ paths => 'foo' }}
-    #     it 'should fail' do
-    #       skip 'This does not work as is'
-    #         expect { should compile }.to raise_error(Puppet::Error, /"foo" is not an absolute path/)
-    #     end
-    #   end
-    # end#absolute path
+    ['logdest'].each do |paths|
+      context "when the #{paths} parameter is not an absolute path" do
+        let(:params) {{ paths => 'foo' }}
+        it 'should fail' do
+          # skip 'This does not work as is'
+            expect { catalogue }.to raise_error(Puppet::Error)#, /"foo" is not an absolute path/)
+        end
+      end
+    end#absolute path
 
-#    ['array'].each do |arrays|
-#      context "when the #{arrays} parameter is not an array" do
-#        let(:params) {{ arrays => 'this is a string'}}
-#        it 'should fail' do
-#          expect {
-#           should compile
-#          }.to raise_error(Puppet::Error, /is not an Array/)
-#        end
-#      end
-#    end#arrays
+   ['array'].each do |arrays|
+     context "when the #{arrays} parameter is not an array" do
+       let(:params) {{ arrays => 'this is a string'}}
+       it 'should fail' do
+         expect {
+          catalogue
+         }.to raise_error(Puppet::Error)#, /is not an Array/)
+       end
+     end
+   end#arrays
 
-    # ['allinone','cfacter','enable_devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','structured_facts'].each do |bools|
-    #   context "when the #{bools} parameter is not an boolean" do
-    #     let(:params) {{bools => "BOGON"}}
-    #     it 'should fail' do
-    #       skip 'This does not work as is'
-    #       expect {
-    #        should compile
-    #       }.to raise_error(Puppet::Error)#, /must be a boolean/)
-    #     end
-    #   end
-    # end#bools
+    ['allinone','cfacter','enable_devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','structured_facts'].each do |bools|
+      context "when the #{bools} parameter is not an boolean" do
+        let(:params) {{bools => "BOGON"}}
+        it 'should fail' do
+          # skip 'This does not work as is'
+          expect {
+           catalogue
+          }.to raise_error(Puppet::Error)#, /must be a boolean/)
+        end
+      end
+    end#bools
 
-    # ['custom_facts'].each do |hashes|
-    #   context "when the #{hashes} parameter is not an hash" do
-    #     let(:params) {{ hashes => 'this is a string'}}
-    #     it 'should fail' do
-    #       skip 'This does not work as is'
-    #       expect { 
-    #         should compile
-    #       }.to raise_error(Puppet::Error)
-    #     end
-    #   end
-    # end#hashes
+    ['custom_facts'].each do |hashes|
+      context "when the #{hashes} parameter is not an hash" do
+        let(:params) {{ hashes => 'this is a string'}}
+        it 'should fail' do
+          # skip 'This does not work as is'
+          expect { 
+            catalogue
+          }.to raise_error(Puppet::Error)
+        end
+      end
+    end#hashes
 
-    # ['enable_mechanism'].each do |regex|
-    #   context "when #{regex} has an unsupported value" do
-    #     let(:params) {{regex => 'BOGON'}}
-    #     it 'should fail' do
-    #       skip 'This does not work as is'
-    #       expect { 
-    #         should compile
-    #       }.to raise_error(Puppet::Error)
-    #     end
-    #   end
-    # end#regexes
+    ['enable_mechanism'].each do |regex|
+      context "when #{regex} has an unsupported value" do
+        let(:params) {{regex => 'BOGON'}}
+        it 'should fail' do
+          # skip 'This does not work as is'
+          expect { 
+            catalogue
+          }.to raise_error(Puppet::Error)
+        end
+      end
+    end#regexes
 
-    # ['agent_version','ca_server','collection','environment','facter_version','hiera_version','preferred_serialization_format','puppet_server','puppet_version','runinterval'].each do |strings|
-    #   context "when the #{strings} parameter is not a string" do
-    #     let(:params) {{strings => false }}
-    #     it 'should fail' do
-    #       skip 'This does not work as is'
-    #       expect { 
-    #         should compile
-    #       }.to raise_error(Puppet::Error)
-    #     end
-    #   end
-    # end#strings
+    ['agent_version','ca_server','collection','environment','facter_version','hiera_version','preferred_serialization_format','puppet_server','puppet_version','runinterval'].each do |strings|
+      context "when the #{strings} parameter is not a string" do
+        let(:params) {{strings => false }}
+        it 'should fail' do
+          # skip 'This does not work as is'
+          expect { 
+            catalogue
+          }.to raise_error(Puppet::Error)
+        end
+      end
+    end#strings
 
   end#input validation
 
