@@ -22,9 +22,6 @@ RSpec.configure do |c|
     c.confdir = '/etc/puppet'
     # Puppet.settings[:confdir] = '/etc/puppet'
   end
-  if ENV['PARSER']
-    Puppet.settings[:parser] = ENV['PARSER']
-  end
 end
 
 at_exit { RSpec::Puppet::Coverage.report! }
