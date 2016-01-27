@@ -11,16 +11,17 @@ def location_for(place, fake_version = nil)
 end
 
 group :test do
-  gem "rspec-core", '3.1.7',     :require => false
-  gem "puppet-syntax",           :require => false
-  gem 'metadata-json-lint',      :require => false
-  gem 'puppetlabs_spec_helper',  :require => false
-  gem 'simplecov',               :require => false
-  gem 'rspec-puppet-facts',      :require => false
-  gem 'json',                    :require => false
-  gem "puppet-blacksmith",       :require => false
-  gem 'pry', '<= 0.9.8',         :require => false
-  gem 'puppet-lint',             :require => false
+  gem "rspec-core",             '3.1.7',                  :require => false
+  gem "rspec-puppet",           '2.3.2',                  :require => false
+  gem 'puppetlabs_spec_helper', '1.0.1',                  :require => false
+  gem 'rspec-puppet-facts',     '1.3.0',                  :require => false
+  gem "puppet-syntax",                                    :require => false
+  gem 'metadata-json-lint',                               :require => false
+  gem 'simplecov',                                        :require => false
+  gem 'json',                                             :require => false
+  gem "puppet-blacksmith",                                :require => false
+  gem 'pry',                    '<= 0.9.8',               :require => false
+  gem 'puppet-lint',                                      :require => false
   gem 'puppet-lint-unquoted_string-check',                :require => false
   gem 'puppet-lint-empty_string-check',                   :require => false
   gem 'puppet-lint-leading_zero-check',                   :require => false
@@ -59,8 +60,14 @@ else
   gem 'puppet', :require => false
 end
 
-# if facterversion = ENV['FACTER_GEM_VERSION']
-#   gem 'facter', facterversion, :require => false
-# else
-#   gem 'facter', :require => false
-# end
+if facterversion = ENV['FACTER_GEM_VERSION']
+  gem 'facter', facterversion, :require => false
+else
+  gem 'facter', :require => false
+end
+
+if hieraversion = ENV['HIERA_GEM_VERSION']
+  gem 'hiera', hieraversion, :require => false
+else
+  gem 'hiera', :require => false
+end
