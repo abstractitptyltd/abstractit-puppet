@@ -29,8 +29,7 @@ describe 'puppet::repo', :type => :class do
       end
       it { is_expected.to compile.with_all_deps }
       context 'when ::puppet::manage_repo_method is set to files' do
-        let(:pre_condition){"class{'::puppet': manage_repo_method => 'files' }"}
-        let(:pre_condition){"class{'::puppet': collection => 'PC1'}"}
+        let(:pre_condition){"class{'::puppet': manage_repo_method => 'files', collection => 'PC1'}"}
         it 'should not install puppetlabs-release packages' do
           should_not contain_package('puppetlabs-release')
           should_not contain_package('puppetlabs-release-pc1')
@@ -55,8 +54,7 @@ describe 'puppet::repo', :type => :class do
           end#puppetlabs-release
         end
         context "when ::puppet::collection is set to PC1" do
-          let(:pre_condition){"class{'::puppet': manage_repo_method => 'package' }"}
-          let(:pre_condition){"class{'::puppet': collection => 'PC1'}"}
+          let(:pre_condition){"class{'::puppet': manage_repo_method => 'package', collection => 'PC1'}"}
           it 'should contain the puppetlabs-release-pc1 package' do
             should contain_package('puppetlabs-release-pc1')
           end
@@ -66,18 +64,17 @@ describe 'puppet::repo', :type => :class do
         end
       end #manage_repo_method packages
 
-      # context 'when ::puppet::manage_repos is set to false' do
-      #   let(:pre_condition){"class{'::puppet': manage_repos => false }"}
-      #   let(:pre_condition){"class{'::puppet': collection => 'PC1' }"}
-      #   it 'should not install puppetlabs-release packages' do
-      #     should_not contain_package('puppetlabs-release')
-      #     should_not contain_package('puppetlabs-release-pc1')
-      #   end
-      #   it 'should not contain repo classes' do
-      #     should_not contain_class('puppet::repo::yum')
-      #     should_not contain_class('puppet::repo::apt')
-      #   end
-      # end #manage_repo_method files
+      context 'when ::puppet::manage_repos is set to false' do
+        let(:pre_condition){"class{'::puppet': manage_repos => false, collection => 'PC1' }"}
+        it 'should not install puppetlabs-release packages' do
+          should_not contain_package('puppetlabs-release')
+          should_not contain_package('puppetlabs-release-pc1')
+        end
+        it 'should not contain repo classes' do
+          should_not contain_class('puppet::repo::yum')
+          should_not contain_class('puppet::repo::apt')
+        end
+      end #manage_repo_method files
 
     end #each OS
   end #on_supported_os
