@@ -62,6 +62,7 @@ describe 'puppet::agent', :type => :class do
           it "should set the start setting in #{sysconfigdir}/puppet to yes" do
             should contain_ini_setting('puppet sysconfig start').with({
               'ensure'=>'present',
+              'key_val_separator'=>'=',
               'path'=>"#{sysconfigdir}/puppet",
               'section'=>'',
               'setting'=>'START',
@@ -92,6 +93,7 @@ describe 'puppet::agent', :type => :class do
             it "should set the start setting in #{sysconfigdir}/puppet to yes" do
               should contain_ini_setting('puppet sysconfig start').with({
                 'ensure'=>'present',
+                'key_val_separator'=>'=',
                 'path'=>"#{sysconfigdir}/puppet",
                 'section'=>'',
                 'setting'=>'START',
@@ -114,6 +116,7 @@ describe 'puppet::agent', :type => :class do
             it "should set the start setting in #{sysconfigdir}/puppet to no" do
               should contain_ini_setting('puppet sysconfig start').with({
                 'ensure'=>'present',
+                'key_val_separator'=>'=',
                 'path'=>"#{sysconfigdir}/puppet",
                 'section'=>'',
                 'setting'=>'START',
@@ -153,6 +156,7 @@ describe 'puppet::agent', :type => :class do
               it "should set the start setting in #{sysconfigdir}/puppet to no" do
                 should contain_ini_setting('puppet sysconfig start').with({
                   'ensure'=>'present',
+                  'key_val_separator'=>'=',
                   'path'=>"#{sysconfigdir}/puppet",
                   'section'=>'',
                   'setting'=>'START',
@@ -184,6 +188,7 @@ describe 'puppet::agent', :type => :class do
               it "should set the start setting in #{sysconfigdir}/puppet to no" do
                 should contain_ini_setting('puppet sysconfig start').with({
                   'ensure'=>'present',
+                  'key_val_separator'=>'=',
                   'path'=>"#{sysconfigdir}/puppet",
                   'section'=>'',
                   'setting'=>'START',
@@ -215,6 +220,7 @@ describe 'puppet::agent', :type => :class do
               it "should set the start setting in #{sysconfigdir}/puppet to no" do
                 should contain_ini_setting('puppet sysconfig start').with({
                   'ensure'=>'present',
+                  'key_val_separator'=>'=',
                   'path'=>"#{sysconfigdir}/puppet",
                   'section'=>'',
                   'setting'=>'START',
@@ -246,6 +252,7 @@ describe 'puppet::agent', :type => :class do
               it "should set the start setting in #{sysconfigdir}/puppet to no" do
                 should contain_ini_setting('puppet sysconfig start').with({
                   'ensure'=>'present',
+                  'key_val_separator'=>'=',
                   'path'=>"#{sysconfigdir}/puppet",
                   'section'=>'',
                   'setting'=>'START',
@@ -270,6 +277,7 @@ describe 'puppet::agent', :type => :class do
           it "should set the start setting in #{sysconfigdir}/puppet to no" do
             should contain_ini_setting('puppet sysconfig start').with({
               'ensure'=>'present',
+              'key_val_separator'=>'=',
               'path'=>"#{sysconfigdir}/puppet",
               'section'=>'',
               'setting'=>'START',

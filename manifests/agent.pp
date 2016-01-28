@@ -56,6 +56,7 @@ class puppet::agent {
     ini_setting { 'puppet sysconfig start':
       ensure  => 'present',
       section => '',
+      key_val_separator => '=',
       path    => "${sysconfigdir}/puppet",
       setting => 'START',
       value   => $start_enablement
