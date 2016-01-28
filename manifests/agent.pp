@@ -54,12 +54,12 @@ class puppet::agent {
 
   if $::osfamily =='Debian' {
     ini_setting { 'puppet sysconfig start':
-      ensure  => 'present',
-      section => '',
+      ensure            => 'present',
+      section           => '',
       key_val_separator => '=',
-      path    => "${sysconfigdir}/puppet",
-      setting => 'START',
-      value   => $start_enablement
+      path              => "${sysconfigdir}/puppet",
+      setting           => 'START',
+      value             => $start_enablement
     }
   }
 
