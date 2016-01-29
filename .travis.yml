@@ -34,3 +34,5 @@ deploy:
     # all_branches is required to use tags
     all_branches: true
     rvm: 2.1.7
+    condition:
+    - $PUPPET_VERSION = '~> 4.3.2'
