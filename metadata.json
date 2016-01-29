@@ -1,6 +1,6 @@
 {
   "name": "abstractit-puppet",
-  "version": "2.2.0-beta",
+  "version": "2.2.0",
   "author": "Abstract IT",
   "license": "Apache-2.0",
   "summary": "Manage Puppet agent, master, modules and hiera with Puppet",

@@ -1,4 +1,4 @@
-##2015-11-16 - Pete Brown <pete@abstractit.com.au> 2.2.0
+##2016-01-29 - Pete Brown <pete@abstractit.com.au> 2.2.0
 ###Summary
 
 Upgrade puppetdb and postgresql modules to latest versions to get support for PuppetDB 3.x
@@ -22,6 +22,7 @@ Fix hiera-eyaml install on Puppet 4. Thanks @jaxim
 Fix for r10k purgedirs error as that parameter is now deprecated in upstream module. Thanks @divansantana
 Fixed yum gpg key for yum repos. @djjudas21
 Fixed repo management to only use one method to manage the repository. Thanks @djjudas21
+Fixed agent start/restart on Ubuntu. @TravellingGuy
 
 ##2015-07-14 - Pete Brown <pete@abstractit.com.au> 2.1.2
 ###Summary
