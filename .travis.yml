@@ -35,4 +35,4 @@ deploy:
     all_branches: true
     rvm: 2.1.7
     condition:
-    - $PUPPET_VERSION = '~> 4.3.2'
+    - $PUPPET_VERSION = '4.3.2'
