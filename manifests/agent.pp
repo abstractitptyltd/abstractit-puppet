@@ -40,7 +40,7 @@ class puppet::agent {
 
   cron {'run_puppet_agent':
     ensure  => $cron_enablement,
-    command => "${bin_dir}/puppet agent -t",
+    command => "${bin_dir}/puppet agent --no-daemonize --onetime",
     special => 'absent',
     minute  => $::puppet::agent_cron_min_interpolated,
     hour    => $::puppet::agent_cron_hour_interpolated,
