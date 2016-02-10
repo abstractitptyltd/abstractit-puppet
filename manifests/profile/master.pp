@@ -227,7 +227,6 @@ class puppet::profile::master (
       enable_reports          => $reports,
       manage_report_processor => $reports,
       restart_puppet          => $restart_puppet,
-      require                 => Class['::puppetdb'],
     }
   }
 
