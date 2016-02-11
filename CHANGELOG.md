@@ -1,3 +1,10 @@
+##2016-02-11 - Pete Brown <pete@abstractit.com.au> 2.2.1
+###Summary
+
+####Bugfixes
+Fix agent cron so it is quiet on sucess. @johnny-die-tulpe
+Fix master profile so it works when puppetdb is on remote node. @divansantana
+
 ##2016-01-29 - Pete Brown <pete@abstractit.com.au> 2.2.0
 ###Summary
 
