@@ -223,6 +223,7 @@ class puppet::profile::master (
     class { '::puppetdb::master::config':
       puppetdb_port           => $puppetdb_port,
       puppetdb_server         => $puppetdb_server,
+      puppetdb_disable_ssl    => $puppetdb_disable_ssl,
       puppet_service_name     => $puppet_service_name,
       enable_reports          => $reports,
       manage_report_processor => $reports,
