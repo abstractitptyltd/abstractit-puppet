@@ -7,6 +7,7 @@ class puppet::master::config {
   $codedir              = $::puppet::defaults::codedir
   $reports_dir          = $::puppet::defaults::reports_dir
   $ca_server            = $::puppet::ca_server
+  $dns_alt_names        = $::puppet::dns_alt_names
   $autosign_method      = $::puppet::master::autosign_method
   $autosign_file        = $::puppet::master::autosign_file
   $autosign_domains     = $::puppet::master::autosign_domains
@@ -126,6 +127,29 @@ class puppet::master::config {
       section => 'master',
       setting => 'parser',
       value   => 'future'
+    }
+  }
+
+  if (! empty($dns_alt_names) ) {
+
+    join($dns_alt_names, ',')
+
+    # enable dns_alt_names
+    ini_setting { 'master dns_alt_names':
+      ensure  => present,
+      path    => "${confdir}/puppet.conf",
+      section => 'main',
+      setting => 'dns_alt_names',
+      value   => $dns_alt_names,
+    }
+  } else {
+    # disable dns_alt_names
+    ini_setting { 'master dns_alt_names':
+      ensure  => absent,
+      path    => "${confdir}/puppet.conf",
+      section => 'main',
+      setting => 'dns_alt_names',
+      value   => $dns_alt_names,
     }
   }
 

@@ -189,6 +189,19 @@ describe 'puppet::master::config', :type => :class do
         end
       end## autosign_method file autosign_domains not empty custom autosign_file
 
+      context 'when $::puppet::master::dns_alt_names is not empty' do
+        let(:pre_condition) {"class{'::puppet::master': dns_alt_names => ['bogan1.domain.com','bogan2.domain.com']}"}
+        it 'should add dns_alt_names in $confdir/puppet.conf' do
+          should contain_ini_setting('dns_alt_names').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'main',
+            'setting' => 'dns_alt_names',
+            'value'   => 'bogan1.domain.com,bogan2.domain.com',
+          })
+        end
+      end## dns_alt_names not empty
+
       context 'when ::puppet::ca_server is set and this is not the ca_server' do
         let(:pre_condition){"class{'::puppet': ca_server => 'bogon.domain.com'}"}
         let(:facts) do
