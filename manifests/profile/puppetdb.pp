@@ -102,7 +102,7 @@ class puppet::profile::puppetdb (
   class { '::puppetdb':
     listen_port        => $listen_port,
     ssl_listen_port    => $ssl_listen_port,
-    ssl_deploy_certs   => $ssl_deploy_certs
+    ssl_deploy_certs   => $ssl_deploy_certs,
     disable_ssl        => $disable_ssl,
     listen_address     => $puppetdb_listen_address,
     ssl_listen_address => $puppetdb_ssl_listen_address,
