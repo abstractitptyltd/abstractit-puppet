@@ -19,6 +19,8 @@
 #   The base directory path to have environments checked out into.
 # @param deep_merge_version ([String] Default: 'installed')
 #   The version of the deep_merge package to install.
+# @param dns_alt_names ([Array] Default: empty)
+#   An array of alternative DNS names to use for the local host
 # @param env_owner [String] Default: 'puppet'
 #   The user which should own hieradata and r10k repos
 # @param environmentpath (*absolute path* Default Puppet 4: ${codedir}/modules:${confdir}/modules Default Puppet 3: ${confdir}/modules:/usr/share/puppet/modules)
@@ -111,6 +113,7 @@ class puppet::profile::master (
   $autosign_method                    = 'file',
   $basemodulepath                     = undef,
   $deep_merge_version                 = 'installed',
+  $dns_alt_names                      = undef,
   $env_owner                          = 'puppet',
   $environmentpath                    = undef,
   $environment_timeout                = '0',
@@ -151,7 +154,7 @@ class puppet::profile::master (
   $puppetdb_use_ssl                   = true,
   $puppetdb_listen_port               = '8080',
   $puppetdb_ssl_listen_port           = '8081',
-  $puppet_service_name                = 'httpd',
+  $puppet_service_name                = $server_type,
 ) {
   class { '::puppet::master':
     autosign                           => $autosign,
@@ -159,6 +162,7 @@ class puppet::profile::master (
     autosign_file                      => $autosign_file,
     autosign_method                    => $autosign_method,
     basemodulepath                     => $basemodulepath,
+    dns_alt_names                      => $dns_alt_names,
     deep_merge_version                 => $deep_merge_version,
     env_owner                          => $env_owner,
     environmentpath                    => $environmentpath,
@@ -224,7 +228,7 @@ class puppet::profile::master (
       puppetdb_port           => $puppetdb_port,
       puppetdb_server         => $puppetdb_server,
       puppetdb_disable_ssl    => $puppetdb_disable_ssl,
-      puppet_service_name     => $puppet_service_name,
+      puppet_service_name     => $server_type,
       enable_reports          => $reports,
       manage_report_processor => $reports,
       restart_puppet          => $restart_puppet,
