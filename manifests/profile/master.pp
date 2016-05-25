@@ -151,7 +151,7 @@ class puppet::profile::master (
   $puppetdb_use_ssl                   = true,
   $puppetdb_listen_port               = '8080',
   $puppetdb_ssl_listen_port           = '8081',
-  $puppet_service_name                = 'httpd',
+  $puppet_service_name                = $server_type,
 ) {
   class { '::puppet::master':
     autosign                           => $autosign,
@@ -219,12 +219,16 @@ class puppet::profile::master (
     }
   }
   if ($puppetdb_server != undef) {
+    $_server_type = $server_type ? {
+        'puppetserver' => 'puppetserver',
+        default        => 'httpd',
+    }
     # setup puppetdb config for puppet master
     class { '::puppetdb::master::config':
       puppetdb_port           => $puppetdb_port,
       puppetdb_server         => $puppetdb_server,
       puppetdb_disable_ssl    => $puppetdb_disable_ssl,
-      puppet_service_name     => $puppet_service_name,
+      puppet_service_name     => $_server_type,
       enable_reports          => $reports,
       manage_report_processor => $reports,
       restart_puppet          => $restart_puppet,
