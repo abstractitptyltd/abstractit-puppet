@@ -1,5 +1,5 @@
 # Class puppet::profile::puppetdb
-# 
+#
 # The puppet::master::puppetdb class is responsible for configuring PuppetDB
 # It will only setup PuppetDB, if you want to setup PuppetDB on the node your puppet master run on
 # please use the puppet::profile::master class
@@ -75,10 +75,12 @@ class puppet::profile::puppetdb (
     default : {
       $puppetdb_port = $ssl_listen_port
       $disable_ssl = false
+      $ssl_deploy_certs = true
     }
     false   : {
       $puppetdb_port = $listen_port
       $disable_ssl = true
+      $ssl_deploy_certs = false
     }
   }
 
@@ -100,6 +102,7 @@ class puppet::profile::puppetdb (
   class { '::puppetdb':
     listen_port        => $listen_port,
     ssl_listen_port    => $ssl_listen_port,
+    ssl_deploy_certs   => $ssl_deploy_certs,
     disable_ssl        => $disable_ssl,
     listen_address     => $puppetdb_listen_address,
     ssl_listen_address => $puppetdb_ssl_listen_address,
