@@ -10,7 +10,7 @@
 # @param version [String] Default: undef
 # @param modulepath [String] Default: undef
 # @param manage_modulepath [String] Default: undef
-# @param manage_ruby_dependency [Boolean] Default: false
+# @param manage_ruby_dependency [String] Default: 'ignore'
 # @param r10k_basedir [String] Default: undef
 # @param package_name [String] Default: undef
 # @param provider [String] Default: undef
@@ -34,7 +34,7 @@ class puppet::profile::r10k (
   $version                   = undef,
   $modulepath                = undef,
   $manage_modulepath         = undef,
-  $manage_ruby_dependency    = false,
+  $manage_ruby_dependency    = 'ignore',
   $r10k_basedir              = undef,
   $package_name              = undef,
   $provider                  = undef,
