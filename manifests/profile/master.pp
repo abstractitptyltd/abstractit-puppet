@@ -219,7 +219,7 @@ class puppet::profile::master (
     }
   }
   if ($puppetdb_server != undef) {
-    $_server_type = $server_type ? {
+    $_puppet_service_name = $server_type ? {
         'puppetserver' => 'puppetserver',
         default        => 'httpd',
     }
@@ -228,7 +228,7 @@ class puppet::profile::master (
       puppetdb_port           => $puppetdb_port,
       puppetdb_server         => $puppetdb_server,
       puppetdb_disable_ssl    => $puppetdb_disable_ssl,
-      puppet_service_name     => $_server_type,
+      puppet_service_name     => $_puppet_service_name,
       enable_reports          => $reports,
       manage_report_processor => $reports,
       restart_puppet          => $restart_puppet,
