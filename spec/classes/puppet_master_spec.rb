@@ -15,12 +15,12 @@ describe 'puppet::master', :type => :class do
       end
     end#absolute path
 
-    ['hiera_hierarchy'].each do |arrays|
+    ['dns_alt_names','hiera_hierarchy'].each do |arrays|
       context "when the #{arrays} parameter is not an array" do
-        let(:params) {{ arrays => 'this is a string'}}
+        let(:params) {{ arrays => 'this is not an array'}}
         it 'should fail' do
           # skip 'This does not work as is'
-           expect { catalogue }.to raise_error(Puppet::Error)#, /is not an Array./)
+          expect { catalogue }.to raise_error(Puppet::Error)#, /is not an Array./)
         end
       end
     end#arrays
