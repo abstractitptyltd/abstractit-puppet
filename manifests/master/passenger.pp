@@ -76,7 +76,8 @@ class puppet::master::passenger {
         'set X-Client-DN %{SSL_CLIENT_S_DN}e',
         'set X-Client-Verify %{SSL_CLIENT_VERIFY}e',
         ],
-      subscribe          => Class['puppet::master::install']
+      subscribe          => Class['puppet::master::install'],
+      require            => Package['puppetmaster-passenger'],
     }
   }
 }

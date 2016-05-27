@@ -104,7 +104,7 @@ describe 'puppet::master::passenger', :type => :class do
                   :rack_base_uris=>["/"],
                   :directories=>[{"path"=>"/usr/share/puppet/rack/puppetmasterd/", "options"=>"None"}],
                   :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
-                }).that_subscribes_to('Class[puppet::master::install]')
+                }).that_subscribes_to('Class[puppet::master::install]').that_requires('Package[puppetmaster-passenger]')
               else
                 should contain_apache__vhost('constructorfleet.vogon.gal').with({
                   :docroot=>"/usr/share/puppet/rack/puppetmasterd/public/",
@@ -126,7 +126,7 @@ describe 'puppet::master::passenger', :type => :class do
                   :rack_base_uris=>["/"],
                   :directories=>[["path","/usr/share/puppet/rack/puppetmasterd/"], ["options","None"]],
                   :request_headers=>["unset X-Forwarded-For", "set X-SSL-Subject %{SSL_CLIENT_S_DN}e", "set X-Client-DN %{SSL_CLIENT_S_DN}e", "set X-Client-Verify %{SSL_CLIENT_VERIFY}e"]
-                }).that_subscribes_to('Class[puppet::master::install]')
+                }).that_subscribes_to('Class[puppet::master::install]').that_requires('Package[puppetmaster-passenger]')
               end
             end#end apache vhost
           end#no params
