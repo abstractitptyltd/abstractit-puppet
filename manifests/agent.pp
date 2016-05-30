@@ -25,6 +25,12 @@ class puppet::agent {
         $cron_enablement    = 'present'
         $service_enablement = false
         $start_enablement   = 'no'
+        if $::puppet::agent_custom_cron_command {
+          $cron_command = $::puppet::agent_custom_cron_command
+        }
+        else {
+          $cron_command = "${bin_dir}/puppet agent --no-daemonize --onetime"
+        }
       }
       default: {
         #noop. should never happen.
@@ -40,7 +46,7 @@ class puppet::agent {
 
   cron {'run_puppet_agent':
     ensure  => $cron_enablement,
-    command => "${bin_dir}/puppet agent --no-daemonize --onetime",
+    command => $cron_command,
     special => 'absent',
     minute  => $::puppet::agent_cron_min_interpolated,
     hour    => $::puppet::agent_cron_hour_interpolated,
