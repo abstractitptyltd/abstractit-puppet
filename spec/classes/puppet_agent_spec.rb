@@ -67,7 +67,10 @@ describe 'puppet::agent', :type => :class do
               'section'=>'',
               'setting'=>'START',
               'value'=>'yes'
-          })
+            })
+          end
+          it "should change #{sysconfigdir}/puppet before service" do
+            should contain_ini_setting('puppet sysconfig start').that_comes_before('Service[puppet]')
           end
         end
       end#no params
@@ -99,6 +102,9 @@ describe 'puppet::agent', :type => :class do
                 'setting'=>'START',
                 'value'=>'yes'
             })
+            end
+            it "should change #{sysconfigdir}/puppet before service" do
+              should contain_ini_setting('puppet sysconfig start').that_comes_before('Service[puppet]')
             end
           end
         end

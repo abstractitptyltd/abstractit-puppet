@@ -59,7 +59,8 @@ class puppet::agent {
       key_val_separator => '=',
       path              => "${sysconfigdir}/puppet",
       setting           => 'START',
-      value             => $start_enablement
+      value             => $start_enablement,
+      before            => Service['puppet'],
     }
   }
 
