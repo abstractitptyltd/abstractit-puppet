@@ -171,6 +171,11 @@ class puppet (
     #cron_hour
     $agent_cron_hour_interpolated = $agent_cron_hour
   }
+  else {
+    #ensure our public variables are never unassigned
+    $agent_cron_min_interpolated = undef
+    $agent_cron_hour_interpolated = undef
+  }
   $enable = $enabled ? {
     default => true,
     false   => false,
