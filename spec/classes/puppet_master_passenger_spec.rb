@@ -26,6 +26,12 @@ describe 'puppet::master::passenger', :type => :class do
           "12.04",
           "14.04"
         ]
+      },
+      {
+        "operatingsystem" => "Debian",
+        "operatingsystemrelease" => [
+          "7"
+        ]
       }
     ]
   }).each do |os, facts|
@@ -37,6 +43,12 @@ describe 'puppet::master::passenger', :type => :class do
           :domain => 'vogon.gal',
           :puppetversion => Puppet.version
         })
+      end
+      case facts[:operatingsystem]
+      when 'Debian'
+        vhost_cfg = 'puppetmaster'
+      when 'Ubuntu'
+        vhost_cfg = 'puppetmaster.conf'
       end
       it { is_expected.to compile.with_all_deps }
       if Puppet.version.to_f < 4.0
@@ -56,14 +68,14 @@ describe 'puppet::master::passenger', :type => :class do
               }).that_requires('Class[puppet::master::install]')
             end
 
-            it 'should remove the default puppetmaster.conf vhost file from /etc/apache2/sites-available' do
-              should contain_file('/etc/apache2/sites-available/puppetmaster.conf').with({
+            it "should remove the default #{vhost_cfg} vhost file from /etc/apache2/sites-available" do
+              should contain_file("/etc/apache2/sites-available/#{vhost_cfg}").with({
                 :ensure => 'absent'
                 }).that_requires('Package[puppetmaster-passenger]')
             end
 
-            it 'should remove the default puppetmaster.conf vhost file from /etc/apache2/sites-enabled' do
-              should contain_file('/etc/apache2/sites-enabled/puppetmaster.conf').with({
+            it "should remove the default #{vhost_cfg} vhost file from /etc/apache2/sites-enabled" do
+              should contain_file("/etc/apache2/sites-enabled/#{vhost_cfg}").with({
                 :ensure => 'absent'
                 }).that_requires('Package[puppetmaster-passenger]')
             end
