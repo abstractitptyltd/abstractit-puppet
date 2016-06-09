@@ -70,6 +70,15 @@ describe 'puppet::config', :type => :class do
             'value'=>'30m'
           })
         end
+        it "should set the puppet agent splay parameter in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client splay').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'splay',
+            'value'=>false
+          })
+        end
         it "should setup puppet.conf to support structured_facts in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client structured_facts').with({
             'ensure'=>'present',
@@ -183,6 +192,28 @@ describe 'puppet::config', :type => :class do
           })
         end
       end# custom runinterval
+      context 'when ::puppet::splay is true' do
+        let(:pre_condition) {"class{'::puppet': splay => true}"}
+        it "should properly set the splay setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client splay').with({
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'splay',
+            'value'=>true
+          })
+        end
+      end# custom splay
+      context 'when ::puppet::splaylimit has a non-standard value' do
+        let(:pre_condition) {"class{'::puppet': splaylimit => 'BOGON'}"}
+        it "should properly set the splaylimit setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client splaylimit').with({
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'splaylimit',
+            'value'=>'BOGON'
+          })
+        end
+      end# custom splaylimit
       context 'when ::puppet::structured_facts is false' do
         let(:pre_condition) {"class{'::puppet': structured_facts => false}"}
         it "should properly set the stringify_facts setting in puppet.conf" do

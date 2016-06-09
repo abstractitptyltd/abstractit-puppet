@@ -352,6 +352,13 @@ The `puppet` class is responsible for validating some of our parameters, and ins
 
     Sets the runinterval in `puppet.conf`
 
+  * **splay**: (*bool* Default `false`)
+
+    Sets the splay parameter in puppet.conf
+  * **splaylimit**: (*string* Default: undef)
+
+    Sets the splaylimit parameter in puppet.conf
+
   * **structured_facts**: (*bool* Default: `false`)
 
     Sets whether or not to enable [structured_facts](http://docs.puppetlabs.com/facter/2.0/fact_overview.html) by setting the [stringify_facts](http://docs.puppetlabs.com/references/3.6.latest/configuration.html#stringifyfacts) variable in puppet.conf.

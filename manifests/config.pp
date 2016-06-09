@@ -15,6 +15,8 @@ class puppet::config {
   $puppet_server                  = $::puppet::puppet_server
   $reports                        = $::puppet::reports
   $runinterval                    = $::puppet::runinterval
+  $splay                          = $::puppet::splay
+  $splaylimit                     = $::puppet::splaylimit
   $structured_facts               = $::puppet::structured_facts
   $manage_etc_facter              = $::puppet::manage_etc_facter
   $manage_etc_facter_facts_d      = $::puppet::manage_etc_facter_facts_d
@@ -24,6 +26,10 @@ class puppet::config {
     true    => false,
   }
   $logdest_ensure = $logdest ? {
+    default => present,
+    undef   => absent,
+  }
+  $splaylimit_ensure = $splaylimit ? {
     default => present,
     undef   => absent,
   }
@@ -72,6 +78,24 @@ class puppet::config {
     section => 'agent',
     setting => 'runinterval',
     value   => $runinterval,
+    require => Class['puppet::install'],
+  }
+
+  ini_setting { 'puppet client splay':
+    ensure  => present,
+    path    => "${confdir}/puppet.conf",
+    section => 'agent',
+    setting => 'splay',
+    value   => $splay,
+    require => Class['puppet::install'],
+  }
+
+  ini_setting { 'puppet client splaylimit':
+    ensure  => $splaylimit_ensure,
+    path    => "${confdir}/puppet.conf",
+    section => 'agent',
+    setting => 'splaylimit',
+    value   => $splaylimit,
     require => Class['puppet::install'],
   }
 
