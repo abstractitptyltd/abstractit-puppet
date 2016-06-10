@@ -167,6 +167,12 @@ or
       cfacter => true
     }
 
+### Set custom agent certname
+
+    class { '::puppet::profile::agent':
+      certname => 'agent.domain.com'
+    }
+
 ### Use packages for repository management
 
     class { '::puppet::profile::agent':
@@ -273,6 +279,10 @@ The `puppet` class is responsible for validating some of our parameters, and ins
   * **cfacter**: (*bool* Default: `false`)
 
     Whether or not to use cfacter instead of facter.
+  
+  * **certname**: (*string* Default: `undef`)
+
+    Set a custom certname for the agent.
 
   * **collection**: (*string* Default: `undef`)
 
