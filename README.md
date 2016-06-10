@@ -339,6 +339,10 @@ The `puppet` class is responsible for validating some of our parameters, and ins
   * **puppet_server**: (*string* Default: `puppet`)
 
     The hostname or fqdn of the puppet server that the agent should communicate with.
+    
+  * **puppet_server_port**: (*string* Default: undef)
+
+    The port of the puppet server that the agent should communicate with.
 
   * **puppet_version**: (*string* Default: `installed`)
 
