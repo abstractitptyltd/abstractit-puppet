@@ -19,6 +19,8 @@
 #   Declares the version of the puppet-agent all-in-one package to install.
 # @param cfacter [Boolean] Default: false
 #   Whether or not to use cfacter instead of facter.
+# @param certname [String] Default: undef
+#   Set a custom certname for the agent.
 # @param collection [String] Default: undef
 #   Declares the collection repository to use.
 # @param custom_facts [Hash] Default: undef
@@ -78,6 +80,7 @@ class puppet::profile::agent (
   $agent_version                  = 'installed',
   $ca_server                      = undef,
   $cfacter                        = false,
+  $certname                       = undef,
   $collection                     = undef,
   $custom_facts                   = undef,
   $enabled                        = true,
@@ -106,6 +109,7 @@ class puppet::profile::agent (
     agent_version                  => $agent_version,
     ca_server                      => $ca_server,
     cfacter                        => $cfacter,
+    certname                       => $certname,
     collection                     => $collection,
     custom_facts                   => $custom_facts,
     enabled                        => $enabled,
