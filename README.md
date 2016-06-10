@@ -21,7 +21,7 @@
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 7. [Contributors](#contributors)
-8. [Release Notes/Etc]#release
+8. [Release Notes/Etc](#release)
 
 ##Overview
 
