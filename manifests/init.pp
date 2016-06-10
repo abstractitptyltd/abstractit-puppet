@@ -57,6 +57,8 @@
 #   Sets the method for managing the repo files
 # @param puppet_server [String] Default: 'puppet'
 #   The hostname or fqdn of the puppet server that the agent should communicate with.
+# @param puppet_server_port [String] Default: undef
+#   The port of the puppet server that the agent should communicate with.
 # @param preferred_serialization_format [String] Default: 'pson'
 #   The serialization format to use for communication with the puppet server.
 #   WARNING: Setting this to msgpack is experimental! Please enable with care.
@@ -98,6 +100,7 @@ class puppet (
   $manage_repo_method             = 'files',
   $preferred_serialization_format = 'pson',
   $puppet_server                  = 'puppet',
+  $puppet_server_port             = undef,
   $puppet_version                 = 'installed',
   $reports                        = true,
   $runinterval                    = '30m',
@@ -127,6 +130,7 @@ class puppet (
     $logdest,
     $manage_repo_method,
     $puppet_server,
+    $puppet_server_port,
     $puppet_version,
     $runinterval,
   )
