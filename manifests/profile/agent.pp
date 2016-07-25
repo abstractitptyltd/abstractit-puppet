@@ -62,6 +62,10 @@
 #   Whether or not to send reports
 # @param runinterval [String] Default: '30m'
 #   Sets the runinterval in puppet.conf
+# @param splay [Boolean] Default: false
+#   Sets the splay parameter in puppet.conf
+# @param splaylimit [String] Default: undef
+#   Sets the splaylimit parameter in puppet.conf
 # @param structured_facts [Boolean] Default: false
 #   Sets whether or not to enable [structured_facts](http://docs.puppetlabs.com/facter/2.0/fact_overview.html) 
 #   by setting the [stringify_facts](http://docs.puppetlabs.com/references/3.6.latest/configuration.html#stringifyfacts) 
@@ -97,6 +101,8 @@ class puppet::profile::agent (
   $puppet_version                 = 'installed',
   $reports                        = true,
   $runinterval                    = '30m',
+  $splay                          = false,
+  $splaylimit                     = undef,
   $structured_facts               = false,
 ) {
   class { '::puppet':
@@ -125,6 +131,8 @@ class puppet::profile::agent (
     puppet_version                 => $puppet_version,
     reports                        => $reports,
     runinterval                    => $runinterval,
+    splay                          => $splay,
+    splaylimit                     => $splaylimit,
     structured_facts               => $structured_facts,
   }
 

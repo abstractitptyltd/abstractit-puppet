@@ -66,6 +66,10 @@
 #   Whether or not to send reports
 # @param runinterval [String] Default: '30m'
 #   Sets the runinterval in puppet.conf
+# @param splay [Boolean] Default: false
+#   Sets the splay parameter in puppet.conf
+# @param splaylimit [String] Default: undef
+#   Sets the splaylimit parameter in puppet.conf
 # @param structured_facts [Boolean] Default: false
 #   Sets whether or not to enable [structured_facts](http://docs.puppetlabs.com/facter/2.0/fact_overview.html) 
 #   by setting the [stringify_facts](http://docs.puppetlabs.com/references/3.6.latest/configuration.html#stringifyfacts) 
@@ -101,6 +105,8 @@ class puppet (
   $puppet_version                 = 'installed',
   $reports                        = true,
   $runinterval                    = '30m',
+  $splay                          = false,
+  $splaylimit                     = undef,
   $structured_facts               = false,
 ) {
   #input validation
@@ -114,6 +120,7 @@ class puppet (
     $manage_etc_facter_facts_d,
     $manage_repos,
     $reports,
+    $splay,
     $structured_facts,
   )
 
@@ -128,6 +135,7 @@ class puppet (
     $manage_repo_method,
     $puppet_server,
     $puppet_version,
+    $splaylimit,
     $runinterval,
   )
   $manage_repo_types = ['files','package']
