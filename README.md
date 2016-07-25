@@ -365,6 +365,24 @@ The `puppet` class is responsible for validating some of our parameters, and ins
 
     **It is important to note that this boolean operates in reverse.** Setting stringify_facts to **false** is required to **permit** structured facts. This is why this parameter does not directly correlate with the configuration key.
 
+  * **use_srv_records**: (*bool* Default: 'false')
+
+    Enables the use of srv_records for Puppetmaster/CA selection
+
+  * **srv_domain**: (*string* Default: undef)
+
+    Sets the srv_domain to use when use_srv_domains is set to true
+
+  * **pluginsource**: (*string* Default: undef)
+
+    Sets the pluginsource value in puppet.conf. Useful when using SRV records
+and agents on versions less than 4.0 (See https://tickets.puppetlabs.com/browse/PUP-1035)
+
+  * **pluginfactsource**: (*string* Default: undef)
+
+    Sets the pluginfactsource value in puppet.conf. Useful when using SRV
+records and agents on versions less than 4.0 (See https://tickets.puppetlabs.com/browse/PUP-1035)
+
 ----
 
 ####[Private] Class: **puppet::agent**
