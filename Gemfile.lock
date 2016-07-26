@@ -151,12 +151,12 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  facter (~> 2.4)
-  hiera (~> 3.0)
-  json
+  facter
+  hiera
+  json (= 1.8.3)
   metadata-json-lint
   pry (<= 0.9.8)
-  puppet (= 4.3.2)
+  puppet
   puppet-blacksmith
   puppet-lint
   puppet-lint-absolute_classname-check
