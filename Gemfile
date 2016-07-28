@@ -19,6 +19,8 @@ group :test do
   gem 'metadata-json-lint',                               :require => false
   gem 'simplecov',                                        :require => false
   gem 'json',                   '1.8.3',                  :require => false
+  gem 'json_pure',              '1.8.3',                  :require => false
+  gem 'rubocop',                '0.41.2',                 :require => false
   gem "puppet-blacksmith",                                :require => false
   gem 'pry',                    '<= 0.9.8',               :require => false
   gem 'puppet-lint',                                      :require => false
