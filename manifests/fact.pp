@@ -10,6 +10,10 @@ define puppet::fact (
   include ::puppet::defaults
   $facterbasepath = $::puppet::defaults::facterbasepath
 
+  unless is_string($value) or is_array($value) or is_hash($value) {
+    fail("Param \$value of define Puppet::Fact must be Sring or Array or Hash!")
+  }
+
   file { "${facterbasepath}/facts.d/${title}.yaml":
     ensure  => $ensure,
     owner   => 'root',
