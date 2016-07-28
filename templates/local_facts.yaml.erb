@@ -8,15 +8,15 @@
 <%- when Hash -%>
 <%= key %>:
 <%- @custom_facts[key].sort.each do |key,value| -%>
-  <%= key %>: '<%= value %>"
+  <%= key %>: '<%= value %>'
 <%- end -%>
 <%- when Array -%>
 <%= key %>:
 <%- @custom_facts[key].sort.each do |value| -%>
-  - "<%= value %>"
+  - '<%= value %>'
 <%- end -%>
 <%- else -%>
-<%= key %>: "<%= @custom_facts[key] %>"
+<%= key %>: '<%= @custom_facts[key] %>'
 <%- end -%>
 <%- end -%>
 <%- end -%>

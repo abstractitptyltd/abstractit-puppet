@@ -4,13 +4,13 @@
 <%- when Hash -%>
 <%= @title %>:
 <%- @value.sort.each do |key,value| -%>
-  <%= key %>: '<%= value %>"
+  <%= key %>: '<%= value %>'
 <%- end -%>
 <%- when Array -%>
 <%= @title %>:
 <%- @value.sort.each do |value| -%>
-  - "<%= value %>"
+  - '<%= value %>'
 <%- end -%>
 <%- else -%>
-<%= @title %>: "<%= @value %>"
+<%= @title %>: '<%= @value %>'
 <%- end -%>
