@@ -1,9 +1,9 @@
 # custom facts for <%= @clientcert %>
 # FQDN <%= @fqdn %>
 # Environment <%= @environment %>
----
-<%- if @custom_facts -%>
-<%- @custom_facts.keys.sort.each do |key| -%>
-<%= key %>: "<%= @custom_facts[key] %>"
-<%- end -%>
+<%- require 'yaml' -%>
+<%- if RUBY_VERSION =~ /^1\.8\./ -%>
+<%= YAML::dump(@custom_facts) %>
+<%- else -%>
+<%= @custom_facts.to_yaml(indentation:2, canonical:false, line_width:-1) %>
 <%- end -%>

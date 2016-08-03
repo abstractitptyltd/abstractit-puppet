@@ -1,3 +1,7 @@
 # custom fact <%= @title %>
----
-<%= @title %>: "<%= @value %>"
+<%- require 'yaml' -%>
+<%- if RUBY_VERSION =~ /^1\.8\./ -%>
+<%= YAML::dump(@facter_data) %>
+<%- else -%>
+<%= @facter_data.to_yaml(indentation:2, canonical:false, line_width:-1) %>
+<%- end -%>

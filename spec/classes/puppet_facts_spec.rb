@@ -110,16 +110,54 @@ describe 'puppet::facts', :type => :class do
           end
         end
       end#no params
-      context 'when the custom_facts parameter is properly set' do
+      context 'when the custom_facts parameter is properly set key values is string' do
         let(:params) {{'custom_facts' => {'key1' => 'val1', 'key2' => 'val2'}}}
         it 'should iterate through the hash and properly populate the local_facts.yaml file' do
           should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
-            /key1: \"val1\"/
+            /---/
           ).with_content(
-            /key2: \"val2\"/
+            /key1: val1/
+          ).with_content(
+            /key2: val2/
           )
         end
-      end#custom_facts
+      end#custom_facts set key values is string
+      context 'when the custom_facts parameter is properly set key values is array' do
+        let(:params) {{'custom_facts' => {'key1' => [ 'val11', 'val12' ], 'key2' => [ 'val21', 'val22']}}}
+        it 'should iterate through the hash and properly populate the local_facts.yaml file' do
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
+            /---/
+          ).with_content(
+            /key1:/
+          ).with_content(
+            /- val11/
+          ).with_content(
+            /- val12/
+          ).with_content(
+            /key2:/
+          ).with_content(
+            /- val21/
+          ).with_content(  
+            /- val22/
+          )
+        end
+      end#custom_facts set key values is array
+      context 'when the custom_facts parameter is properly set key values is hash' do
+        let(:params) {{'custom_facts' => {'key1' => { 'key11' => 'val11' }, 'key2' => { 'key21' => 'val21'}}}}
+        it 'should iterate through the hash and properly populate the local_facts.yaml file' do
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
+            /---/
+          ).with_content(
+            /key1:/
+          ).with_content(
+            /key11: val11/
+          ).with_content(  
+            /key2:/
+          ).with_content(
+            /key21: val21/
+          )
+        end
+      end#custom_facts set key values is hash
     end
   end
 end

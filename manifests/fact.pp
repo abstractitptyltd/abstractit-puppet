@@ -10,6 +10,9 @@ define puppet::fact (
   include ::puppet::defaults
   $facterbasepath = $::puppet::defaults::facterbasepath
 
+  validate_string($title)
+  $facter_data = { "${title}" => $value }
+
   file { "${facterbasepath}/facts.d/${title}.yaml":
     ensure  => $ensure,
     owner   => 'root',
