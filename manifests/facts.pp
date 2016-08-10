@@ -17,11 +17,12 @@ class puppet::facts (
   }
 
   file { "${facterbasepath}/facts.d/local.yaml":
-    ensure  => file,
-    owner   => 'root',
-    group   => 'puppet',
-    mode    => '0640',
-    content => template('puppet/local_facts.yaml.erb'),
+    ensure       => file,
+    owner        => 'root',
+    group        => 'puppet',
+    mode         => '0640',
+    validate_cmd => "/usr/bin/env ruby -ryaml -e \"YAML.load_file '<afile>'\"",
+    content      => template('puppet/local_facts.yaml.erb'),
   }
 
 }
