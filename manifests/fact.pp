@@ -10,7 +10,7 @@ define puppet::fact (
   include ::puppet::defaults
   $facterbasepath = $::puppet::defaults::facterbasepath
 
-  validate_string($title)
+  validate_re($title, '^[0-9A-Za-z_\-]+$', 'The $title fact does not match ^[0-9A-Za-z_\-]+$')
   $facter_data = { "${title}" => $value }
 
   file { "${facterbasepath}/facts.d/${title}.yaml":
@@ -18,7 +18,7 @@ define puppet::fact (
     owner        => 'root',
     group        => 'puppet',
     mode         => '0640',
-    validate_cmd => "/usr/bin/env ruby -ryaml -e \"YAML.load_file '<afile>'\"",
+    validate_cmd => "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\"",
     content      => template('puppet/fact.yaml.erb'),
   }
 

@@ -21,7 +21,7 @@ class puppet::facts (
     owner        => 'root',
     group        => 'puppet',
     mode         => '0640',
-    validate_cmd => "/usr/bin/env ruby -ryaml -e \"YAML.load_file '<afile>'\"",
+    validate_cmd => "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\"",
     content      => template('puppet/local_facts.yaml.erb'),
   }
 
