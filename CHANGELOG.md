@@ -2,6 +2,7 @@
 ###Summary
 Numerous bugfixes.
 Feature: Configure agents using SRV records @aaron-miller
+Feature: Added parameter manage_dbserver to profiles/master @chrisowensboston
 
 ####Bugfixes
 Fix puppetserver should connect to non SSL puppetdb via http not https @divansantana
@@ -15,6 +16,11 @@ define relationship between vhost an package puppetmaster-passenger @toepi
 distinguish between Debian and Ubuntu for puppetmaster-passenger setup @toepi
 Add support for splay and splaylimit parameters in puppet.conf @paulseward
 Fix syntax error on readme @jordigg
+in manifests/repo.pp added include ::puppet, to fix unknown variable puppet::manage_repos @chrisowensboston
+in spec/classes/puppet_agent_spec.rb, Dealt with change in behavior of fqdn_rand by changing expected :minute value from ["3", 33] to [13, 43] in three places @chrisowensboston
+in spec/classes/puppet_agent_spec.rb, Change expected :minute value from ["3", 18, 33, 48] to [0, 15, 30, 45] @chrisowensboston
+in spec/classes/puppet_agent_spec.rb, Add another round of tests with a different hostname to be sure that random splaying of cronjob times is handled well. @chrisowensboston
+In .fixtures.yml, changed puppetlabs/concat version requirement from '1.2.0' to '>= 1.2.2 < 2.0.0', to fix "uknown variable ::is_pe" bug @chrisowensboston
 
 ##2016-02-11 - Pete Brown <pete@abstractit.com.au> 2.2.1
 ###Summary
