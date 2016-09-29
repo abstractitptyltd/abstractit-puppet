@@ -294,6 +294,63 @@ describe 'puppet::agent', :type => :class do
             end
           end # cron_hour=20
         end
+        context 'when $::puppet::enable_mechanism is cron and host is testy2.hosty2.com ' do
+          let(:pre_condition){"class{'::puppet': enabled => true, enable_mechanism => 'cron', }"}
+          let(:facts) {facts.merge({:fqdn => 'testy2.hosty2.com',})}
+
+          it 'should enable the cronjob, running puppet twice an hour' do
+            should contain_cron('run_puppet_agent').with({
+              :ensure=>"present",
+              :command=>"#{bin_dir}/puppet agent --no-daemonize --onetime",
+              :special=>"absent",
+              :minute=>[28, 58],
+              :hour=>"*"
+            })
+          end
+          context 'when agent_cron_min has the value of two_times_an_hour' do
+            let(:pre_condition){"class{'::puppet': enabled => true, enable_mechanism => 'cron', agent_cron_min => 'two_times_an_hour'}"}
+            it 'should enable the cronjob, running puppet twice an hour' do
+              should contain_cron('run_puppet_agent').with({
+                :ensure=>"present",
+                :command=>"#{bin_dir}/puppet agent --no-daemonize --onetime",
+                :special=>"absent",
+                :minute=>[28, 58],
+                :hour=>"*"
+              })
+            end
+          end
+          context 'when agent_cron_min has the value of four_times_an_hour' do
+            let(:pre_condition){"class{'::puppet': enabled => true, enable_mechanism => 'cron', agent_cron_min => 'four_times_an_hour'}"}
+            it 'should enable the cronjob, running puppet four times an hour' do
+              should contain_cron('run_puppet_agent').with({
+                :ensure=>"present",
+                :command=>"#{bin_dir}/puppet agent --no-daemonize --onetime",
+                :special=>"absent",
+                :minute=>[11, 26, 41, 56],
+                :hour=>"*"
+              })
+            end
+          end
+          context 'when agent_cron_hour has the value of \'20\'' do
+            let(:pre_condition){"class{'::puppet': enabled => true, enable_mechanism => 'cron', agent_cron_hour => '20'}"}
+            it 'should enable the cronjob, running puppet twice an hour' do
+              should contain_cron('run_puppet_agent').with({
+                :ensure=>"present",
+                :command=>"#{bin_dir}/puppet agent --no-daemonize --onetime",
+                :special=>"absent",
+                :minute=>[28, 58],
+                :hour=>"20"
+              })
+            end
+            it'should contain the puppet service, in a disabled state' do
+              should contain_service('puppet').with({
+                :name=>"puppet",
+                :ensure=>false,
+                :enable=>false,
+              })
+            end
+          end
+        end # cron/testy2
       end
       context 'when $::puppet::enabled is false' do
         let(:pre_condition){"class{'::puppet': enabled => false}"}
