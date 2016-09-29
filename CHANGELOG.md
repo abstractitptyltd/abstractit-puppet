@@ -3,12 +3,12 @@
 in manifests/profiles/master.pp, added parameter manage_dbserver, which is
 passed along to class puppetdb. (also reflected in spec/classes/puppet_profile_master_spec.rb)
 
+in .travis.yml, added a line for rvm 2.2.0, puppet gem 4.7.0, facter gem 2.4.6, hiera gem 3.2.1
 
 ###Bugfixes
 in manifests/repo.pp added include ::puppet, to fix unknown variable puppet::manage_repos
-in spec/classes/puppet_agent_spec.rb, Change expected :minute value from ["3", 33] to [13, 43] in three places 
-in spec/classes/puppet_agent_spec.rb, Change expected :minute value from ["3", 18, 33, 48] to [0, 15, 30, 45]
-in spec/classes/puppet_agent_spec.rb, Add another round of tests with a different hostname to be sure that random splaying of cronjob times is handled well. 
+in manifests/init.pp added "+ 0" after calls to fqdn_rand, to force conversion to integer.
+in spec/classes/puppet_agent_spec.rb, Changed tests for interpolated minute values to accommodate different versions of fqdn_rand using different entropy sources. Changed host name from "testy" to "testy2" because "testy" happened to give a 0 using fqdn_rand(14)
 In .fixtures.yml, changed puppetlabs/concat version requirement from '1.2.0' to '>= 1.2.2 < 2.0.0', to fix "uknown variable ::is_pe" bug
 
 
