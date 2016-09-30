@@ -54,6 +54,10 @@ end
 #   gem 'beaker-puppet_install_helper', :require => false
 # end
 
+# puppet requires json_pure; json_pure > 2.0.1 requires Ruby 2
+# so force the older json_pure in the case of older ruby
+gem 'json_pure', '< 2.0.2', :require => false, :platforms => [:ruby_18, :ruby_19]
+
 if puppetversion = ENV['PUPPET_GEM_VERSION']
   gem 'puppet', puppetversion, :require => false
 else
