@@ -20,6 +20,8 @@ in manifests/repo.pp added include ::puppet, to fix unknown variable puppet::man
 in manifests/init.pp added "+ 0" after calls to fqdn_rand, to force conversion to integer. @chrisowensboston
 in spec/classes/puppet_agent_spec.rb, Changed tests for interpolated minute values to accommodate different versions of fqdn_rand using different entropy sources. Changed host name from "testy" to "testy2" because "testy" happened to give a 0 using fqdn_rand(14)
 In .fixtures.yml, changed puppetlabs/concat version requirement from '1.2.0' to '>= 1.2.2 < 2.0.0', to fix "uknown variable ::is_pe" bug @chrisowensboston
+in Gemfile, forced json_pure to be < 2.0.1 when ruby < 2.0 @chrisowensboston
+
 
 ##2016-02-11 - Pete Brown <pete@abstractit.com.au> 2.2.1
 ###Summary
