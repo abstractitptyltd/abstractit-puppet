@@ -23,7 +23,6 @@ In .fixtures.yml, changed puppetlabs/concat version requirement from '1.2.0' to 
 in Gemfile, forced json_pure to be < 2.0.1 when ruby < 2.0 @chrisowensboston
 in .travis.yml, added a line for rvm 2.2.0, puppet gem 4.7.0, facter gem 2.4.6, hiera gem 3.2.1 @chrisowensboston
 
-
 ##2016-02-11 - Pete Brown <pete@abstractit.com.au> 2.2.1
 ###Summary
 
