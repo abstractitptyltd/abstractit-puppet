@@ -1,3 +1,21 @@
+##2016-10-10 - Pete Brown <pete@abstractit.com.au> 2.3.0-alpha
+###Summary
+Numerous bugfixes.
+Feature: Configure agents using SRV records @aaron-miller
+
+####Bugfixes
+Fix puppetserver should connect to non SSL puppetdb via http not https @divansantana
+Update metadata.json to allow use of zack-r10k version 3.2.0 @rpkish
+Define relationship between sysconfig and service in agent @toepi
+Deploy puppetdb ssl certs when ssl is enabled @divansantana
+Fix r10k manage_ruby_dependency error @divansantana
+Fix could not find init script in some cases @divansantana
+Support for strict_variables mode @tequeter
+define relationship between vhost an package puppetmaster-passenger @toepi
+distinguish between Debian and Ubuntu for puppetmaster-passenger setup @toepi
+Add support for splay and splaylimit parameters in puppet.conf @paulseward
+Fix syntax error on readme @jordigg
+
 ##2016-02-11 - Pete Brown <pete@abstractit.com.au> 2.2.1
 ###Summary
 
