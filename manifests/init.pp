@@ -180,16 +180,16 @@ class puppet (
     case $agent_cron_min {
       #provide a co
       'two_times_an_hour': {
-        $min=fqdn_rand(29)
+        $min=fqdn_rand(29) + 0  # fqdn_rand used to return a string prior to 4.0?
         $min_2=$min + 30
         $agent_cron_min_interpolated = [ $min, $min_2 ]
       }
     'four_times_an_hour': {
-        $min=fqdn_rand(14)
+        $min=fqdn_rand(14) + 0  # fqdn_rand used to return a string prior to 4.0?
         $min_2=$min + 15
         $min_3=$min + 30
         $min_4=$min + 45
-        $agent_cron_min_interpolated = [$min, $min_2, $min_3, $min_4 ]
+        $agent_cron_min_interpolated = [ $min, $min_2, $min_3, $min_4 ]
       }
       default: {
         #the variable is populated. feed that to the cronjob

@@ -1,7 +1,7 @@
 # Include the proper subclass.
 
 class puppet::repo {
-
+  include ::puppet
   if $::puppet::manage_repos {
     case $::puppet::manage_repo_method {
       default,'files': {

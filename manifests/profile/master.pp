@@ -3,6 +3,7 @@
 # If you want PuppetDB on a separate node please use the puppet::profile::puppetdb class
 # This and the puppet::profile::puppetdb class are mutually exclusive and will not work on the same node.
 #
+
 # @param autosign [Boolean] Default: false
 #   Whether or not to enable autosign.
 # @param autosign_domains [Array] Default: empty
@@ -74,6 +75,11 @@
 # @param puppetdb [Boolean] Default: false
 #   Whether to setup PuppetDB.
 #   Set this to configure a PuppetDB server on this node.
+# @param puppetdb_manage_dbserver [Boolean] Default: true
+#   Whether to tell PuppetDB to also manage the Postgresql server.
+#   Set this to false if you are independently configuring a
+#   Postgresql server, e.g., because you are using it for other
+#   databases in addition to pupept.
 # @param puppetdb_server [String] Default: undef
 #   The dns name or ip of the puppetdb server.
 #   Set this to specify which PuppetDB server to connect to.
@@ -139,6 +145,7 @@ class puppet::profile::master (
   $server_type                        = undef,
   $server_version                     = 'installed',
   $puppetdb                           = false,
+  $puppetdb_manage_dbserver           = true,
   $puppetdb_server                    = undef,
   $puppetdb_version                   = 'installed',
   $puppetdb_node_purge_ttl            = '0s',
@@ -212,6 +219,7 @@ class puppet::profile::master (
       disable_ssl        => $puppetdb_disable_ssl,
       listen_address     => $puppetdb_listen_address,
       ssl_listen_address => $puppetdb_ssl_listen_address,
+      manage_dbserver    => $puppetdb_manage_dbserver,
       node_ttl           => $puppetdb_node_ttl,
       node_purge_ttl     => $puppetdb_node_purge_ttl,
       report_ttl         => $report_ttl,
