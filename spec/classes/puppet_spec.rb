@@ -28,7 +28,7 @@ describe 'puppet', :type => :class do
      end
    end#arrays
 
-    ['allinone','cfacter','enable_devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','structured_facts'].each do |bools|
+    ['allinone','cfacter','enable_devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','splay','structured_facts'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
         let(:params) {{bools => "BOGON"}}
         it 'should fail' do
@@ -64,7 +64,7 @@ describe 'puppet', :type => :class do
       end
     end#regexes
 
-    ['agent_version','ca_server','collection','environment','facter_version','hiera_version','preferred_serialization_format','puppet_server','puppet_version','runinterval'].each do |strings|
+    ['agent_version','ca_server','collection','environment','facter_version','hiera_version','preferred_serialization_format','puppet_server','puppet_version','runinterval','splaylimit'].each do |strings|
       context "when the #{strings} parameter is not a string" do
         let(:params) {{strings => false }}
         it 'should fail' do

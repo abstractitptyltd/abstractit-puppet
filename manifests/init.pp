@@ -1,19 +1,19 @@
-# The main puppet class is responsible for validating some of our parameters, 
+# The main puppet class is responsible for validating some of our parameters,
 # and instantiating the puppet::facts, puppet::repo, pupppet::install,
 # puppet::config and puppet::agent classes.
 #
 # @puppet when declaring the puppet class
 #   include puppet
 #
-# @param allinone [Boolean] Default: false 
+# @param allinone [Boolean] Default: false
 #   Whether to use the new collections
-# @param agent_cron_hour [String] Default: '*' 
+# @param agent_cron_hour [String] Default: '*'
 #   The hour to run the agent cron. Valid values are `0-23`
 # @param agent_cron_min [String/Array] Default: 'two_times_an_hour'
 #   This param accepts any value accepted by the [cron native type](http://docs.puppetlabs.com/references/latest/type.html#cron-attribute-minute),
-#   as well as two special options: `two_times_an_hour`, and `four_times_an_hour`. 
+#   as well as two special options: `two_times_an_hour`, and `four_times_an_hour`.
 #   These specials use [fqdn_rand](http://docs.puppetlabs.com/references/latest/function.html#fqdnrand)
-#   to generate a random minute array on the selected interval. 
+#   to generate a random minute array on the selected interval.
 #   This should distribute the load more evenly on your puppetmasters.
 # @param agent_version [String] Default: 'installed'
 #   Declares the version of the puppet-agent all-in-one package to install.
@@ -32,7 +32,7 @@
 # @param enable_devel_repo [Boolean] Default: false
 #   This param will replace `devel_repo` in 2.x.
 #   It conveys to puppet::repo::apt whether or not to add the devel apt repo source.
-#   When `devel_repo` is false, `enable_devel_repo` is consulted for enablement. 
+#   When `devel_repo` is false, `enable_devel_repo` is consulted for enablement.
 #   This gives `devel_repo` backwards compatability at the cost of some confusion if you set `devel_repo` to true, and `enable_devel_repo` to false.
 # @param enable_mechanism [String] Default: 'service'
 #   A toggle which permits the option of running puppet as a service, or as a cron job.
@@ -66,13 +66,34 @@
 #   Whether or not to send reports
 # @param runinterval [String] Default: '30m'
 #   Sets the runinterval in puppet.conf
+# @param splay [Boolean] Default: false
+#   Sets the splay parameter in puppet.conf
+# @param splaylimit [String] Default: undef
+#   Sets the splaylimit parameter in puppet.conf
 # @param structured_facts [Boolean] Default: false
-#   Sets whether or not to enable [structured_facts](http://docs.puppetlabs.com/facter/2.0/fact_overview.html) 
-#   by setting the [stringify_facts](http://docs.puppetlabs.com/references/3.6.latest/configuration.html#stringifyfacts) 
+#   Sets whether or not to enable [structured_facts](http://docs.puppetlabs.com/facter/2.0/fact_overview.html)
+#   by setting the [stringify_facts](http://docs.puppetlabs.com/references/3.6.latest/configuration.html#stringifyfacts)
 #   variable in puppet.conf.
 #   **It is important to note that this boolean operates in reverse.
-#   ** Setting stringify_facts to **false** is required to **permit** structured facts. 
+#   ** Setting stringify_facts to **false** is required to **permit** structured facts.
 #   This is why this parameter does not directly correlate with the configuration key.
+# @param use_srv_records [Boolean] Default: false
+#   Enables the use of SRV records for Puppetmaster/CA selection
+#   **If set to true srv_domain must also be set. This also ignores
+#   puppet_server value and removes it from puppet.conf
+# @param srv_domain [String] Default: undef
+#   Chooses the domain to use if use_srv_records is set to true. Required if
+#   use_srv_records is true.
+# @param pluginsource [String] Default: undef
+#   Specifies what server to use for syncing plugins. This is useful if you are
+#   using SRV records and still have agents on < 4.0 as pluginsync will fail
+#   unless set to a specific value (See
+#   https://tickets.puppetlabs.com/browse/PUP-1035)
+# @param pluginfactsource [String] Default: undef
+#   If specified it will set the pluginfactsource value in puppet.conf. This is
+#   useful if you are using SRV records and still have agents on < 4.0 as
+#   pluginfactsync will fail to run using the default value (See
+#   https://tickets.puppetlabs.com/browse/PUP-1035)
 
 class puppet (
   $allinone                       = false,
@@ -101,7 +122,13 @@ class puppet (
   $puppet_version                 = 'installed',
   $reports                        = true,
   $runinterval                    = '30m',
+  $splay                          = false,
+  $splaylimit                     = undef,
   $structured_facts               = false,
+  $use_srv_records                = false,
+  $srv_domain                     = undef,
+  $pluginsource                   = undef,
+  $pluginfactsource               = undef,
 ) {
   #input validation
   validate_bool(
@@ -114,6 +141,7 @@ class puppet (
     $manage_etc_facter_facts_d,
     $manage_repos,
     $reports,
+    $splay,
     $structured_facts,
   )
 
@@ -128,6 +156,7 @@ class puppet (
     $manage_repo_method,
     $puppet_server,
     $puppet_version,
+    $splaylimit,
     $runinterval,
   )
   $manage_repo_types = ['files','package']
@@ -151,16 +180,16 @@ class puppet (
     case $agent_cron_min {
       #provide a co
       'two_times_an_hour': {
-        $min=fqdn_rand(29)
+        $min=fqdn_rand(29) + 0  # fqdn_rand used to return a string prior to 4.0?
         $min_2=$min + 30
         $agent_cron_min_interpolated = [ $min, $min_2 ]
       }
     'four_times_an_hour': {
-        $min=fqdn_rand(14)
+        $min=fqdn_rand(14) + 0  # fqdn_rand used to return a string prior to 4.0?
         $min_2=$min + 15
         $min_3=$min + 30
         $min_4=$min + 45
-        $agent_cron_min_interpolated = [$min, $min_2, $min_3, $min_4 ]
+        $agent_cron_min_interpolated = [ $min, $min_2, $min_3, $min_4 ]
       }
       default: {
         #the variable is populated. feed that to the cronjob

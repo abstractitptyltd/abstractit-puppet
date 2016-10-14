@@ -51,6 +51,18 @@ describe 'puppet::config', :type => :class do
             'setting'=>'server',
             'value'=>'puppet'
           })
+          should contain_ini_setting('puppet use_srv_records').with({
+            'ensure'=>'absent',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'use_srv_records',
+          })
+          should contain_ini_setting('puppet srv_domain').with({
+            'ensure'=>'absent',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'srv_domain',
+          })
         end
         it "should properly set the environment setting in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client environment').with({
@@ -68,6 +80,15 @@ describe 'puppet::config', :type => :class do
             'section'=>'agent',
             'setting'=>'runinterval',
             'value'=>'30m'
+          })
+        end
+        it "should set the puppet agent splay parameter in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client splay').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'splay',
+            'value'=>false
           })
         end
         it "should setup puppet.conf to support structured_facts in #{confdir}/puppet.conf" do
@@ -105,10 +126,23 @@ describe 'puppet::config', :type => :class do
             'ensure'  => 'present',
             'path'    => "#{confdir}/puppet.conf",
             'section' => 'main',
+            'setting' => 'ca_server',
             'value'   => 'bogon.domain.com'
           })
         end
-      end# ca_server
+      end# ca_server is set
+
+      context 'when ::puppet::ca_server is not set' do
+        let(:pre_condition){"class{'::puppet':}"}
+        it "should unset ca_server" do
+          should contain_ini_setting('puppet ca_server').with({
+            'ensure' => 'absent',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'main',
+            'setting' => 'ca_server',
+          })
+        end
+      end # ca_server is not set
 
       context 'when ::puppet::cfacter is true' do
         let(:pre_condition){"class{'::puppet': cfacter => true}"}
@@ -183,6 +217,28 @@ describe 'puppet::config', :type => :class do
           })
         end
       end# custom runinterval
+      context 'when ::puppet::splay is true' do
+        let(:pre_condition) {"class{'::puppet': splay => true}"}
+        it "should properly set the splay setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client splay').with({
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'splay',
+            'value'=>true
+          })
+        end
+      end# custom splay
+      context 'when ::puppet::splaylimit has a non-standard value' do
+        let(:pre_condition) {"class{'::puppet': splaylimit => 'BOGON'}"}
+        it "should properly set the splaylimit setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client splaylimit').with({
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'splaylimit',
+            'value'=>'BOGON'
+          })
+        end
+      end# custom splaylimit
       context 'when ::puppet::structured_facts is false' do
         let(:pre_condition) {"class{'::puppet': structured_facts => false}"}
         it "should properly set the stringify_facts setting in puppet.conf" do
@@ -206,6 +262,82 @@ describe 'puppet::config', :type => :class do
           })
         end
       end# reports
+
+      context 'when $::puppet::use_srv_records is true and srv_domain is foo.com' do
+        let(:pre_condition){"class{'::puppet': enabled => true, use_srv_records => true, srv_domain => 'foo.com'}"}
+        it'should set use_srv_records and srv_domain in puppet.conf' do
+          should contain_ini_setting('puppet use_srv_records').with({
+            'ensure' => 'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'use_srv_records',
+            'value'=>'true',
+          })
+          should contain_ini_setting('puppet srv_domain').with({
+            'ensure' => 'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'srv_domain',
+            'value'=>'foo.com',
+          })
+          should contain_ini_setting('puppet client server').with({
+            'ensure' => 'absent',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'server',
+          })
+        end
+      end # puppet::use_srv_records
+
+      context 'when $::puppet::pluginsource is set' do
+        let(:pre_condition){"class{'::puppet': enabled => true, pluginsource => 'foo'}"}
+        it 'should set pluginsource in puppet.conf' do
+          should contain_ini_setting('puppet pluginsource').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'pluginsource',
+            'value'=>'foo',
+          })
+        end
+      end # puppet::pluginsource is set
+
+      context 'when $::puppet::pluginsource is not set' do
+        let(:pre_condition){"class{'::puppet': enabled => true}"}
+        it 'should unset pluginsource in puppet.conf' do
+          should contain_ini_setting('puppet pluginsource').with({
+            'ensure'=>'absent',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'pluginsource',
+          })
+        end
+      end # puppet::pluginsource is undef
+
+      context 'when $::puppet::pluginfactsource is set' do
+        let(:pre_condition){"class{'::puppet': enabled => true, pluginfactsource => 'foo'}"}
+        it 'should set pluginsource in puppet.conf' do
+          should contain_ini_setting('puppet pluginfactsource').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'pluginfactsource',
+            'value'=>'foo',
+          })
+        end
+      end # puppet::pluginfactsource is set
+
+      context 'when $::puppet::pluginfactsource is undef' do
+        let(:pre_condition){"class{'::puppet': enabled => true,}"}
+        it 'should unset pluginsource in puppet.conf' do
+          should contain_ini_setting('puppet pluginfactsource').with({
+            'ensure'=>'absent',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'pluginfactsource',
+          })
+        end
+      end # puppet::pluginfactsource is undef
 
     end
   end

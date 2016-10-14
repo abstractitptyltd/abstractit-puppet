@@ -21,7 +21,7 @@
 5. [Limitations - OS compatibility, etc.](#limitations)
 6. [Development - Guide for contributing to the module](#development)
 7. [Contributors](#contributors)
-8. [Release Notes/Etc]#release
+8. [Release Notes/Etc](#release)
 
 ##Overview
 
@@ -352,11 +352,36 @@ The `puppet` class is responsible for validating some of our parameters, and ins
 
     Sets the runinterval in `puppet.conf`
 
+  * **splay**: (*bool* Default `false`)
+
+    Sets the splay parameter in puppet.conf
+  * **splaylimit**: (*string* Default: undef)
+
+    Sets the splaylimit parameter in puppet.conf
+
   * **structured_facts**: (*bool* Default: `false`)
 
     Sets whether or not to enable [structured_facts](http://docs.puppetlabs.com/facter/2.0/fact_overview.html) by setting the [stringify_facts](http://docs.puppetlabs.com/references/3.6.latest/configuration.html#stringifyfacts) variable in puppet.conf.
 
     **It is important to note that this boolean operates in reverse.** Setting stringify_facts to **false** is required to **permit** structured facts. This is why this parameter does not directly correlate with the configuration key.
+
+  * **use_srv_records**: (*bool* Default: 'false')
+
+    Enables the use of srv_records for Puppetmaster/CA selection
+
+  * **srv_domain**: (*string* Default: undef)
+
+    Sets the srv_domain to use when use_srv_domains is set to true
+
+  * **pluginsource**: (*string* Default: undef)
+
+    Sets the pluginsource value in puppet.conf. Useful when using SRV records
+and agents on versions less than 4.0 (See https://tickets.puppetlabs.com/browse/PUP-1035)
+
+  * **pluginfactsource**: (*string* Default: undef)
+
+    Sets the pluginfactsource value in puppet.conf. Useful when using SRV
+records and agents on versions less than 4.0 (See https://tickets.puppetlabs.com/browse/PUP-1035)
 
 ----
 
