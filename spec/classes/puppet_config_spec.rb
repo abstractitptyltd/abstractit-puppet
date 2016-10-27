@@ -253,11 +253,11 @@ describe 'puppet::config', :type => :class do
 
       context 'when ::puppet::reports is false' do
         let(:pre_condition){"class{'::puppet': reports => false}"}
-        it "should properly set the reports setting in #{confdir}/puppet.conf" do
+        it "should properly set the report setting in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client reports').with({
             'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
-            'setting'=>'reports',
+            'setting'=>'report',
             'value'=>false
           })
         end
