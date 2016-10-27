@@ -174,7 +174,7 @@ class puppet::config {
     ensure  => present,
     path    => "${confdir}/puppet.conf",
     section => 'agent',
-    setting => 'reports',
+    setting => 'report',
     value   => $reports,
     require => Class['puppet::install'],
   }
