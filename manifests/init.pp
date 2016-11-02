@@ -215,11 +215,18 @@ class puppet (
     include ::puppet::repo
     Class['::puppet::repo'] -> Class['::puppet::install']
   }
+
+  if $allinone {
+    $owner_group = 'root'
+  }
+  else {
+    $owner_group = 'puppet'
+  }
   if $::puppet::manage_etc_facter {
     file { $facterbasepath:
       ensure => directory,
       owner  => 'root',
-      group  => 'puppet',
+      group  => $owner_group,
       mode   => '0755',
     }
   }
@@ -228,7 +235,7 @@ class puppet (
     file { "${facterbasepath}/facts.d":
       ensure => directory,
       owner  => 'root',
-      group  => 'puppet',
+      group  => $owner_group,
       mode   => '0755',
     }
   }

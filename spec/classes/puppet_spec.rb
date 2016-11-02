@@ -139,6 +139,25 @@ describe 'puppet', :type => :class do
         end
       end#no params
 
+      context 'when allinone is true' do
+        let(:params) {{'allinone' => true}}
+        it 'should manage the facts directories' do
+          #binding.pry;
+          should contain_file("#{facterbasepath}").with({
+            :ensure=>"directory",
+            :owner=>"root",
+            :group=>"root",
+            :mode=>"0755"
+          })
+          should contain_file("#{facterbasepath}/facts.d").with({
+            :ensure=>"directory",
+            :owner=>"root",
+            :group=>"root",
+            :mode=>"0755"
+          })
+        end
+      end#allinone
+
       context 'when ::puppet::manage_etc_facter is false' do
         let(:pre_condition){"class{'puppet': manage_etc_facter => false}"}
         it 'should not try to lay down the directory' do
