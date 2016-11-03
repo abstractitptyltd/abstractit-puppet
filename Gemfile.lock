@@ -151,7 +151,6 @@ DEPENDENCIES
   facter
   hiera
   json (= 1.8.3)
-  json_pure (< 2.0.2)
   metadata-json-lint
   pry (<= 0.9.8)
   puppet
@@ -175,4 +174,4 @@ DEPENDENCIES
   travis-lint
 
 BUNDLED WITH
-   1.13.6
+   1.13.1
