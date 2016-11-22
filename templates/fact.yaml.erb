@@ -1,3 +1,16 @@
 # custom fact <%= @title %>
 ---
-<%= @title %>: "<%= @value %>"
+<%- case @value -%>
+<%- when Hash -%>
+<%= @title %>:
+<%- @value.sort.each do |key,value| -%>
+  <%= key %>: '<%= value %>'
+<%- end -%>
+<%- when Array -%>
+<%= @title %>:
+<%- @value.sort.each do |value| -%>
+  - '<%= value %>'
+<%- end -%>
+<%- else -%>
+<%= @title %>: '<%= @value %>'
+<%- end -%>

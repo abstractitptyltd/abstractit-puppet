@@ -2,7 +2,7 @@
 require 'spec_helper'
 
 describe 'puppet::fact', :type => :define do
-  context 'input validation' do
+  context 'input validation with type value is string' do
       let (:title) { 'my_fact'}
       let (:params) {{ 'value' => 'my_val'}}
 #    ['path'].each do |paths|
@@ -50,7 +50,18 @@ describe 'puppet::fact', :type => :define do
 #      end
 #    end#strings
 
-  end#input validation
+  end#input validation with type value is string
+
+  context 'input validation with type value is array' do
+      let (:title) { 'my_fact'}
+      let (:params) {{ 'value' => ['my_val0', 'my_val1']}}
+  end#input validation with type value is array
+
+  context 'input validation with type value is Hash' do
+      let (:title) { 'my_fact'}
+      let (:params) {{ 'value' => {'my_key0' => 'my_val0', 'my_key1' => 'my_val1'}}}
+  end#input validation with type value is hash
+
   on_supported_os({
       :hardwaremodels => ['x86_64'],
       :supported_os   => [
@@ -82,19 +93,45 @@ describe 'puppet::fact', :type => :define do
       else
         facterbasepath  = '/etc/facter'
       end
-      context 'when fed no parameters' do
+      context 'when fed no parameters (value is string)' do
         let (:title) { 'my_fact'}
         let (:params) {{'value' => 'my_val'}}
-        it 'should lay down our fact file as expected' do
+        it 'should lay down our fact file as expected (value is string))' do
           should contain_file("#{facterbasepath}/facts.d/my_fact.yaml").with({
             :path=>"#{facterbasepath}/facts.d/my_fact.yaml",
             :ensure=>"present",
             :owner=>"root",
             :group=>"puppet",
             :mode=>"0640"
-          }).with_content("# custom fact my_fact\n---\nmy_fact: \"my_val\"\n")
+          }).with_content("# custom fact my_fact\n---\nmy_fact: \'my_val\'\n")
         end
-      end#no params
+      end
+      context 'when fed no parameters (value is array)' do
+        let (:title) { 'my_fact'}
+        let (:params) {{'value' => ['my_val0', 'my_val1']}}
+        it 'should lay down our fact file as expected (value is string))' do
+          should contain_file("#{facterbasepath}/facts.d/my_fact.yaml").with({
+            :path=>"#{facterbasepath}/facts.d/my_fact.yaml",
+            :ensure=>"present",
+            :owner=>"root",
+            :group=>"puppet",
+            :mode=>"0640"
+          }).with_content("# custom fact my_fact\n---\nmy_fact:\n  - \'my_val0\'\n  - \'my_val1\'\n")
+        end
+      end
+      context 'when fed no parameters (value is hash)' do
+        let (:title) { 'my_fact'}
+        let (:params) {{'value' => {'my_key0' => 'my_val0', 'my_key1' => 'my_val1'}}}
+        it 'should lay down our fact file as expected (value is string))' do
+          should contain_file("#{facterbasepath}/facts.d/my_fact.yaml").with({
+            :path=>"#{facterbasepath}/facts.d/my_fact.yaml",
+            :ensure=>"present",
+            :owner=>"root",
+            :group=>"puppet",
+            :mode=>"0640"
+          }).with_content("# custom fact my_fact\n---\nmy_fact:\n  my_key0: \'my_val0\'\n  my_key1: \'my_val1\'\n")
+        end
+      end
 
     end
   end

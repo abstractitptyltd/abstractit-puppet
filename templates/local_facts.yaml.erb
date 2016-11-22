@@ -4,6 +4,19 @@
 ---
 <%- if @custom_facts -%>
 <%- @custom_facts.keys.sort.each do |key| -%>
-<%= key %>: "<%= @custom_facts[key] %>"
+<%- case @custom_facts[key] -%>
+<%- when Hash -%>
+<%= key %>:
+<%- @custom_facts[key].sort.each do |key,value| -%>
+  <%= key %>: '<%= value %>'
+<%- end -%>
+<%- when Array -%>
+<%= key %>:
+<%- @custom_facts[key].sort.each do |value| -%>
+  - '<%= value %>'
+<%- end -%>
+<%- else -%>
+<%= key %>: '<%= @custom_facts[key] %>'
+<%- end -%>
 <%- end -%>
 <%- end -%>
