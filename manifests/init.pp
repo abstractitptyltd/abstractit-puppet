@@ -219,7 +219,7 @@ class puppet (
     file { $facterbasepath:
       ensure => directory,
       owner  => 'root',
-      group  => 'puppet',
+      group  => $::puppet::defaults::puppet_group,
       mode   => '0755',
     }
   }
@@ -228,7 +228,7 @@ class puppet (
     file { "${facterbasepath}/facts.d":
       ensure => directory,
       owner  => 'root',
-      group  => 'puppet',
+      group  => $::puppet::defaults::puppet_group,
       mode   => '0755',
     }
   }

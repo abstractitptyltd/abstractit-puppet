@@ -106,8 +106,10 @@ describe 'puppet', :type => :class do
       it { is_expected.to compile.with_all_deps }
       if Puppet.version.to_f >= 4.0
         facterbasepath  = '/opt/puppetlabs/facter'
+        facterbasepath_group = 'root'
       else
         facterbasepath  = '/etc/facter'
+        facterbasepath_group = 'puppet'
       end
       context 'when fed no parameters' do
         it 'should instantiate the puppet::repo class with the default params' do
@@ -127,13 +129,13 @@ describe 'puppet', :type => :class do
           should contain_file("#{facterbasepath}").with({
             :ensure=>"directory",
             :owner=>"root",
-            :group=>"puppet",
+            :group=>"#{facterbasepath_group}",
             :mode=>"0755"
           })
           should contain_file("#{facterbasepath}/facts.d").with({
             :ensure=>"directory",
             :owner=>"root",
-            :group=>"puppet",
+            :group=>"#{facterbasepath_group}",
             :mode=>"0755"
           })
         end

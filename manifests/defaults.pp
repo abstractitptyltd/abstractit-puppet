@@ -43,6 +43,7 @@ class puppet::defaults {
     $puppetdb_etcdir           = '/etc/puppetlabs/puppetdb'
     $puppetdb_test_url         = '/pdb/meta/v1/version'
     $gem_provider              = 'puppetserver_gem'
+    $puppet_group              = 'root'
   } else {
     $server_type               = 'passenger'
     $confdir                   = '/etc/puppet'
@@ -59,6 +60,7 @@ class puppet::defaults {
     $puppetdb_etcdir           = '/etc/puppetdb'
     $puppetdb_test_url         = '/v3/version'
     $gem_provider              = 'gem'
+    $puppet_group              = 'puppet'
   }
   $puppetdb_confdir          = "${puppetdb_etcdir}/conf.d"
   $puppetdb_ssl_dir          = "${puppetdb_etcdir}/ssl"
