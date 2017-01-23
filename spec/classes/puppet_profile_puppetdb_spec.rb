@@ -67,6 +67,7 @@ describe 'puppet::profile::puppetdb', :type => :class do
             :disable_ssl        => false,
             :listen_address     => '127.0.0.1',
             :ssl_listen_address => '0.0.0.0',
+            :manage_dbserver    => true,
             :node_ttl           => '0s',
             :node_purge_ttl     => '0s',
             :report_ttl         => '14d',

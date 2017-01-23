@@ -157,8 +157,7 @@ class puppet::profile::master (
   $restart_puppet                     = true,
   $puppetdb_use_ssl                   = true,
   $puppetdb_listen_port               = '8080',
-  $puppetdb_ssl_listen_port           = '8081',
-  $puppet_service_name                = $server_type,
+  $puppetdb_ssl_listen_port           = '8081'
 ) {
   class { '::puppet::master':
     autosign                           => $autosign,

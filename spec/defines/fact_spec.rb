@@ -95,6 +95,20 @@ describe 'puppet::fact', :type => :define do
           }).with_content("# custom fact my_fact\n---\nmy_fact: \"my_val\"\n")
         end
       end#no params
+      context 'when allinone is true' do
+        let (:title) { 'my_fact'}
+        let (:params) {{'value' => 'my_val'}}
+        let (:pre_condition) {"class { 'puppet': allinone => true }" }
+        it 'should lay down our fact file as expected' do
+          should contain_file("#{facterbasepath}/facts.d/my_fact.yaml").with({
+            :path=>"#{facterbasepath}/facts.d/my_fact.yaml",
+            :ensure=>"present",
+            :owner=>"root",
+            :group=>"root",
+            :mode=>"0640"
+          }).with_content("# custom fact my_fact\n---\nmy_fact: \"my_val\"\n")
+        end
+      end#allinone
 
     end
   end
