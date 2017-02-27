@@ -38,8 +38,7 @@ describe 'puppet::repo::apt', :type => :class do
            :ensure=>"present",
            :location=>"http://apt.puppetlabs.com",
            :repos=>"main dependencies",
-           :key=>"6F6B15509CF8E59E6E469F327F438280EF8D349F",
-           :key_server=>"pgp.mit.edu",
+           :key=>{'id'=>"6F6B15509CF8E59E6E469F327F438280EF8D349F",'server'=>'pgp.mit.edu'}
            :comment=>"puppetlabs",
           })
         end
@@ -49,8 +48,7 @@ describe 'puppet::repo::apt', :type => :class do
             :ensure=>"absent",
             :location=>"http://apt.puppetlabs.com",
             :repos=>"devel",
-            :key=>"6F6B15509CF8E59E6E469F327F438280EF8D349F",
-            :key_server=>"pgp.mit.edu",
+            :key=>{'id'=>"6F6B15509CF8E59E6E469F327F438280EF8D349F",'server'=>'pgp.mit.edu'}
             :comment=>"puppetlabs_devel",
           })
         end
@@ -64,8 +62,7 @@ describe 'puppet::repo::apt', :type => :class do
             :ensure=>"present",
             :location=>"http://apt.puppetlabs.com",
             :repos=>"BOGON",
-            :key=>"6F6B15509CF8E59E6E469F327F438280EF8D349F",
-            :key_server=>"pgp.mit.edu",
+            :key=>{'id'=>"6F6B15509CF8E59E6E469F327F438280EF8D349F",'server'=>'pgp.mit.edu'}
             })
           should_not contain_apt__source('puppetlabs')
           should_not contain_apt__source('puppetlabs_devel')
