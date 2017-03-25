@@ -127,13 +127,13 @@ describe 'puppet', :type => :class do
           should contain_file("#{facterbasepath}").with({
             :ensure=>"directory",
             :owner=>"root",
-            :group=>"puppet",
+            :group=>"root",
             :mode=>"0755"
           })
           should contain_file("#{facterbasepath}/facts.d").with({
             :ensure=>"directory",
             :owner=>"root",
-            :group=>"puppet",
+            :group=>"root",
             :mode=>"0755"
           })
         end

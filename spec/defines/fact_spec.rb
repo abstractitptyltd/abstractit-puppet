@@ -90,7 +90,7 @@ describe 'puppet::fact', :type => :define do
             :path=>"#{facterbasepath}/facts.d/my_fact.yaml",
             :ensure=>"present",
             :owner=>"root",
-            :group=>"puppet",
+            :group=>"root",
             :mode=>"0640"
           }).with_content("# custom fact my_fact\n---\nmy_fact: \"my_val\"\n")
         end
