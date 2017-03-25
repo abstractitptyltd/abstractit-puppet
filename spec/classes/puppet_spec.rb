@@ -139,18 +139,70 @@ describe 'puppet', :type => :class do
         end
       end#no params
 
-      context 'when ::puppet::manage_etc_facter is false' do
-        let(:pre_condition){"class{'puppet': manage_etc_facter => false}"}
-        it 'should not try to lay down the directory' do
-          should_not contain_file("#{facterbasepath}")
-        end
-      end
-      context 'when ::puppet::manage_etc_facter_facts_d is false' do
-        let(:pre_condition){"class{'puppet': manage_etc_facter_facts_d => false}"}
-        it 'should not try to lay down the directory' do
-          should_not contain_file("#{facterbasepath}/facts.d")
-        end
-      end
+      context 'directory ownership' do
+        context 'when ::puppet::manage_etc_facter is undef (true)' do
+          context 'when allinone is true' do
+            let(:params) {{'allinone' => true}}
+            it 'should manage the facts directories with owner root' do
+              #binding.pry;
+              should contain_file("#{facterbasepath}").with({
+               :ensure=>"directory",
+               :owner=>"root",
+               :group=>"root",
+               :mode=>"0755"
+              })
+            end
+          end # allinone
+          context 'when allinone is undef (false)' do
+            it 'should manage the facts directories with owner root group puppet' do
+              #binding.pry;
+              should contain_file("#{facterbasepath}").with({
+               :ensure=>"directory",
+               :owner=>"root",
+               :group=>"puppet",
+               :mode=>"0755"
+              })
+            end
+          end # allinone
+        end # manage_etc_facter true
+        context 'when ::puppet::manage_etc_facter is false' do
+          let(:pre_condition){"class{'puppet': manage_etc_facter => false}"}
+          it 'should not try to lay down the directory' do
+            should_not contain_file("#{facterbasepath}")
+          end
+        end #manage_etc_facter false
+
+        context 'when ::puppet::manage_etc_facter_facts_d is true' do
+          context 'when allinone is true' do
+            let(:params) {{'allinone' => true}}
+            it 'should manage the facts.d directories with owner root' do
+              should contain_file("#{facterbasepath}/facts.d").with({
+                :ensure=>"directory",
+                :owner=>"root",
+                :group=>"root",
+                :mode=>"0755"
+              })
+            end
+          end  #allinone true
+          context 'when allinone is undef (false)' do
+            it 'should manage the facts.d directory with owner root group puppet' do
+             should contain_file("#{facterbasepath}/facts.d").with({
+              :ensure=>"directory",
+              :owner=>"root",
+              :group=>"puppet",
+              :mode=>"0755"
+              })
+            end
+          end  #allinone undef
+        end #manage_etc_facter_facts_d true
+
+        context 'when ::puppet::manage_etc_facter_facts_d is false' do
+          let(:pre_condition){"class{'puppet': manage_etc_facter_facts_d => false}"}
+          it 'should not try to lay down the facts directory' do
+            should_not contain_file("#{facterbasepath}/facts.d")
+          end
+        end #manage_etc_facter_facts_d false
+      end #directory ownership
 
       # context 'when the agent_version param is something other than installed' do
       #   let(:params) {{'agent_version' => 'BOGON'}}
