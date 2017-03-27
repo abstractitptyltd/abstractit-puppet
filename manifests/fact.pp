@@ -13,7 +13,7 @@ define puppet::fact (
   file { "${facterbasepath}/facts.d/${title}.yaml":
     ensure  => $ensure,
     owner   => 'root',
-    group   => 'puppet',
+    group   => $::puppet::defaults::puppet_group,
     mode    => '0640',
     content => template('puppet/fact.yaml.erb'),
   }
