@@ -72,6 +72,10 @@
 #   Specifies the version of the puppetmaster package to install
 # @param server_type ([String] Default Puppet 4: 'puppetserver' Default Puppet 4: 'passenger')
 #   Specifies the type of server to use puppetserver is always used on Puppet 4
+# @param $external_nodes ([String] Default undef)
+#   Specifies the script tom use as a node classifier
+# @param $node_terminus ([String] Default undef)
+#   Specifies method to use for the external_nodes
 # @param puppetdb [Boolean] Default: false
 #   Whether to setup PuppetDB.
 #   Set this to configure a PuppetDB server on this node.
@@ -144,6 +148,8 @@ class puppet::profile::master (
   $puppet_version                     = 'installed',
   $server_type                        = undef,
   $server_version                     = 'installed',
+  $external_nodes                     = undef,
+  $node_terminus                      = undef,
   $puppetdb                           = false,
   $puppetdb_manage_dbserver           = true,
   $puppetdb_server                    = undef,
@@ -192,6 +198,8 @@ class puppet::profile::master (
     passenger_stat_throttle_rate       => $passenger_stat_throttle_rate,
     puppet_fqdn                        => $puppet_fqdn,
     server_version                     => $server_version,
+    external_nodes                     => $external_nodes,
+    node_terminus                      => $node_terminus,
     server_type                        => $server_type,
     puppet_version                     => $puppet_version,
   }

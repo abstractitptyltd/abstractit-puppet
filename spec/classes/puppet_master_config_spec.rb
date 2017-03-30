@@ -87,6 +87,22 @@ describe 'puppet::master::config', :type => :class do
             'weekday' => "0"
           })
         end
+        it 'should not set the external_nodes param via an ini_setting' do
+          should contain_ini_setting('master external_nodes').with({
+            'ensure'  => 'absent',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'master',
+            'setting' => 'external_nodes',
+          })
+        end
+        it 'should not set the node_terminus param via an ini_setting' do
+          should contain_ini_setting('master node_terminus').with({
+            'ensure'  => 'absent',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'master',
+            'setting' => 'node_terminus',
+          })
+        end
       end#no params
 
       context 'when  $::puppet::master::autosign_method is off' do
@@ -336,6 +352,28 @@ describe 'puppet::master::config', :type => :class do
           })
         end
       end # future_parser
+
+      context 'when the $::puppet::master::external_nodes and $::puppet::master::node_terminus variables are set' do
+        let(:pre_condition) {"class{'::puppet::master': external_nodes => '/etc/puppetlabs/puppet/node.rb', node_terminus => 'exec'}"}
+        it 'should update the external_nodes param via an ini_setting' do
+          should contain_ini_setting('master external_nodes').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'master',
+            'setting' => 'external_nodes',
+            'value'   => '/etc/puppetlabs/puppet/node.rb'
+          })
+        end
+        it 'should update the node_terminus param via an ini_setting' do
+          should contain_ini_setting('master node_terminus').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'master',
+            'setting' => 'node_terminus',
+            'value'   => 'exec'
+          })
+        end
+      end # external_nodes
 
     end
   end
