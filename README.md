@@ -486,6 +486,10 @@ The `puppet::config` class is responsible for altering the configuration of `$co
 
   The version of the deep_merge package to install.
 
+  * **dns_alt_names**: (*array* Default: `undef`)
+
+  An array of alternative DNS names to use for the local host.
+
   * **env_owner**: (*string* Default: `puppet`)
 
   The user which should own hieradata and r10k repos

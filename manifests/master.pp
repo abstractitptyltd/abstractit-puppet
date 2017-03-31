@@ -18,6 +18,8 @@
 #   The base directory path to have environments checked out into.
 # @param deep_merge_version ([String] Default: 'installed')
 #   The version of the deep_merge package to install.
+# @param dns_alt_names ([Array] Default: empty)
+#   An array of alternative DNS names to use for the local host
 # @param env_owner [String] Default: 'puppet'
 #   The user which should own hieradata and r10k repos
 # @param environmentpath (*absolute path* Default Puppet 4: ${codedir}/modules:${confdir}/modules Default Puppet 3: ${confdir}/modules:/usr/share/puppet/modules)
@@ -90,6 +92,7 @@ class puppet::master (
   $autosign_method                    = 'file',
   $basemodulepath                     = $::puppet::defaults::basemodulepath,
   $deep_merge_version                 = 'installed',
+  $dns_alt_names                      = [],
   $env_owner                          = 'puppet',
   $environmentpath                    = $::puppet::defaults::environmentpath,
   $environment_timeout                = '0',
@@ -135,6 +138,7 @@ class puppet::master (
     $hieradata_path,
   )
   validate_array(
+    $dns_alt_names,
     $hiera_hierarchy,
   )
 
