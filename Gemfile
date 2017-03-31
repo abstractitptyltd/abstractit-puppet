@@ -15,13 +15,13 @@ group :test do
   gem "rspec-puppet",           '2.5.0',                  :require => false
   gem 'puppetlabs_spec_helper', '2.1.0',                  :require => false
   gem 'rspec-puppet-facts',     '1.7.1',                  :require => false
-  gem "puppet-syntax",                                    :require => false
+  gem "puppet-syntax",          '2.1.0',                  :require => false
   gem 'metadata-json-lint',                               :require => false
   gem 'simplecov',                                        :require => false
   gem 'json',                   '1.8.5',                  :require => false
   gem "puppet-blacksmith",                                :require => false
   gem 'pry',                    '<= 0.9.8',               :require => false
-  gem 'puppet-lint',                                      :require => false
+  gem 'puppet-lint',            '2.0.2',                  :require => false
   gem 'puppet-lint-unquoted_string-check',                :require => false
   gem 'puppet-lint-empty_string-check',                   :require => false
   gem 'puppet-lint-leading_zero-check',                   :require => false

@@ -74,7 +74,7 @@ GEM
     puppet-blacksmith (3.4.0)
       puppet (>= 2.7.16)
       rest-client (~> 1.8.0)
-    puppet-lint (2.1.1)
+    puppet-lint (2.0.2)
     puppet-lint-absolute_classname-check (0.2.4)
       puppet-lint (>= 1.0, < 3.0)
     puppet-lint-empty_string-check (0.2.2)
@@ -91,7 +91,7 @@ GEM
       puppet-lint (>= 1.0, < 3.0)
     puppet-lint-variable_contains_upcase (1.2.0)
       puppet-lint (>= 1.0, < 3.0)
-    puppet-syntax (2.4.0)
+    puppet-syntax (2.1.0)
       rake
     puppetlabs_spec_helper (2.1.0)
       mocha (~> 1.0)
@@ -161,15 +161,15 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
-  facter (~> 2.4.6)
-  hiera (~> 3.2.1)
+  facter
+  hiera
   json (= 1.8.5)
   json_pure (< 2.0.2)
   metadata-json-lint
   pry (<= 0.9.8)
-  puppet (= 4.7.0)
+  puppet
   puppet-blacksmith
-  puppet-lint
+  puppet-lint (= 2.0.2)
   puppet-lint-absolute_classname-check
   puppet-lint-empty_string-check
   puppet-lint-leading_zero-check
@@ -178,7 +178,7 @@ DEPENDENCIES
   puppet-lint-undef_in_function-check
   puppet-lint-unquoted_string-check
   puppet-lint-variable_contains_upcase
-  puppet-syntax
+  puppet-syntax (= 2.1.0)
   puppetlabs_spec_helper (= 2.1.0)
   rspec-core (= 3.5.4)
   rspec-puppet (= 2.5.0)
