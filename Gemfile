@@ -21,7 +21,7 @@ group :test do
   gem 'json',                   '1.8.5',                  :require => false
   gem "puppet-blacksmith",                                :require => false
   gem 'pry',                    '<= 0.9.8',               :require => false
-  gem 'puppet-lint',                                      :require => false
+  gem 'puppet-lint',            '2.0.2',                  :require => false
   gem 'puppet-lint-unquoted_string-check',                :require => false
   gem 'puppet-lint-empty_string-check',                   :require => false
   gem 'puppet-lint-leading_zero-check',                   :require => false
