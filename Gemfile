@@ -15,7 +15,7 @@ group :test do
   gem "rspec-puppet",           '2.5.0',                  :require => false
   gem 'puppetlabs_spec_helper', '2.1.0',                  :require => false
   gem 'rspec-puppet-facts',     '1.7.1',                  :require => false
-  gem "puppet-syntax",                                    :require => false
+  gem "puppet-syntax",          '2.1.0',                  :require => false
   gem 'metadata-json-lint',                               :require => false
   gem 'simplecov',                                        :require => false
   gem 'json',                   '1.8.5',                  :require => false
