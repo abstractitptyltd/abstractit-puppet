@@ -5,6 +5,8 @@ Feature: Configure agents using SRV records @aaron-miller
 Feature: Added parameter manage_dbserver to profiles/master @chrisowensboston
 
 ####Bugfixes
+Fix puppet group in puppet 4 @seanscottking
+Update Puppetlabs apt keys @rdvh
 Fix puppetserver should connect to non SSL puppetdb via http not https @divansantana
 Update metadata.json to allow use of zack-r10k version 3.2.0 @rpkish
 Define relationship between sysconfig and service in agent @toepi
