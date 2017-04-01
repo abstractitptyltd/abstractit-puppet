@@ -76,13 +76,16 @@
 #   Specifies weekday to run the report clean cronjob
 # @param server_type ([String] Default Puppet 4: 'puppetserver' Default Puppet 4: 'passenger')
 #   Specifies the type of server to use puppetserver is always used on Puppet 4
+# @param $external_nodes ([String] Default undef)
+#   Specifies the script tom use as a node classifier
+# @param $node_terminus ([String] Default undef)
+#   Specifies method to use for the external_nodes
 # @param module_path **DEPRECATED** ([String] Default: undef)
 #   If this is set, it will be used to populate the basemodulepath parameter in /etc/puppet/puppet.conf. This does not impact [environment.conf](http://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html), which should live in your [r10k](https://github.com/adrienthebo/r10k) environment repo.
 # @param pre_module_path **DEPRECATED** ([String] Default: undef)
 #   If set, this is prepended to the modulepath parameter *if it is set* and to a static modulepath list if modulepath is unspecified. *A colon separator will be appended to the end of this if needed*
 # @param r10k_version **DEPRECATED** ([String] Default: undef)
 #   Specifies the version of r10k to install. *It is important to note that the r10k package will be installed via gem*
-
 class puppet::master (
   $autosign                           = false,
   $autosign_domains                   = [],
@@ -124,6 +127,8 @@ class puppet::master (
   $report_clean_weekday               = '0',
   $server_type                        = $::puppet::defaults::server_type,
   $server_version                     = 'installed',
+  $external_nodes                     = undef,
+  $node_terminus                      = undef,
   $module_path                        = undef,
   $pre_module_path                    = undef,
   $r10k_version                       = undef,
@@ -160,6 +165,8 @@ class puppet::master (
     $passenger_max_requests,
     $passenger_pool_idle_time,
     $passenger_stat_throttle_rate,
+    $external_nodes,
+    $node_terminus,
   )
 
   # add deprecation warnings
