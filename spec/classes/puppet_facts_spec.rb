@@ -77,47 +77,53 @@ describe 'puppet::facts', :type => :class do
           :clientcert     => 'my.client.cert',
           :fqdn           => 'my.fq.hostname',
           :environment    => 'production',
-          :puppetversion => Puppet.version
+          :puppetversion  => Puppet.version
         })
       end
       it { is_expected.to compile.with_all_deps }
       if Puppet.version.to_f >= 4.0
         facterbasepath  = '/opt/puppetlabs/facter'
+        facterbasepath_group = 'root'
       else
         facterbasepath  = '/etc/facter'
+        facterbasepath_group = 'puppet'
       end
       context 'when fed no parameters' do
-        if Puppet.version.to_f >= 4.0
-          # setting environemnt doesn't work in puppet 4
-          it "should lay down #{facterbasepath}/facts.d/local.yaml" do
-            should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
-              /facts for my.client.cert/
-            ).with_content(
-              /FQDN my.fq.hostname/
-            ).with_validate_cmd(
-              "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
-            )#.with_content(
-            #  /Environment production/
-            #)
-          end
-        else
-          it "should lay down #{facterbasepath}/facts.d/local.yaml" do
-            should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
-              /facts for my.client.cert/
-            ).with_content(
-              /FQDN my.fq.hostname/
-            ).with_content(
-              /Environment production/
-            ).with_validate_cmd(
-              "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
-            )
-          end
+        it "should lay down #{facterbasepath}/facts.d/local.yaml" do
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with({
+            :path=>"#{facterbasepath}/facts.d/local.yaml",
+            :ensure=>'file',
+            :owner=>'root',
+            :group=>"#{facterbasepath_group}",
+            :mode=>'0640'
+          }).with_content(
+            /custom facts for my.client.cert/
+          ).with_content(
+            /FQDN my.fq.hostname/
+          ).with_content(
+            /---/
+          ).with_validate_cmd(
+            "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
+          )
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
+            /Environment production/
+          ) if Puppet.version.to_f < 4.0 # setting environemnt doesn't work in puppet 4
         end
       end#no params
       context 'when the custom_facts parameter is properly set key values is string' do
-        let(:params) {{'custom_facts' => {'key1' => 'val1', 'key2' => 'val2'}}}
-        it 'should iterate through the hash and properly populate the local_facts.yaml file' do
-          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
+        let(:params) { {'custom_facts' => {'key1' => 'val1', 'key2' => 'val2'}} }
+        it "should lay down #{facterbasepath}/facts.d/local.yaml" do
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with({
+            :path=>"#{facterbasepath}/facts.d/local.yaml",
+            :ensure=>'file',
+            :owner=>'root',
+            :group=>"#{facterbasepath_group}",
+            :mode=>'0640'
+          }).with_content(
+            /custom facts for my.client.cert/
+          ).with_content(
+            /FQDN my.fq.hostname/
+          ).with_content(
             /---/
           ).with_content(
             /key1: val1/
@@ -126,12 +132,25 @@ describe 'puppet::facts', :type => :class do
           ).with_validate_cmd(
             "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
           )
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
+            /Environment production/
+          ) if Puppet.version.to_f < 4.0 # setting environemnt doesn't work in puppet 4
         end
       end#custom_facts set key values is string
       context 'when the custom_facts parameter is properly set key values is array' do
-        let(:params) {{'custom_facts' => {'key1' => [ 'val11', 'val12' ], 'key2' => [ 'val21', 'val22']}}}
-        it 'should iterate through the hash and properly populate the local_facts.yaml file' do
-          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
+        let(:params) { {'custom_facts' => {'key1' => [ 'val11', 'val12' ], 'key2' => [ 'val21', 'val22']}} }
+        it "should lay down #{facterbasepath}/facts.d/local.yaml" do
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with({
+            :path=>"#{facterbasepath}/facts.d/local.yaml",
+            :ensure=>'file',
+            :owner=>'root',
+            :group=>"#{facterbasepath_group}",
+            :mode=>'0640'
+          }).with_content(
+            /custom facts for my.client.cert/
+          ).with_content(
+            /FQDN my.fq.hostname/
+          ).with_content(
             /---/
           ).with_content(
             /key1:/
@@ -148,12 +167,25 @@ describe 'puppet::facts', :type => :class do
           ).with_validate_cmd(
             "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
           )
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
+            /Environment production/
+          ) if Puppet.version.to_f < 4.0 # setting environemnt doesn't work in puppet 4
         end
       end#custom_facts set key values is array
       context 'when the custom_facts parameter is properly set key values is hash' do
-        let(:params) {{'custom_facts' => {'key1' => { 'key11' => 'val11' }, 'key2' => { 'key21' => 'val21'}}}}
-        it 'should iterate through the hash and properly populate the local_facts.yaml file' do
-          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
+        let(:params) { {'custom_facts' => {'key1' => { 'key11' => 'val11' }, 'key2' => { 'key21' => 'val21'}}} }
+        it "should lay down #{facterbasepath}/facts.d/local.yaml" do
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with({
+            :path=>"#{facterbasepath}/facts.d/local.yaml",
+            :ensure=>'file',
+            :owner=>'root',
+            :group=>"#{facterbasepath_group}",
+            :mode=>'0640'
+          }).with_content(
+            /custom facts for my.client.cert/
+          ).with_content(
+            /FQDN my.fq.hostname/
+          ).with_content(
             /---/
           ).with_content(
             /key1:/
@@ -166,6 +198,9 @@ describe 'puppet::facts', :type => :class do
           ).with_validate_cmd(
             "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
           )
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
+            /Environment production/
+          ) if Puppet.version.to_f < 4.0 # setting environemnt doesn't work in puppet 4
         end
       end#custom_facts set key values is hash
     end
