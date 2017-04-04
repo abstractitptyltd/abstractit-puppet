@@ -3,6 +3,7 @@
 # If you want PuppetDB on a separate node please use the puppet::profile::puppetdb class
 # This and the puppet::profile::puppetdb class are mutually exclusive and will not work on the same node.
 #
+
 # @param autosign [Boolean] Default: false
 #   Whether or not to enable autosign.
 # @param autosign_domains [Array] Default: empty
@@ -71,9 +72,18 @@
 #   Specifies the version of the puppetmaster package to install
 # @param server_type ([String] Default Puppet 4: 'puppetserver' Default Puppet 4: 'passenger')
 #   Specifies the type of server to use puppetserver is always used on Puppet 4
+# @param $external_nodes ([String] Default undef)
+#   Specifies the script tom use as a node classifier
+# @param $node_terminus ([String] Default undef)
+#   Specifies method to use for the external_nodes
 # @param puppetdb [Boolean] Default: false
 #   Whether to setup PuppetDB.
 #   Set this to configure a PuppetDB server on this node.
+# @param puppetdb_manage_dbserver [Boolean] Default: true
+#   Whether to tell PuppetDB to also manage the Postgresql server.
+#   Set this to false if you are independently configuring a
+#   Postgresql server, e.g., because you are using it for other
+#   databases in addition to pupept.
 # @param puppetdb_server [String] Default: undef
 #   The dns name or ip of the puppetdb server.
 #   Set this to specify which PuppetDB server to connect to.
@@ -138,7 +148,10 @@ class puppet::profile::master (
   $puppet_version                     = 'installed',
   $server_type                        = undef,
   $server_version                     = 'installed',
+  $external_nodes                     = undef,
+  $node_terminus                      = undef,
   $puppetdb                           = false,
+  $puppetdb_manage_dbserver           = true,
   $puppetdb_server                    = undef,
   $puppetdb_version                   = 'installed',
   $puppetdb_node_purge_ttl            = '0s',
@@ -185,6 +198,8 @@ class puppet::profile::master (
     passenger_stat_throttle_rate       => $passenger_stat_throttle_rate,
     puppet_fqdn                        => $puppet_fqdn,
     server_version                     => $server_version,
+    external_nodes                     => $external_nodes,
+    node_terminus                      => $node_terminus,
     server_type                        => $server_type,
     puppet_version                     => $puppet_version,
   }
@@ -212,6 +227,7 @@ class puppet::profile::master (
       disable_ssl        => $puppetdb_disable_ssl,
       listen_address     => $puppetdb_listen_address,
       ssl_listen_address => $puppetdb_ssl_listen_address,
+      manage_dbserver    => $puppetdb_manage_dbserver,
       node_ttl           => $puppetdb_node_ttl,
       node_purge_ttl     => $puppetdb_node_purge_ttl,
       report_ttl         => $report_ttl,

@@ -90,8 +90,10 @@ describe 'puppet::fact', :type => :define do
 
       if Puppet.version.to_f >= 4.0
         facterbasepath  = '/opt/puppetlabs/facter'
+        facterbasepath_group = 'root'
       else
         facterbasepath  = '/etc/facter'
+        facterbasepath_group = 'puppet'
       end
       context 'when fed no parameters (value is string)' do
         let (:title) { 'my_fact'}
@@ -147,7 +149,7 @@ describe 'puppet::fact', :type => :define do
             :path=>"#{facterbasepath}/facts.d/my_fact.yaml",
             :ensure=>"present",
             :owner=>"root",
-            :group=>"puppet",
+            :group=>"#{facterbasepath_group}",
             :mode=>"0640"
           }).with_content(
              /# custom fact my_fact/

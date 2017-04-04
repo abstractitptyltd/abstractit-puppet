@@ -1,3 +1,31 @@
+##2016-10-10 - Pete Brown <pete@abstractit.com.au> 2.3.0-alpha
+###Summary
+Numerous bugfixes.
+Feature: Configure agents using SRV records @aaron-miller
+Feature: Added parameter manage_dbserver to profiles/master @chrisowensboston
+
+####Bugfixes
+Fix puppet group in puppet 4 @seanscottking
+Update Puppetlabs apt keys @rdvh
+Fix puppetserver should connect to non SSL puppetdb via http not https @divansantana
+Update metadata.json to allow use of zack-r10k version 3.2.0 @rpkish
+Define relationship between sysconfig and service in agent @toepi
+Deploy puppetdb ssl certs when ssl is enabled @divansantana
+Fix r10k manage_ruby_dependency error @divansantana
+Fix could not find init script in some cases @divansantana
+Support for strict_variables mode @tequeter
+define relationship between vhost an package puppetmaster-passenger @toepi
+distinguish between Debian and Ubuntu for puppetmaster-passenger setup @toepi
+Add support for splay and splaylimit parameters in puppet.conf @paulseward
+Fix syntax error on readme @jordigg
+in manifests/repo.pp added include ::puppet, to fix unknown variable puppet::manage_repos @chrisowensboston
+in manifests/init.pp added "+ 0" after calls to fqdn_rand, to force conversion to integer. @chrisowensboston
+in spec/classes/puppet_agent_spec.rb, Changed tests for interpolated minute values to accommodate different versions of fqdn_rand using different entropy sources. Changed host name from "testy" to "testy2" because "testy" happened to give a 0 using fqdn_rand(14)
+In .fixtures.yml, changed puppetlabs/concat version requirement from '1.2.0' to '>= 1.2.2 < 2.0.0', to fix "uknown variable ::is_pe" bug @chrisowensboston
+in Gemfile, forced json_pure to be < 2.0.1 when ruby < 2.0 @chrisowensboston
+in .travis.yml, added a line for rvm 2.2.0, puppet gem 4.7.0, facter gem 2.4.6, hiera gem 3.2.1 @chrisowensboston
+
+
 ##2016-02-11 - Pete Brown <pete@abstractit.com.au> 2.2.1
 ###Summary
 

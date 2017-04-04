@@ -4,9 +4,9 @@
 #
 
 define puppet::fact (
-  $value,
   $ensure = present,
-  ) {
+  $value  = undef,
+) {
   include ::puppet::defaults
   $facterbasepath = $::puppet::defaults::facterbasepath
 
@@ -16,7 +16,7 @@ define puppet::fact (
   file { "${facterbasepath}/facts.d/${title}.yaml":
     ensure       => $ensure,
     owner        => 'root',
-    group        => 'puppet',
+    group        => $::puppet::defaults::puppet_group,
     mode         => '0640',
     validate_cmd => "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\"",
     content      => template('puppet/fact.yaml.erb'),

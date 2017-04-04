@@ -11,19 +11,17 @@ def location_for(place, fake_version = nil)
 end
 
 group :test do
-  gem "rspec-core",             '3.5.1',                  :require => false
-  gem "rspec-puppet",           '2.4.0',                  :require => false
-  gem 'puppetlabs_spec_helper', '1.1.1',                  :require => false
-  gem 'rspec-puppet-facts',     '1.3.0',                  :require => false
-  gem "puppet-syntax",                                    :require => false
+  gem "rspec-core",             '3.5.4',                  :require => false
+  gem "rspec-puppet",           '2.5.0',                  :require => false
+  gem 'puppetlabs_spec_helper', '2.1.0',                  :require => false
+  gem 'rspec-puppet-facts',     '1.7.1',                  :require => false
+  gem "puppet-syntax",          '2.1.0',                  :require => false
   gem 'metadata-json-lint',                               :require => false
   gem 'simplecov',                                        :require => false
-  gem 'json',                   '1.8.3',                  :require => false
-  gem 'json_pure',              '1.8.3',                  :require => false
-  gem 'rubocop',                '0.41.2',                 :require => false
+  gem 'json',                   '1.8.5',                  :require => false
   gem "puppet-blacksmith",                                :require => false
   gem 'pry',                    '<= 0.9.8',               :require => false
-  gem 'puppet-lint',                                      :require => false
+  gem 'puppet-lint',            '2.0.2',                  :require => false
   gem 'puppet-lint-unquoted_string-check',                :require => false
   gem 'puppet-lint-empty_string-check',                   :require => false
   gem 'puppet-lint-leading_zero-check',                   :require => false
@@ -55,6 +53,10 @@ end
 #   gem 'serverspec',    :require => false
 #   gem 'beaker-puppet_install_helper', :require => false
 # end
+
+# puppet requires json_pure; json_pure > 2.0.1 requires Ruby 2
+# so force the older json_pure in the case of older ruby
+gem 'json_pure', '< 2.0.2', :require => false, :platforms => [:ruby_18, :ruby_19]
 
 if puppetversion = ENV['PUPPET_GEM_VERSION']
   gem 'puppet', puppetversion, :require => false
