@@ -10,6 +10,11 @@
 #
 # @param puppetdb_version [String] Default: 'installed'
 #   The version of puppetdb to install.
+# @param puppetdb_manage_dbserver [Boolean] Default: true
+#   Whether to tell PuppetDB to also manage the Postgresql server.
+#   Set this to false if you are independently configuring a
+#   Postgresql server, e.g., because you are using it for other
+#   databases in addition to pupept.
 # @param node_purge_ttl [String] Default: 0s
 #   The length of time a node can be deactivated before it's deleted from the database. (a value of '0' disables purging).
 # @param node_ttl [String] Default: '0s'
@@ -33,6 +38,7 @@ class puppet::profile::puppetdb (
   $node_ttl                    = '0s',
   $puppetdb_listen_address     = '127.0.0.1',
   $puppetdb_server             = undef,
+  $puppetdb_manage_dbserver    = true,
   $puppetdb_ssl_listen_address = '0.0.0.0',
   $report_ttl                  = '14d',
   $reports                     = undef,
@@ -106,6 +112,7 @@ class puppet::profile::puppetdb (
     disable_ssl        => $disable_ssl,
     listen_address     => $puppetdb_listen_address,
     ssl_listen_address => $puppetdb_ssl_listen_address,
+    manage_dbserver    => $puppetdb_manage_dbserver,
     node_ttl           => $node_ttl,
     node_purge_ttl     => $node_purge_ttl,
     report_ttl         => $report_ttl,
