@@ -66,10 +66,19 @@ class puppet::config {
     $_ensure_pluginfactsource = 'absent'
   }
 
+  ini_setting { 'puppet client server agent':
+    ensure  => absent,
+    path    => "${confdir}/puppet.conf",
+    section => 'agent',
+    setting => 'server',
+    value   => $puppet_server,
+    require => Class['puppet::install'],
+  }
+
   ini_setting { 'puppet client server':
     ensure  => $_ensure_puppet_server,
     path    => "${confdir}/puppet.conf",
-    section => 'agent',
+    section => 'main',
     setting => 'server',
     value   => $puppet_server,
     require => Class['puppet::install'],
