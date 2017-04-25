@@ -62,6 +62,8 @@
 #   Whether or not to send reports
 # @param runinterval [String] Default: '30m'
 #   Sets the runinterval in puppet.conf
+# @param show_diff [Boolean] Default: false
+#   Sets the show_diff parameter in puppet.conf
 # @param splay [Boolean] Default: false
 #   Sets the splay parameter in puppet.conf
 # @param splaylimit [String] Default: undef
@@ -101,6 +103,7 @@ class puppet::profile::agent (
   $puppet_version                 = 'installed',
   $reports                        = true,
   $runinterval                    = '30m',
+  $show_diff                      = false,
   $splay                          = false,
   $splaylimit                     = undef,
   $structured_facts               = false,
@@ -131,6 +134,7 @@ class puppet::profile::agent (
     puppet_version                 => $puppet_version,
     reports                        => $reports,
     runinterval                    => $runinterval,
+    show_diff                      => $show_diff,
     splay                          => $splay,
     splaylimit                     => $splaylimit,
     structured_facts               => $structured_facts,

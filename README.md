@@ -352,6 +352,10 @@ The `puppet` class is responsible for validating some of our parameters, and ins
 
     Sets the runinterval in `puppet.conf`
 
+  * **show_diff**: (*bool* Default: `false`)
+
+    Whether to log and report a contextual diff when files are being replaced. 
+
   * **splay**: (*bool* Default `false`)
 
     Sets the splay parameter in puppet.conf

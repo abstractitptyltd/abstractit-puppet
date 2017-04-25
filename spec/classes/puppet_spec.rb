@@ -28,7 +28,7 @@ describe 'puppet', :type => :class do
      end
    end#arrays
 
-    ['allinone','cfacter','enable_devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','splay','structured_facts'].each do |bools|
+    ['allinone','cfacter','enable_devel_repo','enabled','enable_repo','manage_etc_facter','manage_etc_facter_facts_d','manage_repos','reports','show_diff','splay','structured_facts'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
         let(:params) {{bools => "BOGON"}}
         it 'should fail' do
