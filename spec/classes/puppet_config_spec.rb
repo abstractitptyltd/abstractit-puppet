@@ -91,6 +91,15 @@ describe 'puppet::config', :type => :class do
             'value'=>'30m'
           })
         end
+        it "should set the puppet agent show_diff parameter in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client show_diff').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'show_diff',
+            'value'=>false
+          })
+        end
         it "should set the puppet agent splay parameter in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet client splay').with({
             'ensure'=>'present',
@@ -232,6 +241,17 @@ describe 'puppet::config', :type => :class do
           })
         end
       end# custom runinterval
+      context 'when ::puppet::show_diff is true' do
+        let(:pre_condition) {"class{'::puppet': show_diff => true}"}
+        it "should properly set the show_diff setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client show_diff').with({
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'show_diff',
+            'value'=>true
+          })
+        end
+      end# custom show_diff
       context 'when ::puppet::splay is true' do
         let(:pre_condition) {"class{'::puppet': splay => true}"}
         it "should properly set the splay setting in #{confdir}/puppet.conf" do
