@@ -45,8 +45,8 @@ describe 'puppet::master::hiera', :type => :class do
 
       context 'when fed no parameters' do
         if Puppet.version =~ /^4\./
-          it "should lay down #{codedir}/hiera.yaml" do
-            should contain_file("#{codedir}/hiera.yaml").with({
+          it "should lay down #{confdir}/hiera.yaml" do
+            should contain_file("#{confdir}/hiera.yaml").with({
               'ensure' =>'file',
               'owner'  =>'root',
               'group'  =>'root',
@@ -72,8 +72,8 @@ describe 'puppet::master::hiera', :type => :class do
             )
           end
         else
-          it "should lay down #{codedir}/hiera.yaml" do
-            should contain_file("#{codedir}/hiera.yaml").with({
+          it "should lay down #{confdir}/hiera.yaml" do
+            should contain_file("#{confdir}/hiera.yaml").with({
               'ensure' =>'file',
               'owner'  =>'root',
               'group'  =>'root',
@@ -104,9 +104,9 @@ describe 'puppet::master::hiera', :type => :class do
 
       context 'when the hiera_backends param has a non-standard value' do
         let(:pre_condition) {"class{'puppet::master': hiera_backends => { 'yaml' => { 'datadir' => '/BOGON'} }"}
-        it "should update #{codedir}/hiera.yaml apropriately" do
+        it "should update #{confdir}/hiera.yaml appropriately" do
           skip 'This does not work as is'
-          should contain_file("#{codedir}/hiera.yaml").with({
+          should contain_file("#{confdir}/hiera.yaml").with({
             :ensure =>'file',
             :owner  =>'root',
             :group  =>'root',
@@ -133,8 +133,8 @@ describe 'puppet::master::hiera', :type => :class do
 
       context 'when the hierarchy param has a non-standard value' do
         let(:pre_condition) {"class{'puppet::master': hiera_hierarchy => ['foo', 'bar', 'baz'] }"}
-        it "should update #{codedir}/hiera.yaml with the specified hierarchy" do
-          should contain_file("#{codedir}/hiera.yaml").with({
+        it "should update #{confdir}/hiera.yaml with the specified hierarchy" do
+          should contain_file("#{confdir}/hiera.yaml").with({
             :ensure => 'file',
             :owner  => 'root',
             :group  => 'root',
@@ -153,8 +153,8 @@ describe 'puppet::master::hiera', :type => :class do
 
       context 'when manage_hiera_config is false' do
         let(:pre_condition) {"class{'::puppet::master': manage_hiera_config => false}"}
-        it "should not manage #{codedir}/hiera.conf" do
-          should_not contain_file("#{codedir}/hiera.yaml")
+        it "should not manage #{confdir}/hiera.conf" do
+          should_not contain_file("#{confdir}/hiera.yaml")
         end
       end# manage_hiera_config false
 
@@ -259,8 +259,8 @@ describe 'puppet::master::hiera', :type => :class do
 
       context 'when the hiera_merge_behavior param is set to native' do
         let(:pre_condition) {"class{'puppet::master': hiera_merge_behavior => 'native' }"}
-        it "should update #{codedir}/hiera.yaml with the merge_behavior set to native" do
-          should contain_file("#{codedir}/hiera.yaml").with({
+        it "should update #{confdir}/hiera.yaml with the merge_behavior set to native" do
+          should contain_file("#{confdir}/hiera.yaml").with({
             :ensure => 'file',
             :owner  => 'root',
             :group  => 'root',
@@ -273,8 +273,8 @@ describe 'puppet::master::hiera', :type => :class do
 
       context 'when the hiera_merge_behavior param is set to deep' do
         let(:pre_condition) {"class{'puppet::master': hiera_merge_behavior => 'deep' }"}
-        it "should update #{codedir}/hiera.yaml with the merge_behavior set to deep" do
-          should contain_file("#{codedir}/hiera.yaml").with({
+        it "should update #{confdir}/hiera.yaml with the merge_behavior set to deep" do
+          should contain_file("#{confdir}/hiera.yaml").with({
             :ensure => 'file',
             :owner  => 'root',
             :group  => 'root',
@@ -287,8 +287,8 @@ describe 'puppet::master::hiera', :type => :class do
 
       context 'when the hiera_merge_behavior param is set to deeper' do
         let(:pre_condition) {"class{'puppet::master': hiera_merge_behavior => 'deeper' }"}
-        it "should update #{codedir}/hiera.yaml with the merge_behavior set to deeper" do
-          should contain_file("#{codedir}/hiera.yaml").with({
+        it "should update #{confdir}/hiera.yaml with the merge_behavior set to deeper" do
+          should contain_file("#{confdir}/hiera.yaml").with({
             :ensure => 'file',
             :owner  => 'root',
             :group  => 'root',

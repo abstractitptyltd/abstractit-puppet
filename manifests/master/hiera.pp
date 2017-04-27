@@ -4,7 +4,6 @@ class puppet::master::hiera {
   include ::puppet::master
   include ::puppet::defaults
 
-  $codedir                            = $puppet::defaults::codedir
   $env_owner                          = $puppet::master::env_owner
   $eyaml_keys                         = $puppet::master::eyaml_keys
   $hiera_backends                     = $puppet::master::hiera_backends
@@ -18,7 +17,7 @@ class puppet::master::hiera {
   $hiera_merge_behavior               = $puppet::master::hiera_merge_behavior
 
   if ($manage_hiera_config == true) {
-    file { "${codedir}/hiera.yaml":
+    file { "${::confdir}/hiera.yaml":
       ensure  => file,
       content => template('puppet/hiera.yaml.erb'),
       owner   => 'root',

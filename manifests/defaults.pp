@@ -32,11 +32,6 @@ class puppet::defaults {
     $confdir                   = '/etc/puppetlabs/puppet'
     $codedir                   = '/etc/puppetlabs/code'
     $basemodulepath            = "${codedir}/modules:${confdir}/modules"
-    $hiera_backends            = {
-      'yaml' => {
-        'datadir' => '/etc/puppetlabs/code/hieradata/%{environment}'
-      }
-    }
     $facterbasepath            = '/opt/puppetlabs/facter'
     $reports_dir               = '/opt/puppetlabs/server/data/reports'
     $terminus_package          = 'puppetdb-termini'
@@ -49,11 +44,6 @@ class puppet::defaults {
     $confdir                   = '/etc/puppet'
     $codedir                   = '/etc/puppet'
     $basemodulepath            = "${confdir}/modules:/usr/share/puppet/modules"
-    $hiera_backends            = {
-      'yaml' => {
-        'datadir' => '/etc/puppet/hieradata/%{environment}'
-      }
-    }
     $facterbasepath            = '/etc/facter'
     $reports_dir               = '/var/lib/puppet/reports'
     $terminus_package          = 'puppetdb-terminus'
@@ -67,6 +57,11 @@ class puppet::defaults {
   $autosign_file             = "${confdir}/autosign.conf"
   $environmentpath           = "${codedir}/environments"
   $hiera_eyaml_key_directory = "${codedir}/hiera_eyaml_keys"
-  $hieradata_path            = "${confdir}/hieradata"
+  $hieradata_path            = "${::environmentpath}/%{environment}/hieradata"
+  $hiera_backends            = {
+    'yaml' => {
+      'datadir' => "${::environmentpath}/%{environment}/hieradata"
+    }
+  }
 
 }
