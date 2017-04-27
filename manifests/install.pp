@@ -20,7 +20,7 @@ class puppet::install {
 
   package { $agent_package:
     ensure  => $package_ensure,
-    require => Class['::puppet::install::deps']
+    require => Class['::puppet::install::deps', '::apt::update']
   }
 
 }
