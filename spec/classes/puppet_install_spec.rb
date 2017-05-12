@@ -63,7 +63,7 @@ describe 'puppet::install', :type => :class do
           it 'should install puppet' do
             contain_package('puppet').with({
             :ensure=>"BOGON",
-          }).that_requires("Class['::puppet::install::deps]")
+          }).that_requires("Class['::puppet::install::deps]").that_notifies('class[Puppet::Agent]')
           end
         end# allinone false
       end
