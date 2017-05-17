@@ -66,6 +66,8 @@
 #   Whether or not to send reports
 # @param runinterval [String] Default: '30m'
 #   Sets the runinterval in puppet.conf
+# @param show_diff [Boolean] Default: false
+#   Sets the show_diff parameter in puppet.conf
 # @param splay [Boolean] Default: false
 #   Sets the splay parameter in puppet.conf
 # @param splaylimit [String] Default: undef
@@ -122,6 +124,7 @@ class puppet (
   $puppet_version                 = 'installed',
   $reports                        = true,
   $runinterval                    = '30m',
+  $show_diff                      = false,
   $splay                          = false,
   $splaylimit                     = undef,
   $structured_facts               = false,
@@ -141,6 +144,7 @@ class puppet (
     $manage_etc_facter_facts_d,
     $manage_repos,
     $reports,
+    $show_diff,
     $splay,
     $structured_facts,
   )

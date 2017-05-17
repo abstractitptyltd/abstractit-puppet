@@ -8,6 +8,7 @@
 # @param cachedir [String] Default: undef
 # @param configfile [String] Default: undef
 # @param version [String] Default: undef
+# @param puppet_master [String] Default: undef
 # @param modulepath [String] Default: undef
 # @param manage_modulepath [String] Default: undef
 # @param manage_ruby_dependency [String] Default: 'ignore'
@@ -21,6 +22,9 @@
 # @param configfile_symlink [String] Default: undef
 # @param include_prerun_command [Boolean] Default: false
 # @param include_postrun_command [Boolean] Default: false
+# @param git_settings [String] Default: undef
+# @param forge_settings [String] Default: undef
+# @param postrun [String] Default: undef
 # @param env_owner [String] Default:'root',
 # @param r10k_minutes [Array] Default [0,15,30,45]
 # @param r10k_update [Boolean] true
@@ -32,6 +36,7 @@ class puppet::profile::r10k (
   $cachedir                  = undef,
   $configfile                = undef,
   $version                   = undef,
+  $puppet_master             = undef,
   $modulepath                = undef,
   $manage_modulepath         = undef,
   $manage_ruby_dependency    = 'ignore',
@@ -45,6 +50,9 @@ class puppet::profile::r10k (
   $configfile_symlink        = undef,
   $include_prerun_command    = false,
   $include_postrun_command   = false,
+  $git_settings              = undef,
+  $forge_settings            = undef,
+  $postrun                   = undef,
   $env_owner                 = 'root',
   $r10k_minutes              = [
     0,
@@ -82,6 +90,7 @@ class puppet::profile::r10k (
     cachedir                  => $cachedir,
     configfile                => $configfile,
     version                   => $version,
+    puppet_master             => $puppet_master,
     modulepath                => $modulepath,
     manage_modulepath         => $manage_modulepath,
     manage_ruby_dependency    => $manage_ruby_dependency,
@@ -95,6 +104,9 @@ class puppet::profile::r10k (
     configfile_symlink        => $configfile_symlink,
     include_prerun_command    => $include_prerun_command,
     include_postrun_command   => $include_postrun_command,
+    git_settings              => $git_settings,
+    forge_settings            => $forge_settings,
+    postrun                   => $postrun,
   }
 
   # cron for updating the r10k environment

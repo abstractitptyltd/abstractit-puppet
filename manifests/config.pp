@@ -15,6 +15,7 @@ class puppet::config {
   $puppet_server                  = $::puppet::puppet_server
   $reports                        = $::puppet::reports
   $runinterval                    = $::puppet::runinterval
+  $show_diff                      = $::puppet::show_diff
   $splay                          = $::puppet::splay
   $splaylimit                     = $::puppet::splaylimit
   $structured_facts               = $::puppet::structured_facts
@@ -66,10 +67,19 @@ class puppet::config {
     $_ensure_pluginfactsource = 'absent'
   }
 
+  ini_setting { 'puppet client server agent':
+    ensure  => absent,
+    path    => "${confdir}/puppet.conf",
+    section => 'agent',
+    setting => 'server',
+    value   => $puppet_server,
+    require => Class['puppet::install'],
+  }
+
   ini_setting { 'puppet client server':
     ensure  => $_ensure_puppet_server,
     path    => "${confdir}/puppet.conf",
-    section => 'agent',
+    section => 'main',
     setting => 'server',
     value   => $puppet_server,
     require => Class['puppet::install'],
@@ -140,6 +150,15 @@ class puppet::config {
     section => 'agent',
     setting => 'runinterval',
     value   => $runinterval,
+    require => Class['puppet::install'],
+  }
+
+  ini_setting { 'puppet client show_diff':
+    ensure  => present,
+    path    => "${confdir}/puppet.conf",
+    section => 'agent',
+    setting => 'show_diff',
+    value   => $show_diff,
     require => Class['puppet::install'],
   }
 

@@ -44,13 +44,22 @@ describe 'puppet::config', :type => :class do
       end
       context 'when fed no parameters' do
         it "should properly set the puppet server setting in #{confdir}/puppet.conf" do
-          should contain_ini_setting('puppet client server').with({
-            'ensure'=>'present',
+          should contain_ini_setting('puppet client server agent').with({
+            'ensure'=>'absent',
             'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
             'setting'=>'server',
             'value'=>'puppet'
           })
+          should contain_ini_setting('puppet client server').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
+            'setting'=>'server',
+            'value'=>'puppet'
+          })
+        end
+        it "should properly set the puppet srv records settings in #{confdir}/puppet.conf" do
           should contain_ini_setting('puppet use_srv_records').with({
             'ensure'=>'absent',
             'path'=>"#{confdir}/puppet.conf",
@@ -80,6 +89,15 @@ describe 'puppet::config', :type => :class do
             'section'=>'agent',
             'setting'=>'runinterval',
             'value'=>'30m'
+          })
+        end
+        it "should set the puppet agent show_diff parameter in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client show_diff').with({
+            'ensure'=>'present',
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'show_diff',
+            'value'=>false
           })
         end
         it "should set the puppet agent splay parameter in #{confdir}/puppet.conf" do
@@ -187,9 +205,15 @@ describe 'puppet::config', :type => :class do
       context 'when ::puppet::puppet_server has a non-standard value' do
         let(:pre_condition){"class{'::puppet': puppet_server => 'BOGON'}"}
         it "should properly set the server setting in #{confdir}/puppet.conf" do
-          should contain_ini_setting('puppet client server').with({
+          should_not contain_ini_setting('puppet client server').with({
             'path'=>"#{confdir}/puppet.conf",
             'section'=>'agent',
+            'setting'=>'server',
+            'value'=>'BOGON'
+          })
+          should contain_ini_setting('puppet client server').with({
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'main',
             'setting'=>'server',
             'value'=>'BOGON'
           })
@@ -217,6 +241,17 @@ describe 'puppet::config', :type => :class do
           })
         end
       end# custom runinterval
+      context 'when ::puppet::show_diff is true' do
+        let(:pre_condition) {"class{'::puppet': show_diff => true}"}
+        it "should properly set the show_diff setting in #{confdir}/puppet.conf" do
+          should contain_ini_setting('puppet client show_diff').with({
+            'path'=>"#{confdir}/puppet.conf",
+            'section'=>'agent',
+            'setting'=>'show_diff',
+            'value'=>true
+          })
+        end
+      end# custom show_diff
       context 'when ::puppet::splay is true' do
         let(:pre_condition) {"class{'::puppet': splay => true}"}
         it "should properly set the splay setting in #{confdir}/puppet.conf" do
@@ -283,7 +318,7 @@ describe 'puppet::config', :type => :class do
           should contain_ini_setting('puppet client server').with({
             'ensure' => 'absent',
             'path'=>"#{confdir}/puppet.conf",
-            'section'=>'agent',
+            'section'=>'main',
             'setting'=>'server',
           })
         end
