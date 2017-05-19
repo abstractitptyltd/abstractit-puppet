@@ -102,8 +102,6 @@ describe 'puppet::facts', :type => :class do
             /FQDN my.fq.hostname/
           ).with_content(
             /---/
-          ).with_validate_cmd(
-            "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
           )
           should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
             /Environment production/
@@ -129,8 +127,6 @@ describe 'puppet::facts', :type => :class do
             /key1: val1/
           ).with_content(
             /key2: val2/
-          ).with_validate_cmd(
-            "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
           )
           should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
             /Environment production/
@@ -164,8 +160,6 @@ describe 'puppet::facts', :type => :class do
             /- val21/
           ).with_content(  
             /- val22/
-          ).with_validate_cmd(
-            "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
           )
           should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
             /Environment production/
@@ -195,8 +189,6 @@ describe 'puppet::facts', :type => :class do
             /key2:/
           ).with_content(
             /key21: val21/
-          ).with_validate_cmd(
-            "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
           )
           should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
             /Environment production/

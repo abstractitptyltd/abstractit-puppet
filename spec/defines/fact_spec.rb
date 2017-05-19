@@ -66,8 +66,6 @@ describe 'puppet::fact', :type => :define do
             /---/
           ).with_content(
             /my_fact: my_val/
-          ).with_validate_cmd(
-            "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
           )
         end
       end
@@ -91,8 +89,6 @@ describe 'puppet::fact', :type => :define do
             /- my_val0/
           ).with_content(
             /- my_val1/
-          ).with_validate_cmd(
-            "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
           )
         end
       end
@@ -116,8 +112,6 @@ describe 'puppet::fact', :type => :define do
             /my_key0: my_val0/
           ).with_content(
             /my_key1: my_val1/
-          ).with_validate_cmd(
-            "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\""
           )
         end
       end

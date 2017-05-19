@@ -14,12 +14,11 @@ define puppet::fact (
   $facter_data = { "${title}" => $value }
 
   file { "${facterbasepath}/facts.d/${title}.yaml":
-    ensure       => $ensure,
-    owner        => 'root',
-    group        => $::puppet::defaults::puppet_group,
-    mode         => '0640',
-    validate_cmd => "/usr/bin/env ruby -ryaml -e \"YAML.load_file '%'\"",
-    content      => template('puppet/fact.yaml.erb'),
+    ensure  => $ensure,
+    owner   => 'root',
+    group   => $::puppet::defaults::puppet_group,
+    mode    => '0640',
+    content => template('puppet/fact.yaml.erb'),
   }
 
 }
