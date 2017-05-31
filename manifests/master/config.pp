@@ -104,7 +104,7 @@ class puppet::master::config {
 
   # cleanup old puppet reports
   cron { 'puppet clean reports':
-    command => "cd ${reports_dir} && find . -type f -name \\*.yaml -mtime +${report_age} -print0 | xargs -0 -n50 /bin/rm -f",
+    command => "if test -x ${reports_dir}; then cd ${reports_dir} && find . -type f -name \\*.yaml -mtime +${report_age} -print0 | xargs -0 -n50 /bin/rm -f; fi",
     user    => root,
     hour    => $report_clean_hour,
     minute  => $report_clean_min,
