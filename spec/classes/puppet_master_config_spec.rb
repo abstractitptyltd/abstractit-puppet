@@ -80,7 +80,7 @@ describe 'puppet::master::config', :type => :class do
         it 'should create the \'puppet clean reports\' cronjob' do
           should contain_cron('puppet clean reports').with({
             'name'    => "puppet clean reports",
-            'command' => "cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f",
+            'command' => "if test -x #{reports_dir}; then cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f; fi",
             'user'    => "root",
             'hour'    => "21",
             'minute'  => "22",
@@ -250,7 +250,7 @@ describe 'puppet::master::config', :type => :class do
         it 'should create the \'puppet clean reports\' cronjob with custom mtime' do
           should contain_cron('puppet clean reports').with({
             :name    => "puppet clean reports",
-            :command => "cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +33 -print0 | xargs -0 -n50 /bin/rm -f",
+            :command => "if test -x #{reports_dir}; then cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +33 -print0 | xargs -0 -n50 /bin/rm -f; fi",
             :user    => "root",
             :hour    => "21",
             :minute  => "22",
@@ -264,7 +264,7 @@ describe 'puppet::master::config', :type => :class do
         it 'should create the \'puppet clean reports\' cronjob with custom hour' do
           should contain_cron('puppet clean reports').with({
             :name    => "puppet clean reports",
-            :command => "cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f",
+            :command => "if test -x #{reports_dir}; then cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f; fi",
             :user    => "root",
             :hour    => "12",
             :minute  => "22",
@@ -278,7 +278,7 @@ describe 'puppet::master::config', :type => :class do
         it 'should create the \'puppet clean reports\' cronjob with custom minute' do
           should contain_cron('puppet clean reports').with({
             :name    => "puppet clean reports",
-            :command => "cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f",
+            :command => "if test -x #{reports_dir}; then cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f; fi",
             :user    => "root",
             :hour    => "21",
             :minute  => "59",
@@ -292,7 +292,7 @@ describe 'puppet::master::config', :type => :class do
         it 'should create the \'puppet clean reports\' cronjob with custom weekday' do
           should contain_cron('puppet clean reports').with({
             :name    => "puppet clean reports",
-            :command => "cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f",
+            :command => "if test -x #{reports_dir}; then cd #{reports_dir} && find . -type f -name \\*.yaml -mtime +7 -print0 | xargs -0 -n50 /bin/rm -f; fi",
             :user    => "root",
             :hour    => "21",
             :minute  => "22",
