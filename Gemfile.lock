@@ -165,7 +165,7 @@ DEPENDENCIES
   hiera
   json (= 1.8.5)
   json_pure (< 2.0.2)
-  metadata-json-lint
+  metadata-json-lint (= 1.1.0)
   pry (<= 0.9.8)
   puppet
   puppet-blacksmith
