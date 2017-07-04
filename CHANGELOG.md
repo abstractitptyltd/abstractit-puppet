@@ -1,4 +1,17 @@
-##2016-10-10 - Pete Brown <pete@abstractit.com.au> 2.3.0-alpha
+##2017-07-02 - Pete Brown <rendhalver@users.noreply.github.com> 2.4.0
+###Summary
+Feature: Add more parameters to R10K profile (PR #141)
+Feature: Add parameter to determine whether to manage puppetdb database (PR #144)
+Feature: Add support for show_diff parameter (PR #145)
+Feature: Add support for puppet 4.10.1 (PR #150)
+Feature: Change to puppet/r10k module (PR #131)
+Add license file (PR #155)
+
+####Bugfixes
+Fix #142 Move server setting to main (PR #143)
+Notify agent service when package is upgraded (PR #149)
+
+##2016-10-10 - Pete Brown <pete@abstractit.com.au> 2.3.0
 ###Summary
 Numerous bugfixes.
 Feature: Configure agents using SRV records @aaron-miller
