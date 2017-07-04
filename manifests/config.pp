@@ -9,6 +9,7 @@ class puppet::config {
   $sysconfigdir                   = $::puppet::defaults::sysconfigdir
   $ca_server                      = $::puppet::ca_server
   $cfacter                        = $::puppet::cfacter
+  $certname                       = $::puppet::certname
   $environment                    = $::puppet::environment
   $logdest                        = $::puppet::logdest
   $preferred_serialization_format = $::puppet::preferred_serialization_format
@@ -133,6 +134,17 @@ class puppet::config {
     setting => 'cfacter',
     value   => $cfacter,
     require => Class['puppet::install'],
+  }
+  
+  if ($certname != undef) {
+    ini_setting { 'agent certname':
+      ensure  => present,
+      path    => "${confdir}/puppet.conf",
+      section => 'main',
+      setting => 'certname',
+      value   => $certname,
+      require => Class['puppet::install'],
+    }
   }
 
   ini_setting { 'puppet client environment':
