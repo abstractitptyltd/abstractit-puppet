@@ -19,6 +19,8 @@
 #   Declares the version of the puppet-agent all-in-one package to install.
 # @param ca_server [String] Default: undef
 #   Server to use as the CA server for all agents.
+# @param ca_port [String]
+#   Port to use as the CA server for all agents.
 # @param cfacter [Boolean] Default: false
 #   Whether or not to use cfacter instead of facter.
 # @param collection [String] Default: undef
@@ -103,6 +105,7 @@ class puppet (
   $agent_cron_min                 = 'two_times_an_hour',
   $agent_version                  = 'installed',
   $ca_server                      = undef,
+  $ca_port                        = undef,
   $cfacter                        = false,
   $collection                     = undef,
   $custom_facts                   = undef,
@@ -152,6 +155,7 @@ class puppet (
   validate_string(
     $agent_version,
     $ca_server,
+    $ca_port,
     $collection,
     $environment,
     $facter_version,
