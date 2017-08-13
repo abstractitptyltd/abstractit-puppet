@@ -2,23 +2,30 @@ language: ruby
 sudo: false
 bundler_args: --without development
 before_install: rm Gemfile.lock || true
-script: bundle exec rake test
+script: bundle exec rake $CHECK
 matrix:
   fast_finish: true
   include:
   - rvm: 2.1.9
-    env: PUPPET_GEM_VERSION="~> 3.8.5" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 1.3" FUTURE_PARSER="yes"
+    env: PUPPET_GEM_VERSION="~> 4.5.0" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0" CHECK=test
   - rvm: 2.1.9
-    env: PUPPET_GEM_VERSION="~> 4.5.0" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0"
+    env: PUPPET_GEM_VERSION="~> 4.7.0" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0" CHECK=test
   - rvm: 2.1.9
-    env: PUPPET_GEM_VERSION="~> 4.7.0" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0"
+    env: PUPPET_GEM_VERSION="~> 4.8.0" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0" CHECK=test
   - rvm: 2.1.9
-    env: PUPPET_GEM_VERSION="~> 4.8.0" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0"
+    env: PUPPET_GEM_VERSION="~> 4.9.0" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0" CHECK=test
   - rvm: 2.1.9
-    env: PUPPET_GEM_VERSION="~> 4.9.0" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0"
+    env: PUPPET_GEM_VERSION="~> 4.10.0" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0" CHECK=test
   - rvm: 2.1.9
-    env: PUPPET_GEM_VERSION="~> 4.10.4" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0"
-
+    env: PUPPET_GEM_VERSION="~> 4.10.0" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0" CHECK=build DEPLOY_TO_FORGE=yes
+  - rvm: 2.4.1
+    env: PUPPET_GEM_VERSION="~> 5.0.0" FACTER_GEM_VERSION="~> 2.4" HIERA_GEM_VERSION="~> 3.3.0" CHECK=test
+branches:
+  only:
+  - production
+  - /^\d/
+notifications:
+  email: false
 deploy:
   provider: puppetforge
   user: abstractit
@@ -29,5 +36,6 @@ deploy:
     # all_branches is required to use tags
     all_branches: true
     rvm: 2.1.9
+    # Only publish the build marked with "DEPLOY_TO_FORGE"
     condition:
-    - $PUPPET_GEM_VERSION = '4.10.4'
+    - $DEPLOY_TO_FORGE = "yes"
