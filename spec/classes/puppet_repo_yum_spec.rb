@@ -43,7 +43,7 @@ describe 'puppet::repo::yum', :type => :class do
               'baseurl'=>'http://yum.puppetlabs.com/el/5/products/x86_64',
               'enabled'=>'1',
               'gpgcheck'=>'1',
-              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
             })
           when '6'
             should contain_yumrepo('puppetlabs-products').with({
@@ -51,7 +51,7 @@ describe 'puppet::repo::yum', :type => :class do
               'baseurl'=>'http://yum.puppetlabs.com/el/6/products/x86_64',
               'enabled'=>'1',
               'gpgcheck'=>'1',
-              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
             })
           when '7'
             should contain_yumrepo('puppetlabs-products').with({
@@ -59,7 +59,7 @@ describe 'puppet::repo::yum', :type => :class do
               'baseurl'=>'http://yum.puppetlabs.com/el/7/products/x86_64',
               'enabled'=>'1',
               'gpgcheck'=>'1',
-              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
             })
           end
         end
@@ -71,7 +71,7 @@ describe 'puppet::repo::yum', :type => :class do
               'baseurl'=>'http://yum.puppetlabs.com/el/5/dependencies/x86_64',
               'enabled'=>'1',
               'gpgcheck'=>'1',
-              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
             })
           when '6'
             should contain_yumrepo('puppetlabs-deps').with({
@@ -79,7 +79,7 @@ describe 'puppet::repo::yum', :type => :class do
               'baseurl'=>'http://yum.puppetlabs.com/el/6/dependencies/x86_64',
               'enabled'=>'1',
               'gpgcheck'=>'1',
-              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
             })
           when '7'
             should contain_yumrepo('puppetlabs-deps').with({
@@ -87,7 +87,7 @@ describe 'puppet::repo::yum', :type => :class do
               'baseurl'=>'http://yum.puppetlabs.com/el/7/dependencies/x86_64',
               'enabled'=>'1',
               'gpgcheck'=>'1',
-              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
             })
           end
         end
@@ -99,7 +99,7 @@ describe 'puppet::repo::yum', :type => :class do
               'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
               'enabled'=>'0',
               'gpgcheck'=>'1',
-              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
             })
           when '6'
             should contain_yumrepo('puppetlabs-devel').with({
@@ -107,7 +107,7 @@ describe 'puppet::repo::yum', :type => :class do
               'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
               'enabled'=>'0',
               'gpgcheck'=>'1',
-              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
             })
           when '7'
             should contain_yumrepo('puppetlabs-devel').with({
@@ -115,7 +115,7 @@ describe 'puppet::repo::yum', :type => :class do
               'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
               'enabled'=>'0',
               'gpgcheck'=>'1',
-              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+              'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
             })
           end
         end
@@ -140,7 +140,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'baseurl'=>'http://yum.puppetlabs.com/el/5/BOGON/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
-                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
               })
               should_not contain_yumrepo('puppetlabs-products')
               should_not contain_yumrepo('puppetlabs-deps')
@@ -151,7 +151,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'baseurl'=>'http://yum.puppetlabs.com/el/6/BOGON/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
-                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
               })
               should_not contain_yumrepo('puppetlabs-products')
               should_not contain_yumrepo('puppetlabs-deps')
@@ -162,7 +162,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'baseurl'=>'http://yum.puppetlabs.com/el/7/BOGON/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
-                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
               })
               should_not contain_yumrepo('puppetlabs-products')
               should_not contain_yumrepo('puppetlabs-deps')
@@ -181,7 +181,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
                 'enabled'=>'0',
                 'gpgcheck'=>'1',
-                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
               })
             when '6'
               should contain_yumrepo('puppetlabs-devel').with({
@@ -189,7 +189,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
                 'enabled'=>'0',
                 'gpgcheck'=>'1',
-                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
               })
             when '7'
               should contain_yumrepo('puppetlabs-devel').with({
@@ -197,7 +197,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
                 'enabled'=>'0',
                 'gpgcheck'=>'1',
-                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
               })
             end#end case
           end
@@ -213,7 +213,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'baseurl'=>'http://yum.puppetlabs.com/el/5/devel/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
-                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
               })
             when '6'
               should contain_yumrepo('puppetlabs-devel').with({
@@ -221,7 +221,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'baseurl'=>'http://yum.puppetlabs.com/el/6/devel/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
-                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
               })
             when '7'
               should contain_yumrepo('puppetlabs-devel').with({
@@ -229,7 +229,7 @@ describe 'puppet::repo::yum', :type => :class do
                 'baseurl'=>'http://yum.puppetlabs.com/el/7/devel/x86_64',
                 'enabled'=>'1',
                 'gpgcheck'=>'1',
-                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppetlabs',
+                'gpgkey'=>'https://yum.puppetlabs.com/RPM-GPG-KEY-puppet',
               })
             end
           end
