@@ -207,19 +207,7 @@ class puppet::master (
   include ::puppet::master::install
   include ::puppet::master::config
   include ::puppet::master::hiera
-
-  case $server_type {
-    'puppetserver': {
-      include ::puppet::master::server
-      # Class['puppet::master::hiera'] ~>
-      # Class['puppet::master::server']
-    }
-    default: {
-      include ::puppet::master::passenger
-      # Class['puppet::master::hiera'] ~>
-      # Class['puppet::master::passenger']
-    }
-  }
+  include ::puppet::master::server
 
   Class['puppet::master::install'] ->
   Class['puppet::master::config'] ->

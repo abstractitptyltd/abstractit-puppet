@@ -5,7 +5,7 @@
 # @puppet when declaring the puppet class
 #   include puppet
 #
-# @param allinone [Boolean] Default: false
+# @param allinone [Boolean] Default: true
 #   Whether to use the new collections
 # @param agent_cron_hour [String] Default: '*'
 #   The hour to run the agent cron. Valid values are `0-23`
@@ -23,7 +23,7 @@
 #   Port to use as the CA server for all agents.
 # @param cfacter [Boolean] Default: false
 #   Whether or not to use cfacter instead of facter.
-# @param collection [String] Default: undef
+# @param collection [String] Default: PC1
 #   Declares the collection repository to use.
 # @param custom_facts [Hash] Default: undef
 #   A hash of custom facts to setup using the ::puppet::facts define.
@@ -100,14 +100,14 @@
 #   https://tickets.puppetlabs.com/browse/PUP-1035)
 
 class puppet (
-  $allinone                       = false,
+  $allinone                       = true,
   $agent_cron_hour                = '*',
   $agent_cron_min                 = 'two_times_an_hour',
   $agent_version                  = 'installed',
   $ca_server                      = undef,
   $ca_port                        = undef,
   $cfacter                        = false,
-  $collection                     = undef,
+  $collection                     = 'PC1',
   $custom_facts                   = undef,
   $devel_repo                     = false,
   $enabled                        = true,

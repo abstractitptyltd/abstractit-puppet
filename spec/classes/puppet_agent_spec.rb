@@ -30,11 +30,7 @@ describe 'puppet::agent', :type => :class do
         })
       end
       it { is_expected.to compile.with_all_deps }
-      if Puppet.version.to_f >= 4.0
-        bin_dir = '/opt/puppetlabs/bin'
-      else
-        bin_dir = '/usr/bin'
-      end
+      bin_dir = '/opt/puppetlabs/bin'
       case facts[:osfamily]
       when 'Debian'
         sysconfigdir   = '/etc/default'

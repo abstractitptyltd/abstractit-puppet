@@ -29,17 +29,10 @@ describe 'puppet::master::config', :type => :class do
         })
       end
       it { is_expected.to compile.with_all_deps }
-      if Puppet.version.to_f >= 4.0
-        confdir        = '/etc/puppetlabs/puppet'
-        codedir        = '/etc/puppetlabs/code'
-        basemodulepath = "#{codedir}/modules:#{confdir}/modules"
-        reports_dir    = "/opt/puppetlabs/server/data/reports"
-      else
-        confdir        = '/etc/puppet'
-        codedir        = '/etc/puppet'
-        basemodulepath = "#{confdir}/modules:/usr/share/puppet/modules"
-        reports_dir    = "/var/lib/puppet/reports"
-      end
+      confdir        = '/etc/puppetlabs/puppet'
+      codedir        = '/etc/puppetlabs/code'
+      basemodulepath = "#{codedir}/modules:#{confdir}/modules"
+      reports_dir    = "/opt/puppetlabs/server/data/reports"
       context "when fed no parameters" do
         it "should properly set the environmentpath in #{confdir}/puppet.conf" do
           should contain_ini_setting('Puppet environmentpath').with({
