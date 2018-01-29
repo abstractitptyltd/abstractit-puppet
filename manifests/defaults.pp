@@ -46,8 +46,13 @@ class puppet::defaults {
         'datadir' => '/etc/puppetlabs/code/hieradata/%{environment}'
       }
     }
-    $facterbasepath            = '/opt/puppetlabs/facter'
-    $reports_dir               = '/opt/puppetlabs/server/data/reports'
+    if $::osfamily == 'Solaris' {
+      $facterbasepath            = '/var/puppetlabs/puppet/cache'
+      $reports_dir               = '/var/puppetlabs/puppet/cache/reports'
+    } else {
+      $facterbasepath            = '/opt/puppetlabs/facter'
+      $reports_dir               = '/opt/puppetlabs/server/data/reports'
+    }
     $terminus_package          = 'puppetdb-termini'
     $puppetdb_etcdir           = '/etc/puppetlabs/puppetdb'
     $puppetdb_test_url         = '/pdb/meta/v1/version'
