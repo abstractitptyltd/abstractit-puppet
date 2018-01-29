@@ -14,6 +14,14 @@
 
 class puppet::defaults {
   case $::osfamily {
+    'Gentoo' : {
+      $puppetmaster_pkg   = 'puppet'
+      $sysconfigdir       = '/etc/default'
+    }
+    'Solaris' : {
+      $puppetmaster_pkg   = 'system/management/puppet'
+      $sysconfigdir       = '/etc/default'
+    }
     'Debian' : {
       $puppetmaster_pkg   = 'puppetmaster'
       $sysconfigdir       = '/etc/default'

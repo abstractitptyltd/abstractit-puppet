@@ -37,6 +37,10 @@ describe 'puppet::config', :type => :class do
         confdir = '/etc/puppet'
       end
       case facts[:osfamily]
+      when 'Gentoo'
+        sysconfigdir   = '/etc/default'
+      when 'Solaris'
+        sysconfigdir   = '/etc/default'
       when 'Debian'
         sysconfigdir   = '/etc/default'
       when 'RedHat'

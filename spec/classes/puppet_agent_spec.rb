@@ -36,6 +36,10 @@ describe 'puppet::agent', :type => :class do
         bin_dir = '/usr/bin'
       end
       case facts[:osfamily]
+      when 'Gentoo'
+        sysconfigdir   = '/etc/default'
+      when 'Solaris'
+        sysconfigdir   = '/etc/default'
       when 'Debian'
         sysconfigdir   = '/etc/default'
       when 'RedHat'

@@ -10,6 +10,20 @@
   "tags": ["puppet","hiera","facter","puppet-agent","puppetserver","puppetdb","r10k"],
   "operatingsystem_support": [
     {
+      "operatingsystem": "Gentoo",
+      "operatingsystemrelease": [
+        "2",
+        "4"
+      ]
+    },
+    {
+      "operatingsystem": "Solaris",
+      "operatingsystemrelease": [
+        "5",
+        "11"
+      ]
+    },
+    {
       "operatingsystem": "Ubuntu",
       "operatingsystemrelease": [
         "12.04",
