@@ -230,6 +230,7 @@ class puppet::config {
     path              => "${sysconfigdir}/puppet",
     setting           => 'DAEMON_OPTS',
     subsetting        => '--logdest',
-    value             => $logdest
+    value             => $logdest,
+    subsetting_key_val_separator => '='
   }
 }
