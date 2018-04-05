@@ -210,7 +210,8 @@ describe 'puppet::config', :type => :class do
             'key_val_separator' => '=',
             'setting'=>'DAEMON_OPTS',
             'subsetting'=>'--logdest',
-            'value'=>'/var/log/BOGON'
+            'value'=>'/var/log/BOGON',
+            'subsetting_key_val_separator' => '='
           })
         end
       end# logdest
