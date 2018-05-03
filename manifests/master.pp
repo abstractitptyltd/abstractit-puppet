@@ -74,6 +74,8 @@
 #   Specifies minute to run the report clean cronjob
 # @param report_clean_weekday ([String] Default: '0')
 #   Specifies weekday to run the report clean cronjob
+# @param service_ensure [String] Default: 'running'
+#   Specifies if the Puppet Master service should be running or stopped
 # @param server_type ([String] Default Puppet 4: 'puppetserver' Default Puppet 4: 'passenger')
 #   Specifies the type of server to use puppetserver is always used on Puppet 4
 # @param $external_nodes ([String] Default undef)
@@ -125,6 +127,7 @@ class puppet::master (
   $report_clean_min                   = '22',
   $report_clean_hour                  = '21',
   $report_clean_weekday               = '0',
+  $service_ensure                     = 'running',
   $server_type                        = $::puppet::defaults::server_type,
   $server_version                     = 'installed',
   $external_nodes                     = undef,

@@ -21,6 +21,7 @@ class puppet::master::config {
   $report_clean_weekday = $puppet::master::report_clean_weekday
   $external_nodes       = $puppet::master::external_nodes
   $node_terminus        = $puppet::master::node_terminus
+  $service_ensure       = $puppet::master::service_ensure
 
   if ($ca_server != undef) {
     if ($ca_server == $::fqdn) {

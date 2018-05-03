@@ -51,6 +51,8 @@
 # @param java_ram ([String] Default: '2g')
 #   Set the ram to use for the new puppetserver
 # @param manage_deep_merge_package ([Boolean] Default: false)
+# @param service_ensure [String] Default: 'running'
+#   Specifies if the Puppet Master service should be running or stopped
 #   Whether the [deep_merge gem](https://rubygems.org/gems/deep_merge) should be installed.
 # @param manage_hiera_eyaml_package ([Boolean] Default: true)
 #   Whether the [hiera-eyaml gem](https://rubygems.org/gems/hiera-eyaml) should be installed.
@@ -146,6 +148,7 @@ class puppet::profile::master (
   $passenger_stat_throttle_rate       = '120',
   $puppet_fqdn                        = $::fqdn,
   $puppet_version                     = 'installed',
+  $service_ensure                     = 'running',
   $server_type                        = undef,
   $server_version                     = 'installed',
   $external_nodes                     = undef,
@@ -197,6 +200,7 @@ class puppet::profile::master (
     passenger_pool_idle_time           => $passenger_pool_idle_time,
     passenger_stat_throttle_rate       => $passenger_stat_throttle_rate,
     puppet_fqdn                        => $puppet_fqdn,
+    service_ensure                     => $service_ensure,
     server_version                     => $server_version,
     external_nodes                     => $external_nodes,
     node_terminus                      => $node_terminus,

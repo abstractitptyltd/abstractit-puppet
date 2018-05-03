@@ -3,8 +3,9 @@
 class puppet::master::server {
   include ::puppet::master
   include ::puppet::defaults
-  $sysconfigdir = $::puppet::defaults::sysconfigdir
-  $java_ram     = $::puppet::master::java_ram
+  $sysconfigdir   = $::puppet::defaults::sysconfigdir
+  $java_ram       = $::puppet::master::java_ram
+  $service_ensure = $::puppet::master::service_ensure
 
   ini_subsetting { 'puppet server Xmx java_ram':
     ensure            => present,
@@ -29,7 +30,7 @@ class puppet::master::server {
   }
 
   service { 'puppetserver':
-    ensure    => 'running',
+    ensure    => $service_ensure,
     enable    => true,
     require   => Class[puppet::master::config],
     subscribe => [
