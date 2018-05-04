@@ -71,7 +71,7 @@ describe 'puppet::master::server', :type => :class do
         end
         it 'should manage the puppet server service' do
           should contain_service('puppetserver').with({
-            'ensure'    => 'running',
+            'ensure'    => 'true',
             'enable'    => 'true'
           }).that_requires(
             'Class[puppet::master::config]'
