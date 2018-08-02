@@ -224,12 +224,13 @@ class puppet::config {
   }
 
   ini_subsetting { 'puppet sysconfig logdest':
-    ensure            => $logdest_ensure,
-    section           => '',
-    key_val_separator => '=',
-    path              => "${sysconfigdir}/puppet",
-    setting           => 'DAEMON_OPTS',
-    subsetting        => '--logdest',
-    value             => $logdest
+    ensure                       => $logdest_ensure,
+    section                      => '',
+    key_val_separator            => '=',
+    subsetting_key_val_separator => ' ',
+    path                         => "${sysconfigdir}/puppet",
+    setting                      => 'DAEMON_OPTS',
+    subsetting                   => '--logdest',
+    value                        => $logdest
   }
 }

@@ -208,6 +208,7 @@ describe 'puppet::config', :type => :class do
             'path'=>"#{sysconfigdir}/puppet",
             'section'=>'',
             'key_val_separator' => '=',
+            'subsetting_key_val_separator' => ' ',
             'setting'=>'DAEMON_OPTS',
             'subsetting'=>'--logdest',
             'value'=>'/var/log/BOGON'
