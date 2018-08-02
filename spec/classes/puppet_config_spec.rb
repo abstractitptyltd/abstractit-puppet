@@ -161,6 +161,31 @@ describe 'puppet::config', :type => :class do
           })
         end
       end # ca_server is not set
+      
+      context 'when ::puppet::ca_port is set' do
+        let(:pre_condition){"class{'::puppet': ca_port => '8141'}"}
+        it "should set ca_port to 8141" do
+          should contain_ini_setting('puppet ca_port').with({
+            'ensure'  => 'present',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'main',
+            'setting' => 'ca_port',
+            'value'   => '8141'
+          })
+        end
+      end# ca_port is set
+
+      context 'when ::puppet::ca_port is not set' do
+        let(:pre_condition){"class{'::puppet':}"}
+        it "should unset ca_port" do
+          should contain_ini_setting('puppet ca_port').with({
+            'ensure' => 'absent',
+            'path'    => "#{confdir}/puppet.conf",
+            'section' => 'main',
+            'setting' => 'ca_port',
+          })
+        end
+      end # ca_port is not set
 
       context 'when ::puppet::cfacter is true' do
         let(:pre_condition){"class{'::puppet': cfacter => true}"}

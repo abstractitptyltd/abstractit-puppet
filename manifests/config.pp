@@ -8,6 +8,7 @@ class puppet::config {
   $codedir                        = $::puppet::defaults::codedir
   $sysconfigdir                   = $::puppet::defaults::sysconfigdir
   $ca_server                      = $::puppet::ca_server
+  $ca_port                        = $::puppet::ca_port
   $cfacter                        = $::puppet::cfacter
   $environment                    = $::puppet::environment
   $logdest                        = $::puppet::logdest
@@ -53,6 +54,12 @@ class puppet::config {
     $_ensure_ca_server = 'present'
   } else {
     $_ensure_ca_server = 'absent'
+  }
+
+  if ($ca_port) {
+    $_ensure_ca_port = 'present'
+  } else {
+    $_ensure_ca_port = 'absent'
   }
 
   if ($pluginsource) {
@@ -123,6 +130,15 @@ class puppet::config {
     section => 'main',
     setting => 'ca_server',
     value   => $ca_server,
+    require => Class['puppet::install'],
+  }
+
+  ini_setting { 'puppet ca_port':
+    ensure  => $_ensure_ca_port,
+    path    => "${confdir}/puppet.conf",
+    section => 'main',
+    setting => 'ca_port',
+    value   => $ca_port,
     require => Class['puppet::install'],
   }
 
