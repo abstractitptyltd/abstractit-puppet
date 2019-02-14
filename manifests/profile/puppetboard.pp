@@ -14,6 +14,12 @@
 #   Vhost name
 # @param port [String] Default: 5000
 #   Revision of puppetboard to install (tag,branch or commit)
+# @param ssl [Boolean] Default: false
+#   Enable SSL for puppetboard
+# @param ssl_cert [String] Default: undef
+#   Location of SSL certificate
+# @param ssl_key [String] Default: undef
+#   Location of SSL key
 # @param puppetdb_port [String] Default: 8080
 #   Port to use for communicating with PuppetDB
 # @param puppetdb_host [String] Default: localhost
@@ -29,6 +35,9 @@ class puppet::profile::puppetboard (
   $reports_count     = undef,
   $vhost_name        = 'pboard',
   $port              = '5000',
+  $ssl               = false,
+  $ssl_cert          = undef,
+  $ssl_key           = undef,
   $puppetdb_port     = '8080',
   $puppetdb_host     = 'localhost',
   $git_source        = 'https://github.com/puppet-community/puppetboard/',
@@ -49,8 +58,21 @@ class puppet::profile::puppetboard (
     manage_virtualenv => $manage_virtualenv,
   }
 
-  class { '::puppetboard::apache::vhost':
-    vhost_name => $vhost_name,
-    port       => $port,
+  if($ssl){
+    # Enable SSL on puppetboard
+    class { '::puppetboard::apache::vhost':
+      vhost_name => $vhost_name,
+      port       => $port,
+      ssl        => $ssl,
+      ssl_cert   => $ssl_cert,
+      ssl_key    => $ssl_key,
+    }
+  }
+  else{
+    # Non secure puppetboard
+    class { '::puppetboard::apache::vhost':
+      vhost_name => $vhost_name,
+      port       => $port,
+    }
   }
 }
