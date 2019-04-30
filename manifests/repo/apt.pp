@@ -28,16 +28,12 @@ class puppet::repo::apt {
       apt::source { 'puppetlabs':
         ensure     => $source_ensure,
         location   => 'http://apt.puppetlabs.com',
-        repos      => 'main dependencies',
-        key        => '6F6B15509CF8E59E6E469F327F438280EF8D349F',
-        key_server => 'pgp.mit.edu',
+        repos      => 'main dependencies'
       }
       apt::source { 'puppetlabs_devel':
         ensure     => $devel_ensure,
         location   => 'http://apt.puppetlabs.com',
-        repos      => 'devel',
-        key        => '6F6B15509CF8E59E6E469F327F438280EF8D349F',
-        key_server => 'pgp.mit.edu',
+        repos      => 'devel'
       }
     }
 
