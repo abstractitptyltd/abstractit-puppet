@@ -19,10 +19,13 @@ class puppet::repo::apt {
     if $::puppet::collection != undef {
       $lc_collection_name = downcase($::puppet::collection)
       apt::source { "puppetlabs-${lc_collection_name}":
-        ensure     => 'present',
-        location   => 'http://apt.puppetlabs.com',
-        repos      => $::puppet::collection,
-        key        => '6F6B15509CF8E59E6E469F327F438280EF8D349F',
+        ensure   => 'present',
+        location => 'http://apt.puppetlabs.com',
+        repos    => $::puppet::collection,
+        key      => {
+          'id'     => '6F6B15509CF8E59E6E469F327F438280EF8D349F',
+          'server' => 'pgp.mit.edu',
+        },
       }
     } else {
       apt::source { 'puppetlabs':
