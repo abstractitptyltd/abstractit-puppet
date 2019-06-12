@@ -1,3 +1,13 @@
+##2019-06-12 - Pete Brown <rendhalver@users.noreply.github.com> 2.4.1
+###Summary
+Feature: Remove tests and requirements for puppet 3 (PR #156)
+Feature: Use the new puppet GPG key (#164)
+Feature: added ca_port for puppet agent configuration (#160)
+Feature: Fix to make module compatible with puppetlabs-apt 2.0.0 (PR #153)
+
+####Bugfixes
+Set correct parameters when upgrading to v4 (#159)
+
 ##2017-07-02 - Pete Brown <rendhalver@users.noreply.github.com> 2.4.0
 ###Summary
 Feature: Add more parameters to R10K profile (PR #141)
