@@ -4,13 +4,8 @@ class puppet::agent {
   include ::puppet
   include ::puppet::defaults
 
-  $sysconfigdir     = $::puppet::defaults::sysconfigdir
-
-  if ( versioncmp($::puppetversion, '4.0.0') >= 0 ) {
-    $bin_dir = '/opt/puppetlabs/bin'
-  } else {
-    $bin_dir = '/usr/bin'
-  }
+  $sysconfigdir = $::puppet::defaults::sysconfigdir
+  $bin_dir      = '/opt/puppetlabs/bin'
 
   if $::puppet::enabled {
     #we want puppet enabled

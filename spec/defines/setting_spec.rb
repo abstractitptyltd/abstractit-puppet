@@ -29,11 +29,7 @@ describe 'puppet::setting', :type => :define do
         })
       end
 
-      if Puppet.version.to_f >= 4.0
     	confdir = '/etc/puppetlabs/puppet'
-      else
-    	confdir = '/etc/puppet'
-      end
 
       context 'when called with base options' do
         let (:title) { 'my_setting'}

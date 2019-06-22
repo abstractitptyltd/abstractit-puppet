@@ -28,13 +28,8 @@ describe 'puppet::profile::agent', :type => :class do
         })
       end
       # it { is_expected.to compile.with_all_deps }
-      if Puppet.version.to_f >= 4.0
-        confdir        = '/etc/puppetlabs/puppet'
-        codedir        = '/etc/puppetlabs/code'
-      else
-        confdir        = '/etc/puppet'
-        codedir        = '/etc/puppet'
-      end
+      confdir        = '/etc/puppetlabs/puppet'
+      codedir        = '/etc/puppetlabs/code'
       context 'when fed no parameters' do
         it { should create_class('puppet') }
       end#no params

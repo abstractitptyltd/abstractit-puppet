@@ -45,7 +45,7 @@ describe 'puppet', :type => :class do
         let(:params) {{ hashes => 'this is a string'}}
         it 'should fail' do
           # skip 'This does not work as is'
-          expect { 
+          expect {
             catalogue
           }.to raise_error(Puppet::Error)
         end
@@ -57,7 +57,7 @@ describe 'puppet', :type => :class do
         let(:params) {{regex => 'BOGON'}}
         it 'should fail' do
           # skip 'This does not work as is'
-          expect { 
+          expect {
             catalogue
           }.to raise_error(Puppet::Error)
         end
@@ -69,7 +69,7 @@ describe 'puppet', :type => :class do
         let(:params) {{strings => false }}
         it 'should fail' do
           # skip 'This does not work as is'
-          expect { 
+          expect {
             catalogue
           }.to raise_error(Puppet::Error)
         end
@@ -104,13 +104,8 @@ describe 'puppet', :type => :class do
         })
       end
       it { is_expected.to compile.with_all_deps }
-      if Puppet.version.to_f >= 4.0
-        facterbasepath  = '/opt/puppetlabs/facter'
-        facterbasepath_group = 'root'
-      else
-        facterbasepath  = '/etc/facter'
-        facterbasepath_group = 'puppet'
-      end
+      facterbasepath  = '/opt/puppetlabs/facter'
+      facterbasepath_group = 'root'
       context 'when fed no parameters' do
         it 'should instantiate the puppet::repo class with the default params' do
           should contain_class('puppet::repo')

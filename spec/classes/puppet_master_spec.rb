@@ -93,26 +93,8 @@ describe 'puppet::master', :type => :class do
           should contain_class('puppet::master::hiera')
         end
 
-        if Puppet.version.to_f >= 4.0
-          context 'when puppetversion >= 4' do
-            it 'should properly instantiate the puppet::master::server class' do
-              should contain_class('puppet::master::server')
-            end
-          end
-        else
-          context 'when puppetversion < 4' do
-            context 'when server_type is set to puppetserver' do
-              let(:params) {{'server_type' => 'puppetserver'}}
-              it 'should properly instantiate the puppet::master::server class' do
-                should contain_class('puppet::master::server')
-              end
-            end
-            context 'when server_type is set to passenger' do
-              it 'should properly instantiate the puppet::master::passenger class' do
-                should contain_class('puppet::master::passenger')
-              end
-            end
-          end
+        it 'should properly instantiate the puppet::master::server class' do
+          should contain_class('puppet::master::server')
         end
       end#no params
 

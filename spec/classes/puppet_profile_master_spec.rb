@@ -29,13 +29,8 @@ describe 'puppet::profile::master', :type => :class do
         })
       end
       # it { is_expected.to compile.with_all_deps }
-      if Puppet.version.to_f >= 4.0
-        confdir        = '/etc/puppetlabs/puppet'
-        codedir        = '/etc/puppetlabs/code'
-      else
-        confdir        = '/etc/puppet'
-        codedir        = '/etc/puppet'
-      end
+      confdir        = '/etc/puppetlabs/puppet'
+      codedir        = '/etc/puppetlabs/code'
       context 'when fed no parameters' do
         it { should create_class('puppet::master') }
         it 'should contain class ::puppetdb::globals' do
@@ -52,7 +47,7 @@ describe 'puppet::profile::master', :type => :class do
             :listen_port        => '8080',
             :ssl_listen_port    => '8081',
             :disable_ssl        => false,
-            :manage_dbserver    => true,                                      
+            :manage_dbserver    => true,
             :listen_address     => '127.0.0.1',
             :ssl_listen_address => '0.0.0.0',
             :node_ttl           => '0s',
@@ -70,7 +65,7 @@ describe 'puppet::profile::master', :type => :class do
             :listen_port        => '8080',
             :ssl_listen_port    => '8081',
             :disable_ssl        => false,
-            :manage_dbserver    => false,                                      
+            :manage_dbserver    => false,
             :listen_address     => '127.0.0.1',
             :ssl_listen_address => '0.0.0.0',
             :node_ttl           => '0s',

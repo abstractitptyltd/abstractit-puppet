@@ -44,60 +44,31 @@ describe 'puppet::master::hiera', :type => :class do
       end
 
       context 'when fed no parameters' do
-        if Puppet.version =~ /^4\./
-          it "should lay down #{codedir}/hiera.yaml" do
-            should contain_file("#{codedir}/hiera.yaml").with({
-              'ensure' =>'file',
-              'owner'  =>'root',
-              'group'  =>'root',
-              'mode'   =>'0644'
-            }).with_content(
-              /:backends:/
-            ).with_content(
-              /  - yaml/
-            ).with_content(
-              /:hierarchy:/
-            ).with_content(
-              /  - \"node\/\%\{\:\:clientcert\}\"/
-            ).with_content(
-              /  - \"env\/\%\{\:\:environment\}\"/
-            ).with_content(
-              /  - \"global\"/
-            ).with_content(
-              /:yaml:/
-            ).with_content(
-              /  :datadir: \"\/etc\/puppetlabs\/code\/hieradata\/%\{environment\}\"/
-            ).without_content(
-              /  :merge_behavior: "/
-            )
-          end
-        else
-          it "should lay down #{codedir}/hiera.yaml" do
-            should contain_file("#{codedir}/hiera.yaml").with({
-              'ensure' =>'file',
-              'owner'  =>'root',
-              'group'  =>'root',
-              'mode'   =>'0644'
-            }).with_content(
-              /:backends:/
-            ).with_content(
-              /  - yaml/
-            ).with_content(
-              /:hierarchy:/
-            ).with_content(
-              /  - \"node\/\%\{\:\:clientcert\}\"/
-            ).with_content(
-              /  - \"env\/\%\{\:\:environment\}\"/
-            ).with_content(
-              /  - \"global\"/
-            ).with_content(
-              /:yaml:/
-            ).with_content(
-              /  :datadir: \"\/etc\/puppet\/hieradata\/%\{environment\}\"/
-            ).without_content(
-              /  :merge_behavior: "/
-            )
-          end
+        it "should lay down #{codedir}/hiera.yaml" do
+          should contain_file("#{codedir}/hiera.yaml").with({
+            'ensure' =>'file',
+            'owner'  =>'root',
+            'group'  =>'root',
+            'mode'   =>'0644'
+          }).with_content(
+            /:backends:/
+          ).with_content(
+            /  - yaml/
+          ).with_content(
+            /:hierarchy:/
+          ).with_content(
+            /  - \"node\/\%\{\:\:clientcert\}\"/
+          ).with_content(
+            /  - \"env\/\%\{\:\:environment\}\"/
+          ).with_content(
+            /  - \"global\"/
+          ).with_content(
+            /:yaml:/
+          ).with_content(
+            /  :datadir: \"\/etc\/puppetlabs\/code\/hieradata\/%\{environment\}\"/
+          ).without_content(
+            /  :merge_behavior: "/
+          )
         end
 
       end#no params

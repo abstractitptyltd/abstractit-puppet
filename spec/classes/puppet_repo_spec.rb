@@ -30,8 +30,7 @@ describe 'puppet::repo', :type => :class do
       it { is_expected.to compile.with_all_deps }
       context 'when ::puppet::manage_repo_method is set to files' do
         let(:pre_condition){"class{'::puppet': manage_repo_method => 'files', collection => 'PC1'}"}
-        it 'should not install puppetlabs-release packages' do
-          should_not contain_package('puppetlabs-release')
+        it 'should not install puppetlabs-release-pc1 packages' do
           should_not contain_package('puppetlabs-release-pc1')
         end
         case facts[:osfamily]
@@ -48,18 +47,10 @@ describe 'puppet::repo', :type => :class do
 
       context 'when ::puppet::manage_repo_method is set to packages' do
         let(:pre_condition){"class{'::puppet': manage_repo_method => 'package' }"}
-        context "when ::puppet::collection is not defined" do
-          it "should install the puppetlabs-release package" do
-            should contain_package('puppetlabs-release')
-          end#puppetlabs-release
-        end
         context "when ::puppet::collection is set to PC1" do
           let(:pre_condition){"class{'::puppet': manage_repo_method => 'package', collection => 'PC1'}"}
           it 'should contain the puppetlabs-release-pc1 package' do
             should contain_package('puppetlabs-release-pc1')
-          end
-          it 'should not contain the puppetlabs-release package' do
-            should_not contain_package('puppetlabs-release')
           end
         end
       end #manage_repo_method packages
@@ -67,7 +58,6 @@ describe 'puppet::repo', :type => :class do
       context 'when ::puppet::manage_repos is set to false' do
         let(:pre_condition){"class{'::puppet': manage_repos => false, collection => 'PC1' }"}
         it 'should not install puppetlabs-release packages' do
-          should_not contain_package('puppetlabs-release')
           should_not contain_package('puppetlabs-release-pc1')
         end
         it 'should not contain repo classes' do

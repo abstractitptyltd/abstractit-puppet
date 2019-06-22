@@ -81,33 +81,16 @@ describe 'puppet::facts', :type => :class do
         })
       end
       it { is_expected.to compile.with_all_deps }
-      if Puppet.version.to_f >= 4.0
-        facterbasepath  = '/opt/puppetlabs/facter'
-      else
-        facterbasepath  = '/etc/facter'
-      end
+      facterbasepath  = '/opt/puppetlabs/facter'
       context 'when fed no parameters' do
-        if Puppet.version.to_f >= 4.0
-          # setting environemnt doesn't work in puppet 4
-          it "should lay down #{facterbasepath}/facts.d/local.yaml" do
-            should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
-              /facts for my.client.cert/
-            ).with_content(
-              /FQDN my.fq.hostname/
-            )#.with_content(
-            #  /Environment production/
-            #)
-          end
-        else
-          it "should lay down #{facterbasepath}/facts.d/local.yaml" do
-            should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
-              /facts for my.client.cert/
-            ).with_content(
-              /FQDN my.fq.hostname/
-            ).with_content(
-              /Environment production/
-            )
-          end
+        it "should lay down #{facterbasepath}/facts.d/local.yaml" do
+          should contain_file("#{facterbasepath}/facts.d/local.yaml").with_content(
+            /facts for my.client.cert/
+          ).with_content(
+            /FQDN my.fq.hostname/
+          )#.with_content(
+          #  /Environment production/
+          #)
         end
       end#no params
       context 'when the custom_facts parameter is properly set' do

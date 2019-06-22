@@ -18,15 +18,9 @@ class puppet::repo {
         }
       }
       'package': {
-        if $::puppet::collection != undef {
-          $lc_collection_name = downcase($::puppet::collection)
-          package { "puppetlabs-release-${lc_collection_name}":
-            ensure => latest,
-          }
-        } else {
-          package { 'puppetlabs-release':
-            ensure => latest,
-          }
+        $lc_collection_name = downcase($::puppet::collection)
+        package { "puppetlabs-release-${lc_collection_name}":
+          ensure => latest,
         }
       }
     }

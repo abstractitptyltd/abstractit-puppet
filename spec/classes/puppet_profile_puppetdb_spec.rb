@@ -30,21 +30,12 @@ describe 'puppet::profile::puppetdb', :type => :class do
         })
       end
       # it { is_expected.to compile.with_all_deps }
-      if Puppet.version.to_f >= 4.0
-        confdir           = '/etc/puppetlabs/puppet'
-        codedir           = '/etc/puppetlabs/code'
-        terminus_package  = 'puppetdb-termini'
-        puppetdb_confdir  = '/etc/puppetlabs/puppetdb/conf.d'
-        puppetdb_ssldir   = '/etc/puppetlabs/puppetdb/ssl'
-        puppetdb_test_url = '/pdb/meta/v1/version'
-      else
-        confdir          = '/etc/puppet'
-        codedir          = '/etc/puppet'
-        terminus_package = 'puppetdb-terminus'
-        puppetdb_confdir  = '/etc/puppetdb/conf.d'
-        puppetdb_ssldir   = '/etc/puppetdb/ssl'
-        puppetdb_test_url = '/v3/version'
-      end
+      confdir           = '/etc/puppetlabs/puppet'
+      codedir           = '/etc/puppetlabs/code'
+      terminus_package  = 'puppetdb-termini'
+      puppetdb_confdir  = '/etc/puppetlabs/puppetdb/conf.d'
+      puppetdb_ssldir   = '/etc/puppetlabs/puppetdb/ssl'
+      puppetdb_test_url = '/pdb/meta/v1/version'
 
       context 'when fed no parameters' do
         # it 'should include class ::postgresql::server::contrib' do

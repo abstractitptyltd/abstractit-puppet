@@ -30,12 +30,8 @@ describe 'puppet::config', :type => :class do
         })
       end
       it { is_expected.to compile.with_all_deps }
-      if Puppet.version.to_f >= 4.0
-        confdir = '/etc/puppetlabs/puppet'
-        codedir = '/etc/puppetlabs/code'
-      else
-        confdir = '/etc/puppet'
-      end
+      confdir = '/etc/puppetlabs/puppet'
+      codedir = '/etc/puppetlabs/code'
       case facts[:osfamily]
       when 'Debian'
         sysconfigdir   = '/etc/default'
@@ -161,7 +157,7 @@ describe 'puppet::config', :type => :class do
           })
         end
       end # ca_server is not set
-      
+
       context 'when ::puppet::ca_port is set' do
         let(:pre_condition){"class{'::puppet': ca_port => '8141'}"}
         it "should set ca_port to 8141" do
