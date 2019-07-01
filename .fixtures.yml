@@ -2,13 +2,13 @@ fixtures:
   forge_modules:
     apache:
       repo: "puppetlabs/apache"
-      ref:  "1.4.1"
+      ref:  "2.3.0"
     concat:
       repo: "puppetlabs/concat"
       ref:  "1.2.2"
     stdlib:
       repo: "puppetlabs/stdlib"
-      ref:  "4.6.0"
+      ref:  "4.13.0"
     apt:
       repo: "puppetlabs/apt"
       ref:  "2.1.0"
@@ -17,10 +17,10 @@ fixtures:
       ref:  "1.2.0"
     postgresql:
       repo: "puppetlabs/postgresql"
-      ref:  "4.6.0"
+      ref:  "5.2.1"
     puppetdb:
       repo: "puppetlabs/puppetdb"
-      ref:  "5.0.0"
+      ref:  "6.0.2"
     firewall:
       repo: "puppetlabs/firewall"
       ref:  "1.5.0"
