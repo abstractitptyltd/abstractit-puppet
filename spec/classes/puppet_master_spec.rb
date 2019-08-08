@@ -25,7 +25,7 @@ describe 'puppet::master', :type => :class do
       end
     end#arrays
 
-    ['autosign','eyaml_keys','future_parser'].each do |bools|
+    ['autosign','eyaml_keys','future_parser','service_enable'].each do |bools|
       context "when the #{bools} parameter is not an boolean" do
         let(:params) {{bools => "BOGON"}}
         it 'should fail' do

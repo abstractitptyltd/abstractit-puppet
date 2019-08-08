@@ -570,6 +570,10 @@ The `puppet::config` class is responsible for altering the configuration of `$co
 
   Specifies the type of server to use `puppetserver` is always used on Puppet 4
 
+  * **service_enable**: (*bool* Default: `true`)
+
+  Specifies if the puppetmaster service should be enabled
+
   * **module_path**: **DEPRECATED** (*string* Default: `undef`)
 
   If this is set, it will be used to populate the basemodulepath parameter in `/etc/puppet/puppet.conf`. This does not impact [environment.conf](http://docs.puppetlabs.com/puppet/latest/reference/config_file_environment.html), which should live in your [r10k](https://github.com/adrienthebo/r10k) environment repo.
