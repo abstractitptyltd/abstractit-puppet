@@ -39,6 +39,10 @@ describe 'puppet::master::server', :type => :class do
         basemodulepath = "#{confdir}/modules:/usr/share/puppet/modules"
       end
       case facts[:osfamily]
+      when 'Gentoo'
+        sysconfigdir   = '/etc/default'
+      when 'Solaris'
+        sysconfigdir   = '/etc/default'
       when 'Debian'
         sysconfigdir   = '/etc/default'
       when 'RedHat'

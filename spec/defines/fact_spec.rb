@@ -78,7 +78,12 @@ describe 'puppet::fact', :type => :define do
       end
 
       if Puppet.version.to_f >= 4.0
-        facterbasepath  = '/opt/puppetlabs/facter'
+        case facts[:osfamily]
+        when 'Solaris'
+          facterbasepath  = '/var/puppetlabs/puppet/cache'
+        else
+          facterbasepath  = '/opt/puppetlabs/facter'
+        end
         facterbasepath_group = 'root'
       else
         facterbasepath  = '/etc/facter'
