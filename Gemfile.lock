@@ -19,7 +19,7 @@ GEM
     faraday_middleware (0.11.0.1)
       faraday (>= 0.7.4, < 1.0)
     fast_gettext (1.1.0)
-    ffi (1.9.18)
+    ffi (1.11.1)
     gettext (3.2.3)
       locale (>= 2.0.5)
       text (>= 1.3.0)
