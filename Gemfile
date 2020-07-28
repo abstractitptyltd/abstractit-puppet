@@ -18,7 +18,7 @@ group :test do
   gem "puppet-syntax",          '2.1.0',                  :require => false
   gem 'metadata-json-lint',     '1.1.0',                  :require => false
   gem 'simplecov',                                        :require => false
-  gem 'json',                   '1.8.5',                  :require => false
+  gem 'json',                   '2.3.0',                  :require => false
   gem "puppet-blacksmith",                                :require => false
   gem 'pry',                    '<= 0.9.8',               :require => false
   gem 'puppet-lint',            '2.0.2',                  :require => false
