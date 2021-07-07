@@ -4,11 +4,14 @@
 #
 
 define puppet::fact (
-  $value,
   $ensure = present,
-  ) {
+  $value  = undef,
+) {
   include ::puppet::defaults
   $facterbasepath = $::puppet::defaults::facterbasepath
+
+  validate_re($title, '^[0-9A-Za-z_\-]+$', 'The $title fact does not match ^[0-9A-Za-z_\-]+$')
+  $facter_data = { "${title}" => $value }
 
   file { "${facterbasepath}/facts.d/${title}.yaml":
     ensure  => $ensure,

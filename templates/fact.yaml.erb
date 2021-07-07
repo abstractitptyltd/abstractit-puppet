@@ -1,3 +1,3 @@
 # custom fact <%= @title %>
----
-<%= @title %>: "<%= @value %>"
+<%- require 'yaml' -%>
+<%= YAML.dump(@facter_data) %>

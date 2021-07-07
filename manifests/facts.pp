@@ -4,9 +4,8 @@
 #
 # setup facts
 #
-
 class puppet::facts (
-  $custom_facts = undef
+  $custom_facts = undef,
 ) {
   include ::puppet
   include ::puppet::defaults
