@@ -15,6 +15,8 @@
 #   These specials use [fqdn_rand](http://docs.puppetlabs.com/references/latest/function.html#fqdnrand)
 #   to generate a random minute array on the selected interval.
 #   This should distribute the load more evenly on your puppetmasters.
+# @param agent_custom_cron_command [String] Default:  undef
+#   Custom puppet agent cron command
 # @param agent_version [String] Default: 'installed'
 #   Declares the version of the puppet-agent all-in-one package to install.
 # @param ca_server [String] Default: undef
@@ -103,6 +105,7 @@ class puppet (
   $allinone                       = false,
   $agent_cron_hour                = '*',
   $agent_cron_min                 = 'two_times_an_hour',
+  $agent_custom_cron_command      = undef,
   $agent_version                  = 'installed',
   $ca_server                      = undef,
   $ca_port                        = undef,

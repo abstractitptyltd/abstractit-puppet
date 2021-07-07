@@ -262,6 +262,10 @@ The `puppet` class is responsible for validating some of our parameters, and ins
 
   This param accepts any value accepted by the [cron native type](http://docs.puppetlabs.com/references/latest/type.html#cron-attribute-minute), as well as two special options: `two_times_an_hour`, and `four_times_an_hour`. These specials use [fqdn_rand](http://docs.puppetlabs.com/references/latest/function.html#fqdnrand) to generate a random minute array on the selected interval. This should distribute the load more evenly on your puppetmasters.
 
+  * **agent_custom_cron_command**: (*string* Default: `undef`)
+
+    Optional custom puppet agent cron command
+
   * **agent_version**: (*string* Default: `installed`)
 
     Declares the version of the puppet-agent all-in-one package to install.
