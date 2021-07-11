@@ -27,5 +27,29 @@ fixtures:
     puppetserver_gem:
       repo: "puppetlabs/puppetserver_gem"
       ref:  "0.1.0"
+    r10k:
+      repo: "zack/r10k"
+      ref:  "2.7.0"
+    ruby:
+      repo: "puppetlabs/ruby"
+      ref:  "0.0.2"
+    gcc:
+      repo: "puppetlabs/gcc"
+      ref:  "0.0.3"
+    pe_gem:
+      repo: "puppetlabs/pe_gem"
+      ref:  "0.0.1"
+    vcsrepo:
+      repo: "puppetlabs/vcsrepo"
+      ref:  "0.1.2"
+    git:
+      repo: "puppetlabs/git"
+      ref:  "0.0.3"
+    make:
+      repo: "croddy/make"
+      ref:  "0.0.3"
+    portage:
+      repo: "gentoo/portage"
+      ref:  "2.0.1"
   symlinks:
     puppet: "#{source_dir}"
